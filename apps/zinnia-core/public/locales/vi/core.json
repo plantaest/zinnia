@@ -1,0 +1,212 @@
+{
+  "@metadata": {
+    "authors": [
+      "Plantaest"
+    ]
+  },
+  "common": {
+    "create": "Tạo",
+    "update": "Cập nhật",
+    "delete": "Xóa",
+    "cancel": "Hủy",
+    "default": "Mặc định",
+    "welcome": "Chào mừng",
+    "loading": "Đang tải",
+    "back": "Trở về",
+    "forward": "Kế tiếp",
+    "save": "Lưu",
+    "confirm": "Xác nhận",
+    "select": "Chọn",
+    "reset": "Đặt lại",
+    "add": "Thêm",
+    "wiki": "Wiki",
+    "notification": "Thông báo"
+  },
+  "wiki": {
+    "project": {
+      "meta": "Meta",
+      "wikipedia": "Wikipedia"
+    },
+    "namespace": {
+      "main": "(Chính)",
+      "talk": "Thảo luận",
+      "user": "Thành viên",
+      "userTalk": "Thảo luận Thành viên",
+      "project": "Dự án",
+      "projectTalk": "Thảo luận Dự án",
+      "file": "Tập tin",
+      "fileTalk": "Thảo luận Tập tin",
+      "mediaWiki": "MediaWiki",
+      "mediaWikiTalk": "Thảo luận MediaWiki",
+      "template": "Bản mẫu",
+      "templateTalk": "Thảo luận Bản mẫu",
+      "help": "Trợ giúp",
+      "helpTalk": "Thảo luận Trợ giúp",
+      "category": "Thể loại",
+      "categoryTalk": "Thảo luận Thể loại",
+      "module": "Mô đun",
+      "moduleTalk": "Thảo luận Mô đun"
+    },
+    "tag": {
+      "mobileEdit": "Sửa đổi di động",
+      "mwBlank": "Tẩy trống trang",
+      "mwNewRedirect": "Trang đổi hướng mới",
+      "mwChangedRedirectTarget": "Thay đổi trang đích của đổi hướng",
+      "mwRemovedRedirect": "Xóa đổi hướng",
+      "mwReplace": "Thay thế nội dung",
+      "mwUndo": "Lùi sửa",
+      "mwRollback": "Lùi tất cả",
+      "mwManualRevert": "Lùi lại thủ công",
+      "mwReverted": "Đã bị lùi lại"
+    }
+  },
+  "ui": {
+    "headerPanel": {
+      "home": "Trang chủ",
+      "talk": "Thảo luận",
+      "code": "Mã nguồn",
+      "support": "Ủng hộ"
+    },
+    "heroPanel": {
+      "startStateContent": {
+        "firstLine": "Xin chào! Cảm ơn vì đã chọn Zinnia. Hãy bắt đầu hành trình của bạn!",
+        "secondLine": "Nhấn nút <strong>Bắt đầu</strong> bên dưới để tạo cấu hình và khởi động phiên làm việc.",
+        "start": "Bắt đầu"
+      }
+    },
+    "workspacePanel": {
+      "title": "Không gian làm việc",
+      "createTitle": "Tạo không gian làm việc mới",
+      "updateTitle": "Cập nhật không gian làm việc",
+      "workspaceName": "Tên không gian làm việc"
+    },
+    "filterPanel": {
+      "title": "Bộ lọc",
+      "createTitle": "Tạo bộ lọc mới",
+      "filterName": "Tên bộ lọc",
+      "feed": "Luồng",
+      "liveUpdates": "Cập nhật trực tiếp",
+      "paginated": "Phân trang",
+      "groupedByPage": "Nhóm theo trang",
+      "invertedDirection": "Chiều ngược",
+      "smallWikis": "Wiki nhỏ",
+      "additionalWikis": "Wiki bổ sung",
+      "limit": "Giới hạn",
+      "interval": "Khoảng thời gian",
+      "timeframe": "Khung thời gian",
+      "start": "Bắt đầu",
+      "now": "Hiện tại",
+      "timestamp": "Mốc thời gian",
+      "end": "Kết thúc",
+      "period": "Quãng",
+      "inherited": "Kế thừa",
+      "filterAddWikiForm": {
+        "addWiki": "Thêm một wiki",
+        "eg": "Ví dụ: enwiki, viwiki.",
+        "fullList": "Danh sách đầy đủ.",
+        "notify": "Đã thêm {wikiId} cho bộ lọc. Đừng quên nhấn Lưu."
+      },
+      "deleteWiki": "Xóa wiki",
+      "namespaces": "Không gian tên",
+      "tags": "Thẻ",
+      "pageTitle": "Tiêu đề trang",
+      "username": "Tên người dùng",
+      "unregistered": "Vô danh",
+      "registered": "Đã đăng ký",
+      "bot": "Bot",
+      "human": "Con người",
+      "unpatrolled": "Chưa được tuần tra",
+      "patrolled": "Đã được đánh dấu tuần tra",
+      "autopatrolled": "Tự đánh dấu tuần tra",
+      "minorEdits": "Sửa đổi nhỏ",
+      "nonMinorEdits": "Sửa đổi không nhỏ",
+      "redirect": "Trang đổi hướng",
+      "nonRedirect": "Không là trang đổi hướng",
+      "latestRevision": "Phiên bản mới nhất",
+      "pageEdits": "Sửa đổi trang",
+      "pageCreations": "Tạo trang",
+      "categoryChanges": "Thay đổi thể loại",
+      "loggedActions": "Tác vụ được ghi trong nhật trình",
+      "wikidataEdits": "Sửa đổi trên Wikidata"
+    },
+    "feedPanel": {
+      "empty": "Luồng đang trống",
+      "connected": "Đã kết nối",
+      "disconnected": "Mất kết nối",
+      "reload": "Tải lại",
+      "focus": "Tập trung"
+    },
+    "welcomeTab": {
+      "slogan": "Ứng dụng chống phá hoại toàn diện"
+    },
+    "settingPanel": {
+      "title": "Thiết đặt",
+      "theme": {
+        "label": "Chủ đề",
+        "auto": "Tự động",
+        "light": "Sáng",
+        "dark": "Tối"
+      },
+      "language": {
+        "label": "Ngôn ngữ"
+      },
+      "locale": {
+        "label": "Vùng"
+      },
+      "rtl": {
+        "label": "Phải-sang-trái"
+      }
+    },
+    "noneTab": {
+      "message": "Không có tab nào được chọn"
+    }
+  },
+  "hook": {
+    "useSaveOption": {
+      "error": {
+        "default": "Không thể tạo/lưu được cấu hình"
+      },
+      "success": {
+        "updateAppVersion": "Đã cập nhật thành công lên phiên bản mới nhất {newVersion} từ phiên bản {oldVersion}",
+        "updateSettings": "Đã cập nhật thành công thiết đặt"
+      }
+    },
+    "useCreateWorkspace": {
+      "success": {
+        "default": "Đã tạo không gian làm việc mới thành công"
+      }
+    },
+    "useUpdateWorkspace": {
+      "success": {
+        "default": "Đã cập nhật không gian làm việc thành công"
+      }
+    },
+    "useDeleteWorkspace": {
+      "success": {
+        "default": "Đã xóa không gian làm việc thành công"
+      }
+    },
+    "useCreateFilter": {
+      "success": {
+        "default": "Đã tạo bộ lọc mới thành công"
+      }
+    },
+    "useUpdateFilter": {
+      "success": {
+        "default": "Đã cập nhật bộ lọc thành công"
+      }
+    },
+    "useDeleteFilter": {
+      "success": {
+        "default": "Đã xóa bộ lọc thành công"
+      }
+    }
+  },
+  "errorMessage": {
+    "notEmpty": "Trường này không được để trống",
+    "startAfterEnd": "Mốc bắt đầu phải sau mốc kết thúc",
+    "notSupportedWikiId": "Wiki ID này không nằm trong danh sách hỗ trợ",
+    "existedWikiId": "Wiki này đã có trong danh sách wiki của bộ lọc",
+    "maxLimitFilterWikis": "Đã đạt giới hạn lớn nhất của danh sách wiki của bộ lọc"
+  }
+}

@@ -1,0 +1,46 @@
+/* Ref: https://codepen.io/nxworld/pen/OyRrGy */
+.button {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  width: rem(30px);
+  height: rem(50px);
+  margin-left: rem(-15px);
+  border: rem(2px) solid light-dark(var(--mantine-color-black), var(--mantine-color-dark-0));
+  border-radius: rem(50px);
+  transition: opacity .3s;
+
+  &:hover {
+    opacity: .5;
+  }
+
+  &::before {
+    position: absolute;
+    top: rem(10px);
+    left: 50%;
+    content: '';
+    width: rem(6px);
+    height: rem(6px);
+    margin-left: rem(-3px);
+    background-color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-0));
+    border-radius: 100%;
+    animation: animation 2s infinite;
+  }
+}
+
+@keyframes animation {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  80% {
+    transform: translate(0, rem(20px));
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}

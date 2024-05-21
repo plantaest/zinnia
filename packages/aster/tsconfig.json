@@ -1,0 +1,23 @@
+{
+  "extends": "@plantaest/typescript-config/base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "types": [
+      "node",
+      "./node_modules/types-mediawiki",
+      "./node_modules/@types/jquery"
+    ],
+    "target": "ESNext",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ]
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

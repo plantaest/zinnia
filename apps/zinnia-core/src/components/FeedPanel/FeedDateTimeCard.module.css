@@ -1,0 +1,21 @@
+.date {
+  margin-inline-start: var(--mantine-spacing-sm);
+  padding-inline-start: var(--mantine-spacing-sm);
+  border-radius: var(--mantine-radius-md);
+  box-shadow: var(--mantine-shadow-sm);
+  color: var(--mantine-color-white);
+  font-family: var(--mantine-alt-font-monospace);
+  font-weight: 600;
+
+  &[data-type="date"] {
+    background-color: light-dark(var(--mantine-color-cyan-5), var(--mantine-color-cyan-8));
+    border-bottom: rem(2px) solid light-dark(var(--mantine-color-cyan-3), var(--mantine-color-cyan-6));
+    font-size: var(--mantine-font-size-sm);
+  }
+
+  &[data-type="time"] {
+    background-color: light-dark(var(--mantine-color-indigo-5), var(--mantine-color-indigo-8));
+    border-bottom: rem(2px) solid light-dark(var(--mantine-color-indigo-3), var(--mantine-color-indigo-6));
+    font-size: var(--mantine-font-size-xs);
+  }
+}

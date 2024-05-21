@@ -1,0 +1,709 @@
+{
+  "$id": "https://zinnia.toolforge.org/schema/UserConfig.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/UserConfig",
+  "definitions": {
+    "UserConfig": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "createdAt": {
+          "$ref": "#/definitions/Instant"
+        },
+        "updatedAt": {
+          "$ref": "#/definitions/Instant"
+        },
+        "appVersion": {
+          "type": "string"
+        },
+        "schemaVersion": {
+          "type": "string"
+        },
+        "colorScheme": {
+          "type": "string",
+          "enum": [
+            "light",
+            "dark",
+            "auto"
+          ]
+        },
+        "language": {
+          "type": "string"
+        },
+        "locale": {
+          "type": "string"
+        },
+        "dir": {
+          "type": "string",
+          "enum": [
+            "ltr",
+            "rtl"
+          ]
+        },
+        "workspaces": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Workspace"
+          }
+        },
+        "activeWorkspaceId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "createdAt",
+        "updatedAt",
+        "appVersion",
+        "schemaVersion",
+        "colorScheme",
+        "language",
+        "locale",
+        "dir",
+        "workspaces",
+        "activeWorkspaceId"
+      ],
+      "additionalProperties": false
+    },
+    "Instant": {
+      "type": "string"
+    },
+    "Workspace": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "createdAt": {
+          "$ref": "#/definitions/Instant"
+        },
+        "updatedAt": {
+          "$ref": "#/definitions/Instant"
+        },
+        "name": {
+          "type": "string"
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Filter"
+          }
+        },
+        "activeFilterId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tabs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Tab"
+          }
+        },
+        "activeTabId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "createdAt",
+        "updatedAt",
+        "name",
+        "filters",
+        "activeFilterId",
+        "tabs",
+        "activeTabId"
+      ],
+      "additionalProperties": false
+    },
+    "Filter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "createdAt": {
+          "$ref": "#/definitions/Instant"
+        },
+        "updatedAt": {
+          "$ref": "#/definitions/Instant"
+        },
+        "name": {
+          "type": "string"
+        },
+        "feed": {
+          "type": "object",
+          "properties": {
+            "liveUpdates": {
+              "type": "boolean"
+            },
+            "paginated": {
+              "type": "boolean"
+            },
+            "groupedByPage": {
+              "type": "boolean"
+            },
+            "invertedDirection": {
+              "type": "boolean"
+            },
+            "smallWikis": {
+              "type": "boolean"
+            },
+            "additionalWikis": {
+              "type": "boolean"
+            },
+            "limit": {
+              "type": "number"
+            },
+            "interval": {
+              "type": "number"
+            },
+            "timeframe": {
+              "type": "object",
+              "properties": {
+                "start": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "const": "now"
+                    },
+                    {
+                      "$ref": "#/definitions/Instant"
+                    }
+                  ]
+                },
+                "end": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/definitions/Period"
+                    },
+                    {
+                      "$ref": "#/definitions/Instant"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "start",
+                "end"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "liveUpdates",
+            "paginated",
+            "groupedByPage",
+            "invertedDirection",
+            "smallWikis",
+            "additionalWikis",
+            "limit",
+            "interval",
+            "timeframe"
+          ],
+          "additionalProperties": false
+        },
+        "wikis": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "wikiId": {
+                    "$ref": "#/definitions/WikiId"
+                  },
+                  "inherited": {
+                    "type": "boolean",
+                    "const": true
+                  },
+                  "config": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "wikiId",
+                  "inherited",
+                  "config"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "wikiId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "const": "global"
+                      },
+                      {
+                        "$ref": "#/definitions/WikiId"
+                      }
+                    ]
+                  },
+                  "inherited": {
+                    "type": "boolean",
+                    "const": false
+                  },
+                  "config": {
+                    "type": "object",
+                    "properties": {
+                      "selectedNamespaces": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "selectedTags": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "pageTitle": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "username": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "unregistered": {
+                        "type": "boolean"
+                      },
+                      "registered": {
+                        "type": "boolean"
+                      },
+                      "bot": {
+                        "type": "boolean"
+                      },
+                      "human": {
+                        "type": "boolean"
+                      },
+                      "unpatrolled": {
+                        "type": "boolean"
+                      },
+                      "patrolled": {
+                        "type": "boolean"
+                      },
+                      "autopatrolled": {
+                        "type": "boolean"
+                      },
+                      "minorEdits": {
+                        "type": "boolean"
+                      },
+                      "nonMinorEdits": {
+                        "type": "boolean"
+                      },
+                      "redirect": {
+                        "type": "boolean"
+                      },
+                      "nonRedirect": {
+                        "type": "boolean"
+                      },
+                      "latestRevision": {
+                        "type": "boolean"
+                      },
+                      "pageEdits": {
+                        "type": "boolean"
+                      },
+                      "pageCreations": {
+                        "type": "boolean"
+                      },
+                      "categoryChanges": {
+                        "type": "boolean"
+                      },
+                      "loggedActions": {
+                        "type": "boolean"
+                      },
+                      "wikidataEdits": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "selectedNamespaces",
+                      "selectedTags",
+                      "pageTitle",
+                      "username",
+                      "unregistered",
+                      "registered",
+                      "bot",
+                      "human",
+                      "unpatrolled",
+                      "patrolled",
+                      "autopatrolled",
+                      "minorEdits",
+                      "nonMinorEdits",
+                      "redirect",
+                      "nonRedirect",
+                      "latestRevision",
+                      "pageEdits",
+                      "pageCreations",
+                      "categoryChanges",
+                      "loggedActions",
+                      "wikidataEdits"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "wikiId",
+                  "inherited",
+                  "config"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "id",
+        "createdAt",
+        "updatedAt",
+        "name",
+        "feed",
+        "wikis"
+      ],
+      "additionalProperties": false
+    },
+    "Period": {
+      "type": "string"
+    },
+    "WikiId": {
+      "type": "string"
+    },
+    "Tab": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "WELCOME"
+            },
+            "data": {
+              "type": "null"
+            },
+            "id": {
+              "type": "string"
+            },
+            "createdAt": {
+              "$ref": "#/definitions/Instant"
+            },
+            "updatedAt": {
+              "$ref": "#/definitions/Instant"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "createdAt",
+            "data",
+            "id",
+            "name",
+            "type",
+            "updatedAt"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "const": "DIFF"
+                },
+                {
+                  "type": "string",
+                  "const": "MAIN_DIFF"
+                }
+              ]
+            },
+            "data": {
+              "$ref": "#/definitions/DiffTabData"
+            },
+            "id": {
+              "type": "string"
+            },
+            "createdAt": {
+              "$ref": "#/definitions/Instant"
+            },
+            "updatedAt": {
+              "$ref": "#/definitions/Instant"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "createdAt",
+            "data",
+            "id",
+            "name",
+            "type",
+            "updatedAt"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "const": "READ"
+                },
+                {
+                  "type": "string",
+                  "const": "MAIN_READ"
+                }
+              ]
+            },
+            "data": {
+              "$ref": "#/definitions/ReadTabData"
+            },
+            "id": {
+              "type": "string"
+            },
+            "createdAt": {
+              "$ref": "#/definitions/Instant"
+            },
+            "updatedAt": {
+              "$ref": "#/definitions/Instant"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "createdAt",
+            "data",
+            "id",
+            "name",
+            "type",
+            "updatedAt"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "const": "FILE"
+                },
+                {
+                  "type": "string",
+                  "const": "MAIN_FILE"
+                }
+              ]
+            },
+            "data": {
+              "$ref": "#/definitions/FileTabData"
+            },
+            "id": {
+              "type": "string"
+            },
+            "createdAt": {
+              "$ref": "#/definitions/Instant"
+            },
+            "updatedAt": {
+              "$ref": "#/definitions/Instant"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "createdAt",
+            "data",
+            "id",
+            "name",
+            "type",
+            "updatedAt"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "PAGE_HISTORY"
+            },
+            "data": {
+              "$ref": "#/definitions/PageHistoryTabData"
+            },
+            "id": {
+              "type": "string"
+            },
+            "createdAt": {
+              "$ref": "#/definitions/Instant"
+            },
+            "updatedAt": {
+              "$ref": "#/definitions/Instant"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "createdAt",
+            "data",
+            "id",
+            "name",
+            "type",
+            "updatedAt"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "USER_CONTRIBUTIONS"
+            },
+            "data": {
+              "$ref": "#/definitions/UserContributionsTabData"
+            },
+            "id": {
+              "type": "string"
+            },
+            "createdAt": {
+              "$ref": "#/definitions/Instant"
+            },
+            "updatedAt": {
+              "$ref": "#/definitions/Instant"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "createdAt",
+            "data",
+            "id",
+            "name",
+            "type",
+            "updatedAt"
+          ]
+        }
+      ]
+    },
+    "DiffTabData": {
+      "type": "object",
+      "properties": {
+        "wikiId": {
+          "type": "string"
+        },
+        "fromRevisionId": {
+          "type": "number"
+        },
+        "toRevisionId": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "wikiId",
+        "fromRevisionId",
+        "toRevisionId"
+      ],
+      "additionalProperties": false
+    },
+    "ReadTabData": {
+      "type": "object",
+      "properties": {
+        "wikiId": {
+          "type": "string"
+        },
+        "pageTitle": {
+          "type": "string"
+        },
+        "revisionId": {
+          "type": "number"
+        },
+        "redirect": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "wikiId",
+        "pageTitle",
+        "revisionId",
+        "redirect"
+      ],
+      "additionalProperties": false
+    },
+    "FileTabData": {
+      "type": "object",
+      "properties": {
+        "wikiId": {
+          "type": "string"
+        },
+        "pageId": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "wikiId",
+        "pageId"
+      ],
+      "additionalProperties": false
+    },
+    "PageHistoryTabData": {
+      "type": "object",
+      "properties": {
+        "wikiId": {
+          "type": "string"
+        },
+        "pageId": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "wikiId",
+        "pageId"
+      ],
+      "additionalProperties": false
+    },
+    "UserContributionsTabData": {
+      "type": "object",
+      "properties": {
+        "wikiId": {
+          "type": "string"
+        },
+        "actorId": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "wikiId",
+        "actorId"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

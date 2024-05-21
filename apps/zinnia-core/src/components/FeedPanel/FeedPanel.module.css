@@ -1,0 +1,27 @@
+.wrapper {
+  padding-top: rem(5px);
+  padding-inline-end: var(--mantine-spacing-xs);
+  height: 100%;
+  gap: rem(5px);
+
+  &[data-focus="true"] {
+    padding-bottom: rem(5px);
+    height: 100vh;
+    overflow-y: scroll;
+    scrollbar-width: none;
+  }
+}
+
+.empty {
+  background-color: light-dark(alpha(var(--mantine-color-white), 0.5), alpha(var(--mantine-color-dark-9), 0.5));
+  border: rem(1px) solid light-dark(alpha(var(--mantine-color-white), 0.75), alpha(var(--mantine-color-dark-3), 0.5));
+  backdrop-filter: blur(1rem);
+  box-shadow: var(--mantine-shadow-sm);
+  border-radius: var(--mantine-radius-md);
+  margin-inline-start: var(--mantine-spacing-xs);
+  padding: var(--mantine-spacing-xs);
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: rem(350px);
+}

@@ -1,0 +1,196 @@
+/* General */
+
+@import "https://tools-static.wmflabs.org/fontcdn/css?family=Montserrat";
+@import "https://tools-static.wmflabs.org/fontcdn/css?family=JetBrains+Mono";
+
+:root {
+  color-scheme: var(--mantine-color-scheme);
+
+  --mantine-color-scheme: light dark;
+  --mantine-color-white: #fff;
+  --mantine-color-dark-7: #1A1B1E;
+  --mantine-color-body: var(--mantine-color-white);
+}
+
+:root[data-mantine-color-scheme='dark'] {
+  --mantine-color-scheme: dark;
+  --mantine-color-body: var(--mantine-color-dark-7);
+
+  body {
+    background-color: var(--mantine-color-body);
+  }
+}
+
+:root[data-mantine-color-scheme='light'] {
+  --mantine-color-scheme: light;
+  --mantine-color-body: var(--mantine-color-white);
+
+  body:is(.skin-vector-2022) {
+    background-color: var(--mantine-color-body);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 0 !important;
+}
+
+body:not(.mediawiki) .mw-body {
+  margin-block: 90px;
+  padding-inline: 110px;
+}
+
+/* Vector 2022 */
+
+html[data-mantine-color-scheme="dark"] .skin-vector-2022 :is(.mw-header, .mw-page-container) {
+  background-color: inherit;
+}
+
+html[data-mantine-color-scheme="dark"] .skin-vector-2022 :is(.mw-header,
+  .mw-header .mw-logo-icon,
+  .vector-main-menu-container,
+  .vector-sitenotice-container,
+  .mw-footer-container,
+  .mw-footer-container #footer-icons,
+  .mw-echo-ui-overlay,
+  .vector-limited-width-toggle) {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Minerva */
+
+html[data-mantine-color-scheme="dark"] .skin-minerva :is(#mw-mf-page-center,
+  .mw-body,
+  .header-container) {
+  background-color: inherit;
+}
+
+.skin-minerva .header-container {
+  box-shadow: none;
+}
+
+html[data-mantine-color-scheme="light"] .skin-minerva .mw-body {
+  background-color: var(--background-color-interactive);
+}
+
+.skin-minerva .mw-footer {
+  border-color: transparent;
+}
+
+html[data-mantine-color-scheme="dark"] .skin-minerva :is(#mw-mf-main-menu-button,
+  #mw-mf-page-left,
+  .branding-box,
+  .minerva-search-form,
+  .minerva-user-notifications,
+  .notifications-overlay,
+  #minerva-user-menu-toggle,
+  .minerva-user-menu-list,
+  .minerva-footer) {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Legacy Vector */
+
+html[data-mantine-color-scheme="dark"] .skin-vector-legacy :is(#mw-head, #mw-panel, #footer) a {
+  /* default Vector 2022 anchor color */
+  color: #36c;
+
+  &:visited {
+    /* default Vector 2022 visited anchor color */
+    color: #795cb2;
+  }
+}
+
+html[data-mantine-color-scheme="dark"] .skin-vector-legacy #mw-page-base {
+  background-color: inherit;
+  background-image: none;
+}
+
+.skin-vector-legacy .mw-body {
+  padding: 0;
+  background-color: inherit;
+  border-color: transparent !important;
+}
+
+html[data-mantine-color-scheme="dark"] .skin-vector-legacy :is(#p-personal,
+  #right-navigation,
+  #mw-panel,
+  #footer,
+  #footer #footer-icons,
+  .mw-echo-ui-overlay) {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+.skin-vector-legacy #p-namespaces {
+  display: none;
+}
+
+/* Timeless */
+.skin-timeless #mw-related-navigation {
+  display: none;
+}
+
+.skin-timeless #mw-content {
+  padding: 1rem;
+}
+
+.skin-timeless :is(#mw-header-container, #mw-header-hack) {
+  position: relative;
+}
+
+.skin-timeless #mw-header-hack {
+  top: 0;
+}
+
+.skin-timeless #mw-content-container {
+  margin-top: 0;
+}
+
+html[data-mantine-color-scheme="dark"] .skin-timeless :is(#mw-header-container, #mw-content-container, #mw-content) {
+  background-color: inherit;
+}
+
+html[data-mantine-color-scheme="dark"] .skin-timeless :is(#mw-header-container, #mw-site-navigation) {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+html[data-mantine-color-scheme="dark"] .skin-timeless #mw-content {
+  border-color: transparent;
+}
+
+/* Monobook */
+html[data-mantine-color-scheme="dark"] .skin-monobook {
+  background-image: none;
+}
+
+html[data-mantine-color-scheme="dark"] .skin-monobook :is(.mw-body, .mw-footer) {
+  background-color: inherit;
+  border-color: transparent;
+}
+
+html[data-mantine-color-scheme="dark"] .skin-monobook :is(#column-one, #f-list) {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Modern */
+
+html[data-mantine-color-scheme="dark"] .skin-modern :is(#content, .mw-footer) {
+  background-color: inherit;
+}
+
+html[data-mantine-color-scheme="dark"] .skin-modern #content {
+  border-color: transparent;
+}
+
+html[data-mantine-color-scheme="dark"] .skin-modern .mw-footer {
+  background-image: none;
+}
+
+html[data-mantine-color-scheme="dark"] .skin-modern :is(#mw_portlets, #p-cactions, #footer-info) {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* CologneBlue */
+html[data-mantine-color-scheme="dark"] .skin-cologneblue :is(#sitesub, #linkcollection, #quickbar, #footer) {
+  filter: invert(1) hue-rotate(180deg);
+}

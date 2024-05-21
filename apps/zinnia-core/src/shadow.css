@@ -1,0 +1,19 @@
+.zinnia-root {
+  font-family: var(--mantine-font-family);
+  font-size: var(--mantine-font-size-md);
+  line-height: var(--mantine-line-height);
+  color: var(--mantine-color-text);
+
+  -webkit-font-smoothing: var(--mantine-webkit-font-smoothing);
+  -moz-osx-font-smoothing: var(--mantine-moz-font-smoothing);
+
+  /* Other */
+  --mantine-alt-font-family: 'Montserrat', var(--mantine-font-family);
+  --mantine-alt-font-monospace: 'JetBrains Mono', var(--mantine-font-family-monospace);
+}
+
+@media screen and (max-device-width: 31.25em) {
+  .zinnia-root {
+    -webkit-text-size-adjust: 100%
+  }
+}

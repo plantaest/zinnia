@@ -1,0 +1,66 @@
+.card {
+  background-color: light-dark(alpha(var(--mantine-color-white), 0.5), alpha(var(--mantine-color-dark-9), 0.5));
+  border: rem(1px) solid light-dark(alpha(var(--mantine-color-white), 0.75), alpha(var(--mantine-color-dark-3), 0.5));
+  backdrop-filter: blur(1rem);
+  transition: background-color 200ms, border 200ms;
+  flex: 1;
+  box-shadow: var(--mantine-shadow-sm);
+  padding: rem(4px) rem(8px) rem(8px);
+  border-radius: var(--mantine-radius-md);
+  max-width: 100%;
+  overflow: auto;
+
+  &:hover, &[data-active="true"] {
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+    border: rem(1px) solid light-dark(var(--mantine-color-white), var(--mantine-color-dark-4));
+  }
+
+  &:active {
+    transform: translateY(calc(0.0625rem * var(--mantine-scale)));
+  }
+}
+
+.bar {
+  width: rem(3px);
+  border-start-end-radius: var(--mantine-radius-md);
+  border-end-end-radius: var(--mantine-radius-md);
+}
+
+.wrapper:has(.card[data-active="true"]) .bar {
+  background: var(--mantine-color-blue-filled);
+}
+
+.timestamp {
+  font-family: var(--mantine-alt-font-monospace);
+  font-size: var(--mantine-font-size-xs);
+  font-weight: 600;
+  color: var(--mantine-color-blue-light-color);
+
+  &[data-patrolled="true"] {
+    color: light-dark(var(--mantine-color-teal-7), var(--mantine-color-teal-5));
+  }
+
+  &[data-patrolled="false"] {
+    color: light-dark(var(--mantine-color-pink-7), var(--mantine-color-pink-5));
+  }
+}
+
+.indexAndWikiId {
+  font-family: var(--mantine-alt-font-monospace);
+  font-size: var(--mantine-font-size-xs);
+  font-weight: 600;
+  color: var(--mantine-color-gray-light-color);
+}
+
+.pageTitle, .username {
+  white-space: nowrap;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, rgba(0, 0, 0, 1.0) 90%, transparent 100%);
+  flex: 1;
+  flex-wrap: nowrap;
+  gap: rem(8px);
+
+  @mixin rtl {
+    mask-image: linear-gradient(to left, rgba(0, 0, 0, 1.0) 90%, transparent 100%);
+  }
+}

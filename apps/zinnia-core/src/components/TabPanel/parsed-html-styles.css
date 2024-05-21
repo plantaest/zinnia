@@ -1,0 +1,112 @@
+/* Ref: https://vi.wikipedia.org/wiki/MediaWiki:Gadget-dark-mode.css */
+.root {
+  line-height: var(--mantine-line-height-lg);
+
+  /* Copy from enwiki */
+
+  .wikitable {
+    background-color: #f8f9fa;
+    color: #202122;
+    margin: 1em 0;
+    border: 1px solid #a2a9b1;
+    border-collapse: collapse;
+
+    & > tr > th,
+    & > tr > td,
+    & > * > tr > th,
+    & > * > tr > td {
+      border: 1px solid #a2a9b1;
+      padding: 0.2em 0.4em;
+    }
+
+    & > tr > th,
+    & > * > tr > th {
+      background-color: #eaecf0;
+      color: #202122;
+      text-align: center;
+    }
+
+    & > caption {
+      font-weight: bold;
+    }
+  }
+}
+
+[data-mantine-color-scheme="dark"] {
+  color: #3e3d3a;
+  filter: invert(1) hue-rotate(180deg);
+
+  img,
+  video,
+  svg,
+  iframe,
+  .mw-no-invert {
+    filter: invert(1) hue-rotate(180deg);
+  }
+
+  img[class^="mwe-math"] {
+    filter: none;
+  }
+
+  .infobox,
+  .toc,
+  .thumbinner,
+  figure[typeof~='mw:File/Thumb'],
+  figure[typeof~='mw:File/Frame'],
+  figure[typeof~='mw:File/Thumb'] > figcaption,
+  figure[typeof~='mw:File/Frame'] > figcaption,
+  .wikitable,
+  .cbnnr-main,
+  .cx-callout {
+    background-color: #cfd0d3;
+  }
+
+  .infobox,
+  .toc,
+  .thumbinner,
+  figure[typeof~='mw:File/Thumb'],
+  figure[typeof~='mw:File/Frame'],
+  figure[typeof~='mw:File/Thumb'] > figcaption,
+  figure[typeof~='mw:File/Frame'] > figcaption {
+    border-color: #c1c1c1;
+  }
+
+  a,
+  .mw-parser-output a.external,
+  .mw-parser-output a.extiw {
+    color: #36c;
+
+    &:active {
+      color: color-mix(in srgb, #36c, black 25%);
+    }
+  }
+
+  a:visited,
+  .mw-parser-output a.extiw:visited {
+    color: #6b4ba1;
+
+    &:active {
+      color: color-mix(in srgb, #6b4ba1, black 25%);
+    }
+  }
+
+  a.new {
+    color: #ff6e6e;
+
+    &:active {
+      color: color-mix(in srgb, #ff6e6e, black 25%);
+    }
+  }
+
+  .thumbimage,
+  figure[typeof~='mw:File/Thumb'] > :not(figcaption) .mw-file-element,
+  figure[typeof~='mw:File/Frame'] > :not(figcaption) .mw-file-element {
+    border: 0;
+  }
+
+  .image img[src*='svg'],
+  .mw-file-description img[src*='svg'] {
+    background-color: #fff;
+    border-radius: 1px;
+  }
+}

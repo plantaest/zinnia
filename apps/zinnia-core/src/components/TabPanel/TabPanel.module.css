@@ -1,0 +1,22 @@
+.wrapper {
+  margin-top: rem(5px);
+  position: sticky;
+  top: rem(5px);
+  width: 100%;
+  height: 100%;
+  min-height: calc(100vh - 2 * rem(5px));
+  max-height: calc(100vh - 2 * rem(5px));
+  display: flex;
+  flex-direction: column;
+  --background-color: light-dark(alpha(var(--mantine-color-white), 0.5), alpha(var(--mantine-color-dark-9), 0.5));
+  --border: rem(1px) solid light-dark(alpha(var(--mantine-color-white), 0.75), alpha(var(--mantine-color-dark-3), 0.5));
+}
+
+.footer {
+  overflow: initial;
+  background-color: var(--background-color);
+  border-block-end: var(--border);
+  border-inline: var(--border);
+  backdrop-filter: blur(1rem);
+  border-radius: 0 0 var(--mantine-radius-md) var(--mantine-radius-md);
+}

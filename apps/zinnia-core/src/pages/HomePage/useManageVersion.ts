@@ -1,0 +1,95 @@
+import { useCallback, useEffect } from 'react';
+import Ajv from 'ajv';
+import semverGt from 'semver/functions/gt';
+import { useTranslation } from 'react-i18next';
+import dayjs from 'dayjs';
+import { appState } from '@/states/appState';
+import { UserConfig } from '@/types/persistence/UserConfig';
+import userConfigSchema from '@/schema/UserConfig.schema.json';
+import { appConfig } from '@/config/appConfig';
+import { versionMap } from '@/utils/migration/versionMap';
+import { Notify } from '@/utils/Notify';
+import { migrateFunctions } from '@/utils/migration/migrateFunctions';
+import { useGetOption } from '@/queries/useGetOption';
+import { useSaveOption } from '@/queries/useSaveOption';
+
+export function useManageVersion() {
+  const { t } = useTranslation();
+  const { data: userConfigOption, isSuccess: isSuccessUserConfigOption } = useGetOption(
+    appConfig.USER_CONFIG_OPTION_KEY
+  );
+  const saveOptionApi = useSaveOption();
+
+  const updateAppVersion = useCallback((currentAppVersion: string, persistedAppVersion: string) => {
+    const now = dayjs().toISOString();
+    appState.userConfig.updatedAt.set(now);
+    appState.userConfig.appVersion.set(currentAppVersion);
+    saveOptionApi.mutate(
+      {
+        name: appConfig.USER_CONFIG_OPTION_KEY,
+        value: JSON.stringify(appState.userConfig.get()),
+      },
+      {
+        onSuccess: () =>
+          Notify.success(
+            t('core:hook.useSaveOption.success.updateAppVersion', {
+              newVersion: currentAppVersion,
+              oldVersion: persistedAppVersion,
+            })
+          ),
+      }
+    );
+  }, []);
+
+  useEffect(() => {
+    if (isSuccessUserConfigOption) {
+      if (userConfigOption === null) {
+        appState.ui.initState.set('start');
+      } else {
+        const userConfig: UserConfig = JSON.parse(userConfigOption as string);
+
+        const ajv = new Ajv();
+        const validate = ajv.compile(userConfigSchema);
+
+        const valid = validate(userConfig);
+
+        const currentAppVersion = appConfig.VERSION;
+        const persistedAppVersion = userConfig.appVersion;
+        const currentSchemaVersion = versionMap[currentAppVersion];
+        const persistedSchemaVersion = userConfig.schemaVersion;
+
+        if (valid) {
+          appState.userConfig.set(structuredClone(userConfig));
+          appState.ui.initState.set('normal');
+
+          if (semverGt(currentAppVersion, persistedAppVersion)) {
+            updateAppVersion(currentAppVersion, persistedAppVersion);
+          }
+        } else if (semverGt(currentSchemaVersion, persistedSchemaVersion)) {
+          const schemaVersions = [...new Set(Object.values(versionMap))];
+          const currentSchemaVersionIndex = schemaVersions.findIndex(
+            (version) => version === currentSchemaVersion
+          );
+          const persistedSchemaVersionIndex = schemaVersions.findIndex(
+            (version) => version === persistedSchemaVersion
+          );
+
+          let migratedUserConfig = userConfig as UserConfig;
+
+          for (let i = persistedSchemaVersionIndex; i < currentSchemaVersionIndex; i += 1) {
+            const key = `migrate_${schemaVersions[i]}_to_${schemaVersions[i + 1]}`;
+            const migrateFn = migrateFunctions[key];
+            migratedUserConfig = migrateFn(migratedUserConfig);
+          }
+
+          appState.userConfig.set(migratedUserConfig);
+          appState.ui.initState.set('normal');
+
+          if (semverGt(currentAppVersion, persistedAppVersion)) {
+            updateAppVersion(currentAppVersion, persistedAppVersion);
+          }
+        }
+      }
+    }
+  }, [userConfigOption]);
+}

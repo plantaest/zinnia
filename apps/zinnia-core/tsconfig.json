@@ -1,0 +1,19 @@
+{
+  "extends": "@plantaest/typescript-config/vite.json",
+  "compilerOptions": {
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@test-utils": [
+        "./test-utils"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "test-utils",
+    "./node_modules/types-mediawiki",
+    "./node_modules/@types/jquery"
+  ]
+}

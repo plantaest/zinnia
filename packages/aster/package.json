@@ -1,0 +1,13 @@
+{
+  "name": "@plantaest/aster",
+  "private": true,
+  "version": "0.1.0-alpha.1",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@plantaest/typescript-config": "workspace:*",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5",
+    "@types/jquery": "^3.5.30",
+    "types-mediawiki": "^1.7.0"
+  }
+}

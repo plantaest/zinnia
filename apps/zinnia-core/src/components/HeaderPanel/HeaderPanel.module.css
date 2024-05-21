@@ -1,0 +1,8 @@
+.wrapper {
+  margin-inline: var(--mantine-spacing-xs);
+  margin-block-start: var(--mantine-spacing-xs);
+  background-color: light-dark(alpha(var(--mantine-color-white), 0.5), alpha(var(--mantine-color-dark-9), 0.5));
+  border: rem(1px) solid light-dark(alpha(var(--mantine-color-white), 0.75), alpha(var(--mantine-color-dark-3), 0.5));
+  backdrop-filter: blur(1rem);
+  border-radius: calc(1.25 * var(--mantine-radius-md));
+}

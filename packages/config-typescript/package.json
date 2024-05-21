@@ -1,0 +1,7 @@
+{
+  "name": "@plantaest/typescript-config",
+  "private": true,
+  "publishConfig": {
+    "access": "public"
+  }
+}
