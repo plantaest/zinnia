@@ -7,7 +7,7 @@ import { appState } from '@/states/appState';
 import { ScrollDownButton } from '@/components/HeroPanel/ScrollDownButton';
 import { EmptyStateContent } from '@/components/HeroPanel/EmptyStateContent';
 import { useShowMainPanel } from '@/hooks/useShowMainPanel';
-import { loadDomAnimationFeatures } from '../../utils/lazy';
+import { loadDomAnimationFeatures } from '@/utils/lazy';
 
 const motionProps: MotionProps = {
   initial: { opacity: 0 },
