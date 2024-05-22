@@ -9,6 +9,14 @@
         "dist/**"
       ]
     },
+    "build:canary": {
+      "dependsOn": [
+        "^build:canary"
+      ],
+      "outputs": [
+        "dist/**"
+      ]
+    },
     "lint": {},
     "dev": {
       "cache": false,

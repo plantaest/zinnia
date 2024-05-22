@@ -1,9 +1,9 @@
 (function (mw) {
   if (
-    // The application will be placed at this page in all wikis: Special:BlankPage/Zinnia
+    // The application will be placed at this page in all wikis: Special:BlankPage/Zinnia@dev
     mw.config.get('wgCanonicalNamespace') === 'Special' &&
     mw.config.get('wgCanonicalSpecialPageName') === 'Blankpage' &&
-    String(mw.config.get('wgTitle')).endsWith('/Zinnia')
+    String(mw.config.get('wgTitle')).endsWith('/Zinnia@dev')
   ) {
     const host = 'http://localhost:8050/';
 

@@ -35,7 +35,7 @@ Step 3: Add the following code to `global.js` on Meta
 mw.loader.load('http://localhost:8050/zinnia-devmode.js');
 ```
 
-Step 4: Open `Special:BlankPage/Zinnia` on any wiki
+Step 4: Open `Special:BlankPage/Zinnia@dev` on any wiki
 
 ## Licensing
 

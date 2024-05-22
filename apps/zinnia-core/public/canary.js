@@ -17,21 +17,31 @@
     const host = 'https://tools-static.wmflabs.org/zinnia/builds/canary/';
 
     const styles = ['assets/document.css'];
+    const preloadStyles = ['assets/index.css'];
     const scripts = ['assets/index.js'];
 
-    function loadStyle(name) {
+    const loadStyle = function (name) {
       mw.loader.load(host + name, 'text/css');
-    }
+    };
 
-    function loadScript(name) {
+    const preloadStyle = function (name) {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'style';
+      link.href = host + name;
+      document.head.appendChild(link);
+    };
+
+    const loadScript = function (name) {
       const script = document.createElement('script');
-      script.src = host + name;
       script.async = false;
       script.type = 'module';
+      script.src = host + name;
       document.head.appendChild(script);
-    }
+    };
 
     styles.forEach(loadStyle);
+    preloadStyles.forEach(preloadStyle);
     scripts.forEach(loadScript);
   }
 })(mw);
