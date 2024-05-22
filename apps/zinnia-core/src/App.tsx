@@ -14,12 +14,12 @@ import duration from 'dayjs/plugin/duration';
 import { configureObservablePersistence, persistObservable } from '@legendapp/state/persist';
 import { ObservablePersistLocalStorage } from '@legendapp/state/persist-plugins/local-storage';
 import { zinniaRoot } from '@/utils/zinniaRoot';
-import { Router } from './Router';
 import { theme } from './theme';
 import './i18n';
 import { Notify } from '@/utils/Notify';
 import { appConfig } from '@/config/appConfig';
 import { appState } from '@/states/appState';
+import { HomePage } from '@/pages/HomePage/Home.page';
 
 // dayjs
 dayjs.extend(duration);
@@ -91,7 +91,7 @@ export default function App({ shadowRoot }: AppProps) {
         >
           <Notifications />
           <ModalsProvider>
-            <Router />
+            <HomePage />
           </ModalsProvider>
         </MantineProvider>
       </DirectionProvider>

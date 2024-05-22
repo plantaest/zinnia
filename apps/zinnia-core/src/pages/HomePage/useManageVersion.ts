@@ -1,11 +1,10 @@
 import { useCallback, useEffect } from 'react';
-import Ajv from 'ajv';
 import semverGt from 'semver/functions/gt';
+import semverEq from 'semver/functions/eq';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import { appState } from '@/states/appState';
 import { UserConfig } from '@/types/persistence/UserConfig';
-import userConfigSchema from '@/schema/UserConfig.schema.json';
 import { appConfig } from '@/config/appConfig';
 import { versionMap } from '@/utils/migration/versionMap';
 import { Notify } from '@/utils/Notify';
@@ -48,24 +47,21 @@ export function useManageVersion() {
       } else {
         const userConfig: UserConfig = JSON.parse(userConfigOption as string);
 
-        const ajv = new Ajv();
-        const validate = ajv.compile(userConfigSchema);
-
-        const valid = validate(userConfig);
-
         const currentAppVersion = appConfig.VERSION;
         const persistedAppVersion = userConfig.appVersion;
         const currentSchemaVersion = versionMap[currentAppVersion];
         const persistedSchemaVersion = userConfig.schemaVersion;
 
-        if (valid) {
+        if (semverEq(currentSchemaVersion, persistedSchemaVersion)) {
           appState.userConfig.set(structuredClone(userConfig));
           appState.ui.initState.set('normal');
 
           if (semverGt(currentAppVersion, persistedAppVersion)) {
             updateAppVersion(currentAppVersion, persistedAppVersion);
           }
-        } else if (semverGt(currentSchemaVersion, persistedSchemaVersion)) {
+        }
+
+        if (semverGt(currentSchemaVersion, persistedSchemaVersion)) {
           const schemaVersions = [...new Set(Object.values(versionMap))];
           const currentSchemaVersionIndex = schemaVersions.findIndex(
             (version) => version === currentSchemaVersion

@@ -72,7 +72,7 @@ export function TabHeaderPanel() {
             display="flex"
             position={dir === 'rtl' ? 'top-start' : 'top-end'}
           >
-            <TabIcon size={16} />
+            <TabIcon size="1rem" />
           </Indicator>
         }
         rightSection={
@@ -144,13 +144,13 @@ export function TabHeaderPanel() {
         <Group gap="xs" wrap="nowrap">
           <Flex>
             <ActionIcon variant="subtle" size={30}>
-              <IconArrowLeft size={18} />
+              <IconArrowLeft size="1.125rem" />
             </ActionIcon>
             <ActionIcon variant="subtle" size={30}>
-              <IconArrowRight size={18} />
+              <IconArrowRight size="1.125rem" />
             </ActionIcon>
             <ActionIcon variant="subtle" size={30}>
-              <IconHistory size={18} />
+              <IconHistory size="1.125rem" />
             </ActionIcon>
           </Flex>
 
@@ -177,13 +177,13 @@ export function TabHeaderPanel() {
 
         <Flex>
           <ActionIcon variant="subtle" size={30}>
-            <IconPlus size={18} />
+            <IconPlus size="1.125rem" />
           </ActionIcon>
           <ActionIcon variant="subtle" size={30}>
-            <IconRefresh size={18} />
+            <IconRefresh size="1.125rem" />
           </ActionIcon>
           <ActionIcon variant="subtle" size={30}>
-            <IconChevronDown size={18} />
+            <IconChevronDown size="1.125rem" />
           </ActionIcon>
         </Flex>
       </Group>

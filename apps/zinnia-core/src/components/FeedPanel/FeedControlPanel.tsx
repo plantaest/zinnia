@@ -76,7 +76,7 @@ function _FeedControlPanel() {
           title={t('core:ui.feedPanel.reload')}
           aria-label={t('core:ui.feedPanel.reload')}
         >
-          <IconReload size={18} />
+          <IconReload size="1.125rem" />
         </ActionIcon>
         <ActionIcon
           variant="subtle"
@@ -86,7 +86,7 @@ function _FeedControlPanel() {
           title={t('core:ui.feedPanel.focus')}
           aria-label={t('core:ui.feedPanel.focus')}
         >
-          <IconFocus size={18} />
+          <IconFocus size="1.125rem" />
         </ActionIcon>
       </Flex>
     </Group>

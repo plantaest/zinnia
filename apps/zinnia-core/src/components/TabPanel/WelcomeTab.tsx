@@ -2,7 +2,6 @@ import { ActionIcon, Anchor, Group, Stack, Text } from '@mantine/core';
 import { IconBrandGithub, IconHeart, IconHome, IconMessages } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
-import classes from './WelcomeTab.module.css';
 
 const links = [
   {
@@ -32,19 +31,6 @@ export function WelcomeTab() {
 
   return (
     <Stack p="xs" gap="xs" h="100%" justify="space-between">
-      <ul className={classes.circles}>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-      </ul>
-
       <Stack gap="xs" align="center" mb="2rem" style={{ zIndex: 1 }}>
         <Text
           mt="1.25rem"

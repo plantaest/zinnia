@@ -44,6 +44,7 @@
   background-position: 50% 50%, 50% 50%;
   filter: blur(10px) invert(100%);
   mask-image: radial-gradient(ellipse at 100% 0%, black 50%, transparent 90%);
+  background-attachment: fixed;
 
   &::after {
     content: "";
