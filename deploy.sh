@@ -14,8 +14,15 @@ FILE_LINK=$2
 # Create the builds directory if it doesn't exist
 mkdir -p ~/www/static/builds
 
-# Create the directory for the VERSION
+# Create the VERSION directory (handle existing directory gracefully)
 VERSION_DIR=~/www/static/builds/$VERSION
+if [ -d "$VERSION_DIR" ]; then
+  echo "Version directory ($VERSION_DIR) already exists. Removing contents..."
+  rm -rf "${VERSION_DIR:?}"/* || {
+    echo "Error: Failed to remove contents of $VERSION_DIR. Please check permissions or try manually."
+    exit 1
+  }
+fi
 mkdir -p "$VERSION_DIR"
 
 # Download zip file

@@ -448,15 +448,15 @@ function FilterPanelContent() {
                 }}
               >
                 <Stack gap="xs">
-                  <TextInput
-                    size="xs"
-                    label={t('core:ui.filterPanel.filterName')}
-                    disabled={!currentFilter}
-                    {...form.getInputProps('name')}
-                  />
                   <Grid gutter="xs">
                     <Grid.Col span={6}>
                       <Stack gap="xs">
+                        <Divider label={t('core:ui.filterPanel.filterName')} labelPosition="left" />
+                        <TextInput
+                          size="xs"
+                          disabled={!currentFilter}
+                          {...form.getInputProps('name')}
+                        />
                         <Divider label={t('core:ui.filterPanel.feed')} labelPosition="left" />
                         <SimpleGrid cols={2} spacing="xs" verticalSpacing="xs">
                           <Checkbox
