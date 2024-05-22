@@ -16,7 +16,22 @@
   ) {
     const host = 'https://tools-static.wmflabs.org/zinnia/builds/canary/';
 
-    mw.loader.load(host + 'assets/document.css', 'text/css');
-    mw.loader.load(host + 'assets/index.js');
+    const styles = ['assets/document.css'];
+    const scripts = ['assets/index.js'];
+
+    function loadStyle(name) {
+      mw.loader.load(host + name, 'text/css');
+    }
+
+    function loadScript(name) {
+      const script = document.createElement('script');
+      script.src = host + name;
+      script.async = false;
+      script.type = 'module';
+      document.head.appendChild(script);
+    }
+
+    styles.forEach(loadStyle);
+    scripts.forEach(loadScript);
   }
 })(mw);
