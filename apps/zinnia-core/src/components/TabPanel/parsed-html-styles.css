@@ -34,6 +34,7 @@
 
 [data-mantine-color-scheme="dark"] {
   color: #3e3d3a;
+  text-shadow: 0 0 0;
   filter: invert(1) hue-rotate(180deg);
 
   img,
