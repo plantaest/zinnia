@@ -15,6 +15,7 @@
   }
 }
 
+/* Ref: https://codepen.io/DedaloD/pen/qBgmovJ */
 .background {
   z-index: 0;
   position: absolute;
@@ -38,7 +39,6 @@
       #5eead4 25%,
       #60a5fa 30%
   );
-  background-color: var(--stripe-color);
   background-image: var(--stripes), var(--rainbow);
   background-size: 300%, 200%;
   background-position: 50% 50%, 50% 50%;
@@ -52,8 +52,6 @@
     inset: 0;
     background-image: var(--stripes), var(--rainbow);
     background-size: 200%, 100%;
-    /* Turn off animation */
-    /* animation: smooth-background 60s linear infinite; */
     background-attachment: fixed;
     mix-blend-mode: difference;
   }
