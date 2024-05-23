@@ -1,5 +1,5 @@
 import { ActionIcon, Anchor, Group, Stack, Text } from '@mantine/core';
-import { IconBrandGithub, IconHeart, IconHome, IconMessages } from '@tabler/icons-react';
+import { IconCode, IconHeart, IconHome, IconMessages } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 
@@ -16,7 +16,7 @@ const links = [
   },
   {
     link: 'https://github.com/plantaest/zinnia',
-    icon: IconBrandGithub,
+    icon: IconCode,
     name: 'core:ui.headerPanel.code',
   },
   {
