@@ -71,14 +71,14 @@ function FilterAddWikiFormContent() {
 
     filterPanelFormAction.setFieldValue('wikis', (filterWikis) => {
       if (filterWikis.length > appConfig.MAX_FILTER_WIKIS) {
-        form.setFieldError('wikiId', errorMessage.maxLimitFilterWikis);
+        form.setFieldError('wikiId', t(errorMessage.maxLimitFilterWikis));
         return filterWikis;
       }
 
       const currentWikiIds = filterWikis.map((w) => w.wikiId);
 
       if (currentWikiIds.includes(wiki.wikiId)) {
-        form.setFieldError('wikiId', errorMessage.existedWikiId);
+        form.setFieldError('wikiId', t(errorMessage.existedWikiId));
         return filterWikis;
       }
 
