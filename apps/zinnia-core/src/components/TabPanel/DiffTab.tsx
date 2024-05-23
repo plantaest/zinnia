@@ -79,10 +79,16 @@ export function DiffTab({ wikiId, fromRevisionId, toRevisionId }: DiffTabProps) 
     const addedCells = zinniaRoot.querySelectorAll('.diff .diff-side-added');
 
     const changeToDeleted = () => {
+      if (diffTable?.getAttribute('data-selected-side') === 'added') {
+        window.getSelection()?.removeAllRanges();
+      }
       diffTable?.setAttribute('data-selected-side', 'deleted');
     };
 
     const changeToAdded = () => {
+      if (diffTable?.getAttribute('data-selected-side') === 'deleted') {
+        window.getSelection()?.removeAllRanges();
+      }
       diffTable?.setAttribute('data-selected-side', 'added');
     };
 
