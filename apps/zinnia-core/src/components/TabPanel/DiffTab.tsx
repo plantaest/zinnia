@@ -247,7 +247,9 @@ export function DiffTab({ wikiId, fromRevisionId, toRevisionId }: DiffTabProps) 
                 </Text>
               </Group>
 
-              <Text className={classes.label}>{compareResult.fromRevisionId}</Text>
+              <Text className={classes.label} c="pink">
+                {compareResult.fromRevisionId}
+              </Text>
             </Group>
 
             <Group gap={8} wrap="nowrap">
@@ -316,7 +318,9 @@ export function DiffTab({ wikiId, fromRevisionId, toRevisionId }: DiffTabProps) 
                 </Text>
               </Group>
 
-              <Text className={classes.label}>{compareResult.toRevisionId}</Text>
+              <Text className={classes.label} c="teal">
+                {compareResult.toRevisionId}
+              </Text>
             </Group>
 
             <Group gap={8} wrap="nowrap">
