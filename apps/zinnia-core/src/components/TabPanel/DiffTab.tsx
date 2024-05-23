@@ -147,6 +147,8 @@ export function DiffTab({ wikiId, fromRevisionId, toRevisionId }: DiffTabProps) 
     }
 
     return () => {
+      diffTable?.removeAttribute('data-selected-side');
+
       for (const cell of deletedCells) {
         cell.removeEventListener('mousedown', changeToDeleted);
       }
