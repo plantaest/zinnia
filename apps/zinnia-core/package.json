@@ -1,7 +1,7 @@
 {
   "name": "zinnia-core",
   "private": true,
-  "version": "0.1.0-alpha.3",
+  "version": "0.1.0-alpha.4",
   "license": "GNU Affero General Public License version 3",
   "scripts": {
     "dev": "vite",
