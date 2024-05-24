@@ -12,8 +12,12 @@
   height: 100%;
   border-radius: calc(0.95 * var(--mantine-radius-lg));
   background-attachment: fixed;
-  /* Darken 85% */
-  background-image: light-dark(linear-gradient(160deg, #e0d3f6 0%, #c2ecfa 100%), linear-gradient(160deg, #1c0c39 0%, #052f3e 100%));
+  background-image: linear-gradient(160deg, #d5d3f6 0%, #c2ecfa 100%);
+}
+
+[data-mantine-color-scheme='dark'] .background {
+  background-image: linear-gradient(160deg, #0c0a31 0%, #042935 100%); /* Darken 87% */
+  filter: saturate(80%);
 }
 
 .content {
