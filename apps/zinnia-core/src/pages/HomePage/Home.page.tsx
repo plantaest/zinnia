@@ -17,7 +17,7 @@ export function HomePage() {
 
   return (
     <Paper radius="lg" shadow="lg" className={classes.wrapper}>
-      <Box className={classes.background} visibleFrom="md" />
+      <Box className={classes.background} />
       <Stack className={classes.content}>
         <HeaderPanel />
         <HeroPanel />
