@@ -238,9 +238,10 @@ export const filterPanelFormAction = createFormActions<FilterPanelFormValues>(fo
 function FilterPanelContent() {
   const { t } = useTranslation();
   const computedColorScheme = useComputedColorScheme();
+  const activeFilter = appState.ui.activeFilter.get();
 
   const [layer, setLayer] = useState<FilterLayer>('list');
-  const [currentFilter, setCurrentFilter] = useState<Filter | null>(appState.ui.activeFilter.get());
+  const [currentFilter, setCurrentFilter] = useState(activeFilter);
 
   const layers: Record<FilterLayer, React.ReactNode> = {
     list: (
@@ -388,10 +389,7 @@ function FilterPanelContent() {
               <Group gap="xs">
                 <Button
                   variant="light"
-                  disabled={
-                    // Use peek() instead of get(), because of an uncertain bug
-                    !currentFilter || currentFilter?.id === appState.ui.activeFilter.peek()?.id
-                  }
+                  disabled={!currentFilter || currentFilter?.id === activeFilter?.id}
                   onClick={handleClickSelectButton}
                   loading={selectFilterApi.isPending}
                   flex={1}
