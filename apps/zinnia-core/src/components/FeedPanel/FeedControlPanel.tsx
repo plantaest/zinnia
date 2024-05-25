@@ -85,6 +85,7 @@ function _FeedControlPanel() {
           onClick={handleClickFocusButton}
           title={t('core:ui.feedPanel.focus')}
           aria-label={t('core:ui.feedPanel.focus')}
+          visibleFrom="md"
         >
           <IconFocus size="1.125rem" />
         </ActionIcon>
