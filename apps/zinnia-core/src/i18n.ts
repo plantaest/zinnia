@@ -5,10 +5,6 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import ICU from 'i18next-icu';
 import { serverUri } from '@/utils/serverUri';
 
-const detectionOptions = {
-  order: ['htmlTag', 'navigator'],
-};
-
 i18n
   .use(ICU)
   .use(Backend)
@@ -16,8 +12,12 @@ i18n
   .use(initReactI18next)
   .init({
     debug: process.env.NODE_ENV === 'development',
-    detection: detectionOptions,
+    load: 'languageOnly',
+    detection: {
+      order: ['htmlTag', 'navigator'],
+    },
     fallbackLng: 'en',
+    supportedLngs: ['en', 'vi'],
     interpolation: {
       escapeValue: false,
     },

@@ -45,7 +45,7 @@ export function useGetRecentChanges() {
       const responses = await Promise.all(
         Object.entries(balancedRcQueryParams).map(([wikiId, queryParams]) =>
           wikis.getWiki(wikiId).getRecentChanges(queryParams, {
-            hasPatrolRight: MwHelper.hasPatrolRight(rightsOnWikis![wikiId] ?? []),
+            hasPatrolRight: MwHelper.hasPatrolRight((rightsOnWikis ?? {})[wikiId] ?? []),
           })
         )
       );
