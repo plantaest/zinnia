@@ -42,6 +42,10 @@ body:not(.mediawiki) .mw-body {
 
 /* Vector 2022 */
 
+.skin-vector-2022 .mw-body {
+  column-gap: initial;
+}
+
 html[data-mantine-color-scheme="dark"] .skin-vector-2022 :is(.mw-header, .mw-page-container) {
   background-color: inherit;
 }

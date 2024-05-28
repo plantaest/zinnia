@@ -7,6 +7,7 @@ import { serverUri } from '@/utils/serverUri';
 const root = document.querySelector('.mw-body')!;
 
 if (isMwEnv()) {
+  root.replaceChildren();
   const shadowRoot = root.attachShadow({ mode: 'open' });
 
   if (process.env.NODE_ENV === 'development') {
