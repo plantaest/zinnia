@@ -3,6 +3,7 @@ import { IconFocus, IconReload } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { memo, useEffect, useState } from 'react';
 import { useNetwork } from '@mantine/hooks';
+import { useSelector } from '@legendapp/state/react';
 import { appState } from '@/states/appState';
 import { useGetRecentChanges } from '@/queries/useGetRecentChanges';
 import classes from './FeedControlPanel.module.css';
@@ -11,10 +12,12 @@ function _FeedControlPanel() {
   const { t } = useTranslation();
   const { online } = useNetwork();
   const { data: recentChanges = [], refetch, isRefetching, isError } = useGetRecentChanges();
+  const focus = useSelector(appState.ui.focus);
+  const feed = useSelector(appState.ui.activeFilter.feed);
 
   // Live updates
-  const isLiveUpdates = appState.ui.activeFilter.feed.get()?.liveUpdates ?? false;
-  const interval = appState.ui.activeFilter.feed.get()?.interval ?? 0;
+  const isLiveUpdates = feed?.liveUpdates ?? false;
+  const interval = feed?.interval ?? 0;
 
   const [intervalId, setIntervalId] = useState<number | null>(null);
 
@@ -53,11 +56,7 @@ function _FeedControlPanel() {
   };
 
   return (
-    <Group
-      className={classes.control}
-      data-sticky={recentChanges.length > 0}
-      data-focus={appState.ui.focus.get()}
-    >
+    <Group className={classes.control} data-sticky={recentChanges.length > 0} data-focus={focus}>
       <Group gap="sm">
         <Box className={classes.pulse} data-online={online} />
         <Text size="sm" fw={500}>
@@ -81,7 +80,7 @@ function _FeedControlPanel() {
         <ActionIcon
           variant="subtle"
           size={30}
-          color={appState.ui.focus.get() ? 'teal' : 'blue'}
+          color={focus ? 'teal' : 'blue'}
           onClick={handleClickFocusButton}
           title={t('core:ui.feedPanel.focus')}
           aria-label={t('core:ui.feedPanel.focus')}

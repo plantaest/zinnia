@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { AsterError } from '@plantaest/aster';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from '@legendapp/state/react';
 import { Workspace } from '@/types/persistence/Workspace';
 import { UserConfig } from '@/types/persistence/UserConfig';
 import { appState } from '@/states/appState';
@@ -10,11 +11,12 @@ import { Notify } from '@/utils/Notify';
 
 export function useUpdateWorkspace() {
   const { t } = useTranslation();
+  const config = useSelector(appState.userConfig);
 
   return useMutation<UserConfig, AsterError, Workspace>({
     mutationKey: ['metawiki', 'userInfo', 'saveOption', 'updateWorkspace'],
     mutationFn: async (workspace) => {
-      const userConfig = structuredClone(appState.userConfig.get());
+      const userConfig = structuredClone(config);
       userConfig.workspaces = userConfig.workspaces.map((w) =>
         w.id === workspace.id ? workspace : w
       );

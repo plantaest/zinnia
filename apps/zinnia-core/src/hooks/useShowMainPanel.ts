@@ -1,9 +1,10 @@
+import { useSelector } from '@legendapp/state/react';
 import { appState } from '@/states/appState';
 import { useGetRecentChanges } from '@/queries/useGetRecentChanges';
 
 export const useShowMainPanel = () => {
-  const userConfig = appState.userConfig.get();
-  const initState = appState.ui.initState.get();
+  const userConfig = useSelector(appState.userConfig);
+  const initState = useSelector(appState.ui.initState);
   const { isSuccess: isSuccessGetRecentChanges } = useGetRecentChanges();
 
   if (!userConfig || !('id' in userConfig)) {

@@ -16,6 +16,7 @@ import {
 import { ActionIcon, Card, Flex, Group, Indicator, rem, Tabs, useDirection } from '@mantine/core';
 import { useElementSize } from '@mantine/hooks';
 import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from '@legendapp/state/react';
 import { TabType } from '@/types/persistence/Tab';
 import { TablerIcon } from '@/types/lib/TablerIcon';
 import classes from './TabHeaderPanel.module.css';
@@ -36,8 +37,8 @@ const tabIcons: Record<TabType, TablerIcon> = {
 
 export function TabHeaderPanel() {
   const { dir } = useDirection();
-  const tabs = appState.local.activeTabs.get();
-  const activeTabId = appState.local.activeTabId.get();
+  const tabs = useSelector(appState.local.activeTabs);
+  const activeTabId = useSelector(appState.local.activeTabId);
 
   const handleClickTab = (tabId: string | null) => {
     appState.local.activeTabId.set(tabId);
@@ -50,9 +51,7 @@ export function TabHeaderPanel() {
     if (tabId === activeTabId) {
       appState.local.activeTabId.set(null);
     }
-    appState.local.activeTabs.set(
-      appState.local.activeTabs.get().filter((tab) => tab.id !== tabId)
-    );
+    appState.local.activeTabs.set((activeTabs) => activeTabs.filter((tab) => tab.id !== tabId));
   };
 
   const tabFragments = tabs.map((tab) => {

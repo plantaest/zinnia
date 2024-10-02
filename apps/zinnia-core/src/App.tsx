@@ -25,7 +25,7 @@ import { HomePage } from '@/pages/HomePage/Home.page';
 dayjs.extend(duration);
 
 // Legend State Config
-enableReactTracking({ auto: true });
+enableReactTracking({ warnUnobserved: true });
 
 configureObservablePersistence({
   pluginLocal: ObservablePersistLocalStorage,

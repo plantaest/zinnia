@@ -3,6 +3,7 @@ import semverGt from 'semver/functions/gt';
 import semverEq from 'semver/functions/eq';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
+import { useSelector } from '@legendapp/state/react';
 import { appState } from '@/states/appState';
 import { UserConfig } from '@/types/persistence/UserConfig';
 import { appConfig } from '@/config/appConfig';
@@ -18,6 +19,7 @@ export function useManageVersion() {
     appConfig.USER_CONFIG_OPTION_KEY
   );
   const saveOptionApi = useSaveOption();
+  const userConfig = useSelector(appState.userConfig);
 
   const updateAppVersion = useCallback((currentAppVersion: string, persistedAppVersion: string) => {
     const now = dayjs().toISOString();
@@ -26,7 +28,7 @@ export function useManageVersion() {
     saveOptionApi.mutate(
       {
         name: appConfig.USER_CONFIG_OPTION_KEY,
-        value: JSON.stringify(appState.userConfig.get()),
+        value: JSON.stringify(userConfig),
       },
       {
         onSuccess: () =>

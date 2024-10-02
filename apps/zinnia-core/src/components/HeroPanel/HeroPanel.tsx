@@ -1,6 +1,7 @@
 import { Box, Flex } from '@mantine/core';
 import { AnimatePresence, LazyMotion, m, MotionProps } from 'framer-motion';
 import { memo } from 'react';
+import { useSelector } from '@legendapp/state/react';
 import classes from './HeroPanel.module.css';
 import { StartStateContent } from '@/components/HeroPanel/StartStateContent';
 import { appState } from '@/states/appState';
@@ -19,17 +20,17 @@ const motionProps: MotionProps = {
 const initStates = new Set<string>();
 
 function _HeroPanel() {
-  const initState = appState.ui.initState;
+  const initState = useSelector(appState.ui.initState);
 
   const showMainPanel = useShowMainPanel();
 
-  initStates.add(initState.get());
+  initStates.add(initState);
 
   return (
     <Box className={classes.wrapper}>
       <Flex className={classes.inner}>
         <AnimatePresence>
-          {(initState.get() === 'empty' || (!initStates.has('start') && !showMainPanel)) && (
+          {(initState === 'empty' || (!initStates.has('start') && !showMainPanel)) && (
             <LazyMotion features={loadDomAnimationFeatures}>
               <m.div {...motionProps}>
                 <EmptyStateContent />
@@ -38,7 +39,7 @@ function _HeroPanel() {
           )}
         </AnimatePresence>
         <AnimatePresence>
-          {initState.get() === 'start' && (
+          {initState === 'start' && (
             <LazyMotion features={loadDomAnimationFeatures}>
               <m.div
                 initial={{ opacity: 0 }}
@@ -52,7 +53,7 @@ function _HeroPanel() {
           )}
         </AnimatePresence>
         <AnimatePresence>
-          {initState.get() === 'normal' && showMainPanel && (
+          {initState === 'normal' && showMainPanel && (
             <LazyMotion features={loadDomAnimationFeatures}>
               <m.div {...motionProps}>
                 <ScrollDownButton />

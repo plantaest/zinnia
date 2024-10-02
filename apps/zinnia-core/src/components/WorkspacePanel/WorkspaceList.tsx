@@ -1,6 +1,7 @@
 import { ActionIcon, Button, Group, Stack, Text } from '@mantine/core';
 import { IconEdit, IconPlus } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from '@legendapp/state/react';
 import { appState } from '@/states/appState';
 import { WorkspaceLayer } from '@/components/WorkspacePanel/WorkspacePanel';
 import { Workspace } from '@/types/persistence/Workspace';
@@ -15,8 +16,8 @@ interface WorkspaceListProps {
 export function WorkspaceList({ onChangeLayer, onChangeCurrentWorkspace }: WorkspaceListProps) {
   const { t } = useTranslation();
 
-  const workspaces = appState.userConfig.workspaces.get() ?? [];
-  const activeWorkspaceId = appState.userConfig.activeWorkspaceId.get();
+  const workspaces = useSelector(() => appState.userConfig.workspaces.get() ?? []);
+  const activeWorkspaceId = useSelector(appState.userConfig.activeWorkspaceId);
 
   const selectWorkspaceApi = useSelectWorkspace();
 

@@ -15,6 +15,7 @@ import {
 import { IconSettings } from '@tabler/icons-react';
 import { z } from 'zod';
 import { useForm, zodResolver } from '@mantine/form';
+import { useSelector } from '@legendapp/state/react';
 import { appState } from '@/states/appState';
 import { useSaveOption } from '@/queries/useSaveOption';
 import { appConfig } from '@/config/appConfig';
@@ -53,7 +54,7 @@ function SettingPanelContent() {
   const computedColorScheme = useComputedColorScheme();
   const { t, i18n } = useTranslation();
   const { setDirection } = useDirection();
-  const userConfig = appState.userConfig.get();
+  const userConfig = useSelector(appState.userConfig);
 
   const initialFormValues: FormValues = {
     theme: userConfig.colorScheme,

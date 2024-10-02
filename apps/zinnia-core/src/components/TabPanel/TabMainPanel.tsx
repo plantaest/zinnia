@@ -1,5 +1,6 @@
 import { Box, Card } from '@mantine/core';
 import { useEffect, useState } from 'react';
+import { useSelector } from '@legendapp/state/react';
 import classes from './TabMainPanel.module.css';
 import { DiffTabData, ReadTabData, TabType } from '@/types/persistence/Tab';
 import { WelcomeTab } from '@/components/TabPanel/WelcomeTab';
@@ -10,7 +11,7 @@ import { ReadTab } from '@/components/TabPanel/ReadTab';
 import { NoneTab } from '@/components/TabPanel/NoneTab';
 
 export function TabMainPanel() {
-  const activeTab = appState.local.activeTab.get();
+  const activeTab = useSelector(appState.local.activeTab);
 
   const [diffTabData, setDiffTabData] = useState<DiffTabData | null>(null);
   const [readTabData, setReadTabData] = useState<ReadTabData | null>(null);

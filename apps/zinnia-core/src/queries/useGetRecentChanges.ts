@@ -2,6 +2,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { AsterError, Change } from '@plantaest/aster';
 import { ApiQueryRecentChangesParams } from 'types-mediawiki/api_params';
 import dayjs from 'dayjs';
+import { useSelector } from '@legendapp/state/react';
 import { wikis } from '@/utils/wikis';
 import { WikiId } from '@/types/mw/WikiId';
 import { appState } from '@/states/appState';
@@ -31,7 +32,8 @@ const balanceLimits = (rcQueryParams: Record<WikiId, ApiQueryRecentChangesParams
 };
 
 export function useGetRecentChanges() {
-  const rcQueryParams = appState.ui.rcQueryParams.get();
+  const userConfig = useSelector(appState.userConfig);
+  const rcQueryParams = useSelector(appState.ui.rcQueryParams);
   const wikiIds = Object.keys(rcQueryParams);
 
   const { data: rightsOnWikis } = useGetRightsOnWikis(wikiIds);
@@ -65,7 +67,7 @@ export function useGetRecentChanges() {
       return changes;
     },
     staleTime: Infinity,
-    enabled: Boolean(appState.userConfig.get()) && Boolean(rightsOnWikis),
+    enabled: Boolean(userConfig) && Boolean(rightsOnWikis),
     placeholderData: keepPreviousData,
   });
 }

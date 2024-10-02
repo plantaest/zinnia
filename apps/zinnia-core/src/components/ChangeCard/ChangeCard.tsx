@@ -24,8 +24,8 @@ import {
 } from '@tabler/icons-react';
 import { Change } from '@plantaest/aster';
 import dayjs from 'dayjs';
-import { useComputed } from '@legendapp/state/react';
-import React, { memo } from 'react';
+import { useSelector } from '@legendapp/state/react';
+import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import classes from './ChangeCard.module.css';
 import { MwHelper } from '@/utils/MwHelper';
@@ -44,7 +44,7 @@ interface EditChangeCardProps {
   index: number;
 }
 
-function _ChangeCard({ change, index }: EditChangeCardProps) {
+export function ChangeCard({ change, index }: EditChangeCardProps) {
   const isCodeFile = ['.js', '.css', '.json'].some((fileType) => change.title.endsWith(fileType));
 
   const changeTypeIcons: Record<Change['type'], TablerIcon> = {
@@ -85,7 +85,7 @@ function _ChangeCard({ change, index }: EditChangeCardProps) {
         ? MwHelper.createWikidataUserContribUri(change.user)
         : MwHelper.createUserContribUri(serverName, change.user);
 
-  const isSelected = useComputed(() => {
+  const isSelected = useSelector(() => {
     const selectedChange = appState.ui.selectedChange.get();
     return (
       selectedChange &&
@@ -148,10 +148,8 @@ function _ChangeCard({ change, index }: EditChangeCardProps) {
               toRevisionId: change.revisionId,
             },
           };
-          appState.local.activeTabs.set(
-            appState.local.activeTabs
-              .get()
-              .map((tab) => (tab.type === TabType.MAIN_DIFF ? mainDiffTab : tab))
+          appState.local.activeTabs.set((activeTabs) =>
+            activeTabs.map((tab) => (tab.type === TabType.MAIN_DIFF ? mainDiffTab : tab))
           );
         }
 
@@ -213,10 +211,8 @@ function _ChangeCard({ change, index }: EditChangeCardProps) {
               redirect: change.redirect,
             },
           };
-          appState.local.activeTabs.set(
-            appState.local.activeTabs
-              .get()
-              .map((tab) => (tab.type === TabType.MAIN_READ ? mainReadTab : tab))
+          appState.local.activeTabs.set((activeTabs) =>
+            activeTabs.map((tab) => (tab.type === TabType.MAIN_READ ? mainReadTab : tab))
           );
         }
 
@@ -249,7 +245,7 @@ function _ChangeCard({ change, index }: EditChangeCardProps) {
       <Box className={classes.bar} />
       <UnstyledButton
         className={classes.card}
-        data-active={isSelected.get()}
+        data-active={isSelected}
         onClick={handleClickChangeButton}
       >
         <Stack gap={4}>
@@ -315,5 +311,3 @@ function _ChangeCard({ change, index }: EditChangeCardProps) {
     </Flex>
   );
 }
-
-export const ChangeCard = memo(_ChangeCard);

@@ -1,6 +1,7 @@
 import { ActionIcon, Button, Group, Stack, Text } from '@mantine/core';
 import { IconPinned, IconPlus } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from '@legendapp/state/react';
 import { FilterLayer } from '@/components/FilterPanel/FilterLayer';
 import { appState } from '@/states/appState';
 import { appConfig } from '@/config/appConfig';
@@ -19,9 +20,9 @@ export function FilterList({
 }: FilterListProps) {
   const { t } = useTranslation();
 
-  const activeWorkspaceId = appState.userConfig.activeWorkspaceId.get();
-  const filters = appState.ui.activeWorkspace.filters.get() ?? [];
-  const activeFilterId = appState.ui.activeWorkspace.activeFilterId.get();
+  const activeWorkspaceId = useSelector(appState.userConfig.activeWorkspaceId);
+  const filters = useSelector(() => appState.ui.activeWorkspace.filters.get() ?? []);
+  const activeFilterId = useSelector(appState.ui.activeWorkspace.activeFilterId);
 
   const handleClickCreateFilterButton = () => {
     onChangeLayer('create');

@@ -24,6 +24,7 @@ import React, { useEffect, useState } from 'react';
 import { z } from 'zod';
 import dayjs from 'dayjs';
 import { createFormActions, useForm, zodResolver } from '@mantine/form';
+import { useSelector } from '@legendapp/state/react';
 import { FilterLayer } from '@/components/FilterPanel/FilterLayer';
 import { FilterList } from '@/components/FilterPanel/FilterList';
 import { FilterCreateForm } from '@/components/FilterPanel/FilterCreateForm';
@@ -238,7 +239,7 @@ export const filterPanelFormAction = createFormActions<FilterPanelFormValues>(fo
 function FilterPanelContent() {
   const { t } = useTranslation();
   const computedColorScheme = useComputedColorScheme();
-  const activeFilter = appState.ui.activeFilter.get();
+  const activeFilter = useSelector(appState.ui.activeFilter);
 
   const [layer, setLayer] = useState<FilterLayer>('list');
   const [currentFilter, setCurrentFilter] = useState(activeFilter);
