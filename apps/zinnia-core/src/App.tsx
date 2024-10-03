@@ -11,6 +11,7 @@ import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@ta
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { configureObservablePersistence, persistObservable } from '@legendapp/state/persist';
 import { ObservablePersistLocalStorage } from '@legendapp/state/persist-plugins/local-storage';
 import { zinniaRoot } from '@/utils/zinniaRoot';
@@ -23,6 +24,7 @@ import { HomePage } from '@/pages/HomePage/Home.page';
 
 // dayjs
 dayjs.extend(duration);
+dayjs.extend(isSameOrBefore);
 
 // Legend State Config
 enableReactTracking({ warnUnobserved: true });

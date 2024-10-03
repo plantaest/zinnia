@@ -1,11 +1,12 @@
-import { z } from 'zod';
 import { useTranslation } from 'react-i18next';
 import { useFocusTrap } from '@mantine/hooks';
-import { useForm, zodResolver } from '@mantine/form';
+import { useForm } from '@mantine/form';
 import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { ActionIcon, Button, Group, Stack, Text, TextInput } from '@mantine/core';
 import { IconArrowLeft } from '@tabler/icons-react';
+import * as v from 'valibot';
+import { valibotResolver } from 'mantine-form-valibot-resolver';
 import {
   defaultFilterFeedConfig,
   defaultFilterGlobalWikiConfig,
@@ -16,11 +17,11 @@ import { FilterLayer } from '@/components/FilterPanel/FilterLayer';
 import { errorMessage } from '@/utils/errorMessage';
 
 const formSchema = (t: (key: string) => string) =>
-  z.object({
-    filterName: z.string().trim().min(1, t(errorMessage.notEmpty)),
+  v.object({
+    filterName: v.pipe(v.string(), v.trim(), v.minLength(1, t(errorMessage.notEmpty))),
   });
 
-type FormValues = z.infer<ReturnType<typeof formSchema>>;
+type FormValues = v.InferInput<ReturnType<typeof formSchema>>;
 
 const initialFormValues: FormValues = {
   filterName: '',
@@ -36,7 +37,7 @@ export function FilterCreateForm({ onChangeLayer }: FilterCreateFormProps) {
 
   const form = useForm({
     initialValues: initialFormValues,
-    validate: zodResolver(formSchema(t)),
+    validate: valibotResolver(formSchema(t)),
   });
 
   const createFilterApi = useCreateFilter();

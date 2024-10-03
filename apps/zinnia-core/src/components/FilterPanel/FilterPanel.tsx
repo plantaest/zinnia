@@ -21,10 +21,11 @@ import {
 import { IconFilter, IconTrash } from '@tabler/icons-react';
 import { DateTimePicker } from '@mantine/dates';
 import React, { useEffect, useState } from 'react';
-import { z } from 'zod';
 import dayjs from 'dayjs';
-import { createFormActions, useForm, zodResolver } from '@mantine/form';
+import { createFormActions, useForm } from '@mantine/form';
 import { useSelector } from '@legendapp/state/react';
+import * as v from 'valibot';
+import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { FilterLayer } from '@/components/FilterPanel/FilterLayer';
 import { FilterList } from '@/components/FilterPanel/FilterList';
 import { FilterCreateForm } from '@/components/FilterPanel/FilterCreateForm';
@@ -42,93 +43,99 @@ import { useGetRightsOnWikis } from '@/queries/useGetRightsOnWikis';
 import { MwHelper } from '@/utils/MwHelper';
 
 const formSchema = (t: (key: string) => string) =>
-  z
-    .object({
-      name: z.string().trim().min(1, t(errorMessage.notEmpty)),
-      feed: z.object({
-        liveUpdates: z.boolean(),
-        paginated: z.boolean(),
-        groupedByPage: z.boolean(),
-        invertedDirection: z.boolean(),
-        smallWikis: z.boolean(),
-        additionalWikis: z.boolean(),
-        limit: z.string(),
-        interval: z.number({ invalid_type_error: t(errorMessage.notEmpty) }),
-        timeframe: z.object({
-          start: z.enum(['now', 'timestamp']),
-          startTimestamp: z.date().nullable(),
-          end: z.enum(['period', 'timestamp']),
-          endPeriod: z.string().nullable(),
-          endTimestamp: z.date().nullable(),
+  v.object({
+    name: v.pipe(v.string(), v.trim(), v.minLength(1, t(errorMessage.notEmpty))),
+    feed: v.object({
+      liveUpdates: v.boolean(),
+      paginated: v.boolean(),
+      groupedByPage: v.boolean(),
+      invertedDirection: v.boolean(),
+      smallWikis: v.boolean(),
+      additionalWikis: v.boolean(),
+      limit: v.string(),
+      interval: v.number(t(errorMessage.notEmpty)),
+      timeframe: v.pipe(
+        v.object({
+          start: v.picklist(['now', 'timestamp']),
+          startTimestamp: v.nullable(v.date()),
+          end: v.picklist(['period', 'timestamp']),
+          endPeriod: v.nullable(v.string()),
+          endTimestamp: v.nullable(v.date()),
         }),
-      }),
-      wikis: z
-        .array(
-          z.object({
-            wikiId: z.union([z.literal('global'), z.string()]),
-            inherited: z.boolean(),
-            config: z.object({
-              selectedNamespaces: z.array(z.string()),
-              selectedTags: z.array(z.string()),
-              pageTitle: z.string(),
-              username: z.string(),
-              unregistered: z.boolean(),
-              registered: z.boolean(),
-              bot: z.boolean(),
-              human: z.boolean(),
-              unpatrolled: z.boolean(),
-              patrolled: z.boolean(),
-              autopatrolled: z.boolean(),
-              minorEdits: z.boolean(),
-              nonMinorEdits: z.boolean(),
-              redirect: z.boolean(),
-              nonRedirect: z.boolean(),
-              latestRevision: z.boolean(),
-              pageEdits: z.boolean(),
-              pageCreations: z.boolean(),
-              categoryChanges: z.boolean(),
-              loggedActions: z.boolean(),
-              wikidataEdits: z.boolean(),
-            }),
-          })
-        )
-        .min(1),
-    })
-    .refine(
-      (schema) => schema.feed.timeframe.start === 'now' || schema.feed.timeframe.startTimestamp,
-      {
-        message: t(errorMessage.notEmpty),
-        path: ['feed.timeframe.startTimestamp'],
-      }
-    )
-    .refine(
-      (schema) => schema.feed.timeframe.end === 'timestamp' || schema.feed.timeframe.endPeriod,
-      {
-        message: t(errorMessage.notEmpty),
-        path: ['feed.timeframe.endPeriod'],
-      }
-    )
-    .refine(
-      (schema) => schema.feed.timeframe.end === 'period' || schema.feed.timeframe.endTimestamp,
-      {
-        message: t(errorMessage.notEmpty),
-        path: ['feed.timeframe.endTimestamp'],
-      }
-    )
-    .refine(
-      (schema) =>
-        !(
-          schema.feed.timeframe.startTimestamp &&
-          schema.feed.timeframe.endTimestamp &&
-          dayjs(schema.feed.timeframe.startTimestamp).isBefore(schema.feed.timeframe.endTimestamp)
+        v.forward(
+          v.partialCheck(
+            [['start'], ['startTimestamp']],
+            (input) => Boolean(input.start === 'now' || input.startTimestamp),
+            t(errorMessage.notEmpty)
+          ),
+          ['startTimestamp']
         ),
-      {
-        message: t(errorMessage.startAfterEnd),
-        path: ['feed.timeframe.startTimestamp'],
-      }
-    );
+        v.forward(
+          v.partialCheck(
+            [['end'], ['endTimestamp']],
+            (input) => Boolean(input.end === 'period' || input.endTimestamp),
+            t(errorMessage.notEmpty)
+          ),
+          ['endTimestamp']
+        ),
+        v.forward(
+          v.partialCheck(
+            [['end'], ['endPeriod']],
+            (input) => Boolean(input.end === 'timestamp' || input.endPeriod),
+            t(errorMessage.notEmpty)
+          ),
+          ['endPeriod']
+        ),
+        v.forward(
+          v.partialCheck(
+            [['startTimestamp'], ['endTimestamp']],
+            (input) =>
+              !(
+                input.startTimestamp &&
+                input.endTimestamp &&
+                dayjs(input.startTimestamp).isSameOrBefore(input.endTimestamp)
+              ),
+            t(errorMessage.startAfterEnd)
+          ),
+          ['startTimestamp']
+        )
+      ),
+    }),
+    wikis: v.pipe(
+      v.array(
+        v.object({
+          wikiId: v.union([v.literal('global'), v.string()]),
+          inherited: v.boolean(),
+          config: v.object({
+            selectedNamespaces: v.array(v.string()),
+            selectedTags: v.array(v.string()),
+            pageTitle: v.string(),
+            username: v.string(),
+            unregistered: v.boolean(),
+            registered: v.boolean(),
+            bot: v.boolean(),
+            human: v.boolean(),
+            unpatrolled: v.boolean(),
+            patrolled: v.boolean(),
+            autopatrolled: v.boolean(),
+            minorEdits: v.boolean(),
+            nonMinorEdits: v.boolean(),
+            redirect: v.boolean(),
+            nonRedirect: v.boolean(),
+            latestRevision: v.boolean(),
+            pageEdits: v.boolean(),
+            pageCreations: v.boolean(),
+            categoryChanges: v.boolean(),
+            loggedActions: v.boolean(),
+            wikidataEdits: v.boolean(),
+          }),
+        })
+      ),
+      v.minLength(1)
+    ),
+  });
 
-export type FilterPanelFormValues = z.infer<ReturnType<typeof formSchema>>;
+export type FilterPanelFormValues = v.InferInput<ReturnType<typeof formSchema>>;
 
 const defaultInitialFormValues: FilterPanelFormValues = {
   name: '',
@@ -258,7 +265,7 @@ function FilterPanelContent() {
   const form = useForm({
     name: formName,
     initialValues: currentFilter ? getInitialFormValues(currentFilter) : defaultInitialFormValues,
-    validate: zodResolver(formSchema(t)),
+    validate: valibotResolver(formSchema(t)),
   });
 
   const [selectedWikiIndex, setSelectedWikiIndex] = useState(0);

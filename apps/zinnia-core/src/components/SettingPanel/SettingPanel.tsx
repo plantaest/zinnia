@@ -13,22 +13,23 @@ import {
   useMantineColorScheme,
 } from '@mantine/core';
 import { IconSettings } from '@tabler/icons-react';
-import { z } from 'zod';
-import { useForm, zodResolver } from '@mantine/form';
+import { useForm } from '@mantine/form';
 import { useSelector } from '@legendapp/state/react';
+import * as v from 'valibot';
+import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { appState } from '@/states/appState';
 import { useSaveOption } from '@/queries/useSaveOption';
 import { appConfig } from '@/config/appConfig';
 import { Notify } from '@/utils/Notify';
 
-const formSchema = z.object({
-  theme: z.enum(['auto', 'light', 'dark']),
-  language: z.string(),
-  locale: z.string(),
-  rtl: z.boolean(),
+const formSchema = v.object({
+  theme: v.picklist(['auto', 'light', 'dark']),
+  language: v.string(),
+  locale: v.string(),
+  rtl: v.boolean(),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = v.InferInput<typeof formSchema>;
 
 const themeSelects = [
   {
@@ -65,7 +66,7 @@ function SettingPanelContent() {
 
   const form = useForm({
     initialValues: initialFormValues,
-    validate: zodResolver(formSchema),
+    validate: valibotResolver(formSchema),
   });
 
   const saveOptionApi = useSaveOption();

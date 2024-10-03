@@ -77,6 +77,9 @@ importers:
       intl-messageformat:
         specifier: ^10.5.12
         version: 10.5.12
+      mantine-form-valibot-resolver:
+        specifier: ^2.0.1
+        version: 2.0.1(@mantine/form@7.9.1(react@18.3.1))(valibot@0.42.1(typescript@5.4.5))
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -95,9 +98,9 @@ importers:
       uuid:
         specifier: ^9.0.1
         version: 9.0.1
-      zod:
-        specifier: ^3.23.8
-        version: 3.23.8
+      valibot:
+        specifier: 0.42.1
+        version: 0.42.1(typescript@5.4.5)
     devDependencies:
       '@babel/core':
         specifier: ^7.24.5
@@ -3807,6 +3810,13 @@ packages:
     resolution: {integrity: sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==}
     engines: {node: '>=8'}
 
+  mantine-form-valibot-resolver@2.0.1:
+    resolution: {integrity: sha512-EDPTDyW5dbHxpNMLcCgKYih5J8qde6qtskLjKEqwPnSJVWK8nxUFdKUFz6ltyB1SFqtzCNWH9qPugoGFQdgDcw==}
+    engines: {node: '>=16.6.0'}
+    peerDependencies:
+      '@mantine/form': '>=7.0.0'
+      valibot: '>=0.31.0 <1'
+
   map-or-similar@1.5.0:
     resolution: {integrity: sha512-0aF7ZmVon1igznGI4VS30yugpduQW3y3GkcgGJOp7d8x8QrizhigUxjI/m2UojsXXto+jLAH3KSz+xOJTiORjg==}
 
@@ -5197,6 +5207,14 @@ packages:
     resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
     hasBin: true
 
+  valibot@0.42.1:
+    resolution: {integrity: sha512-3keXV29Ar5b//Hqi4MbSdV7lfVp6zuYLZuA9V1PvQUsXqogr+u5lvLPLk3A4f74VUXDnf/JfWMN6sB+koJ/FFw==}
+    peerDependencies:
+      typescript: '>=5'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   validate-npm-package-license@3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==}
 
@@ -5408,9 +5426,6 @@ packages:
   yocto-queue@1.0.0:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
-
-  zod@3.23.8:
-    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
 
 snapshots:
 
@@ -9832,6 +9847,11 @@ snapshots:
     dependencies:
       semver: 6.3.1
 
+  mantine-form-valibot-resolver@2.0.1(@mantine/form@7.9.1(react@18.3.1))(valibot@0.42.1(typescript@5.4.5)):
+    dependencies:
+      '@mantine/form': 7.9.1(react@18.3.1)
+      valibot: 0.42.1(typescript@5.4.5)
+
   map-or-similar@1.5.0: {}
 
   markdown-to-jsx@7.3.2(react@18.3.1):
@@ -11309,6 +11329,10 @@ snapshots:
 
   uuid@9.0.1: {}
 
+  valibot@0.42.1(typescript@5.4.5):
+    optionalDependencies:
+      typescript: 5.4.5
+
   validate-npm-package-license@3.0.4:
     dependencies:
       spdx-correct: 3.2.0
@@ -11530,5 +11554,3 @@ snapshots:
   yocto-queue@0.1.0: {}
 
   yocto-queue@1.0.0: {}
-
-  zod@3.23.8: {}

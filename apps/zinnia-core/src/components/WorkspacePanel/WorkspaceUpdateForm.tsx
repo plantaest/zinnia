@@ -2,9 +2,10 @@ import { ActionIcon, Button, Group, Stack, Text, TextInput } from '@mantine/core
 import { IconArrowLeft } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useFocusTrap } from '@mantine/hooks';
-import { z } from 'zod';
-import { useForm, zodResolver } from '@mantine/form';
+import { useForm } from '@mantine/form';
 import dayjs from 'dayjs';
+import * as v from 'valibot';
+import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { WorkspaceLayer } from '@/components/WorkspacePanel/WorkspacePanel';
 import { errorMessage } from '@/utils/errorMessage';
 import { Workspace } from '@/types/persistence/Workspace';
@@ -12,11 +13,11 @@ import { useDeleteWorkspace } from '@/queries/useDeleteWorkspace';
 import { useUpdateWorkspace } from '@/queries/useUpdateWorkspace';
 
 const formSchema = (t: (key: string) => string) =>
-  z.object({
-    workspaceName: z.string().trim().min(1, t(errorMessage.notEmpty)),
+  v.object({
+    workspaceName: v.pipe(v.string(), v.trim(), v.minLength(1, t(errorMessage.notEmpty))),
   });
 
-type FormValues = z.infer<ReturnType<typeof formSchema>>;
+type FormValues = v.InferInput<ReturnType<typeof formSchema>>;
 
 interface WorkspaceUpdateFormProps {
   onChangeLayer: (layer: WorkspaceLayer) => void;
@@ -33,7 +34,7 @@ export function WorkspaceUpdateForm({ onChangeLayer, workspace }: WorkspaceUpdat
 
   const form = useForm({
     initialValues: initialFormValues,
-    validate: zodResolver(formSchema(t)),
+    validate: valibotResolver(formSchema(t)),
   });
 
   const updateWorkspaceApi = useUpdateWorkspace();

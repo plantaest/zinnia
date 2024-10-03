@@ -1,9 +1,10 @@
 import { ActionIcon, Anchor, Button, Group, Popover, Stack, Text, TextInput } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
-import { z } from 'zod';
-import { useForm, zodResolver } from '@mantine/form';
+import { useForm } from '@mantine/form';
 import React from 'react';
+import * as v from 'valibot';
+import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { Filter } from '@/types/persistence/Filter';
 import { errorMessage } from '@/utils/errorMessage';
 import { wikis } from '@/utils/wikis';
@@ -12,21 +13,22 @@ import { Notify } from '@/utils/Notify';
 import { appConfig } from '@/config/appConfig';
 
 const formSchema = (t: (key: string) => string) =>
-  z
-    .object({
-      wikiId: z.string().trim().min(1, t(errorMessage.notEmpty)),
-    })
-    .refine(
-      (schema) =>
-        schema.wikiId.trim().length === 0 ||
-        wikis.getWikiSites().getWikiIds().includes(schema.wikiId),
-      {
-        message: t(errorMessage.notSupportedWikiId),
-        path: ['wikiId'],
-      }
-    );
+  v.pipe(
+    v.object({
+      wikiId: v.pipe(v.string(), v.trim(), v.minLength(1, t(errorMessage.notEmpty))),
+    }),
+    v.forward(
+      v.check(
+        (input) =>
+          input.wikiId.trim().length === 0 ||
+          wikis.getWikiSites().getWikiIds().includes(input.wikiId),
+        t(errorMessage.notSupportedWikiId)
+      ),
+      ['wikiId']
+    )
+  );
 
-type FormValues = z.infer<ReturnType<typeof formSchema>>;
+type FormValues = v.InferInput<ReturnType<typeof formSchema>>;
 
 const initialFormValues: FormValues = {
   wikiId: '',
@@ -37,7 +39,7 @@ function FilterAddWikiFormContent() {
 
   const form = useForm({
     initialValues: initialFormValues,
-    validate: zodResolver(formSchema(t)),
+    validate: valibotResolver(formSchema(t)),
   });
 
   const handleFormSubmit = form.onSubmit((formValues) => {
