@@ -17,6 +17,5 @@
   background-color: var(--background-color);
   border-block-end: var(--border);
   border-inline: var(--border);
-  backdrop-filter: blur(1rem);
   border-radius: 0 0 var(--mantine-radius-md) var(--mantine-radius-md);
 }

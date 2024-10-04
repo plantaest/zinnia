@@ -6,7 +6,6 @@
   background-color: var(--background-color);
   border-block-start: var(--border);
   border-inline: var(--border);
-  backdrop-filter: blur(1rem);
   border-radius: var(--mantine-radius-md) var(--mantine-radius-md) 0 0;
 }
 
