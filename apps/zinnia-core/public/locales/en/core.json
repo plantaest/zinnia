@@ -61,12 +61,6 @@
     }
   },
   "ui": {
-    "headerPanel": {
-      "home": "Home",
-      "talk": "Talk",
-      "code": "Code",
-      "support": "Support"
-    },
     "heroPanel": {
       "startStateContent": {
         "firstLine": "Hello! Thanks for choosing Zinnia. Let's begin your journey!",
@@ -137,7 +131,11 @@
       "focus": "Focus"
     },
     "welcomeTab": {
-      "slogan": "Comprehensive anti-vandalism application"
+      "slogan": "Comprehensive anti-vandalism application",
+      "home": "Home",
+      "talk": "Talk",
+      "code": "Code",
+      "support": "Support"
     },
     "settingPanel": {
       "title": "Settings",

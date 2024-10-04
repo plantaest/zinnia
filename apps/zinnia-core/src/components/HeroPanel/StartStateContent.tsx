@@ -7,7 +7,6 @@ import { isMwEnv } from '@/utils/isMwEnv';
 import { Tab, TabType } from '@/types/persistence/Tab';
 import { useSaveOption } from '@/queries/useSaveOption';
 import { appState } from '@/states/appState';
-import { startRef } from '@/refs/startRef';
 import { appConfig } from '@/config/appConfig';
 import { versionMap } from '@/utils/migration/versionMap';
 import { defaultFilterFeedConfig, defaultFilterGlobalWikiConfig } from '@/types/persistence/Filter';
@@ -82,7 +81,6 @@ export function StartStateContent() {
       },
       {
         onSuccess: () => {
-          setTimeout(() => startRef.current?.scrollIntoView(), 2000);
           appState.userConfig.set(defaultUserConfig);
           appState.ui.initState.set('normal');
           appState.local.tabs.set({
@@ -97,7 +95,7 @@ export function StartStateContent() {
   };
 
   return (
-    <Flex direction="column" gap="lg" justify="center" align="center" h="85%">
+    <Flex direction="column" gap="lg" justify="center" align="center" h="95%">
       <Text fz={35} fw={600} ta="center">
         {t('core:ui.heroPanel.startStateContent.firstLine')}
       </Text>

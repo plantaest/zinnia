@@ -1,17 +1,18 @@
 .wrapper {
-  margin-inline: var(--mantine-spacing-xs);
-  margin-block-end: var(--mantine-spacing-xs);
-  height: 65vh;
-  min-height: rem(350px);
-  max-height: rem(600px);
+  margin-block-end: rem(5px);
 }
 
 .inner {
   position: relative;
-  height: 100%;
   padding-inline: var(--mantine-spacing-lg);
   font-family: var(--mantine-alt-font-family);
   justify-content: center;
   align-items: stretch;
   color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+
+  &[data-init-state="empty"], &[data-init-state="start"], &[data-init-state="normal"][data-show-main-panel="false"] {
+    height: 65vh;
+    min-height: rem(350px);
+    max-height: rem(600px);
+  }
 }

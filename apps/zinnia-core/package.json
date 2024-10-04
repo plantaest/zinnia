@@ -37,7 +37,6 @@
     "@tanstack/react-query-devtools": "^5.36.2",
     "dayjs": "^1.11.11",
     "embla-carousel-react": "^8.0.4",
-    "framer-motion": "^11.2.2",
     "i18next": "^23.11.4",
     "i18next-browser-languagedetector": "^8.0.0",
     "i18next-http-backend": "^2.5.1",

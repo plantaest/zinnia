@@ -61,12 +61,6 @@
     }
   },
   "ui": {
-    "headerPanel": {
-      "home": "Trang chủ",
-      "talk": "Thảo luận",
-      "code": "Mã nguồn",
-      "support": "Ủng hộ"
-    },
     "heroPanel": {
       "startStateContent": {
         "firstLine": "Xin chào! Cảm ơn vì đã chọn Zinnia. Hãy bắt đầu hành trình của bạn!",
@@ -137,7 +131,11 @@
       "focus": "Tập trung"
     },
     "welcomeTab": {
-      "slogan": "Ứng dụng chống phá hoại toàn diện"
+      "slogan": "Ứng dụng chống phá hoại toàn diện",
+      "home": "Trang chủ",
+      "talk": "Thảo luận",
+      "code": "Mã nguồn",
+      "support": "Ủng hộ"
     },
     "settingPanel": {
       "title": "Thiết đặt",

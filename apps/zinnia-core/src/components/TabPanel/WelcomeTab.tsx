@@ -7,22 +7,22 @@ const links = [
   {
     link: 'https://en.wikipedia.org/wiki/User:Plantaest/Zinnia',
     icon: IconHome,
-    name: 'core:ui.headerPanel.home',
+    name: 'core:ui.welcomeTab.home',
   },
   {
     link: 'https://en.wikipedia.org/wiki/User_talk:Plantaest/Zinnia',
     icon: IconMessages,
-    name: 'core:ui.headerPanel.talk',
+    name: 'core:ui.welcomeTab.talk',
   },
   {
     link: 'https://github.com/plantaest/zinnia',
     icon: IconCode,
-    name: 'core:ui.headerPanel.code',
+    name: 'core:ui.welcomeTab.code',
   },
   {
     link: 'https://en.wikipedia.org/wiki/User:Plantaest/Zinnia/Support',
     icon: IconHeart,
-    name: 'core:ui.headerPanel.support',
+    name: 'core:ui.welcomeTab.support',
   },
 ];
 
@@ -34,7 +34,7 @@ export function WelcomeTab() {
       <Stack gap="xs" align="center" mb="2rem" style={{ zIndex: 1 }}>
         <Text
           mt="1.25rem"
-          c="violet.5"
+          c="blue.5"
           fw={600}
           fz="3rem"
           ta="center"
@@ -53,7 +53,7 @@ export function WelcomeTab() {
                 size="xl"
                 variant="subtle"
                 aria-label={t(link.name)}
-                color="violet"
+                color="blue"
                 component="a"
                 href={link.link}
                 target="_blank"
