@@ -11,15 +11,30 @@ if (isMwEnv()) {
   const shadowRoot = root.attachShadow({ mode: 'open' });
 
   if (process.env.NODE_ENV === 'development') {
-    const styleElements = document.querySelectorAll('style[data-vite-dev-id]');
-    const styleClones: Node[] = [];
+    const map = new Map<Node, Node>();
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.type === 'childList' && map.has(mutation.target)) {
+          const styleClone = map.get(mutation.target);
+          styleClone!.textContent = mutation.target.textContent;
+        }
+      }
+    });
+
+    const styleElements = document.querySelectorAll(
+      'style[data-vite-dev-id]:not([data-vite-dev-id*="document.css"])'
+    );
 
     for (const styleElement of styleElements) {
-      styleElement.remove();
-      styleClones.push(styleElement.cloneNode(true));
+      const styleClone = styleElement.cloneNode(true);
+      map.set(styleElement, styleClone);
+      observer.observe(styleElement, {
+        childList: true,
+        subtree: true,
+      });
     }
 
-    shadowRoot.prepend(...styleClones);
+    shadowRoot.prepend(...map.values());
   }
 
   if (process.env.NODE_ENV === 'production') {
@@ -28,10 +43,10 @@ if (isMwEnv()) {
       link.rel = 'stylesheet';
       link.type = 'text/css';
       link.href = serverUri(name);
-      shadowRoot.prepend(link);
+      return link;
     };
 
-    ['assets/index.css', 'assets/mantine.css'].forEach(createStyleLinkNode);
+    shadowRoot.prepend(...['assets/mantine.css', 'assets/index.css'].map(createStyleLinkNode));
   }
 
   shadowRoot.appendChild(zinniaRoot);

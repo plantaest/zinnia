@@ -8,7 +8,7 @@ export function MainPanel() {
 
   return (
     showMainPanel && (
-      <Flex wrap="nowrap" pe={{ md: 'xs' }} pb="xs">
+      <Flex wrap="nowrap" pe={{ md: 'xs' }} pb="xs" style={{ overflow: 'clip' }}>
         <Box w="100%" flex={{ base: 1, md: 0 }}>
           <FeedPanel />
         </Box>

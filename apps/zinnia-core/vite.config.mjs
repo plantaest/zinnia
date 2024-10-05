@@ -16,12 +16,17 @@ export default defineConfig({
     APP_VERSION: JSON.stringify(process.env.npm_package_version),
   },
   build: {
+    sourcemap: true,
+    copyPublicDir: false,
     rollupOptions: {
       output: {
         entryFileNames: 'assets/index.js',
         chunkFileNames: 'assets/[name].js',
         assetFileNames: 'assets/[name].[ext]',
         manualChunks: (id) => {
+          if (id.includes('document.css')) {
+            return 'document';
+          }
           if (id.includes('@mantine')) {
             return 'mantine';
           }

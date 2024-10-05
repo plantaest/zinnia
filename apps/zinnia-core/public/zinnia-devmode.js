@@ -7,16 +7,7 @@
   ) {
     const host = 'http://localhost:8050/';
 
-    const styles = ['assets/document.css'];
     const modules = ['inject-react-refresh.js', '@vite/client', 'src/main.tsx'];
-
-    function createStyleLinkNode(name) {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.type = 'text/css';
-      link.href = host + name;
-      document.head.appendChild(link);
-    }
 
     function createScriptNode(module) {
       const script = document.createElement('script');
@@ -26,7 +17,6 @@
       document.head.appendChild(script);
     }
 
-    styles.forEach(createStyleLinkNode);
     modules.forEach(createScriptNode);
   }
 })(mediaWiki);
