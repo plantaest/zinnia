@@ -241,7 +241,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
   };
 
   return (
-    <Flex gap={7} wrap="nowrap" className={classes.wrapper}>
+    <Flex className={classes.wrapper}>
       <Box className={classes.bar} />
       <UnstyledButton
         className={classes.card}

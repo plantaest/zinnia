@@ -24,8 +24,13 @@
   border-end-end-radius: var(--mantine-radius-md);
 }
 
-.wrapper:has(.card[data-active="true"]) .bar {
-  background: var(--mantine-color-blue-filled);
+.wrapper {
+  gap: rem(7px);
+  flex-wrap: nowrap;
+
+  &:has(.card[data-active="true"]) .bar {
+    background: var(--mantine-color-blue-filled);
+  }
 }
 
 .timestamp {
