@@ -17,7 +17,8 @@
     const host = 'https://tools-static.wmflabs.org/zinnia/builds/canary/';
 
     const styles = ['assets/document.css'];
-    const preloadStyles = ['assets/index.css'];
+    const preloadStyles = ['assets/index.css', 'assets/mantine.css'];
+    const preloadModules = ['assets/vendor.js', 'assets/mantine.js'];
     const scripts = ['assets/index.js'];
 
     const loadStyle = function (name) {
@@ -32,6 +33,13 @@
       document.head.appendChild(link);
     };
 
+    const preloadModule = function (name) {
+      const link = document.createElement('link');
+      link.rel = 'modulepreload';
+      link.href = host + name;
+      document.head.appendChild(link);
+    };
+
     const loadScript = function (name) {
       const script = document.createElement('script');
       script.async = false;
@@ -42,6 +50,7 @@
 
     styles.forEach(loadStyle);
     preloadStyles.forEach(preloadStyle);
+    preloadModules.forEach(preloadModule);
     scripts.forEach(loadScript);
   }
 })(mw);

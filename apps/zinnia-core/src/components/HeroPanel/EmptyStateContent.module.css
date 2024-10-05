@@ -1,8 +1,0 @@
-.loading {
-  font-size: rem(35px);
-  font-weight: 600;
-  position: absolute;
-  top: 47.5%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}

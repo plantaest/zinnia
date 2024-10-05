@@ -21,6 +21,14 @@ export default defineConfig({
         entryFileNames: 'assets/index.js',
         chunkFileNames: 'assets/[name].js',
         assetFileNames: 'assets/[name].[ext]',
+        manualChunks: (id) => {
+          if (id.includes('@mantine')) {
+            return 'mantine';
+          }
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+        },
       },
     },
   },
@@ -28,6 +36,7 @@ export default defineConfig({
     supported: {
       'top-level-await': true,
     },
+    legalComments: 'none',
   },
   resolve: {
     alias: {

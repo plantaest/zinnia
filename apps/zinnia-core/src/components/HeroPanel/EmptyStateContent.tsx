@@ -1,9 +1,9 @@
-import { useIntl } from 'react-intl';
-import { Text } from '@mantine/core';
-import classes from './EmptyStateContent.module.css';
+import { Flex, Loader } from '@mantine/core';
 
 export function EmptyStateContent() {
-  const { formatMessage } = useIntl();
-
-  return <Text className={classes.loading}>{`${formatMessage({ id: 'common.loading' })}...`}</Text>;
+  return (
+    <Flex justify="center" align="center">
+      <Loader color="blue" size="lg" />
+    </Flex>
+  );
 }

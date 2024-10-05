@@ -31,7 +31,7 @@ if (isMwEnv()) {
       shadowRoot.prepend(link);
     };
 
-    ['assets/index.css'].forEach(createStyleLinkNode);
+    ['assets/index.css', 'assets/mantine.css'].forEach(createStyleLinkNode);
   }
 
   shadowRoot.appendChild(zinniaRoot);
