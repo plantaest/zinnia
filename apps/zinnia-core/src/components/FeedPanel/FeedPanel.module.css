@@ -13,8 +13,8 @@
 }
 
 .empty {
-  background-color: light-dark(alpha(var(--mantine-color-white), 0.5), alpha(var(--mantine-color-dark-9), 0.5));
-  border: rem(1px) solid light-dark(alpha(var(--mantine-color-white), 0.75), alpha(var(--mantine-color-dark-3), 0.5));
+  background-color: var(--zinnia-mirror-background-color);
+  border: var(--zinnia-mirror-border);
   box-shadow: var(--mantine-shadow-sm);
   border-radius: var(--mantine-radius-md);
   margin-inline-start: var(--mantine-spacing-xs);

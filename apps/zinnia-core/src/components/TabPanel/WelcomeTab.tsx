@@ -38,11 +38,11 @@ export function WelcomeTab() {
           fw={600}
           fz="3rem"
           ta="center"
-          ff="var(--mantine-alt-font-family)"
+          ff="var(--zinnia-font-family)"
         >
           Zinnia
         </Text>
-        <Text mb="2rem" fw={600} fz="1.25rem" ta="center" ff="var(--mantine-alt-font-family)">
+        <Text mb="2rem" fw={600} fz="1.25rem" ta="center" ff="var(--zinnia-font-family)">
           {formatMessage({ id: 'ui.welcomeTab.slogan' })}
         </Text>
 

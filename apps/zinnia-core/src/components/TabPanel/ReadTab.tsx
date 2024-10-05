@@ -54,7 +54,7 @@ export function ReadTab({ wikiId, pageTitle, redirect }: ReadTabProps) {
               flex: 1,
             }}
           >
-            <Badge ff="var(--mantine-alt-font-monospace)" h="1.625rem" radius="sm" tt="lowercase">
+            <Badge ff="var(--zinnia-font-monospace)" h="1.625rem" radius="sm" tt="lowercase">
               {wikiId}
             </Badge>
             <Box

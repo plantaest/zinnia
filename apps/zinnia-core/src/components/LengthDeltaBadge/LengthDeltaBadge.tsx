@@ -15,7 +15,7 @@ export function LengthDeltaBadge({ newLength, oldLength }: LengthDeltaBadgeProps
   const lengthColor = lengthDelta > 0 ? 'green' : lengthDelta < 0 ? 'red' : 'blue';
 
   return (
-    <Badge ff="var(--mantine-alt-font-monospace)" h="1.625rem" radius="sm" color={lengthColor}>
+    <Badge ff="var(--zinnia-font-monospace)" h="1.625rem" radius="sm" color={lengthColor}>
       {lengthMark + numberFormat.format(Math.abs(lengthDelta))}
     </Badge>
   );

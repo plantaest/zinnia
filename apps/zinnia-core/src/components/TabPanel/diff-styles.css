@@ -4,7 +4,7 @@
   margin: rem(-5px);
   width: calc(100% + rem(10px));
   table-layout: fixed;
-  font-family: var(--mantine-alt-font-monospace);
+  font-family: var(--zinnia-font-monospace), monospace;
 }
 
 .diff td {
@@ -83,7 +83,7 @@
 .diff-editfont-monospace .diff-addedline,
 .diff-editfont-monospace .diff-deletedline,
 .diff-editfont-monospace .diff-context {
-  font-family: var(--mantine-font-family-monospace);
+  font-family: var(--mantine-font-family-monospace), monospace;
 }
 
 .diff-editfont-sans-serif .diff-addedline,

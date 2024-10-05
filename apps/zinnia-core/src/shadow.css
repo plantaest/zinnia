@@ -1,5 +1,5 @@
 .zinnia-root {
-  font-family: var(--mantine-font-family);
+  font-family: var(--mantine-font-family), sans-serif;
   font-size: var(--mantine-font-size-md);
   line-height: var(--mantine-line-height);
   color: var(--mantine-color-text);
@@ -7,9 +7,19 @@
   -webkit-font-smoothing: var(--mantine-webkit-font-smoothing);
   -moz-osx-font-smoothing: var(--mantine-moz-font-smoothing);
 
-  /* Other */
-  --mantine-alt-font-family: 'Montserrat', var(--mantine-font-family);
-  --mantine-alt-font-monospace: 'JetBrains Mono', var(--mantine-font-family-monospace);
+  /* Zinnia UI */
+  --zinnia-font-family: 'Montserrat', var(--mantine-font-family);
+  --zinnia-font-monospace: 'JetBrains Mono', var(--mantine-font-family-monospace);
+
+  @mixin light-root {
+    --zinnia-mirror-background-color: alpha(var(--mantine-color-white), 0.5);
+    --zinnia-mirror-border: rem(1px) solid alpha(var(--mantine-color-white), 0.75);
+  }
+
+  @mixin dark-root {
+    --zinnia-mirror-background-color: alpha(var(--mantine-color-dark-9), 0.5);
+    --zinnia-mirror-border: rem(1px) solid alpha(var(--mantine-color-dark-3), 0.5);
+  }
 }
 
 @media screen and (max-device-width: 31.25em) {

@@ -11,16 +11,11 @@
   width: 100%;
   height: 100%;
   border-radius: calc(0.95 * var(--mantine-radius-lg));
-  background-attachment: fixed;
-  background-color: #c8e3f9;
-}
-
-[data-mantine-color-scheme='dark'] .background {
-  background-color: #061e35;
+  background-color: light-dark(#c8e3f9, #061e35);
 }
 
 .content {
   z-index: 1;
   position: relative;
-  gap: 0;
+  flex-direction: column;
 }

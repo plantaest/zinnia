@@ -49,7 +49,7 @@ export function OresScoreBadge({ change }: OresScoreBadgeProps) {
     show && (
       <Badge
         ref={ref}
-        ff="var(--mantine-alt-font-monospace)"
+        ff="var(--zinnia-font-monospace)"
         h="1.625rem"
         radius="sm"
         color={color}

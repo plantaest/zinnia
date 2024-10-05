@@ -4,7 +4,7 @@
   border-radius: var(--mantine-radius-md);
   box-shadow: var(--mantine-shadow-sm);
   color: var(--mantine-color-white);
-  font-family: var(--mantine-alt-font-monospace);
+  font-family: var(--zinnia-font-monospace), monospace;
   font-weight: 600;
 
   &[data-type="date"] {

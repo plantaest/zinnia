@@ -5,7 +5,7 @@
 .inner {
   position: relative;
   padding-inline: var(--mantine-spacing-lg);
-  font-family: var(--mantine-alt-font-family);
+  font-family: var(--zinnia-font-family), sans-serif;
   justify-content: center;
   align-items: stretch;
   color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
