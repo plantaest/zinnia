@@ -1,33 +1,33 @@
 import { ActionIcon, Anchor, Group, Stack, Text } from '@mantine/core';
 import { IconCode, IconHeart, IconHome, IconMessages } from '@tabler/icons-react';
-import { useTranslation } from 'react-i18next';
+import { useIntl } from 'react-intl';
 import dayjs from 'dayjs';
 
 const links = [
   {
     link: 'https://en.wikipedia.org/wiki/User:Plantaest/Zinnia',
     icon: IconHome,
-    name: 'core:ui.welcomeTab.home',
+    name: 'ui.welcomeTab.home',
   },
   {
     link: 'https://en.wikipedia.org/wiki/User_talk:Plantaest/Zinnia',
     icon: IconMessages,
-    name: 'core:ui.welcomeTab.talk',
+    name: 'ui.welcomeTab.talk',
   },
   {
     link: 'https://github.com/plantaest/zinnia',
     icon: IconCode,
-    name: 'core:ui.welcomeTab.code',
+    name: 'ui.welcomeTab.code',
   },
   {
     link: 'https://en.wikipedia.org/wiki/User:Plantaest/Zinnia/Support',
     icon: IconHeart,
-    name: 'core:ui.welcomeTab.support',
+    name: 'ui.welcomeTab.support',
   },
 ];
 
 export function WelcomeTab() {
-  const { t } = useTranslation();
+  const { formatMessage } = useIntl();
 
   return (
     <Stack p="xs" gap="xs" h="100%" justify="space-between">
@@ -43,7 +43,7 @@ export function WelcomeTab() {
           Zinnia
         </Text>
         <Text mb="2rem" fw={600} fz="1.25rem" ta="center" ff="var(--mantine-alt-font-family)">
-          {t('core:ui.welcomeTab.slogan')}
+          {formatMessage({ id: 'ui.welcomeTab.slogan' })}
         </Text>
 
         <Group gap="2.5rem">
@@ -52,7 +52,7 @@ export function WelcomeTab() {
               <ActionIcon
                 size="xl"
                 variant="subtle"
-                aria-label={t(link.name)}
+                aria-label={formatMessage({ id: link.name })}
                 color="blue"
                 component="a"
                 href={link.link}
@@ -61,7 +61,7 @@ export function WelcomeTab() {
                 <link.icon style={{ width: '70%', height: '70%' }} stroke={1.5} />
               </ActionIcon>
               <Text ta="center" fw={500}>
-                {t(link.name)}
+                {formatMessage({ id: link.name })}
               </Text>
             </Stack>
           ))}

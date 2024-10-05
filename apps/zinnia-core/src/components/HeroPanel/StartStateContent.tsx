@@ -1,7 +1,7 @@
 import { Button, Flex, Text, useDirection } from '@mantine/core';
-import { Trans, useTranslation } from 'react-i18next';
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
+import { useIntl } from 'react-intl';
 import { UserConfig } from '@/types/persistence/UserConfig';
 import { isMwEnv } from '@/utils/isMwEnv';
 import { Tab, TabType } from '@/types/persistence/Tab';
@@ -12,7 +12,7 @@ import { versionMap } from '@/utils/migration/versionMap';
 import { defaultFilterFeedConfig, defaultFilterGlobalWikiConfig } from '@/types/persistence/Filter';
 
 export function StartStateContent() {
-  const { t, i18n } = useTranslation();
+  const { formatMessage, locale } = useIntl();
   const { dir } = useDirection();
 
   const saveOptionApi = useSaveOption();
@@ -28,7 +28,7 @@ export function StartStateContent() {
       id: tabId,
       createdAt: now,
       updatedAt: now,
-      name: t('core:common.welcome'),
+      name: formatMessage({ id: 'common.welcome' }),
       type: TabType.WELCOME,
       data: null,
     };
@@ -40,21 +40,21 @@ export function StartStateContent() {
       appVersion: appConfig.VERSION,
       schemaVersion: versionMap[appConfig.VERSION],
       colorScheme: 'auto',
-      language: i18n.language,
-      locale: i18n.language,
+      language: locale,
+      locale: locale,
       dir,
       workspaces: [
         {
           id: workspaceId,
           createdAt: now,
           updatedAt: now,
-          name: t('core:common.default'),
+          name: formatMessage({ id: 'common.default' }),
           filters: [
             {
               id: filterId,
               createdAt: now,
               updatedAt: now,
-              name: t('core:common.default'),
+              name: formatMessage({ id: 'common.default' }),
               feed: defaultFilterFeedConfig,
               wikis: [
                 defaultFilterGlobalWikiConfig,
@@ -97,13 +97,13 @@ export function StartStateContent() {
   return (
     <Flex direction="column" gap="lg" justify="center" align="center" h="95%">
       <Text fz={35} fw={600} ta="center">
-        {t('core:ui.heroPanel.startStateContent.firstLine')}
+        {formatMessage({ id: 'ui.heroPanel.startStateContent.firstLine' })}
       </Text>
       <Text fz={25} ta="center">
-        <Trans i18nKey="core:ui.heroPanel.startStateContent.secondLine" />
+        {formatMessage({ id: 'ui.heroPanel.startStateContent.secondLine' })}
       </Text>
       <Button size="lg" mt="md" loading={saveOptionApi.isPending} onClick={handleClickStartButton}>
-        {t('core:ui.heroPanel.startStateContent.start')}
+        {formatMessage({ id: 'ui.heroPanel.startStateContent.start' })}
       </Button>
     </Flex>
   );

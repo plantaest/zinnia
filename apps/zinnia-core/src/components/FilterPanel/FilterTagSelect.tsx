@@ -1,7 +1,7 @@
 import { UseFormReturnType } from '@mantine/form';
 import { ComboboxData } from '@mantine/core/lib/components/Combobox/Combobox.types';
 import { MultiSelect } from '@mantine/core';
-import { useTranslation } from 'react-i18next';
+import { useIntl } from 'react-intl';
 import { FilterPanelFormValues } from '@/components/FilterPanel/FilterPanel';
 import { Filter } from '@/types/persistence/Filter';
 import { useGetTags } from '@/queries/useGetTags';
@@ -14,7 +14,7 @@ interface FilterTagSelectProps {
 }
 
 export function FilterTagSelect({ currentFilter, selectedWikiIndex, form }: FilterTagSelectProps) {
-  const { t } = useTranslation();
+  const { formatMessage } = useIntl();
   const { data: tags } = useGetTags(form.values.wikis[selectedWikiIndex].wikiId);
 
   const tagSelects: ComboboxData = tags
@@ -28,7 +28,7 @@ export function FilterTagSelect({ currentFilter, selectedWikiIndex, form }: Filt
     <MultiSelect
       searchable={tagSelects.length > 20}
       size="xs"
-      label={t('core:ui.filterPanel.tags')}
+      label={formatMessage({ id: 'ui.filterPanel.tags' })}
       data={tagSelects}
       maxValues={1}
       comboboxProps={{ withinPortal: false }}

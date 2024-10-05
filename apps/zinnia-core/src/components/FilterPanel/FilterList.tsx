@@ -1,6 +1,6 @@
 import { ActionIcon, Button, Group, Stack, Text } from '@mantine/core';
 import { IconPinned, IconPlus } from '@tabler/icons-react';
-import { useTranslation } from 'react-i18next';
+import { useIntl } from 'react-intl';
 import { useSelector } from '@legendapp/state/react';
 import { FilterLayer } from '@/components/FilterPanel/FilterLayer';
 import { appState } from '@/states/appState';
@@ -18,7 +18,7 @@ export function FilterList({
   currentFilter,
   onChangeCurrentFilter,
 }: FilterListProps) {
-  const { t } = useTranslation();
+  const { formatMessage } = useIntl();
 
   const activeWorkspaceId = useSelector(appState.userConfig.activeWorkspaceId);
   const filters = useSelector(() => appState.ui.activeWorkspace.filters.get() ?? []);
@@ -35,12 +35,12 @@ export function FilterList({
   return (
     <Stack gap="xs">
       <Group gap="xs" justify="space-between">
-        <Text fw={500}>{t('core:ui.filterPanel.title')}</Text>
+        <Text fw={500}>{formatMessage({ id: 'ui.filterPanel.title' })}</Text>
         <ActionIcon
           variant="transparent"
           color="gray"
-          title={t('core:ui.filterPanel.createTitle')}
-          aria-label={t('core:ui.filterPanel.createTitle')}
+          title={formatMessage({ id: 'ui.filterPanel.createTitle' })}
+          aria-label={formatMessage({ id: 'ui.filterPanel.createTitle' })}
           onClick={handleClickCreateFilterButton}
           disabled={!activeWorkspaceId || filters.length >= appConfig.MAX_FILTER_LIMIT}
         >

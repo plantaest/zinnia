@@ -1,9 +1,9 @@
-import { useTranslation } from 'react-i18next';
+import { useIntl } from 'react-intl';
 import { Text } from '@mantine/core';
 import classes from './EmptyStateContent.module.css';
 
 export function EmptyStateContent() {
-  const { t } = useTranslation();
+  const { formatMessage } = useIntl();
 
-  return <Text className={classes.loading}>{`${t('core:common.loading')}...`}</Text>;
+  return <Text className={classes.loading}>{`${formatMessage({ id: 'common.loading' })}...`}</Text>;
 }

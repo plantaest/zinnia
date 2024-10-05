@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import semverGt from 'semver/functions/gt';
 import semverEq from 'semver/functions/eq';
-import { useTranslation } from 'react-i18next';
+import { useIntl } from 'react-intl';
 import dayjs from 'dayjs';
 import { useSelector } from '@legendapp/state/react';
 import { appState } from '@/states/appState';
@@ -14,7 +14,7 @@ import { useGetOption } from '@/queries/useGetOption';
 import { useSaveOption } from '@/queries/useSaveOption';
 
 export function useManageVersion() {
-  const { t } = useTranslation();
+  const { formatMessage } = useIntl();
   const { data: userConfigOption, isSuccess: isSuccessUserConfigOption } = useGetOption(
     appConfig.USER_CONFIG_OPTION_KEY
   );
@@ -33,10 +33,13 @@ export function useManageVersion() {
       {
         onSuccess: () =>
           Notify.success(
-            t('core:hook.useSaveOption.success.updateAppVersion', {
-              newVersion: currentAppVersion,
-              oldVersion: persistedAppVersion,
-            })
+            formatMessage(
+              { id: 'hook.useCreateFilter.success.default' },
+              {
+                newVersion: currentAppVersion,
+                oldVersion: persistedAppVersion,
+              }
+            )
           ),
       }
     );
@@ -47,6 +50,7 @@ export function useManageVersion() {
       if (userConfigOption === null) {
         appState.ui.initState.set('start');
       } else {
+        // eslint-disable-next-line @typescript-eslint/no-shadow
         const userConfig: UserConfig = JSON.parse(userConfigOption as string);
 
         const currentAppVersion = appConfig.VERSION;

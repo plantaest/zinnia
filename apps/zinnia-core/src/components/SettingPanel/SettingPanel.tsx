@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { useIntl } from 'react-intl';
 import {
   ActionIcon,
   Button,
@@ -21,6 +21,7 @@ import { appState } from '@/states/appState';
 import { useSaveOption } from '@/queries/useSaveOption';
 import { appConfig } from '@/config/appConfig';
 import { Notify } from '@/utils/Notify';
+import { i18n } from '@/i18n';
 
 const formSchema = v.object({
   theme: v.picklist(['auto', 'light', 'dark']),
@@ -34,15 +35,15 @@ type FormValues = v.InferInput<typeof formSchema>;
 const themeSelects = [
   {
     value: 'auto',
-    label: 'core:ui.settingPanel.theme.auto',
+    label: 'ui.settingPanel.theme.auto',
   },
   {
     value: 'light',
-    label: 'core:ui.settingPanel.theme.light',
+    label: 'ui.settingPanel.theme.light',
   },
   {
     value: 'dark',
-    label: 'core:ui.settingPanel.theme.dark',
+    label: 'ui.settingPanel.theme.dark',
   },
 ];
 
@@ -53,7 +54,7 @@ const localeSelects = ['en', 'vi'];
 function SettingPanelContent() {
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme();
-  const { t, i18n } = useTranslation();
+  const { formatMessage } = useIntl();
   const { setDirection } = useDirection();
   const userConfig = useSelector(appState.userConfig);
 
@@ -93,7 +94,9 @@ function SettingPanelContent() {
           setColorScheme(clonedUserConfig.colorScheme);
           setDirection(clonedUserConfig.dir);
           await i18n.changeLanguage(clonedUserConfig.language);
-          Notify.success(t('core:hook.useSaveOption.success.updateSettings'));
+          Notify.success(
+            i18n.intl.formatMessage({ id: 'hook.useSaveOption.success.updateSettings' })
+          );
         },
       }
     );
@@ -102,7 +105,7 @@ function SettingPanelContent() {
   return (
     <form onSubmit={handleFormSubmit}>
       <Stack gap="xs">
-        <Text fw={500}>{t('core:ui.settingPanel.title')}</Text>
+        <Text fw={500}>{formatMessage({ id: 'ui.settingPanel.title' })}</Text>
 
         <Stack
           gap={8}
@@ -118,7 +121,7 @@ function SettingPanelContent() {
         >
           <Group gap="xs" justify="space-between" wrap="nowrap">
             <Text size="sm" fw={500}>
-              {t('core:ui.settingPanel.theme.label')}
+              {formatMessage({ id: 'ui.settingPanel.theme.label' })}
             </Text>
             <Select
               size="xs"
@@ -126,7 +129,7 @@ function SettingPanelContent() {
               comboboxProps={{ withinPortal: false }}
               data={themeSelects.map((select) => ({
                 value: select.value,
-                label: t(select.label),
+                label: formatMessage({ id: select.label }),
               }))}
               {...form.getInputProps('theme')}
             />
@@ -134,7 +137,7 @@ function SettingPanelContent() {
 
           <Group gap="xs" justify="space-between" wrap="nowrap">
             <Text size="sm" fw={500}>
-              {t('core:ui.settingPanel.language.label')}
+              {formatMessage({ id: 'ui.settingPanel.language.label' })}
             </Text>
             <Select
               size="xs"
@@ -147,7 +150,7 @@ function SettingPanelContent() {
 
           <Group gap="xs" justify="space-between" wrap="nowrap">
             <Text size="sm" fw={500}>
-              {t('core:ui.settingPanel.locale.label')}
+              {formatMessage({ id: 'ui.settingPanel.locale.label' })}
             </Text>
             <Select
               size="xs"
@@ -160,7 +163,7 @@ function SettingPanelContent() {
 
           <Group gap="xs" justify="space-between" wrap="nowrap">
             <Text size="sm" fw={500} flex={1}>
-              {t('core:ui.settingPanel.rtl.label')}
+              {formatMessage({ id: 'ui.settingPanel.rtl.label' })}
             </Text>
             <Switch {...form.getInputProps('rtl', { type: 'checkbox' })} />
           </Group>
@@ -168,7 +171,7 @@ function SettingPanelContent() {
 
         <Group gap="xs">
           <Button variant="light" disabled={isDisabledSubmitButton} onClick={form.reset} flex={1}>
-            {t('core:common.reset')}
+            {formatMessage({ id: 'common.reset' })}
           </Button>
           <Button
             type="submit"
@@ -177,7 +180,7 @@ function SettingPanelContent() {
             loading={saveOptionApi.isPending}
             flex={1}
           >
-            {t('core:common.save')}
+            {formatMessage({ id: 'common.save' })}
           </Button>
         </Group>
       </Stack>
@@ -186,7 +189,7 @@ function SettingPanelContent() {
 }
 
 export function SettingPanel() {
-  const { t } = useTranslation();
+  const { formatMessage } = useIntl();
   const computedColorScheme = useComputedColorScheme();
   const { dir } = useDirection();
 
@@ -202,8 +205,8 @@ export function SettingPanel() {
         <ActionIcon
           variant="subtle"
           size="lg"
-          title={t('core:ui.settingPanel.title')}
-          aria-label={t('core:ui.settingPanel.title')}
+          title={formatMessage({ id: 'ui.settingPanel.title' })}
+          aria-label={formatMessage({ id: 'ui.settingPanel.title' })}
         >
           <IconSettings size="1.5rem" />
         </ActionIcon>

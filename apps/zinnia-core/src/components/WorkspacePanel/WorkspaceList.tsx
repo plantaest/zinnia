@@ -1,6 +1,6 @@
 import { ActionIcon, Button, Group, Stack, Text } from '@mantine/core';
 import { IconEdit, IconPlus } from '@tabler/icons-react';
-import { useTranslation } from 'react-i18next';
+import { useIntl } from 'react-intl';
 import { useSelector } from '@legendapp/state/react';
 import { appState } from '@/states/appState';
 import { WorkspaceLayer } from '@/components/WorkspacePanel/WorkspacePanel';
@@ -14,7 +14,7 @@ interface WorkspaceListProps {
 }
 
 export function WorkspaceList({ onChangeLayer, onChangeCurrentWorkspace }: WorkspaceListProps) {
-  const { t } = useTranslation();
+  const { formatMessage } = useIntl();
 
   const workspaces = useSelector(() => appState.userConfig.workspaces.get() ?? []);
   const activeWorkspaceId = useSelector(appState.userConfig.activeWorkspaceId);
@@ -39,12 +39,12 @@ export function WorkspaceList({ onChangeLayer, onChangeCurrentWorkspace }: Works
   return (
     <Stack gap="xs">
       <Group gap="xs" justify="space-between">
-        <Text fw={500}>{t('core:ui.workspacePanel.title')}</Text>
+        <Text fw={500}>{formatMessage({ id: 'ui.workspacePanel.title' })}</Text>
         <ActionIcon
           variant="transparent"
           color="gray"
-          title={t('core:ui.workspacePanel.createTitle')}
-          aria-label={t('core:ui.workspacePanel.createTitle')}
+          title={formatMessage({ id: 'ui.workspacePanel.createTitle' })}
+          aria-label={formatMessage({ id: 'ui.workspacePanel.createTitle' })}
           onClick={handleClickCreateWorkspaceButton}
           disabled={workspaces.length >= appConfig.MAX_WORKSPACE_LIMIT}
         >
@@ -70,8 +70,8 @@ export function WorkspaceList({ onChangeLayer, onChangeCurrentWorkspace }: Works
               <ActionIcon
                 variant="transparent"
                 color="gray"
-                title={t('core:ui.workspacePanel.updateTitle')}
-                aria-label={t('core:ui.workspacePanel.updateTitle')}
+                title={formatMessage({ id: 'ui.workspacePanel.updateTitle' })}
+                aria-label={formatMessage({ id: 'ui.workspacePanel.updateTitle' })}
                 onClick={() => handleClickUpdateWorkspaceButton(workspace)}
               >
                 <IconEdit size="1.25rem" />

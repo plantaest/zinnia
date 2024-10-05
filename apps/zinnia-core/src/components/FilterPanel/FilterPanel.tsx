@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { useIntl } from 'react-intl';
 import {
   ActionIcon,
   Button,
@@ -42,9 +42,13 @@ import { FilterTagSelect } from '@/components/FilterPanel/FilterTagSelect';
 import { useGetRightsOnWikis } from '@/queries/useGetRightsOnWikis';
 import { MwHelper } from '@/utils/MwHelper';
 
-const formSchema = (t: (key: string) => string) =>
+const formSchema = (formatMessage: ({ id }: { id: string }) => string) =>
   v.object({
-    name: v.pipe(v.string(), v.trim(), v.minLength(1, t(errorMessage.notEmpty))),
+    name: v.pipe(
+      v.string(),
+      v.trim(),
+      v.minLength(1, formatMessage({ id: errorMessage.notEmpty }))
+    ),
     feed: v.object({
       liveUpdates: v.boolean(),
       paginated: v.boolean(),
@@ -53,7 +57,7 @@ const formSchema = (t: (key: string) => string) =>
       smallWikis: v.boolean(),
       additionalWikis: v.boolean(),
       limit: v.string(),
-      interval: v.number(t(errorMessage.notEmpty)),
+      interval: v.number(formatMessage({ id: errorMessage.notEmpty })),
       timeframe: v.pipe(
         v.object({
           start: v.picklist(['now', 'timestamp']),
@@ -66,7 +70,7 @@ const formSchema = (t: (key: string) => string) =>
           v.partialCheck(
             [['start'], ['startTimestamp']],
             (input) => Boolean(input.start === 'now' || input.startTimestamp),
-            t(errorMessage.notEmpty)
+            formatMessage({ id: errorMessage.notEmpty })
           ),
           ['startTimestamp']
         ),
@@ -74,7 +78,7 @@ const formSchema = (t: (key: string) => string) =>
           v.partialCheck(
             [['end'], ['endTimestamp']],
             (input) => Boolean(input.end === 'period' || input.endTimestamp),
-            t(errorMessage.notEmpty)
+            formatMessage({ id: errorMessage.notEmpty })
           ),
           ['endTimestamp']
         ),
@@ -82,7 +86,7 @@ const formSchema = (t: (key: string) => string) =>
           v.partialCheck(
             [['end'], ['endPeriod']],
             (input) => Boolean(input.end === 'timestamp' || input.endPeriod),
-            t(errorMessage.notEmpty)
+            formatMessage({ id: errorMessage.notEmpty })
           ),
           ['endPeriod']
         ),
@@ -95,7 +99,7 @@ const formSchema = (t: (key: string) => string) =>
                 input.endTimestamp &&
                 dayjs(input.startTimestamp).isSameOrBefore(input.endTimestamp)
               ),
-            t(errorMessage.startAfterEnd)
+            formatMessage({ id: errorMessage.startAfterEnd })
           ),
           ['startTimestamp']
         )
@@ -244,7 +248,7 @@ const formName = 'filter-panel-form';
 export const filterPanelFormAction = createFormActions<FilterPanelFormValues>(formName);
 
 function FilterPanelContent() {
-  const { t } = useTranslation();
+  const { formatMessage } = useIntl();
   const computedColorScheme = useComputedColorScheme();
   const activeFilter = useSelector(appState.ui.activeFilter);
 
@@ -265,7 +269,7 @@ function FilterPanelContent() {
   const form = useForm({
     name: formName,
     initialValues: currentFilter ? getInitialFormValues(currentFilter) : defaultInitialFormValues,
-    validate: valibotResolver(formSchema(t)),
+    validate: valibotResolver(formSchema(formatMessage)),
   });
 
   const [selectedWikiIndex, setSelectedWikiIndex] = useState(0);
@@ -402,7 +406,7 @@ function FilterPanelContent() {
                   loading={selectFilterApi.isPending}
                   flex={1}
                 >
-                  {t('core:common.select')}
+                  {formatMessage({ id: 'common.select' })}
                 </Button>
                 <Button
                   variant="light"
@@ -412,7 +416,7 @@ function FilterPanelContent() {
                   loading={updateFilterApi.isPending}
                   flex={1}
                 >
-                  {t('core:common.save')}
+                  {formatMessage({ id: 'common.save' })}
                 </Button>
               </Group>
               <Group gap="xs">
@@ -424,7 +428,7 @@ function FilterPanelContent() {
                   loading={deleteFilterApi.isPending}
                   flex={1}
                 >
-                  {t('core:common.delete')}
+                  {formatMessage({ id: 'common.delete' })}
                 </Button>
                 <Button
                   variant="light"
@@ -434,7 +438,7 @@ function FilterPanelContent() {
                   onClick={form.reset}
                   flex={1}
                 >
-                  {t('core:common.reset')}
+                  {formatMessage({ id: 'common.reset' })}
                 </Button>
               </Group>
             </Stack>
@@ -457,30 +461,36 @@ function FilterPanelContent() {
                   <Grid gutter="xs">
                     <Grid.Col span={6}>
                       <Stack gap="xs">
-                        <Divider label={t('core:ui.filterPanel.filterName')} labelPosition="left" />
+                        <Divider
+                          label={formatMessage({ id: 'ui.filterPanel.filterName' })}
+                          labelPosition="left"
+                        />
                         <TextInput
                           size="xs"
                           disabled={!currentFilter}
                           {...form.getInputProps('name')}
                         />
-                        <Divider label={t('core:ui.filterPanel.feed')} labelPosition="left" />
+                        <Divider
+                          label={formatMessage({ id: 'ui.filterPanel.feed' })}
+                          labelPosition="left"
+                        />
                         <SimpleGrid cols={2} spacing="xs" verticalSpacing="xs">
                           <Checkbox
                             size="xs"
-                            label={t('core:ui.filterPanel.liveUpdates')}
+                            label={formatMessage({ id: 'ui.filterPanel.liveUpdates' })}
                             disabled={!currentFilter}
                             {...form.getInputProps('feed.liveUpdates', { type: 'checkbox' })}
                           />
                           <Checkbox
                             size="xs"
-                            label={t('core:ui.filterPanel.paginated')}
+                            label={formatMessage({ id: 'ui.filterPanel.paginated' })}
                             // TODO: Paginated
                             disabled={!currentFilter || true}
                             {...form.getInputProps('feed.paginated', { type: 'checkbox' })}
                           />
                           <Checkbox
                             size="xs"
-                            label={t('core:ui.filterPanel.groupedByPage')}
+                            label={formatMessage({ id: 'ui.filterPanel.groupedByPage' })}
                             // TODO: Grouped by page
                             disabled={!currentFilter || true}
                             {...form.getInputProps('feed.groupedByPage', {
@@ -489,7 +499,7 @@ function FilterPanelContent() {
                           />
                           <Checkbox
                             size="xs"
-                            label={t('core:ui.filterPanel.invertedDirection')}
+                            label={formatMessage({ id: 'ui.filterPanel.invertedDirection' })}
                             disabled={!currentFilter}
                             {...form.getInputProps('feed.invertedDirection', {
                               type: 'checkbox',
@@ -497,14 +507,14 @@ function FilterPanelContent() {
                           />
                           <Checkbox
                             size="xs"
-                            label={t('core:ui.filterPanel.smallWikis')}
+                            label={formatMessage({ id: 'ui.filterPanel.smallWikis' })}
                             // TODO: Small wikis
                             disabled={!currentFilter || true}
                             {...form.getInputProps('feed.smallWikis', { type: 'checkbox' })}
                           />
                           <Checkbox
                             size="xs"
-                            label={t('core:ui.filterPanel.additionalWikis')}
+                            label={formatMessage({ id: 'ui.filterPanel.additionalWikis' })}
                             // TODO: Additional wikis
                             disabled={!currentFilter || true}
                             {...form.getInputProps('feed.additionalWikis', {
@@ -515,7 +525,7 @@ function FilterPanelContent() {
                         <SimpleGrid cols={2} spacing="xs" verticalSpacing="xs">
                           <Select
                             size="xs"
-                            label={t('core:ui.filterPanel.limit')}
+                            label={formatMessage({ id: 'ui.filterPanel.limit' })}
                             allowDeselect={false}
                             data={appConfig.FEED_LIMITS}
                             comboboxProps={{ withinPortal: false }}
@@ -524,7 +534,7 @@ function FilterPanelContent() {
                           />
                           <NumberInput
                             size="xs"
-                            label={t('core:ui.filterPanel.interval')}
+                            label={formatMessage({ id: 'ui.filterPanel.interval' })}
                             min={5}
                             max={60}
                             disabled={!currentFilter || !form.values.feed.liveUpdates}
@@ -535,23 +545,26 @@ function FilterPanelContent() {
                     </Grid.Col>
                     <Grid.Col span={6}>
                       <Stack gap="xs">
-                        <Divider label={t('core:ui.filterPanel.timeframe')} labelPosition="left" />
+                        <Divider
+                          label={formatMessage({ id: 'ui.filterPanel.timeframe' })}
+                          labelPosition="left"
+                        />
                         <Text size="xs" fw={500}>
-                          {t('core:ui.filterPanel.start')}
+                          {formatMessage({ id: 'ui.filterPanel.start' })}
                         </Text>
                         <Radio.Group {...form.getInputProps('feed.timeframe.start')}>
                           <Stack gap={5}>
                             <Radio
                               size="xs"
                               value="now"
-                              label={t('core:ui.filterPanel.now')}
+                              label={formatMessage({ id: 'ui.filterPanel.now' })}
                               disabled={!currentFilter}
                             />
                             <Group gap="xs">
                               <Radio
                                 size="xs"
                                 value="timestamp"
-                                label={t('core:ui.filterPanel.timestamp')}
+                                label={formatMessage({ id: 'ui.filterPanel.timestamp' })}
                                 flex={1}
                                 disabled={!currentFilter}
                               />
@@ -574,7 +587,7 @@ function FilterPanelContent() {
                           </Stack>
                         </Radio.Group>
                         <Text size="xs" fw={500}>
-                          {t('core:ui.filterPanel.end')}
+                          {formatMessage({ id: 'ui.filterPanel.end' })}
                         </Text>
                         <Radio.Group {...form.getInputProps('feed.timeframe.end')}>
                           <Stack gap={5}>
@@ -582,7 +595,7 @@ function FilterPanelContent() {
                               <Radio
                                 size="xs"
                                 value="period"
-                                label={t('core:ui.filterPanel.period')}
+                                label={formatMessage({ id: 'ui.filterPanel.period' })}
                                 flex={1}
                                 disabled={!currentFilter}
                               />
@@ -603,7 +616,7 @@ function FilterPanelContent() {
                               <Radio
                                 size="xs"
                                 value="timestamp"
-                                label={t('core:ui.filterPanel.timestamp')}
+                                label={formatMessage({ id: 'ui.filterPanel.timestamp' })}
                                 flex={1}
                                 disabled={!currentFilter}
                               />
@@ -629,11 +642,15 @@ function FilterPanelContent() {
                     </Grid.Col>
                   </Grid>
                   <Group gap="xs">
-                    <Divider label={t('core:common.wiki')} labelPosition="left" flex={1} />
+                    <Divider
+                      label={formatMessage({ id: 'common.wiki' })}
+                      labelPosition="left"
+                      flex={1}
+                    />
                     {form.values.wikis[selectedWikiIndex].wikiId !== 'global' && (
                       <Checkbox
                         size="xs"
-                        label={t('core:ui.filterPanel.inherited')}
+                        label={formatMessage({ id: 'ui.filterPanel.inherited' })}
                         {...form.getInputProps(`wikis.${selectedWikiIndex}.inherited`, {
                           type: 'checkbox',
                         })}
@@ -663,8 +680,8 @@ function FilterPanelContent() {
                         !currentFilter || form.values.wikis[selectedWikiIndex].wikiId === 'global'
                       }
                       onClick={handleClickDeleteWikiButton}
-                      title={t('core:ui.filterPanel.deleteWiki')}
-                      aria-label={t('core:ui.filterPanel.deleteWiki')}
+                      title={formatMessage({ id: 'ui.filterPanel.deleteWiki' })}
+                      aria-label={formatMessage({ id: 'ui.filterPanel.deleteWiki' })}
                     >
                       <IconTrash size="1rem" />
                     </ActionIcon>
@@ -682,13 +699,13 @@ function FilterPanelContent() {
                     />
                     <TextInput
                       size="xs"
-                      label={t('core:ui.filterPanel.pageTitle')}
+                      label={formatMessage({ id: 'ui.filterPanel.pageTitle' })}
                       disabled={!currentFilter || form.values.wikis[selectedWikiIndex].inherited}
                       {...form.getInputProps(`wikis.${selectedWikiIndex}.config.pageTitle`)}
                     />
                     <TextInput
                       size="xs"
-                      label={t('core:ui.filterPanel.username')}
+                      label={formatMessage({ id: 'ui.filterPanel.username' })}
                       disabled={!currentFilter || form.values.wikis[selectedWikiIndex].inherited}
                       {...form.getInputProps(`wikis.${selectedWikiIndex}.config.username`)}
                     />
@@ -696,7 +713,7 @@ function FilterPanelContent() {
                   <SimpleGrid cols={3} spacing="xs" verticalSpacing="xs">
                     <Checkbox
                       size="xs"
-                      label={t('core:ui.filterPanel.unregistered')}
+                      label={formatMessage({ id: 'ui.filterPanel.unregistered' })}
                       disabled={!currentFilter || form.values.wikis[selectedWikiIndex].inherited}
                       {...form.getInputProps(`wikis.${selectedWikiIndex}.config.unregistered`, {
                         type: 'checkbox',
@@ -704,7 +721,7 @@ function FilterPanelContent() {
                     />
                     <Checkbox
                       size="xs"
-                      label={t('core:ui.filterPanel.registered')}
+                      label={formatMessage({ id: 'ui.filterPanel.registered' })}
                       disabled={!currentFilter || form.values.wikis[selectedWikiIndex].inherited}
                       {...form.getInputProps(`wikis.${selectedWikiIndex}.config.registered`, {
                         type: 'checkbox',
@@ -712,7 +729,7 @@ function FilterPanelContent() {
                     />
                     <Checkbox
                       size="xs"
-                      label={t('core:ui.filterPanel.bot')}
+                      label={formatMessage({ id: 'ui.filterPanel.bot' })}
                       disabled={!currentFilter || form.values.wikis[selectedWikiIndex].inherited}
                       {...form.getInputProps(`wikis.${selectedWikiIndex}.config.bot`, {
                         type: 'checkbox',
@@ -720,7 +737,7 @@ function FilterPanelContent() {
                     />
                     <Checkbox
                       size="xs"
-                      label={t('core:ui.filterPanel.human')}
+                      label={formatMessage({ id: 'ui.filterPanel.human' })}
                       disabled={!currentFilter || form.values.wikis[selectedWikiIndex].inherited}
                       {...form.getInputProps(`wikis.${selectedWikiIndex}.config.human`, {
                         type: 'checkbox',
@@ -728,7 +745,7 @@ function FilterPanelContent() {
                     />
                     <Checkbox
                       size="xs"
-                      label={t('core:ui.filterPanel.unpatrolled')}
+                      label={formatMessage({ id: 'ui.filterPanel.unpatrolled' })}
                       disabled={
                         !currentFilter ||
                         form.values.wikis[selectedWikiIndex].inherited ||
@@ -740,7 +757,7 @@ function FilterPanelContent() {
                     />
                     <Checkbox
                       size="xs"
-                      label={t('core:ui.filterPanel.patrolled')}
+                      label={formatMessage({ id: 'ui.filterPanel.patrolled' })}
                       disabled={
                         !currentFilter ||
                         form.values.wikis[selectedWikiIndex].inherited ||
@@ -752,7 +769,7 @@ function FilterPanelContent() {
                     />
                     <Checkbox
                       size="xs"
-                      label={t('core:ui.filterPanel.autopatrolled')}
+                      label={formatMessage({ id: 'ui.filterPanel.autopatrolled' })}
                       disabled={
                         !currentFilter ||
                         form.values.wikis[selectedWikiIndex].inherited ||
@@ -764,7 +781,7 @@ function FilterPanelContent() {
                     />
                     <Checkbox
                       size="xs"
-                      label={t('core:ui.filterPanel.minorEdits')}
+                      label={formatMessage({ id: 'ui.filterPanel.minorEdits' })}
                       disabled={!currentFilter || form.values.wikis[selectedWikiIndex].inherited}
                       {...form.getInputProps(`wikis.${selectedWikiIndex}.config.minorEdits`, {
                         type: 'checkbox',
@@ -772,7 +789,7 @@ function FilterPanelContent() {
                     />
                     <Checkbox
                       size="xs"
-                      label={t('core:ui.filterPanel.nonMinorEdits')}
+                      label={formatMessage({ id: 'ui.filterPanel.nonMinorEdits' })}
                       disabled={!currentFilter || form.values.wikis[selectedWikiIndex].inherited}
                       {...form.getInputProps(`wikis.${selectedWikiIndex}.config.nonMinorEdits`, {
                         type: 'checkbox',
@@ -780,7 +797,7 @@ function FilterPanelContent() {
                     />
                     <Checkbox
                       size="xs"
-                      label={t('core:ui.filterPanel.redirect')}
+                      label={formatMessage({ id: 'ui.filterPanel.redirect' })}
                       disabled={!currentFilter || form.values.wikis[selectedWikiIndex].inherited}
                       {...form.getInputProps(`wikis.${selectedWikiIndex}.config.redirect`, {
                         type: 'checkbox',
@@ -788,7 +805,7 @@ function FilterPanelContent() {
                     />
                     <Checkbox
                       size="xs"
-                      label={t('core:ui.filterPanel.nonRedirect')}
+                      label={formatMessage({ id: 'ui.filterPanel.nonRedirect' })}
                       disabled={!currentFilter || form.values.wikis[selectedWikiIndex].inherited}
                       {...form.getInputProps(`wikis.${selectedWikiIndex}.config.nonRedirect`, {
                         type: 'checkbox',
@@ -796,7 +813,7 @@ function FilterPanelContent() {
                     />
                     <Checkbox
                       size="xs"
-                      label={t('core:ui.filterPanel.latestRevision')}
+                      label={formatMessage({ id: 'ui.filterPanel.latestRevision' })}
                       disabled={!currentFilter || form.values.wikis[selectedWikiIndex].inherited}
                       {...form.getInputProps(`wikis.${selectedWikiIndex}.config.latestRevision`, {
                         type: 'checkbox',
@@ -804,7 +821,7 @@ function FilterPanelContent() {
                     />
                     <Checkbox
                       size="xs"
-                      label={t('core:ui.filterPanel.pageEdits')}
+                      label={formatMessage({ id: 'ui.filterPanel.pageEdits' })}
                       disabled={!currentFilter || form.values.wikis[selectedWikiIndex].inherited}
                       {...form.getInputProps(`wikis.${selectedWikiIndex}.config.pageEdits`, {
                         type: 'checkbox',
@@ -812,7 +829,7 @@ function FilterPanelContent() {
                     />
                     <Checkbox
                       size="xs"
-                      label={t('core:ui.filterPanel.pageCreations')}
+                      label={formatMessage({ id: 'ui.filterPanel.pageCreations' })}
                       disabled={!currentFilter || form.values.wikis[selectedWikiIndex].inherited}
                       {...form.getInputProps(`wikis.${selectedWikiIndex}.config.pageCreations`, {
                         type: 'checkbox',
@@ -820,7 +837,7 @@ function FilterPanelContent() {
                     />
                     <Checkbox
                       size="xs"
-                      label={t('core:ui.filterPanel.categoryChanges')}
+                      label={formatMessage({ id: 'ui.filterPanel.categoryChanges' })}
                       disabled={!currentFilter || form.values.wikis[selectedWikiIndex].inherited}
                       {...form.getInputProps(`wikis.${selectedWikiIndex}.config.categoryChanges`, {
                         type: 'checkbox',
@@ -828,7 +845,7 @@ function FilterPanelContent() {
                     />
                     <Checkbox
                       size="xs"
-                      label={t('core:ui.filterPanel.loggedActions')}
+                      label={formatMessage({ id: 'ui.filterPanel.loggedActions' })}
                       disabled={!currentFilter || form.values.wikis[selectedWikiIndex].inherited}
                       {...form.getInputProps(`wikis.${selectedWikiIndex}.config.loggedActions`, {
                         type: 'checkbox',
@@ -836,7 +853,7 @@ function FilterPanelContent() {
                     />
                     <Checkbox
                       size="xs"
-                      label={t('core:ui.filterPanel.wikidataEdits')}
+                      label={formatMessage({ id: 'ui.filterPanel.wikidataEdits' })}
                       disabled={!currentFilter || form.values.wikis[selectedWikiIndex].inherited}
                       {...form.getInputProps(`wikis.${selectedWikiIndex}.config.wikidataEdits`, {
                         type: 'checkbox',
@@ -854,7 +871,7 @@ function FilterPanelContent() {
 }
 
 export function FilterPanel() {
-  const { t } = useTranslation();
+  const { formatMessage } = useIntl();
   const computedColorScheme = useComputedColorScheme();
   const { dir } = useDirection();
 
@@ -870,8 +887,8 @@ export function FilterPanel() {
         <ActionIcon
           variant="subtle"
           size="lg"
-          title={t('core:ui.filterPanel.title')}
-          aria-label={t('core:ui.filterPanel.title')}
+          title={formatMessage({ id: 'ui.filterPanel.title' })}
+          aria-label={formatMessage({ id: 'ui.filterPanel.title' })}
         >
           <IconFilter size="1.5rem" />
         </ActionIcon>

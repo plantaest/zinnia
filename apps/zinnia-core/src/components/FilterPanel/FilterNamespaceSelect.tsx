@@ -1,7 +1,7 @@
 import { MultiSelect } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { ComboboxData } from '@mantine/core/lib/components/Combobox/Combobox.types';
-import { useTranslation } from 'react-i18next';
+import { useIntl } from 'react-intl';
 import { Filter } from '@/types/persistence/Filter';
 import { FilterPanelFormValues } from '@/components/FilterPanel/FilterPanel';
 import { useGetNamespaces } from '@/queries/useGetNamespaces';
@@ -17,20 +17,21 @@ export function FilterNamespaceSelect({
   selectedWikiIndex,
   form,
 }: FilterNamespaceSelectProps) {
-  const { t } = useTranslation();
+  const { formatMessage } = useIntl();
   const { data: namespaces } = useGetNamespaces(form.values.wikis[selectedWikiIndex].wikiId);
 
   const namespaceSelects: ComboboxData = namespaces
     ? namespaces.map((namespace) => ({
         value: String(namespace.id),
-        label: namespace.name === '' ? t('core:wiki.namespace.main') : namespace.name,
+        label:
+          namespace.name === '' ? formatMessage({ id: 'wiki.namespace.main' }) : namespace.name,
       }))
     : [];
 
   return (
     <MultiSelect
       size="xs"
-      label={t('core:ui.filterPanel.namespaces')}
+      label={formatMessage({ id: 'ui.filterPanel.namespaces' })}
       data={namespaceSelects}
       comboboxProps={{ withinPortal: false }}
       style={{

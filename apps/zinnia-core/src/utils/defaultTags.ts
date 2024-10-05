@@ -3,42 +3,42 @@ import { Tag } from '@plantaest/aster';
 export const defaultTags: Tag[] = [
   {
     name: 'mobile edit',
-    displayName: 'core:wiki.tag.mobileEdit',
+    displayName: 'wiki.tag.mobileEdit',
   },
   {
     name: 'mw-blank',
-    displayName: 'core:wiki.tag.mwBlank',
+    displayName: 'wiki.tag.mwBlank',
   },
   {
     name: 'mw-new-redirect',
-    displayName: 'core:wiki.tag.mwNewRedirect',
+    displayName: 'wiki.tag.mwNewRedirect',
   },
   {
     name: 'mw-changed-redirect-target',
-    displayName: 'core:wiki.tag.mwChangedRedirectTarget',
+    displayName: 'wiki.tag.mwChangedRedirectTarget',
   },
   {
     name: 'mw-removed-redirect',
-    displayName: 'core:wiki.tag.mwRemovedRedirect',
+    displayName: 'wiki.tag.mwRemovedRedirect',
   },
   {
     name: 'mw-replace',
-    displayName: 'core:wiki.tag.mwReplace',
+    displayName: 'wiki.tag.mwReplace',
   },
   {
     name: 'mw-undo',
-    displayName: 'core:wiki.tag.mwUndo',
+    displayName: 'wiki.tag.mwUndo',
   },
   {
     name: 'mw-rollback',
-    displayName: 'core:wiki.tag.mwRollback',
+    displayName: 'wiki.tag.mwRollback',
   },
   {
     name: 'mw-manual-revert',
-    displayName: 'core:wiki.tag.mwManualRevert',
+    displayName: 'wiki.tag.mwManualRevert',
   },
   {
     name: 'mw-reverted',
-    displayName: 'core:wiki.tag.mwReverted',
+    displayName: 'wiki.tag.mwReverted',
   },
 ];

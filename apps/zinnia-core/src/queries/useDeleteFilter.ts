@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { useIntl } from 'react-intl';
 import { useMutation } from '@tanstack/react-query';
 import { AsterError } from '@plantaest/aster';
 import { useSelector } from '@legendapp/state/react';
@@ -9,7 +9,7 @@ import { appConfig } from '@/config/appConfig';
 import { Notify } from '@/utils/Notify';
 
 export function useDeleteFilter() {
-  const { t } = useTranslation();
+  const { formatMessage } = useIntl();
   const config = useSelector(appState.userConfig);
 
   return useMutation<UserConfig, AsterError, string>({
@@ -34,9 +34,9 @@ export function useDeleteFilter() {
       return userConfig;
     },
     onSuccess: (userConfig) => {
-      Notify.success(t('core:hook.useDeleteFilter.success.default'));
+      Notify.success(formatMessage({ id: 'hook.useDeleteFilter.success.default' }));
       appState.userConfig.set(userConfig);
     },
-    onError: () => Notify.error(t('core:hook.useSaveOption.error.default')),
+    onError: () => Notify.error(formatMessage({ id: 'hook.useSaveOption.error.default' })),
   });
 }

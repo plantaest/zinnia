@@ -1,7 +1,7 @@
 import { Stack, Text } from '@mantine/core';
 import { Fragment, memo } from 'react';
 import dayjs from 'dayjs';
-import { useTranslation } from 'react-i18next';
+import { useIntl } from 'react-intl';
 import { IconInboxOff } from '@tabler/icons-react';
 import { useSelector } from '@legendapp/state/react';
 import { ChangeCard } from '@/components/ChangeCard/ChangeCard';
@@ -12,7 +12,7 @@ import classes from './FeedPanel.module.css';
 import { FeedControlPanel } from '@/components/FeedPanel/FeedControlPanel';
 
 function _FeedPanel() {
-  const { t } = useTranslation();
+  const { formatMessage } = useIntl();
   const { data: recentChanges = [] } = useGetRecentChanges();
   const focus = useSelector(appState.ui.focus);
 
@@ -55,7 +55,7 @@ function _FeedPanel() {
       {recentChanges.length === 0 && (
         <Stack className={classes.empty}>
           <IconInboxOff size="5rem" stroke={0.5} />
-          <Text fw={500}>{t('core:ui:feedPanel.empty')}</Text>
+          <Text fw={500}>{formatMessage({ id: 'ui.feedPanel.empty' })}</Text>
         </Stack>
       )}
 

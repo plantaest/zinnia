@@ -1,6 +1,6 @@
 import { ActionIcon, Button, Group, Stack, Text, TextInput } from '@mantine/core';
 import { IconArrowLeft } from '@tabler/icons-react';
-import { useTranslation } from 'react-i18next';
+import { useIntl } from 'react-intl';
 import { useFocusTrap } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import dayjs from 'dayjs';
@@ -12,9 +12,13 @@ import { Workspace } from '@/types/persistence/Workspace';
 import { useDeleteWorkspace } from '@/queries/useDeleteWorkspace';
 import { useUpdateWorkspace } from '@/queries/useUpdateWorkspace';
 
-const formSchema = (t: (key: string) => string) =>
+const formSchema = (formatMessage: ({ id }: { id: string }) => string) =>
   v.object({
-    workspaceName: v.pipe(v.string(), v.trim(), v.minLength(1, t(errorMessage.notEmpty))),
+    workspaceName: v.pipe(
+      v.string(),
+      v.trim(),
+      v.minLength(1, formatMessage({ id: errorMessage.notEmpty }))
+    ),
   });
 
 type FormValues = v.InferInput<ReturnType<typeof formSchema>>;
@@ -25,7 +29,7 @@ interface WorkspaceUpdateFormProps {
 }
 
 export function WorkspaceUpdateForm({ onChangeLayer, workspace }: WorkspaceUpdateFormProps) {
-  const { t } = useTranslation();
+  const { formatMessage } = useIntl();
   const focusTrapRef = useFocusTrap();
 
   const initialFormValues: FormValues = {
@@ -34,7 +38,7 @@ export function WorkspaceUpdateForm({ onChangeLayer, workspace }: WorkspaceUpdat
 
   const form = useForm({
     initialValues: initialFormValues,
-    validate: valibotResolver(formSchema(t)),
+    validate: valibotResolver(formSchema(formatMessage)),
   });
 
   const updateWorkspaceApi = useUpdateWorkspace();
@@ -70,12 +74,12 @@ export function WorkspaceUpdateForm({ onChangeLayer, workspace }: WorkspaceUpdat
   return (
     <Stack gap="xs">
       <Group justify="space-between">
-        <Text fw={500}>{t('core:ui.workspacePanel.updateTitle')}</Text>
+        <Text fw={500}>{formatMessage({ id: 'ui.workspacePanel.updateTitle' })}</Text>
         <ActionIcon
           variant="transparent"
           color="gray"
-          title={t('core:common.back')}
-          aria-label={t('core:common.back')}
+          title={formatMessage({ id: 'common.back' })}
+          aria-label={formatMessage({ id: 'common.back' })}
           onClick={() => onChangeLayer('list')}
         >
           <IconArrowLeft size="1.25rem" />
@@ -84,7 +88,7 @@ export function WorkspaceUpdateForm({ onChangeLayer, workspace }: WorkspaceUpdat
 
       <form onSubmit={handleFormSubmit} ref={focusTrapRef}>
         <TextInput
-          placeholder={t('core:ui.workspacePanel.workspaceName')}
+          placeholder={formatMessage({ id: 'ui.workspacePanel.workspaceName' })}
           {...form.getInputProps('workspaceName')}
         />
 
@@ -96,7 +100,7 @@ export function WorkspaceUpdateForm({ onChangeLayer, workspace }: WorkspaceUpdat
             onClick={handleClickDeleteButton}
             loading={deleteWorkspaceApi.isPending}
           >
-            {t('core:common.delete')}
+            {formatMessage({ id: 'common.delete' })}
           </Button>
           <Button
             variant="light"
@@ -105,7 +109,7 @@ export function WorkspaceUpdateForm({ onChangeLayer, workspace }: WorkspaceUpdat
             disabled={isDisabledSubmitButton}
             loading={updateWorkspaceApi.isPending}
           >
-            {t('core:common.update')}
+            {formatMessage({ id: 'common.update' })}
           </Button>
         </Group>
       </form>

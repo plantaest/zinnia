@@ -3,15 +3,13 @@ import classes from './Home.page.module.css';
 import { HeroPanel } from '@/components/HeroPanel/HeroPanel';
 import { MainPanel } from '@/components/MainPanel/MainPanel';
 import { startRef } from '@/refs/startRef';
-import { useManageVersion } from '@/pages/HomePage/useManageVersion';
-import { useSyncDirection } from '@/pages/HomePage/useSyncDirection';
-import { useSyncColorScheme } from '@/pages/HomePage/useSyncColorScheme';
-import { useSyncLanguage } from '@/pages/HomePage/useSyncLanguage';
+import { useManageVersion } from '@/hooks/useManageVersion';
+import { useSyncDirection } from '@/hooks/useSyncDirection';
+import { useSyncColorScheme } from '@/hooks/useSyncColorScheme';
 
 export function HomePage() {
   useSyncDirection();
   useSyncColorScheme();
-  useSyncLanguage();
   useManageVersion();
 
   return (

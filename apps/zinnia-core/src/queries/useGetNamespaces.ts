@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { AsterError, Namespace } from '@plantaest/aster';
-import { useTranslation } from 'react-i18next';
+import { useIntl } from 'react-intl';
 import { wikis } from '@/utils/wikis';
 import { defaultNamespaces } from '@/utils/defaultNamespaces';
 
 export function useGetNamespaces(wikiId: string) {
-  const { t } = useTranslation();
+  const { formatMessage } = useIntl();
 
   return useQuery<Namespace[], AsterError>({
     queryKey: [wikiId, 'siteInfo', 'getNamespaces'],
@@ -13,7 +13,7 @@ export function useGetNamespaces(wikiId: string) {
       if (wikiId === 'global') {
         return defaultNamespaces.map((namespace) => ({
           id: namespace.id,
-          name: t(namespace.name),
+          name: formatMessage({ id: namespace.name }),
         }));
       }
 

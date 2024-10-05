@@ -3,74 +3,74 @@ import { Namespace } from '@plantaest/aster';
 export const defaultNamespaces: Namespace[] = [
   {
     id: 0,
-    name: 'core:wiki.namespace.main',
+    name: 'wiki.namespace.main',
   },
   {
     id: 1,
-    name: 'core:wiki.namespace.talk',
+    name: 'wiki.namespace.talk',
   },
   {
     id: 2,
-    name: 'core:wiki.namespace.user',
+    name: 'wiki.namespace.user',
   },
   {
     id: 3,
-    name: 'core:wiki.namespace.userTalk',
+    name: 'wiki.namespace.userTalk',
   },
   {
     id: 4,
-    name: 'core:wiki.namespace.project',
+    name: 'wiki.namespace.project',
   },
   {
     id: 5,
-    name: 'core:wiki.namespace.projectTalk',
+    name: 'wiki.namespace.projectTalk',
   },
   {
     id: 6,
-    name: 'core:wiki.namespace.file',
+    name: 'wiki.namespace.file',
   },
   {
     id: 7,
-    name: 'core:wiki.namespace.fileTalk',
+    name: 'wiki.namespace.fileTalk',
   },
   {
     id: 8,
-    name: 'core:wiki.namespace.mediaWiki',
+    name: 'wiki.namespace.mediaWiki',
   },
   {
     id: 9,
-    name: 'core:wiki.namespace.mediaWikiTalk',
+    name: 'wiki.namespace.mediaWikiTalk',
   },
   {
     id: 10,
-    name: 'core:wiki.namespace.template',
+    name: 'wiki.namespace.template',
   },
   {
     id: 11,
-    name: 'core:wiki.namespace.templateTalk',
+    name: 'wiki.namespace.templateTalk',
   },
   {
     id: 12,
-    name: 'core:wiki.namespace.help',
+    name: 'wiki.namespace.help',
   },
   {
     id: 13,
-    name: 'core:wiki.namespace.helpTalk',
+    name: 'wiki.namespace.helpTalk',
   },
   {
     id: 14,
-    name: 'core:wiki.namespace.category',
+    name: 'wiki.namespace.category',
   },
   {
     id: 15,
-    name: 'core:wiki.namespace.categoryTalk',
+    name: 'wiki.namespace.categoryTalk',
   },
   {
     id: 828,
-    name: 'core:wiki.namespace.module',
+    name: 'wiki.namespace.module',
   },
   {
     id: 829,
-    name: 'core:wiki.namespace.moduleTalk',
+    name: 'wiki.namespace.moduleTalk',
   },
 ];

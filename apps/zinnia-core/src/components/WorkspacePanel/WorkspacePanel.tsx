@@ -1,7 +1,7 @@
 import { ActionIcon, Popover, useComputedColorScheme, useDirection } from '@mantine/core';
 import { IconBoxMultiple } from '@tabler/icons-react';
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useIntl } from 'react-intl';
 import { WorkspaceList } from '@/components/WorkspacePanel/WorkspaceList';
 import { WorkspaceCreateForm } from '@/components/WorkspacePanel/WorkspaceCreateForm';
 import { WorkspaceUpdateForm } from '@/components/WorkspacePanel/WorkspaceUpdateForm';
@@ -23,7 +23,7 @@ function WorkspacePanelContent() {
 }
 
 export function WorkspacePanel() {
-  const { t } = useTranslation();
+  const { formatMessage } = useIntl();
   const computedColorScheme = useComputedColorScheme();
   const { dir } = useDirection();
 
@@ -39,8 +39,8 @@ export function WorkspacePanel() {
         <ActionIcon
           variant="subtle"
           size="lg"
-          title={t('core:ui.workspacePanel.title')}
-          aria-label={t('core:ui.workspacePanel.title')}
+          title={formatMessage({ id: 'ui.workspacePanel.title' })}
+          aria-label={formatMessage({ id: 'ui.workspacePanel.title' })}
         >
           <IconBoxMultiple size="1.5rem" />
         </ActionIcon>

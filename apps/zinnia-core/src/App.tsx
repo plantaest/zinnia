@@ -14,13 +14,15 @@ import duration from 'dayjs/plugin/duration';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { configureObservablePersistence, persistObservable } from '@legendapp/state/persist';
 import { ObservablePersistLocalStorage } from '@legendapp/state/persist-plugins/local-storage';
+import { RawIntlProvider } from 'react-intl';
 import { zinniaRoot } from '@/utils/zinniaRoot';
 import { theme } from './theme';
-import './i18n';
 import { Notify } from '@/utils/Notify';
 import { appConfig } from '@/config/appConfig';
 import { appState } from '@/states/appState';
 import { HomePage } from '@/pages/HomePage/Home.page';
+import { i18n } from '@/i18n';
+import { useSyncLanguage } from '@/hooks/useSyncLanguage';
 
 // dayjs
 dayjs.extend(duration);
@@ -79,23 +81,25 @@ interface AppProps {
 }
 
 export default function App({ shadowRoot }: AppProps) {
-  // Browser Tab Title
   useDocumentTitle('Zinnia');
+  useSyncLanguage();
 
   return (
     <QueryClientProvider client={queryClient}>
       <DirectionProvider>
-        <MantineProvider
-          theme={theme}
-          defaultColorScheme="auto"
-          cssVariablesSelector=".zinnia-root"
-          getRootElement={() => zinniaRoot}
-        >
-          <Notifications />
-          <ModalsProvider>
-            <HomePage />
-          </ModalsProvider>
-        </MantineProvider>
+        <RawIntlProvider value={i18n.intl}>
+          <MantineProvider
+            theme={theme}
+            defaultColorScheme="auto"
+            cssVariablesSelector=".zinnia-root"
+            getRootElement={() => zinniaRoot}
+          >
+            <Notifications />
+            <ModalsProvider>
+              <HomePage />
+            </ModalsProvider>
+          </MantineProvider>
+        </RawIntlProvider>
       </DirectionProvider>
       <ReactQueryDevtools
         initialIsOpen={false}

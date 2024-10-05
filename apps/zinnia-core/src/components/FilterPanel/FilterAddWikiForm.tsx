@@ -1,6 +1,6 @@
 import { ActionIcon, Anchor, Button, Group, Popover, Stack, Text, TextInput } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
-import { useTranslation } from 'react-i18next';
+import { useIntl } from 'react-intl';
 import { useForm } from '@mantine/form';
 import React from 'react';
 import * as v from 'valibot';
@@ -12,17 +12,21 @@ import { filterPanelFormAction, FilterPanelFormValues } from '@/components/Filte
 import { Notify } from '@/utils/Notify';
 import { appConfig } from '@/config/appConfig';
 
-const formSchema = (t: (key: string) => string) =>
+const formSchema = (formatMessage: ({ id }: { id: string }) => string) =>
   v.pipe(
     v.object({
-      wikiId: v.pipe(v.string(), v.trim(), v.minLength(1, t(errorMessage.notEmpty))),
+      wikiId: v.pipe(
+        v.string(),
+        v.trim(),
+        v.minLength(1, formatMessage({ id: errorMessage.notEmpty }))
+      ),
     }),
     v.forward(
       v.check(
         (input) =>
           input.wikiId.trim().length === 0 ||
           wikis.getWikiSites().getWikiIds().includes(input.wikiId),
-        t(errorMessage.notSupportedWikiId)
+        formatMessage({ id: errorMessage.notSupportedWikiId })
       ),
       ['wikiId']
     )
@@ -35,11 +39,11 @@ const initialFormValues: FormValues = {
 };
 
 function FilterAddWikiFormContent() {
-  const { t } = useTranslation();
+  const { formatMessage } = useIntl();
 
   const form = useForm({
     initialValues: initialFormValues,
-    validate: valibotResolver(formSchema(t)),
+    validate: valibotResolver(formSchema(formatMessage)),
   });
 
   const handleFormSubmit = form.onSubmit((formValues) => {
@@ -73,21 +77,24 @@ function FilterAddWikiFormContent() {
 
     filterPanelFormAction.setFieldValue('wikis', (filterWikis) => {
       if (filterWikis.length > appConfig.MAX_FILTER_WIKIS) {
-        form.setFieldError('wikiId', t(errorMessage.maxLimitFilterWikis));
+        form.setFieldError('wikiId', formatMessage({ id: errorMessage.maxLimitFilterWikis }));
         return filterWikis;
       }
 
       const currentWikiIds = filterWikis.map((w) => w.wikiId);
 
       if (currentWikiIds.includes(wiki.wikiId)) {
-        form.setFieldError('wikiId', t(errorMessage.existedWikiId));
+        form.setFieldError('wikiId', formatMessage({ id: errorMessage.existedWikiId }));
         return filterWikis;
       }
 
       Notify.success(
-        t('core:ui.filterPanel.filterAddWikiForm.notify', {
-          wikiId: formValues.wikiId,
-        })
+        formatMessage(
+          { id: 'ui.filterPanel.filterAddWikiForm.notify' },
+          {
+            wikiId: formValues.wikiId,
+          }
+        )
       );
 
       return [...filterWikis, wiki];
@@ -111,18 +118,18 @@ function FilterAddWikiFormContent() {
       />
       <Group gap={3.5}>
         <Text size="xs" c="dimmed">
-          {t('core:ui.filterPanel.filterAddWikiForm.eg')}
+          {formatMessage({ id: 'ui.filterPanel.filterAddWikiForm.eg' })}
         </Text>
         <Anchor
           size="xs"
           href="https://en.wikipedia.org/wiki/User:Plantaest/Zinnia/Supported_wikis"
           target="_blank"
         >
-          {t('core:ui.filterPanel.filterAddWikiForm.fullList')}
+          {formatMessage({ id: 'ui.filterPanel.filterAddWikiForm.fullList' })}
         </Anchor>
       </Group>
       <Button size="xs" onClick={() => handleFormSubmit()}>
-        {t('core:common.add')}
+        {formatMessage({ id: 'common.add' })}
       </Button>
     </Stack>
   );
@@ -134,7 +141,7 @@ interface FilterAddWikiFormProps {
 }
 
 export function FilterAddWikiForm({ currentFilter, formWikisLength }: FilterAddWikiFormProps) {
-  const { t } = useTranslation();
+  const { formatMessage } = useIntl();
 
   return (
     <Popover width={250} position="bottom-end" shadow="md" withinPortal={false} trapFocus>
@@ -144,8 +151,8 @@ export function FilterAddWikiForm({ currentFilter, formWikisLength }: FilterAddW
           variant="transparent"
           color="blue.5"
           disabled={!currentFilter || formWikisLength > appConfig.MAX_FILTER_WIKIS}
-          title={t('core:ui.filterPanel.filterAddWikiForm.addWiki')}
-          aria-label={t('core:ui.filterPanel.filterAddWikiForm.addWiki')}
+          title={formatMessage({ id: 'ui.filterPanel.filterAddWikiForm.addWiki' })}
+          aria-label={formatMessage({ id: 'ui.filterPanel.filterAddWikiForm.addWiki' })}
         >
           <IconPlus size="1rem" />
         </ActionIcon>

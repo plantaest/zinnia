@@ -1,6 +1,6 @@
 import { ActionIcon, Box, Flex, Group, Text } from '@mantine/core';
 import { IconFocus, IconReload } from '@tabler/icons-react';
-import { useTranslation } from 'react-i18next';
+import { useIntl } from 'react-intl';
 import { memo, useEffect, useState } from 'react';
 import { useNetwork } from '@mantine/hooks';
 import { useSelector } from '@legendapp/state/react';
@@ -9,7 +9,7 @@ import { useGetRecentChanges } from '@/queries/useGetRecentChanges';
 import classes from './FeedControlPanel.module.css';
 
 function _FeedControlPanel() {
-  const { t } = useTranslation();
+  const { formatMessage } = useIntl();
   const { online } = useNetwork();
   const { data: recentChanges = [], refetch, isRefetching, isError } = useGetRecentChanges();
   const focus = useSelector(appState.ui.focus);
@@ -60,7 +60,9 @@ function _FeedControlPanel() {
       <Group gap="sm">
         <Box className={classes.pulse} data-online={online} />
         <Text size="sm" fw={500}>
-          {t(online ? 'core:ui.feedPanel.connected' : 'core:ui.feedPanel.disconnected')}
+          {formatMessage({
+            id: online ? 'ui.feedPanel.connected' : 'ui.feedPanel.disconnected',
+          })}
         </Text>
       </Group>
 
@@ -72,8 +74,8 @@ function _FeedControlPanel() {
           loading={isRefetching}
           loaderProps={{ size: 14 }}
           onClick={handleClickReloadButton}
-          title={t('core:ui.feedPanel.reload')}
-          aria-label={t('core:ui.feedPanel.reload')}
+          title={formatMessage({ id: 'ui.feedPanel.reload' })}
+          aria-label={formatMessage({ id: 'ui.feedPanel.reload' })}
         >
           <IconReload size="1.125rem" />
         </ActionIcon>
@@ -82,8 +84,8 @@ function _FeedControlPanel() {
           size={30}
           color={focus ? 'teal' : 'blue'}
           onClick={handleClickFocusButton}
-          title={t('core:ui.feedPanel.focus')}
-          aria-label={t('core:ui.feedPanel.focus')}
+          title={formatMessage({ id: 'ui.feedPanel.focus' })}
+          aria-label={formatMessage({ id: 'ui.feedPanel.focus' })}
           visibleFrom="md"
         >
           <IconFocus size="1.125rem" />

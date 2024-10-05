@@ -1,0 +1,822 @@
+{
+  "common.add": [
+    {
+      "type": 0,
+      "value": "Thêm"
+    }
+  ],
+  "common.back": [
+    {
+      "type": 0,
+      "value": "Trở về"
+    }
+  ],
+  "common.cancel": [
+    {
+      "type": 0,
+      "value": "Hủy"
+    }
+  ],
+  "common.confirm": [
+    {
+      "type": 0,
+      "value": "Xác nhận"
+    }
+  ],
+  "common.create": [
+    {
+      "type": 0,
+      "value": "Tạo"
+    }
+  ],
+  "common.default": [
+    {
+      "type": 0,
+      "value": "Mặc định"
+    }
+  ],
+  "common.delete": [
+    {
+      "type": 0,
+      "value": "Xóa"
+    }
+  ],
+  "common.forward": [
+    {
+      "type": 0,
+      "value": "Kế tiếp"
+    }
+  ],
+  "common.loading": [
+    {
+      "type": 0,
+      "value": "Đang tải"
+    }
+  ],
+  "common.notification": [
+    {
+      "type": 0,
+      "value": "Thông báo"
+    }
+  ],
+  "common.reset": [
+    {
+      "type": 0,
+      "value": "Đặt lại"
+    }
+  ],
+  "common.save": [
+    {
+      "type": 0,
+      "value": "Lưu"
+    }
+  ],
+  "common.select": [
+    {
+      "type": 0,
+      "value": "Chọn"
+    }
+  ],
+  "common.update": [
+    {
+      "type": 0,
+      "value": "Cập nhật"
+    }
+  ],
+  "common.welcome": [
+    {
+      "type": 0,
+      "value": "Chào mừng"
+    }
+  ],
+  "common.wiki": [
+    {
+      "type": 0,
+      "value": "Wiki"
+    }
+  ],
+  "errorMessage.existedWikiId": [
+    {
+      "type": 0,
+      "value": "Wiki này đã có trong danh sách wiki của bộ lọc"
+    }
+  ],
+  "errorMessage.maxLimitFilterWikis": [
+    {
+      "type": 0,
+      "value": "Đã đạt giới hạn lớn nhất của danh sách wiki của bộ lọc"
+    }
+  ],
+  "errorMessage.notEmpty": [
+    {
+      "type": 0,
+      "value": "Trường này không được để trống"
+    }
+  ],
+  "errorMessage.notSupportedWikiId": [
+    {
+      "type": 0,
+      "value": "Wiki ID này không nằm trong danh sách hỗ trợ"
+    }
+  ],
+  "errorMessage.startAfterEnd": [
+    {
+      "type": 0,
+      "value": "Mốc bắt đầu phải sau mốc kết thúc"
+    }
+  ],
+  "hook.useCreateFilter.success.default": [
+    {
+      "type": 0,
+      "value": "Đã tạo bộ lọc mới thành công"
+    }
+  ],
+  "hook.useCreateWorkspace.success.default": [
+    {
+      "type": 0,
+      "value": "Đã tạo không gian làm việc mới thành công"
+    }
+  ],
+  "hook.useDeleteFilter.success.default": [
+    {
+      "type": 0,
+      "value": "Đã xóa bộ lọc thành công"
+    }
+  ],
+  "hook.useDeleteWorkspace.success.default": [
+    {
+      "type": 0,
+      "value": "Đã xóa không gian làm việc thành công"
+    }
+  ],
+  "hook.useSaveOption.error.default": [
+    {
+      "type": 0,
+      "value": "Không thể tạo/lưu được cấu hình"
+    }
+  ],
+  "hook.useSaveOption.success.updateAppVersion": [
+    {
+      "type": 0,
+      "value": "Đã cập nhật thành công lên phiên bản mới nhất "
+    },
+    {
+      "type": 1,
+      "value": "newVersion"
+    },
+    {
+      "type": 0,
+      "value": " từ phiên bản "
+    },
+    {
+      "type": 1,
+      "value": "oldVersion"
+    }
+  ],
+  "hook.useSaveOption.success.updateSettings": [
+    {
+      "type": 0,
+      "value": "Đã cập nhật thành công thiết đặt"
+    }
+  ],
+  "hook.useUpdateFilter.success.default": [
+    {
+      "type": 0,
+      "value": "Đã cập nhật bộ lọc thành công"
+    }
+  ],
+  "hook.useUpdateWorkspace.success.default": [
+    {
+      "type": 0,
+      "value": "Đã cập nhật không gian làm việc thành công"
+    }
+  ],
+  "ui.feedPanel.connected": [
+    {
+      "type": 0,
+      "value": "Đã kết nối"
+    }
+  ],
+  "ui.feedPanel.disconnected": [
+    {
+      "type": 0,
+      "value": "Mất kết nối"
+    }
+  ],
+  "ui.feedPanel.empty": [
+    {
+      "type": 0,
+      "value": "Luồng đang trống"
+    }
+  ],
+  "ui.feedPanel.focus": [
+    {
+      "type": 0,
+      "value": "Tập trung"
+    }
+  ],
+  "ui.feedPanel.reload": [
+    {
+      "type": 0,
+      "value": "Tải lại"
+    }
+  ],
+  "ui.filterPanel.additionalWikis": [
+    {
+      "type": 0,
+      "value": "Wiki bổ sung"
+    }
+  ],
+  "ui.filterPanel.autopatrolled": [
+    {
+      "type": 0,
+      "value": "Tự đánh dấu tuần tra"
+    }
+  ],
+  "ui.filterPanel.bot": [
+    {
+      "type": 0,
+      "value": "Bot"
+    }
+  ],
+  "ui.filterPanel.categoryChanges": [
+    {
+      "type": 0,
+      "value": "Thay đổi thể loại"
+    }
+  ],
+  "ui.filterPanel.createTitle": [
+    {
+      "type": 0,
+      "value": "Tạo bộ lọc mới"
+    }
+  ],
+  "ui.filterPanel.deleteWiki": [
+    {
+      "type": 0,
+      "value": "Xóa wiki"
+    }
+  ],
+  "ui.filterPanel.end": [
+    {
+      "type": 0,
+      "value": "Kết thúc"
+    }
+  ],
+  "ui.filterPanel.feed": [
+    {
+      "type": 0,
+      "value": "Luồng"
+    }
+  ],
+  "ui.filterPanel.filterAddWikiForm.addWiki": [
+    {
+      "type": 0,
+      "value": "Thêm một wiki"
+    }
+  ],
+  "ui.filterPanel.filterAddWikiForm.eg": [
+    {
+      "type": 0,
+      "value": "Ví dụ: enwiki, viwiki."
+    }
+  ],
+  "ui.filterPanel.filterAddWikiForm.fullList": [
+    {
+      "type": 0,
+      "value": "Danh sách đầy đủ."
+    }
+  ],
+  "ui.filterPanel.filterAddWikiForm.notify": [
+    {
+      "type": 0,
+      "value": "Đã thêm "
+    },
+    {
+      "type": 1,
+      "value": "wikiId"
+    },
+    {
+      "type": 0,
+      "value": " cho bộ lọc. Đừng quên nhấn Lưu."
+    }
+  ],
+  "ui.filterPanel.filterName": [
+    {
+      "type": 0,
+      "value": "Tên bộ lọc"
+    }
+  ],
+  "ui.filterPanel.groupedByPage": [
+    {
+      "type": 0,
+      "value": "Nhóm theo trang"
+    }
+  ],
+  "ui.filterPanel.human": [
+    {
+      "type": 0,
+      "value": "Con người"
+    }
+  ],
+  "ui.filterPanel.inherited": [
+    {
+      "type": 0,
+      "value": "Kế thừa"
+    }
+  ],
+  "ui.filterPanel.interval": [
+    {
+      "type": 0,
+      "value": "Khoảng thời gian"
+    }
+  ],
+  "ui.filterPanel.invertedDirection": [
+    {
+      "type": 0,
+      "value": "Chiều ngược"
+    }
+  ],
+  "ui.filterPanel.latestRevision": [
+    {
+      "type": 0,
+      "value": "Phiên bản mới nhất"
+    }
+  ],
+  "ui.filterPanel.limit": [
+    {
+      "type": 0,
+      "value": "Giới hạn"
+    }
+  ],
+  "ui.filterPanel.liveUpdates": [
+    {
+      "type": 0,
+      "value": "Cập nhật trực tiếp"
+    }
+  ],
+  "ui.filterPanel.loggedActions": [
+    {
+      "type": 0,
+      "value": "Tác vụ được ghi trong nhật trình"
+    }
+  ],
+  "ui.filterPanel.minorEdits": [
+    {
+      "type": 0,
+      "value": "Sửa đổi nhỏ"
+    }
+  ],
+  "ui.filterPanel.namespaces": [
+    {
+      "type": 0,
+      "value": "Không gian tên"
+    }
+  ],
+  "ui.filterPanel.nonMinorEdits": [
+    {
+      "type": 0,
+      "value": "Sửa đổi không nhỏ"
+    }
+  ],
+  "ui.filterPanel.nonRedirect": [
+    {
+      "type": 0,
+      "value": "Không là trang đổi hướng"
+    }
+  ],
+  "ui.filterPanel.now": [
+    {
+      "type": 0,
+      "value": "Hiện tại"
+    }
+  ],
+  "ui.filterPanel.pageCreations": [
+    {
+      "type": 0,
+      "value": "Tạo trang"
+    }
+  ],
+  "ui.filterPanel.pageEdits": [
+    {
+      "type": 0,
+      "value": "Sửa đổi trang"
+    }
+  ],
+  "ui.filterPanel.pageTitle": [
+    {
+      "type": 0,
+      "value": "Tiêu đề trang"
+    }
+  ],
+  "ui.filterPanel.paginated": [
+    {
+      "type": 0,
+      "value": "Phân trang"
+    }
+  ],
+  "ui.filterPanel.patrolled": [
+    {
+      "type": 0,
+      "value": "Đã được đánh dấu tuần tra"
+    }
+  ],
+  "ui.filterPanel.period": [
+    {
+      "type": 0,
+      "value": "Quãng"
+    }
+  ],
+  "ui.filterPanel.redirect": [
+    {
+      "type": 0,
+      "value": "Trang đổi hướng"
+    }
+  ],
+  "ui.filterPanel.registered": [
+    {
+      "type": 0,
+      "value": "Đã đăng ký"
+    }
+  ],
+  "ui.filterPanel.smallWikis": [
+    {
+      "type": 0,
+      "value": "Wiki nhỏ"
+    }
+  ],
+  "ui.filterPanel.start": [
+    {
+      "type": 0,
+      "value": "Bắt đầu"
+    }
+  ],
+  "ui.filterPanel.tags": [
+    {
+      "type": 0,
+      "value": "Thẻ"
+    }
+  ],
+  "ui.filterPanel.timeframe": [
+    {
+      "type": 0,
+      "value": "Khung thời gian"
+    }
+  ],
+  "ui.filterPanel.timestamp": [
+    {
+      "type": 0,
+      "value": "Mốc thời gian"
+    }
+  ],
+  "ui.filterPanel.title": [
+    {
+      "type": 0,
+      "value": "Bộ lọc"
+    }
+  ],
+  "ui.filterPanel.unpatrolled": [
+    {
+      "type": 0,
+      "value": "Chưa được tuần tra"
+    }
+  ],
+  "ui.filterPanel.unregistered": [
+    {
+      "type": 0,
+      "value": "Vô danh"
+    }
+  ],
+  "ui.filterPanel.username": [
+    {
+      "type": 0,
+      "value": "Tên người dùng"
+    }
+  ],
+  "ui.filterPanel.wikidataEdits": [
+    {
+      "type": 0,
+      "value": "Sửa đổi trên Wikidata"
+    }
+  ],
+  "ui.heroPanel.startStateContent.firstLine": [
+    {
+      "type": 0,
+      "value": "Xin chào! Cảm ơn vì đã chọn Zinnia. Hãy bắt đầu hành trình của bạn!"
+    }
+  ],
+  "ui.heroPanel.startStateContent.secondLine": [
+    {
+      "type": 0,
+      "value": "Nhấn nút "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "Bắt đầu"
+        }
+      ],
+      "type": 8,
+      "value": "strong"
+    },
+    {
+      "type": 0,
+      "value": " bên dưới để tạo cấu hình và khởi động phiên làm việc."
+    }
+  ],
+  "ui.heroPanel.startStateContent.start": [
+    {
+      "type": 0,
+      "value": "Bắt đầu"
+    }
+  ],
+  "ui.noneTab.message": [
+    {
+      "type": 0,
+      "value": "Không có tab nào được chọn"
+    }
+  ],
+  "ui.settingPanel.language.label": [
+    {
+      "type": 0,
+      "value": "Ngôn ngữ"
+    }
+  ],
+  "ui.settingPanel.locale.label": [
+    {
+      "type": 0,
+      "value": "Vùng"
+    }
+  ],
+  "ui.settingPanel.rtl.label": [
+    {
+      "type": 0,
+      "value": "Phải-sang-trái"
+    }
+  ],
+  "ui.settingPanel.theme.auto": [
+    {
+      "type": 0,
+      "value": "Tự động"
+    }
+  ],
+  "ui.settingPanel.theme.dark": [
+    {
+      "type": 0,
+      "value": "Tối"
+    }
+  ],
+  "ui.settingPanel.theme.label": [
+    {
+      "type": 0,
+      "value": "Chủ đề"
+    }
+  ],
+  "ui.settingPanel.theme.light": [
+    {
+      "type": 0,
+      "value": "Sáng"
+    }
+  ],
+  "ui.settingPanel.title": [
+    {
+      "type": 0,
+      "value": "Thiết đặt"
+    }
+  ],
+  "ui.welcomeTab.code": [
+    {
+      "type": 0,
+      "value": "Mã nguồn"
+    }
+  ],
+  "ui.welcomeTab.home": [
+    {
+      "type": 0,
+      "value": "Trang chủ"
+    }
+  ],
+  "ui.welcomeTab.slogan": [
+    {
+      "type": 0,
+      "value": "Ứng dụng chống phá hoại toàn diện"
+    }
+  ],
+  "ui.welcomeTab.support": [
+    {
+      "type": 0,
+      "value": "Ủng hộ"
+    }
+  ],
+  "ui.welcomeTab.talk": [
+    {
+      "type": 0,
+      "value": "Thảo luận"
+    }
+  ],
+  "ui.workspacePanel.createTitle": [
+    {
+      "type": 0,
+      "value": "Tạo không gian làm việc mới"
+    }
+  ],
+  "ui.workspacePanel.title": [
+    {
+      "type": 0,
+      "value": "Không gian làm việc"
+    }
+  ],
+  "ui.workspacePanel.updateTitle": [
+    {
+      "type": 0,
+      "value": "Cập nhật không gian làm việc"
+    }
+  ],
+  "ui.workspacePanel.workspaceName": [
+    {
+      "type": 0,
+      "value": "Tên không gian làm việc"
+    }
+  ],
+  "wiki.namespace.category": [
+    {
+      "type": 0,
+      "value": "Thể loại"
+    }
+  ],
+  "wiki.namespace.categoryTalk": [
+    {
+      "type": 0,
+      "value": "Thảo luận Thể loại"
+    }
+  ],
+  "wiki.namespace.file": [
+    {
+      "type": 0,
+      "value": "Tập tin"
+    }
+  ],
+  "wiki.namespace.fileTalk": [
+    {
+      "type": 0,
+      "value": "Thảo luận Tập tin"
+    }
+  ],
+  "wiki.namespace.help": [
+    {
+      "type": 0,
+      "value": "Trợ giúp"
+    }
+  ],
+  "wiki.namespace.helpTalk": [
+    {
+      "type": 0,
+      "value": "Thảo luận Trợ giúp"
+    }
+  ],
+  "wiki.namespace.main": [
+    {
+      "type": 0,
+      "value": "(Chính)"
+    }
+  ],
+  "wiki.namespace.mediaWiki": [
+    {
+      "type": 0,
+      "value": "MediaWiki"
+    }
+  ],
+  "wiki.namespace.mediaWikiTalk": [
+    {
+      "type": 0,
+      "value": "Thảo luận MediaWiki"
+    }
+  ],
+  "wiki.namespace.module": [
+    {
+      "type": 0,
+      "value": "Mô đun"
+    }
+  ],
+  "wiki.namespace.moduleTalk": [
+    {
+      "type": 0,
+      "value": "Thảo luận Mô đun"
+    }
+  ],
+  "wiki.namespace.project": [
+    {
+      "type": 0,
+      "value": "Dự án"
+    }
+  ],
+  "wiki.namespace.projectTalk": [
+    {
+      "type": 0,
+      "value": "Thảo luận Dự án"
+    }
+  ],
+  "wiki.namespace.talk": [
+    {
+      "type": 0,
+      "value": "Thảo luận"
+    }
+  ],
+  "wiki.namespace.template": [
+    {
+      "type": 0,
+      "value": "Bản mẫu"
+    }
+  ],
+  "wiki.namespace.templateTalk": [
+    {
+      "type": 0,
+      "value": "Thảo luận Bản mẫu"
+    }
+  ],
+  "wiki.namespace.user": [
+    {
+      "type": 0,
+      "value": "Thành viên"
+    }
+  ],
+  "wiki.namespace.userTalk": [
+    {
+      "type": 0,
+      "value": "Thảo luận Thành viên"
+    }
+  ],
+  "wiki.project.meta": [
+    {
+      "type": 0,
+      "value": "Meta"
+    }
+  ],
+  "wiki.project.wikipedia": [
+    {
+      "type": 0,
+      "value": "Wikipedia"
+    }
+  ],
+  "wiki.tag.mobileEdit": [
+    {
+      "type": 0,
+      "value": "Sửa đổi di động"
+    }
+  ],
+  "wiki.tag.mwBlank": [
+    {
+      "type": 0,
+      "value": "Tẩy trống trang"
+    }
+  ],
+  "wiki.tag.mwChangedRedirectTarget": [
+    {
+      "type": 0,
+      "value": "Thay đổi trang đích của đổi hướng"
+    }
+  ],
+  "wiki.tag.mwManualRevert": [
+    {
+      "type": 0,
+      "value": "Lùi lại thủ công"
+    }
+  ],
+  "wiki.tag.mwNewRedirect": [
+    {
+      "type": 0,
+      "value": "Trang đổi hướng mới"
+    }
+  ],
+  "wiki.tag.mwRemovedRedirect": [
+    {
+      "type": 0,
+      "value": "Xóa đổi hướng"
+    }
+  ],
+  "wiki.tag.mwReplace": [
+    {
+      "type": 0,
+      "value": "Thay thế nội dung"
+    }
+  ],
+  "wiki.tag.mwReverted": [
+    {
+      "type": 0,
+      "value": "Đã bị lùi lại"
+    }
+  ],
+  "wiki.tag.mwRollback": [
+    {
+      "type": 0,
+      "value": "Lùi tất cả"
+    }
+  ],
+  "wiki.tag.mwUndo": [
+    {
+      "type": 0,
+      "value": "Lùi sửa"
+    }
+  ]
+}

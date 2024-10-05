@@ -6,10 +6,7 @@ export default defineConfig({
   server: {
     port: 8050,
   },
-  plugins: [
-    react(),
-    tsconfigPaths(),
-  ],
+  plugins: [react(), tsconfigPaths()],
   test: {
     globals: true,
     environment: 'jsdom',
@@ -25,6 +22,16 @@ export default defineConfig({
         chunkFileNames: 'assets/[name].js',
         assetFileNames: 'assets/[name].[ext]',
       },
+    },
+  },
+  esbuild: {
+    supported: {
+      'top-level-await': true,
+    },
+  },
+  resolve: {
+    alias: {
+      '@formatjs/icu-messageformat-parser': '@formatjs/icu-messageformat-parser/no-parser',
     },
   },
 });
