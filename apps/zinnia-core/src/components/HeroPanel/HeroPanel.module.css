@@ -7,12 +7,10 @@
   padding-inline: var(--mantine-spacing-lg);
   font-family: var(--zinnia-font-family), sans-serif;
   justify-content: center;
-  align-items: stretch;
+  align-items: center;
   color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
 
   &[data-init-state="empty"], &[data-init-state="start"], &[data-init-state="normal"][data-show-main-panel="false"] {
-    height: 65vh;
-    min-height: rem(350px);
-    max-height: rem(600px);
+    min-height: rem(525px);
   }
 }

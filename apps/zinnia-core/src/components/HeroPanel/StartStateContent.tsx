@@ -95,11 +95,18 @@ export function StartStateContent() {
   };
 
   return (
-    <Flex direction="column" gap="lg" justify="center" align="center" h="95%">
-      <Text fz={35} fw={600} ta="center">
+    <Flex
+      direction="column"
+      gap="lg"
+      justify="center"
+      align="center"
+      h="95%"
+      px={{ base: 0, sm: '1rem', md: '2rem' }}
+    >
+      <Text fz={{ base: 25, sm: 30, md: 35 }} fw={600} ta="center">
         {formatMessage({ id: 'ui.heroPanel.startStateContent.firstLine' })}
       </Text>
-      <Text fz={25} ta="center">
+      <Text fz={{ base: 18, sm: 22, md: 25 }} ta="center">
         {formatMessage({ id: 'ui.heroPanel.startStateContent.secondLine' })}
       </Text>
       <Button size="lg" mt="md" loading={saveOptionApi.isPending} onClick={handleClickStartButton}>
