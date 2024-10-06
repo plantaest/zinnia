@@ -3,7 +3,6 @@ import semverGt from 'semver/functions/gt';
 import semverEq from 'semver/functions/eq';
 import { useIntl } from 'react-intl';
 import dayjs from 'dayjs';
-import { useSelector } from '@legendapp/state/react';
 import { appState } from '@/states/appState';
 import { UserConfig } from '@/types/persistence/UserConfig';
 import { appConfig } from '@/config/appConfig';
@@ -19,7 +18,6 @@ export function useManageVersion() {
     appConfig.USER_CONFIG_OPTION_KEY
   );
   const saveOptionApi = useSaveOption();
-  const userConfig = useSelector(appState.userConfig);
 
   const updateAppVersion = useCallback((currentAppVersion: string, persistedAppVersion: string) => {
     const now = dayjs().toISOString();
@@ -28,13 +26,13 @@ export function useManageVersion() {
     saveOptionApi.mutate(
       {
         name: appConfig.USER_CONFIG_OPTION_KEY,
-        value: JSON.stringify(userConfig),
+        value: JSON.stringify(appState.userConfig.get()),
       },
       {
         onSuccess: () =>
           Notify.success(
             formatMessage(
-              { id: 'hook.useCreateFilter.success.default' },
+              { id: 'hook.useSaveOption.success.updateAppVersion' },
               {
                 newVersion: currentAppVersion,
                 oldVersion: persistedAppVersion,
@@ -50,7 +48,6 @@ export function useManageVersion() {
       if (userConfigOption === null) {
         appState.ui.initState.set('start');
       } else {
-        // eslint-disable-next-line @typescript-eslint/no-shadow
         const userConfig: UserConfig = JSON.parse(userConfigOption as string);
 
         const currentAppVersion = appConfig.VERSION;
