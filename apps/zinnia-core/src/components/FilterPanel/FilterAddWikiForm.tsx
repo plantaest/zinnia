@@ -75,17 +75,19 @@ function FilterAddWikiFormContent() {
       },
     };
 
-    filterPanelFormAction.setFieldValue('wikis', (filterWikis) => {
+    filterPanelFormAction.setValues((values) => {
+      const filterWikis = values.wikis!;
+
       if (filterWikis.length > appConfig.MAX_FILTER_WIKIS) {
         form.setFieldError('wikiId', formatMessage({ id: errorMessage.maxLimitFilterWikis }));
-        return filterWikis;
+        return values;
       }
 
       const currentWikiIds = filterWikis.map((w) => w.wikiId);
 
       if (currentWikiIds.includes(wiki.wikiId)) {
         form.setFieldError('wikiId', formatMessage({ id: errorMessage.existedWikiId }));
-        return filterWikis;
+        return values;
       }
 
       Notify.success(
@@ -97,7 +99,9 @@ function FilterAddWikiFormContent() {
         )
       );
 
-      return [...filterWikis, wiki];
+      return {
+        wikis: [...filterWikis, wiki],
+      };
     });
   });
 
