@@ -79,15 +79,15 @@ function FilterAddWikiFormContent() {
       const filterWikis = values.wikis!;
 
       if (filterWikis.length > appConfig.MAX_FILTER_WIKIS) {
-        form.setFieldError('wikiId', formatMessage({ id: errorMessage.maxLimitFilterWikis }));
-        return values;
+        form.setErrors({ wikiId: formatMessage({ id: errorMessage.maxLimitFilterWikis }) });
+        return {};
       }
 
       const currentWikiIds = filterWikis.map((w) => w.wikiId);
 
       if (currentWikiIds.includes(wiki.wikiId)) {
-        form.setFieldError('wikiId', formatMessage({ id: errorMessage.existedWikiId }));
-        return values;
+        form.setErrors({ wikiId: formatMessage({ id: errorMessage.existedWikiId }) });
+        return {};
       }
 
       Notify.success(
