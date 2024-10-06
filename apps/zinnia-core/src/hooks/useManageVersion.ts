@@ -26,7 +26,7 @@ export function useManageVersion() {
     saveOptionApi.mutate(
       {
         name: appConfig.USER_CONFIG_OPTION_KEY,
-        value: JSON.stringify(appState.userConfig.get()),
+        value: JSON.stringify(appState.userConfig.peek()),
       },
       {
         onSuccess: () =>

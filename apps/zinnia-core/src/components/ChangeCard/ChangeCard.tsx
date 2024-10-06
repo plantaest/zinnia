@@ -95,7 +95,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
   });
 
   const handleClickChangeButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const tabs = appState.local.activeTabs.get();
+    const tabs = appState.local.activeTabs.peek();
     const now = dayjs().toISOString();
 
     if (change.type === 'edit') {
