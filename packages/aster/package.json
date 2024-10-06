@@ -5,9 +5,9 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@plantaest/typescript-config": "workspace:*",
-    "prettier": "^3.2.5",
-    "typescript": "^5.4.5",
-    "@types/jquery": "^3.5.30",
-    "types-mediawiki": "^1.7.0"
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.2",
+    "@types/jquery": "^3.5.31",
+    "types-mediawiki": "^1.8.0"
   }
 }
