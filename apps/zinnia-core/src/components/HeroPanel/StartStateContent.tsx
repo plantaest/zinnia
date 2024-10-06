@@ -41,7 +41,7 @@ export function StartStateContent() {
       schemaVersion: versionMap[appConfig.VERSION],
       colorScheme: 'auto',
       language: locale,
-      locale: locale,
+      locale: locale, // TODO: Should use `navigator`?
       dir,
       workspaces: [
         {
