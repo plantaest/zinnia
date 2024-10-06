@@ -24,6 +24,7 @@ import { appState } from '@/states/appState';
 import { HomePage } from '@/pages/HomePage/Home.page';
 import { i18n } from '@/i18n';
 import { useSyncLanguage } from '@/hooks/useSyncLanguage';
+import { ErrorBoundary } from '@/components/ErrorBoundary/ErrorBoundary';
 
 // dayjs
 dayjs.extend(duration);
@@ -88,19 +89,21 @@ export default function App({ shadowRoot }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <DirectionProvider>
-        <RawIntlProvider value={i18n.intl}>
-          <MantineProvider
-            theme={theme}
-            defaultColorScheme="auto"
-            cssVariablesSelector=".zinnia-root"
-            getRootElement={() => zinniaRoot}
-          >
-            <Notifications />
-            <ModalsProvider>
-              <HomePage />
-            </ModalsProvider>
-          </MantineProvider>
-        </RawIntlProvider>
+        <MantineProvider
+          theme={theme}
+          defaultColorScheme="auto"
+          cssVariablesSelector=".zinnia-root"
+          getRootElement={() => zinniaRoot}
+        >
+          <Notifications />
+          <ModalsProvider>
+            <ErrorBoundary>
+              <RawIntlProvider value={i18n.intl}>
+                <HomePage />
+              </RawIntlProvider>
+            </ErrorBoundary>
+          </ModalsProvider>
+        </MantineProvider>
       </DirectionProvider>
       <ReactQueryDevtools
         initialIsOpen={false}

@@ -147,8 +147,8 @@ export namespace FeedHelper {
         : undefined;
 
     const rctitle = wiki.inherited
-      ? globalWikiConfig.pageTitle ?? undefined
-      : wiki.config.pageTitle ?? undefined;
+      ? (globalWikiConfig.pageTitle ?? undefined)
+      : (wiki.config.pageTitle ?? undefined);
 
     return {
       rcstart,

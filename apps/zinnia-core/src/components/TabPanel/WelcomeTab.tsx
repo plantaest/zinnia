@@ -32,14 +32,7 @@ export function WelcomeTab() {
   return (
     <Stack p="xs" gap="xs" h="100%" justify="space-between">
       <Stack gap="xs" align="center" mb="2rem" style={{ zIndex: 1 }}>
-        <Text
-          mt="1.25rem"
-          c="blue.5"
-          fw={600}
-          fz="3rem"
-          ta="center"
-          ff="var(--zinnia-font-family)"
-        >
+        <Text mt="1.25rem" c="blue.5" fw={600} fz="3rem" ta="center" ff="var(--zinnia-font-family)">
           Zinnia
         </Text>
         <Text mb="2rem" fw={600} fz="1.25rem" ta="center" ff="var(--zinnia-font-family)">
