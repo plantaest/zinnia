@@ -1,4 +1,4 @@
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 import {
   ActionIcon,
   Button,
@@ -42,7 +42,7 @@ import { FilterTagSelect } from '@/components/FilterPanel/FilterTagSelect';
 import { useGetRightsOnWikis } from '@/queries/useGetRightsOnWikis';
 import { MwHelper } from '@/utils/MwHelper';
 
-const formSchema = (formatMessage: ({ id }: { id: string }) => string) =>
+const formSchema = (formatMessage: IntlShape['formatMessage']) =>
   v.object({
     name: v.pipe(
       v.string(),

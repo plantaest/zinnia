@@ -4,6 +4,8 @@ import { IconInfoCircle } from '@tabler/icons-react';
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
 import { appState } from '@/states/appState';
+import { useSaveOption } from '@/queries/useSaveOption';
+import { appConfig } from '@/config/appConfig';
 
 interface ErrorFallbackProps {
   error: Error;
@@ -12,6 +14,7 @@ interface ErrorFallbackProps {
 
 export function ErrorFallback({ error, errorInfo }: ErrorFallbackProps) {
   const appStateObject = appState.peek();
+  const saveOptionApi = useSaveOption();
 
   const lines = [
     {
@@ -73,6 +76,23 @@ export function ErrorFallback({ error, errorInfo }: ErrorFallbackProps) {
     appState: appStateObject,
   };
 
+  const handleClickFactoryResetButton = () => {
+    saveOptionApi.mutate(
+      {
+        name: appConfig.USER_CONFIG_OPTION_KEY,
+        value: null,
+      },
+      {
+        onSuccess: () => {
+          appState.userConfig.language.delete();
+          appState.userConfig.dir.delete();
+          appState.local.tabs.delete();
+          window.location.reload();
+        },
+      }
+    );
+  };
+
   return (
     <Alert
       variant="white"
@@ -103,6 +123,13 @@ export function ErrorFallback({ error, errorInfo }: ErrorFallbackProps) {
             target="_blank"
           >
             Email to Plantaest
+          </Button>
+          <Button
+            color="red"
+            onClick={handleClickFactoryResetButton}
+            loading={saveOptionApi.isPending}
+          >
+            Factory reset
           </Button>
         </Group>
         {lines.map((line) => (

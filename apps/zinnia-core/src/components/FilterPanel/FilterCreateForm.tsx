@@ -1,4 +1,4 @@
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 import { useFocusTrap } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import dayjs from 'dayjs';
@@ -16,7 +16,7 @@ import { useCreateFilter } from '@/queries/useCreateFilter';
 import { FilterLayer } from '@/components/FilterPanel/FilterLayer';
 import { errorMessage } from '@/utils/errorMessage';
 
-const formSchema = (formatMessage: ({ id }: { id: string }) => string) =>
+const formSchema = (formatMessage: IntlShape['formatMessage']) =>
   v.object({
     filterName: v.pipe(
       v.string(),

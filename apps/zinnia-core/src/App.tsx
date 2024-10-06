@@ -97,11 +97,11 @@ export default function App({ shadowRoot }: AppProps) {
         >
           <Notifications />
           <ModalsProvider>
-            <ErrorBoundary>
-              <RawIntlProvider value={i18n.intl}>
+            <RawIntlProvider value={i18n.intl}>
+              <ErrorBoundary>
                 <HomePage />
-              </RawIntlProvider>
-            </ErrorBoundary>
+              </ErrorBoundary>
+            </RawIntlProvider>
           </ModalsProvider>
         </MantineProvider>
       </DirectionProvider>

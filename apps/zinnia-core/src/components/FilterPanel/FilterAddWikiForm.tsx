@@ -1,6 +1,6 @@
 import { ActionIcon, Anchor, Button, Group, Popover, Stack, Text, TextInput } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 import { useForm } from '@mantine/form';
 import React from 'react';
 import * as v from 'valibot';
@@ -12,7 +12,7 @@ import { filterPanelFormAction, FilterPanelFormValues } from '@/components/Filte
 import { Notify } from '@/utils/Notify';
 import { appConfig } from '@/config/appConfig';
 
-const formSchema = (formatMessage: ({ id }: { id: string }) => string) =>
+const formSchema = (formatMessage: IntlShape['formatMessage']) =>
   v.pipe(
     v.object({
       wikiId: v.pipe(

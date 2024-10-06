@@ -1,6 +1,6 @@
 import { ActionIcon, Button, Group, Stack, Text, TextInput } from '@mantine/core';
 import { IconArrowLeft } from '@tabler/icons-react';
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 import { useFocusTrap } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import dayjs from 'dayjs';
@@ -12,7 +12,7 @@ import { Workspace } from '@/types/persistence/Workspace';
 import { useDeleteWorkspace } from '@/queries/useDeleteWorkspace';
 import { useUpdateWorkspace } from '@/queries/useUpdateWorkspace';
 
-const formSchema = (formatMessage: ({ id }: { id: string }) => string) =>
+const formSchema = (formatMessage: IntlShape['formatMessage']) =>
   v.object({
     workspaceName: v.pipe(
       v.string(),
