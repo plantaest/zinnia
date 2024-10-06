@@ -1,8 +1,9 @@
-import { ErrorInfo } from 'react';
+import { ErrorInfo, useEffect, useState } from 'react';
 import { Alert, Button, Code, CopyButton, Flex, Group, Stack, Text } from '@mantine/core';
 import { IconInfoCircle } from '@tabler/icons-react';
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
+import { fromError, StackFrame } from 'stacktrace-js';
 import { appState } from '@/states/appState';
 import { useSaveOption } from '@/queries/useSaveOption';
 import { appConfig } from '@/config/appConfig';
@@ -15,6 +16,27 @@ interface ErrorFallbackProps {
 export function ErrorFallback({ error, errorInfo }: ErrorFallbackProps) {
   const appStateObject = appState.peek();
   const saveOptionApi = useSaveOption();
+  const [errorStackFrames, setErrorStackFrames] = useState<StackFrame[]>([]);
+  const [errorInfoStackFrames, setErrorInfoStackFrames] = useState<StackFrame[]>([]);
+
+  useEffect(() => {
+    Promise.all([
+      fromError(error),
+      fromError({
+        name: 'ErrorInfo',
+        message: 'ErrorInfo',
+        stack: String(errorInfo.componentStack),
+      }),
+    ])
+      .then((sfArrays) => {
+        setErrorStackFrames(sfArrays[0]);
+        setErrorInfoStackFrames(sfArrays[1]);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.error('Error mapping stack trace:', err);
+      });
+  }, []);
 
   const lines = [
     {
@@ -30,11 +52,11 @@ export function ErrorFallback({ error, errorInfo }: ErrorFallbackProps) {
       value: (
         <Code
           block
-          mah="18.25rem"
+          h="12.5rem"
           ff="var(--zinnia-font-monospace)"
           style={{ scrollbarWidth: 'none' }}
         >
-          {error.stack}
+          {errorStackFrames.join('\n')}
         </Code>
       ),
     },
@@ -43,11 +65,11 @@ export function ErrorFallback({ error, errorInfo }: ErrorFallbackProps) {
       value: (
         <Code
           block
-          mah="18.25rem"
+          h="12.5rem"
           ff="var(--zinnia-font-monospace)"
           style={{ scrollbarWidth: 'none' }}
         >
-          {errorInfo.componentStack}
+          {errorInfoStackFrames.join('\n')}
         </Code>
       ),
     },
@@ -56,7 +78,7 @@ export function ErrorFallback({ error, errorInfo }: ErrorFallbackProps) {
       value: (
         <Code
           block
-          mah="18.25rem"
+          h="12.5rem"
           ff="var(--zinnia-font-monospace)"
           style={{ scrollbarWidth: 'none' }}
         >
@@ -71,8 +93,8 @@ export function ErrorFallback({ error, errorInfo }: ErrorFallbackProps) {
     timestamp: dayjs().toISOString(),
     errorName: error.name,
     errorMessage: error.message,
-    errorStack: error.stack,
-    errorComponentStack: errorInfo.componentStack,
+    errorStack: errorStackFrames.join('\n'),
+    errorComponentStack: errorInfoStackFrames.join('\n'),
     appState: appStateObject,
   };
 
