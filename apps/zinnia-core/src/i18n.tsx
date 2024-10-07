@@ -2,7 +2,7 @@ import { createIntl, createIntlCache } from 'react-intl';
 
 const messages = new Map();
 const intlCache = createIntlCache();
-const locales: Record<string, () => Promise<any>> = import.meta.glob('./locales/ast/*.json');
+const locales: Record<string, () => Promise<any>> = import.meta.glob('./compiled-locales/*.json');
 const suggestedLanguage = document.documentElement.lang || navigator.language;
 
 const supportedLanguages = ['en', 'vi'];
@@ -12,7 +12,7 @@ export const createIntlInstance = async (language?: string) => {
     language || (supportedLanguages.includes(suggestedLanguage) ? suggestedLanguage : 'en');
 
   if (!messages.has(locale)) {
-    const loadedMessages = (await locales[`./locales/ast/${locale}.json`]()).default;
+    const loadedMessages = (await locales[`./compiled-locales/${locale}.json`]()).default;
     messages.set(locale, loadedMessages);
   }
 

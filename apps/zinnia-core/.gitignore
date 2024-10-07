@@ -133,3 +133,6 @@ dist
 
 # intellij
 .idea
+
+# formatjs
+src/compiled-locales

@@ -31,7 +31,7 @@ files.forEach((file) => {
   console.log(`Formatted JSON has been written to ${outputFilePath}`);
 });
 
-execSync(`pnpm compile --ast ${tempDir} ${inputDir}/ast`, { stdio: 'inherit' });
+execSync(`pnpm compile --ast ${tempDir} src/compiled-locales`, { stdio: 'inherit' });
 
 fs.rmSync(tempDir, { recursive: true, force: true });
 console.log(`Temporary directory ${tempDir} has been removed.`);
