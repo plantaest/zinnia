@@ -14,43 +14,7 @@
     mw.config.get('wgCanonicalSpecialPageName') === 'Blankpage' &&
     String(mw.config.get('wgTitle')).endsWith('/Zinnia@canary')
   ) {
-    const host = 'https://tools-static.wmflabs.org/zinnia/builds/canary/';
-
-    const styles = ['assets/document.css'];
-    const preloadStyles = ['assets/index.css', 'assets/mantine.css'];
-    const preloadModules = ['assets/vendor.js', 'assets/mantine.js'];
-    const scripts = ['assets/index.js'];
-
-    const loadStyle = function (name) {
-      mw.loader.load(host + name, 'text/css');
-    };
-
-    const preloadStyle = function (name) {
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'style';
-      link.href = host + name;
-      document.head.appendChild(link);
-    };
-
-    const preloadModule = function (name) {
-      const link = document.createElement('link');
-      link.rel = 'modulepreload';
-      link.href = host + name;
-      document.head.appendChild(link);
-    };
-
-    const loadScript = function (name) {
-      const script = document.createElement('script');
-      script.async = false;
-      script.type = 'module';
-      script.src = host + name;
-      document.head.appendChild(script);
-    };
-
-    styles.forEach(loadStyle);
-    preloadStyles.forEach(preloadStyle);
-    preloadModules.forEach(preloadModule);
-    scripts.forEach(loadScript);
+    const start = 'https://tools-static.wmflabs.org/zinnia/builds/canary/assets/start.js';
+    mw.loader.load(start);
   }
 })(mw);

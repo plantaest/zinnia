@@ -2,15 +2,25 @@ import ReactDOM from 'react-dom/client';
 import { isMwEnv } from '@/utils/isMwEnv';
 import { zinniaRoot } from '@/utils/zinniaRoot';
 import App from './App';
-import { serverUri } from '@/utils/serverUri';
 
-const root = document.querySelector('.mw-body')!;
+if (process.env.NODE_ENV === 'development') {
+  import('./document.css');
+}
+
+declare global {
+  interface Window {
+    zinniaShadowRoot: ShadowRoot;
+  }
+}
 
 if (isMwEnv()) {
-  root.replaceChildren();
-  const shadowRoot = root.attachShadow({ mode: 'open' });
+  let shadowRoot;
 
   if (process.env.NODE_ENV === 'development') {
+    const root = document.querySelector('.mw-body')!;
+    root.replaceChildren();
+    shadowRoot = root.attachShadow({ mode: 'open' });
+
     const map = new Map<Node, Node>();
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
@@ -41,23 +51,14 @@ if (isMwEnv()) {
     }
 
     shadowRoot.prepend(...map.values());
-  }
-
-  if (process.env.NODE_ENV === 'production') {
-    const createStyleLinkNode = (name: string) => {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.type = 'text/css';
-      link.href = serverUri(name);
-      return link;
-    };
-
-    shadowRoot.prepend(...['assets/mantine.css', 'assets/index.css'].map(createStyleLinkNode));
+  } else {
+    shadowRoot = window.zinniaShadowRoot;
   }
 
   shadowRoot.appendChild(zinniaRoot);
   ReactDOM.createRoot(zinniaRoot).render(<App shadowRoot={shadowRoot} />);
 } else {
+  const root = document.querySelector('.mw-body')!;
   root.appendChild(zinniaRoot);
   ReactDOM.createRoot(zinniaRoot).render(<App />);
 }

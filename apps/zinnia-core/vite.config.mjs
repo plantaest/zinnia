@@ -1,8 +1,9 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import zinniaSpecificFilesPlugin from './zinniaSpecificFilesPlugin.js';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   server: {
     port: 8050,
   },
@@ -18,23 +19,15 @@ export default defineConfig({
   build: {
     sourcemap: true,
     copyPublicDir: false,
+    modulePreload: false,
     rollupOptions: {
       output: {
-        entryFileNames: 'assets/index.js',
-        chunkFileNames: 'assets/[name].js',
-        assetFileNames: 'assets/[name].[ext]',
-        manualChunks: (id) => {
-          if (id.includes('document.css')) {
-            return 'document';
-          }
-          if (id.includes('@mantine')) {
-            return 'mantine';
-          }
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
+        manualChunks: {
+          react: ['react', 'react-dom'],
+          mantine: ['@mantine/core', '@mantine/hooks'],
         },
       },
+      plugins: [zinniaSpecificFilesPlugin(mode)],
     },
   },
   esbuild: {
@@ -48,4 +41,4 @@ export default defineConfig({
       '@formatjs/icu-messageformat-parser': '@formatjs/icu-messageformat-parser/no-parser',
     },
   },
-});
+}));

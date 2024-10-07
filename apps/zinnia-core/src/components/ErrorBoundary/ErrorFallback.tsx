@@ -3,7 +3,7 @@ import { Alert, Button, Code, CopyButton, Flex, Group, Stack, Text } from '@mant
 import { IconInfoCircle } from '@tabler/icons-react';
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
-import { fromError, StackFrame } from 'stacktrace-js';
+import { StackFrame } from 'stacktrace-js';
 import { appState } from '@/states/appState';
 import { useSaveOption } from '@/queries/useSaveOption';
 import { appConfig } from '@/config/appConfig';
@@ -20,14 +20,17 @@ export function ErrorFallback({ error, errorInfo }: ErrorFallbackProps) {
   const [errorInfoStackFrames, setErrorInfoStackFrames] = useState<StackFrame[]>([]);
 
   useEffect(() => {
-    Promise.all([
-      fromError(error),
-      fromError({
-        name: 'ErrorInfo',
-        message: 'ErrorInfo',
-        stack: String(errorInfo.componentStack),
-      }),
-    ])
+    import('stacktrace-js')
+      .then(({ fromError }) =>
+        Promise.all([
+          fromError(error),
+          fromError({
+            name: 'ErrorInfo',
+            message: 'ErrorInfo',
+            stack: String(errorInfo.componentStack),
+          }),
+        ])
+      )
       .then((sfArrays) => {
         setErrorStackFrames(sfArrays[0]);
         setErrorInfoStackFrames(sfArrays[1]);
