@@ -110,40 +110,38 @@ export function DiffTab({ wikiId, fromRevisionId, toRevisionId }: DiffTabProps) 
       '.diff tr:has(.mw-diff-movedpara-right) .diff-side-added'
     );
 
-    const scrollToRightCellEventListeners: Array<(event: Event) => void> = [];
-    const scrollToLeftCellEventListeners: Array<(event: Event) => void> = [];
+    const scrollToCorrespondingCell = (event: Event) => {
+      event.preventDefault();
+      const currentAnchor = event.currentTarget as HTMLAnchorElement;
+      const correspondingAnchorName = currentAnchor.getAttribute('href')?.replace('#', '');
+      const correspondingCell = zinniaRoot.querySelector(
+        `td:has([name="${correspondingAnchorName}"])`
+      );
+      const correspondingCellAnchor = zinniaRoot.querySelector(
+        `td:has([name="${correspondingAnchorName}"]) > a`
+      );
+
+      if (correspondingCell && correspondingCellAnchor) {
+        // Ref: https://stackoverflow.com/a/52835382
+        correspondingCell.scrollIntoView({
+          behavior: 'instant',
+          block: 'nearest',
+          inline: 'start',
+        });
+        (correspondingCellAnchor as HTMLElement).focus();
+      }
+    };
 
     for (let i = 0; i < movedParaLeftAnchors.length; i += 1) {
-      const scrollToRightCell = (event: Event) => {
-        event.preventDefault();
-        // Ref: https://stackoverflow.com/a/52835382
-        movedParaRightCells[i].scrollIntoView({
-          behavior: 'instant',
-          block: 'nearest',
-          inline: 'start',
-        });
-        (movedParaRightAnchors[i] as HTMLElement).focus();
-      };
-
-      movedParaLeftAnchors[i].innerHTML = '>>';
-      movedParaLeftAnchors[i].addEventListener('click', scrollToRightCell);
       movedParaLeftCells[i].prepend(movedParaLeftAnchors[i]);
-      scrollToRightCellEventListeners.push(scrollToRightCell);
+      movedParaLeftAnchors[i].innerHTML = '>>';
+      movedParaLeftAnchors[i].addEventListener('click', scrollToCorrespondingCell);
+    }
 
-      const scrollToLeftCell = (event: Event) => {
-        event.preventDefault();
-        movedParaLeftCells[i].scrollIntoView({
-          behavior: 'instant',
-          block: 'nearest',
-          inline: 'start',
-        });
-        (movedParaLeftAnchors[i] as HTMLElement).focus();
-      };
-
-      movedParaRightAnchors[i].innerHTML = '<<';
-      movedParaRightAnchors[i].addEventListener('click', scrollToLeftCell);
+    for (let i = 0; i < movedParaRightAnchors.length; i += 1) {
       movedParaRightCells[i].prepend(movedParaRightAnchors[i]);
-      scrollToLeftCellEventListeners.push(scrollToLeftCell);
+      movedParaRightAnchors[i].innerHTML = '<<';
+      movedParaRightAnchors[i].addEventListener('click', scrollToCorrespondingCell);
     }
 
     return () => {
@@ -157,9 +155,12 @@ export function DiffTab({ wikiId, fromRevisionId, toRevisionId }: DiffTabProps) 
         cell.removeEventListener('mousedown', changeToAdded);
       }
 
-      for (let i = 0; i < movedParaLeftAnchors.length; i += 1) {
-        movedParaLeftAnchors[i].removeEventListener('click', scrollToRightCellEventListeners[i]);
-        movedParaRightAnchors[i].removeEventListener('click', scrollToLeftCellEventListeners[i]);
+      for (const anchor of movedParaLeftAnchors) {
+        anchor.removeEventListener('click', scrollToCorrespondingCell);
+      }
+
+      for (const anchor of movedParaRightAnchors) {
+        anchor.removeEventListener('click', scrollToCorrespondingCell);
       }
     };
   }, [compareResult.body]);
