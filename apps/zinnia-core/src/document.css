@@ -47,7 +47,11 @@ body:not(.mediawiki) .mw-body {
 }
 
 .skin-vector-2022 .mw-header {
-  z-index: auto;
+  z-index: 0;
+
+  &:has([aria-expanded="true"]) {
+    z-index: 3;
+  }
 }
 
 html[data-mantine-color-scheme="dark"] .skin-vector-2022 :is(.mw-header, .mw-page-container) {

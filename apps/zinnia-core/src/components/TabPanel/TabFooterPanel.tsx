@@ -5,6 +5,7 @@ import {
   IconCheck,
   IconGridDots,
   IconRestore,
+  IconSquareRounded,
 } from '@tabler/icons-react';
 import classes from '@/components/TabPanel/TabFooterPanel.module.css';
 import { FilterPanel } from '@/components/FilterPanel/FilterPanel';
@@ -48,6 +49,10 @@ export function TabFooterPanel() {
           <Group gap="xs" visibleFrom="sm" justify="center">
             {tools}
           </Group>
+
+          <ActionIcon variant="subtle" size="lg" hiddenFrom="sm">
+            <IconSquareRounded size="1.5rem" />
+          </ActionIcon>
 
           <Group gap="xs" wrap="nowrap">
             <ActionIcon variant="subtle" size="lg">

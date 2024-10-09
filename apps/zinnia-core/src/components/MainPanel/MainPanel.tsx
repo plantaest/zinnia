@@ -26,6 +26,7 @@ export function MainPanel() {
           onClose={handleClickDrawerCloseButton}
           size="100%"
           withCloseButton={false}
+          withOverlay={false}
           styles={{
             inner: {
               right: 0,
