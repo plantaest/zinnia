@@ -15,13 +15,12 @@ import {
 import { CompareRevisionsResult } from '@plantaest/aster';
 import dayjs from 'dayjs';
 import { IconAlertTriangle, IconCheck, IconLink, IconQuote, IconUser } from '@tabler/icons-react';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useCompareRevisions } from '@/queries/useCompareRevisions';
 import { MwHelper } from '@/utils/MwHelper';
 import { wikis } from '@/utils/wikis';
 import classes from './DiffTab.module.css';
 import { LengthDeltaBadge } from '@/components/LengthDeltaBadge/LengthDeltaBadge';
-import { zinniaRoot } from '@/utils/zinniaRoot';
 import { isRtlLang } from '@/utils/isRtlLang';
 import { sanitizeHtml } from '@/utils/sanitizeHtml';
 
@@ -73,104 +72,135 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
   const contentLanguage = wikis.getWiki(wikiId).getConfig().language;
   const contentDir = isRtlLang(contentLanguage) ? 'rtl' : 'ltr';
 
+  const diffTableRef = useRef<HTMLTableElement | null>(null);
+
   useEffect(() => {
-    // Select only one column at once
-    const diffTable = zinniaRoot.querySelector('.diff');
-    const deletedCells = zinniaRoot.querySelectorAll('.diff .diff-side-deleted');
-    const addedCells = zinniaRoot.querySelectorAll('.diff .diff-side-added');
-
-    const changeToDeleted = () => {
-      if (diffTable?.getAttribute('data-selected-side') === 'added') {
-        window.getSelection()?.removeAllRanges();
-      }
-      diffTable?.setAttribute('data-selected-side', 'deleted');
+    type TempRef = null | {
+      diffTable: Element;
+      deletedCells: NodeListOf<Element>;
+      addedCells: NodeListOf<Element>;
+      changeToDeleted: () => void;
+      changeToAdded: () => void;
+      movedParaLeftAnchors: NodeListOf<Element>;
+      movedParaRightAnchors: NodeListOf<Element>;
+      scrollToCorrespondingCell: (event: Event) => void;
     };
 
-    const changeToAdded = () => {
-      if (diffTable?.getAttribute('data-selected-side') === 'deleted') {
-        window.getSelection()?.removeAllRanges();
-      }
-      diffTable?.setAttribute('data-selected-side', 'added');
-    };
+    let tempRefs: TempRef = null;
 
-    for (const cell of deletedCells) {
-      cell.addEventListener('mousedown', changeToDeleted);
-    }
+    if (diffTableRef.current) {
+      // Select only one column at once
+      const diffTable = diffTableRef.current;
+      const deletedCells = diffTable.querySelectorAll('.diff-side-deleted');
+      const addedCells = diffTable.querySelectorAll('.diff-side-added');
 
-    for (const cell of addedCells) {
-      cell.addEventListener('mousedown', changeToAdded);
-    }
+      const changeToDeleted = () => {
+        if (diffTable.getAttribute('data-selected-side') === 'added') {
+          window.getSelection()?.removeAllRanges();
+        }
+        diffTable.setAttribute('data-selected-side', 'deleted');
+      };
 
-    // Show moved paragraph anchors
-    const movedParaLeftAnchors = zinniaRoot.querySelectorAll('.diff .mw-diff-movedpara-left');
-    const movedParaLeftCells = zinniaRoot.querySelectorAll(
-      '.diff tr:has(.mw-diff-movedpara-left) .diff-side-deleted'
-    );
-    const movedParaRightAnchors = zinniaRoot.querySelectorAll('.diff .mw-diff-movedpara-right');
-    const movedParaRightCells = zinniaRoot.querySelectorAll(
-      '.diff tr:has(.mw-diff-movedpara-right) .diff-side-added'
-    );
-
-    const scrollToCorrespondingCell = (event: Event) => {
-      event.preventDefault();
-      const currentAnchor = event.currentTarget as HTMLAnchorElement;
-      const correspondingAnchorName = currentAnchor.getAttribute('href')?.replace('#', '');
-      const correspondingCell = zinniaRoot.querySelector(
-        `td:has([name="${correspondingAnchorName}"])`
-      );
-      const correspondingCellAnchor = zinniaRoot.querySelector(
-        `td:has([name="${correspondingAnchorName}"]) > a`
-      );
-
-      if (correspondingCell && correspondingCellAnchor) {
-        // Ref: https://stackoverflow.com/a/52835382
-        correspondingCell.scrollIntoView({
-          behavior: 'instant',
-          block: 'nearest',
-          inline: 'start',
-        });
-        (correspondingCellAnchor as HTMLElement).focus();
-      }
-    };
-
-    for (let i = 0; i < movedParaLeftAnchors.length; i += 1) {
-      movedParaLeftCells[i].prepend(movedParaLeftAnchors[i]);
-      movedParaLeftAnchors[i].innerHTML = '>>';
-      movedParaLeftAnchors[i].addEventListener('click', scrollToCorrespondingCell);
-    }
-
-    for (let i = 0; i < movedParaRightAnchors.length; i += 1) {
-      movedParaRightCells[i].prepend(movedParaRightAnchors[i]);
-      movedParaRightAnchors[i].innerHTML = '<<';
-      movedParaRightAnchors[i].addEventListener('click', scrollToCorrespondingCell);
-    }
-
-    return () => {
-      diffTable?.removeAttribute('data-selected-side');
+      const changeToAdded = () => {
+        if (diffTable.getAttribute('data-selected-side') === 'deleted') {
+          window.getSelection()?.removeAllRanges();
+        }
+        diffTable.setAttribute('data-selected-side', 'added');
+      };
 
       for (const cell of deletedCells) {
-        cell.removeEventListener('mousedown', changeToDeleted);
+        cell.addEventListener('mousedown', changeToDeleted);
       }
 
       for (const cell of addedCells) {
-        cell.removeEventListener('mousedown', changeToAdded);
+        cell.addEventListener('mousedown', changeToAdded);
       }
 
-      for (const anchor of movedParaLeftAnchors) {
-        anchor.removeEventListener('click', scrollToCorrespondingCell);
+      // Show moved paragraph anchors
+      const movedParaLeftAnchors = diffTable.querySelectorAll('.mw-diff-movedpara-left');
+      const movedParaLeftCells = diffTable.querySelectorAll(
+        'tr:has(.mw-diff-movedpara-left) .diff-side-deleted'
+      );
+      const movedParaRightAnchors = diffTable.querySelectorAll('.mw-diff-movedpara-right');
+      const movedParaRightCells = diffTable.querySelectorAll(
+        'tr:has(.mw-diff-movedpara-right) .diff-side-added'
+      );
+
+      const scrollToCorrespondingCell = (event: Event) => {
+        event.preventDefault();
+        const currentAnchor = event.currentTarget as HTMLAnchorElement;
+        const correspondingAnchorName = currentAnchor.getAttribute('href')?.replace('#', '');
+        const correspondingCell = diffTable.querySelector(
+          `td:has([name="${correspondingAnchorName}"])`
+        );
+        const correspondingCellAnchor = diffTable.querySelector(
+          `td:has([name="${correspondingAnchorName}"]) > a`
+        );
+
+        if (correspondingCell && correspondingCellAnchor) {
+          // Ref: https://stackoverflow.com/a/52835382
+          correspondingCell.scrollIntoView({
+            behavior: 'instant',
+            block: 'nearest',
+            inline: 'start',
+          });
+          (correspondingCellAnchor as HTMLElement).focus();
+        }
+      };
+
+      for (let i = 0; i < movedParaLeftAnchors.length; i += 1) {
+        movedParaLeftCells[i].prepend(movedParaLeftAnchors[i]);
+        movedParaLeftAnchors[i].innerHTML = '>>';
+        movedParaLeftAnchors[i].addEventListener('click', scrollToCorrespondingCell);
       }
 
-      for (const anchor of movedParaRightAnchors) {
-        anchor.removeEventListener('click', scrollToCorrespondingCell);
+      for (let i = 0; i < movedParaRightAnchors.length; i += 1) {
+        movedParaRightCells[i].prepend(movedParaRightAnchors[i]);
+        movedParaRightAnchors[i].innerHTML = '<<';
+        movedParaRightAnchors[i].addEventListener('click', scrollToCorrespondingCell);
+      }
+
+      // Support cleanup function
+      tempRefs = {
+        diffTable,
+        deletedCells,
+        addedCells,
+        changeToDeleted,
+        changeToAdded,
+        movedParaLeftAnchors,
+        movedParaRightAnchors,
+        scrollToCorrespondingCell,
+      };
+    }
+
+    return () => {
+      if (tempRefs) {
+        tempRefs.diffTable.removeAttribute('data-selected-side');
+
+        for (const cell of tempRefs.deletedCells) {
+          cell.removeEventListener('mousedown', tempRefs.changeToDeleted);
+        }
+
+        for (const cell of tempRefs.addedCells) {
+          cell.removeEventListener('mousedown', tempRefs.changeToAdded);
+        }
+
+        for (const anchor of tempRefs.movedParaLeftAnchors) {
+          anchor.removeEventListener('click', tempRefs.scrollToCorrespondingCell);
+        }
+
+        for (const anchor of tempRefs.movedParaRightAnchors) {
+          anchor.removeEventListener('click', tempRefs.scrollToCorrespondingCell);
+        }
       }
     };
-  }, [compareResult.body]);
+  }, [compareResult.body, diffTableRef.current]);
 
   // Example: https://w.wiki/A5qr
   const processedDiffTableHtml = compareResult.body.replaceAll(/colspan="\d"/g, '');
 
   return (
-    <Stack p={5} gap={5} flex={1}>
+    <Stack p={5} gap={5} flex={1} w="100%">
       <Box className={classes.box}>
         <Stack gap="xs">
           <Group gap="xs" justify="space-between" wrap="nowrap">
@@ -397,7 +427,7 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
       </Flex>
 
       <Box>
-        <table className="diff" dir={contentDir}>
+        <table className="diff" dir={contentDir} ref={diffTableRef}>
           <colgroup>
             <col className="diff-content" />
             <col className="diff-content" />
