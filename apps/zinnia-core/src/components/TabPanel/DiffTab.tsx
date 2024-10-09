@@ -170,7 +170,7 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
   const processedDiffTableHtml = compareResult.body.replaceAll(/colspan="\d"/g, '');
 
   return (
-    <Stack p={5} gap={5}>
+    <Stack p={5} gap={5} flex={1}>
       <Box className={classes.box}>
         <Stack gap="xs">
           <Group gap="xs" justify="space-between" wrap="nowrap">

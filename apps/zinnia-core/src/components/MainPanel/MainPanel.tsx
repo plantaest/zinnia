@@ -27,6 +27,7 @@ export function MainPanel() {
           size="100%"
           withCloseButton={false}
           withOverlay={false}
+          autoFocus={false}
           styles={{
             inner: {
               right: 0,

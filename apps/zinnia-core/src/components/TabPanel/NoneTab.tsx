@@ -6,7 +6,7 @@ export function NoneTab() {
   const { formatMessage } = useIntl();
 
   return (
-    <Stack justify="center" align="center" h="100%">
+    <Stack justify="center" align="center" flex={1}>
       <IconBrowserOff size="8rem" stroke={0.5} />
       <Text fw={500}>{formatMessage({ id: 'ui.noneTab.message' })}</Text>
     </Stack>

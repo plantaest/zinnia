@@ -30,7 +30,7 @@ export function WelcomeTab() {
   const { formatMessage } = useIntl();
 
   return (
-    <Stack p="xs" gap="xs" h="100%" justify="space-between">
+    <Stack p="xs" gap="xs" flex={1} justify="space-between">
       <Stack gap="xs" align="center" mb="2rem" style={{ zIndex: 1 }}>
         <Text mt="1.25rem" c="blue.5" fw={600} fz="3rem" ta="center" ff="var(--zinnia-font-family)">
           Zinnia

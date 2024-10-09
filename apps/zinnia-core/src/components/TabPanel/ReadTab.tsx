@@ -42,7 +42,7 @@ export function ReadTab({ wikiId, pageTitle, redirect }: ReadTabProps) {
   const isSuccess = isSuccessGetPageHtml || isSuccessGetWikiStyleSheet;
 
   return (
-    <Stack p={5} gap={5}>
+    <Stack p={5} gap={5} flex={1}>
       <Box className={classes.box}>
         <Stack gap="xs">
           <Group gap="xs" justify="space-between" wrap="nowrap">

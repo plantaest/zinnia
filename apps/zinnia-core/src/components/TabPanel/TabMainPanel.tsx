@@ -1,4 +1,4 @@
-import { Box, Card } from '@mantine/core';
+import { Card, Flex } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { useSelector } from '@legendapp/state/react';
 import classes from './TabMainPanel.module.css';
@@ -52,7 +52,7 @@ export function TabMainPanel() {
   return (
     <Card className={classes.main} ref={tabMainPanelRef}>
       {/* Don't unmount ReadTab */}
-      <Box w="100%" h="100%" display={isReadTab ? undefined : 'none'}>
+      <Flex display={isReadTab ? undefined : 'none'} flex={1}>
         {readTabData && (
           <ReadTab
             wikiId={readTabData.wikiId}
@@ -60,9 +60,9 @@ export function TabMainPanel() {
             redirect={readTabData.redirect}
           />
         )}
-      </Box>
+      </Flex>
       {/* Don't unmount DiffTab */}
-      <Box w="100%" h="100%" display={isDiffTab ? undefined : 'none'}>
+      <Flex display={isDiffTab ? undefined : 'none'} flex={1}>
         {diffTabData && (
           <DiffTab
             wikiId={diffTabData.wikiId}
@@ -71,10 +71,10 @@ export function TabMainPanel() {
             toRevisionId={diffTabData.toRevisionId}
           />
         )}
-      </Box>
-      <Box w="100%" h="100%" display={isOtherTab ? undefined : 'none'}>
+      </Flex>
+      <Flex display={isOtherTab ? undefined : 'none'} flex={1}>
         {otherTab}
-      </Box>
+      </Flex>
     </Card>
   );
 }
