@@ -72,12 +72,17 @@
 .diff-addedline,
 .diff-deletedline,
 .diff-context {
-  font-size: var(--mantine-font-size-sm);
+  font-size: var(--mantine-font-size-xs);
   tab-size: 4;
   line-height: var(--mantine-line-height);
   vertical-align: top;
   white-space: break-spaces;
   border-radius: var(--mantine-radius-md);
+
+  /* xs */
+  @media (min-width: 30em) {
+    font-size: var(--mantine-font-size-sm);
+  }
 }
 
 .diff-editfont-monospace .diff-addedline,

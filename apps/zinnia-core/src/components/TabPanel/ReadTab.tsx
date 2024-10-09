@@ -45,58 +45,75 @@ export function ReadTab({ wikiId, pageTitle, redirect }: ReadTabProps) {
   return (
     <Stack p={5} gap={5}>
       <Box className={classes.box}>
-        <Group gap="xs" justify="space-between" wrap="nowrap">
-          <Group
-            gap="xs"
-            wrap="nowrap"
-            style={{
-              overflow: 'hidden',
-              flex: 1,
-            }}
-          >
-            <Badge ff="var(--zinnia-font-monospace)" h="1.625rem" radius="sm" tt="lowercase">
-              {wikiId}
-            </Badge>
-            <Box
+        <Stack gap="xs">
+          <Group gap="xs" justify="space-between" wrap="nowrap">
+            <Group
+              gap="xs"
+              wrap="nowrap"
               style={{
-                display: 'flex',
-                whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 flex: 1,
-                color: 'var(--mantine-color-anchor)',
               }}
             >
-              <Anchor
-                fw={600}
-                href={
-                  redirect
-                    ? MwHelper.createRedirectUri(serverName, pageTitle)
-                    : MwHelper.createPageUri(serverName, pageTitle)
-                }
-                target="_blank"
+              <Badge ff="var(--zinnia-font-monospace)" h="1.625rem" radius="sm" tt="lowercase">
+                {wikiId}
+              </Badge>
+              <Box
+                visibleFrom="md"
                 style={{
-                  textOverflow: 'ellipsis',
+                  display: 'flex',
+                  whiteSpace: 'nowrap',
                   overflow: 'hidden',
+                  flex: 1,
+                  color: 'var(--mantine-color-anchor)',
                 }}
               >
-                {pageTitle}
-              </Anchor>
-            </Box>
+                <Anchor
+                  fw={600}
+                  href={
+                    redirect
+                      ? MwHelper.createRedirectUri(serverName, pageTitle)
+                      : MwHelper.createPageUri(serverName, pageTitle)
+                  }
+                  target="_blank"
+                  style={{
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                  }}
+                >
+                  {pageTitle}
+                </Anchor>
+              </Box>
+            </Group>
+
+            <Group gap="sm">
+              <Text className={classes.label}>{pageHtmlResult.pageId}</Text>
+              <Flex justify="center" align="center" h={20} w={20} me={2}>
+                {isLoading ? (
+                  <Loader color="blue" size="1rem" type="bars" />
+                ) : isError ? (
+                  <IconAlertTriangle size="1.25rem" color="var(--mantine-color-red-5)" />
+                ) : isSuccess ? (
+                  <IconCheck size="1.25rem" color="var(--mantine-color-green-5)" />
+                ) : null}
+              </Flex>
+            </Group>
           </Group>
 
-          <Group gap="sm">
-            <Text className={classes.label}>{pageHtmlResult.pageId}</Text>
-            <Flex justify="center" align="center" h={20} w={20} me={2}>
-              {isLoading ? (
-                <Loader color="blue" size="1rem" type="bars" />
-              ) : isError ? (
-                <IconAlertTriangle size="1.25rem" color="var(--mantine-color-red-5)" />
-              ) : isSuccess ? (
-                <IconCheck size="1.25rem" color="var(--mantine-color-green-5)" />
-              ) : null}
-            </Flex>
-          </Group>
-        </Group>
+          <Anchor
+            hiddenFrom="md"
+            fw={600}
+            href={
+              redirect
+                ? MwHelper.createRedirectUri(serverName, pageTitle)
+                : MwHelper.createPageUri(serverName, pageTitle)
+            }
+            target="_blank"
+            w="fit-content"
+          >
+            {pageTitle}
+          </Anchor>
+        </Stack>
       </Box>
 
       <Box px={6} pb={6} pos="relative">

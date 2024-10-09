@@ -171,71 +171,87 @@ export function DiffTab({ wikiId, fromRevisionId, toRevisionId }: DiffTabProps) 
   return (
     <Stack p={5} gap={5}>
       <Box className={classes.box}>
-        <Group gap="xs" justify="space-between" wrap="nowrap">
-          <Group
-            gap="xs"
-            wrap="nowrap"
-            style={{
-              overflow: 'hidden',
-              flex: 1,
-            }}
-          >
-            <Badge ff="var(--zinnia-font-monospace)" h="1.625rem" radius="sm" tt="lowercase">
-              {wikiId}
-            </Badge>
-            <Box
+        <Stack gap="xs">
+          <Group gap="xs" justify="space-between" wrap="nowrap">
+            <Group
+              gap="xs"
+              wrap="nowrap"
               style={{
-                display: 'flex',
-                whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 flex: 1,
-                color: 'var(--mantine-color-anchor)',
               }}
             >
-              <Anchor
-                fw={600}
-                href={MwHelper.createPageUri(serverName, compareResult.fromTitle)}
-                target="_blank"
+              <Badge ff="var(--zinnia-font-monospace)" h="1.625rem" radius="sm" tt="lowercase">
+                {wikiId}
+              </Badge>
+              <Box
+                visibleFrom="md"
                 style={{
-                  textOverflow: 'ellipsis',
+                  display: 'flex',
+                  whiteSpace: 'nowrap',
                   overflow: 'hidden',
+                  flex: 1,
+                  color: 'var(--mantine-color-anchor)',
                 }}
               >
-                {compareResult.fromTitle}
-              </Anchor>
-            </Box>
+                <Anchor
+                  fw={600}
+                  href={MwHelper.createPageUri(serverName, compareResult.fromTitle)}
+                  target="_blank"
+                  style={{
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                  }}
+                >
+                  {compareResult.fromTitle}
+                </Anchor>
+              </Box>
+            </Group>
+
+            <Group gap="xs">
+              <ActionIcon
+                size={26}
+                variant="filled"
+                component="a"
+                href={MwHelper.createDiffUri(
+                  serverName,
+                  compareResult.fromTitle,
+                  compareResult.fromRevisionId,
+                  compareResult.toRevisionId
+                )}
+                target="_blank"
+              >
+                <IconLink size="1rem" />
+              </ActionIcon>
+              <LengthDeltaBadge
+                newLength={compareResult.toSize}
+                oldLength={compareResult.fromSize}
+              />
+              <Flex justify="center" align="center" h={20} w={20} me={2}>
+                {isLoading ? (
+                  <Loader color="blue" size="1rem" type="bars" />
+                ) : isError ? (
+                  <IconAlertTriangle size="1.25rem" color="var(--mantine-color-red-5)" />
+                ) : isSuccess ? (
+                  <IconCheck size="1.25rem" color="var(--mantine-color-green-5)" />
+                ) : null}
+              </Flex>
+            </Group>
           </Group>
 
-          <Group gap="xs">
-            <ActionIcon
-              size={26}
-              variant="filled"
-              component="a"
-              href={MwHelper.createDiffUri(
-                serverName,
-                compareResult.fromTitle,
-                compareResult.fromRevisionId,
-                compareResult.toRevisionId
-              )}
-              target="_blank"
-            >
-              <IconLink size="1rem" />
-            </ActionIcon>
-            <LengthDeltaBadge newLength={compareResult.toSize} oldLength={compareResult.fromSize} />
-            <Flex justify="center" align="center" h={20} w={20} me={2}>
-              {isLoading ? (
-                <Loader color="blue" size="1rem" type="bars" />
-              ) : isError ? (
-                <IconAlertTriangle size="1.25rem" color="var(--mantine-color-red-5)" />
-              ) : isSuccess ? (
-                <IconCheck size="1.25rem" color="var(--mantine-color-green-5)" />
-              ) : null}
-            </Flex>
-          </Group>
-        </Group>
+          <Anchor
+            hiddenFrom="md"
+            fw={600}
+            href={MwHelper.createPageUri(serverName, compareResult.fromTitle)}
+            target="_blank"
+            w="fit-content"
+          >
+            {compareResult.fromTitle}
+          </Anchor>
+        </Stack>
       </Box>
 
-      <Flex gap={5} dir={contentDir}>
+      <Flex gap={5} dir={contentDir} direction={{ base: 'column', md: 'row' }}>
         <Box dir={globalDir} className={classes.box} flex={1} miw={0}>
           <Stack gap={5}>
             <Group justify="space-between" gap={5}>

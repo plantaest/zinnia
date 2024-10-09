@@ -46,6 +46,10 @@ body:not(.mediawiki) .mw-body {
   column-gap: initial;
 }
 
+.skin-vector-2022 .mw-header {
+  z-index: auto;
+}
+
 html[data-mantine-color-scheme="dark"] .skin-vector-2022 :is(.mw-header, .mw-page-container) {
   background-color: inherit;
 }

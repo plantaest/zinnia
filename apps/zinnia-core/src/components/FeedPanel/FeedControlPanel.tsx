@@ -1,5 +1,5 @@
 import { ActionIcon, Box, Flex, Group, Text } from '@mantine/core';
-import { IconFocus, IconReload } from '@tabler/icons-react';
+import { IconFocus, IconMaximize, IconReload } from '@tabler/icons-react';
 import { useIntl } from 'react-intl';
 import { memo, useEffect, useState } from 'react';
 import { useNetwork } from '@mantine/hooks';
@@ -51,9 +51,9 @@ function _FeedControlPanel() {
 
   const handleClickReloadButton = () => refetch();
 
-  const handleClickFocusButton = () => {
-    appState.ui.focus.set((prev) => !prev);
-  };
+  const handleClickFocusButton = () => appState.ui.focus.set((prev) => !prev);
+
+  const handleClickShowTabPanelDrawerButton = () => appState.ui.showTabPanelDrawer.set(true);
 
   return (
     <Group className={classes.control} data-sticky={recentChanges.length > 0} data-focus={focus}>
@@ -89,6 +89,16 @@ function _FeedControlPanel() {
           visibleFrom="md"
         >
           <IconFocus size="1.125rem" />
+        </ActionIcon>
+        <ActionIcon
+          variant="subtle"
+          size={30}
+          onClick={handleClickShowTabPanelDrawerButton}
+          title={formatMessage({ id: 'ui.feedPanel.extend' })}
+          aria-label={formatMessage({ id: 'ui.feedPanel.extend' })}
+          hiddenFrom="md"
+        >
+          <IconMaximize size="1.125rem" />
         </ActionIcon>
       </Flex>
     </Group>

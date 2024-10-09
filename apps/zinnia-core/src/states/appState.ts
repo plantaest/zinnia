@@ -26,6 +26,7 @@ interface AppState {
     focus: boolean;
     activeTab: ObservableComputed<Tab | null>;
     selectedChange: Change | null;
+    showTabPanelDrawer: boolean;
   };
   instance: {
     numberFormat: ObservableComputed<Intl.NumberFormat>;
@@ -72,6 +73,7 @@ export const appState: ObservableObject<AppState> = observable<AppState>({
         ) ?? null
     ),
     selectedChange: null,
+    showTabPanelDrawer: false,
   },
   instance: {
     numberFormat: computed(() => new Intl.NumberFormat(appState.userConfig.locale.get())),

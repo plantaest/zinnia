@@ -8,6 +8,7 @@ import {
   Stack,
   Text,
   UnstyledButton,
+  useMantineTheme,
 } from '@mantine/core';
 import {
   IconAlignJustified,
@@ -36,8 +37,6 @@ import { OresScoreBadge } from '@/components/ChangeCard/OresScoreBadge';
 import { Tab, TabType } from '@/types/persistence/Tab';
 import { LengthDeltaBadge } from '@/components/LengthDeltaBadge/LengthDeltaBadge';
 import { scrollToTopTabMainPanel } from '@/utils/scrollToTopTabMainPanel';
-import { shortenPageTitle } from '@/utils/shortenPageTitle';
-import { shortenId } from '@/utils/shortenId';
 
 interface EditChangeCardProps {
   change: Change;
@@ -45,6 +44,7 @@ interface EditChangeCardProps {
 }
 
 export function ChangeCard({ change, index }: EditChangeCardProps) {
+  const theme = useMantineTheme();
   const isCodeFile = ['.js', '.css', '.json'].some((fileType) => change.title.endsWith(fileType));
 
   const changeTypeIcons: Record<Change['type'], TablerIcon> = {
@@ -104,7 +104,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
           id: uuidv4(),
           createdAt: now,
           updatedAt: now,
-          name: `[${change.wikiId}] ${shortenPageTitle(change.title)} [${shortenId(change.oldRevisionId)}-${shortenId(change.revisionId)}]`,
+          name: `[${change.wikiId}] ${change.title} [${change.oldRevisionId}-${change.revisionId}]`,
           type: TabType.DIFF,
           data: {
             wikiId: change.wikiId,
@@ -125,7 +125,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
             id: tabId,
             createdAt: now,
             updatedAt: now,
-            name: `[${change.wikiId}] ${shortenPageTitle(change.title)} [${shortenId(change.oldRevisionId)}-${shortenId(change.revisionId)}]`,
+            name: `[${change.wikiId}] ${change.title} [${change.oldRevisionId}-${change.revisionId}]`,
             type: TabType.MAIN_DIFF,
             data: {
               wikiId: change.wikiId,
@@ -140,7 +140,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
             id: tabId,
             createdAt: currentMainDiffTab.createdAt,
             updatedAt: now,
-            name: `[${change.wikiId}] ${shortenPageTitle(change.title)} [${shortenId(change.oldRevisionId)}-${shortenId(change.revisionId)}]`,
+            name: `[${change.wikiId}] ${change.title} [${change.oldRevisionId}-${change.revisionId}]`,
             type: TabType.MAIN_DIFF,
             data: {
               wikiId: change.wikiId,
@@ -155,6 +155,10 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
 
         appState.local.activeTabId.set(tabId);
         scrollToTopTabMainPanel();
+
+        if (!window.matchMedia(`(min-width: ${theme.breakpoints.md})`).matches) {
+          appState.ui.showTabPanelDrawer.set(true);
+        }
       }
     }
 
@@ -164,7 +168,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
           id: uuidv4(),
           createdAt: now,
           updatedAt: now,
-          name: `[${change.wikiId}] ${shortenPageTitle(change.title)}`,
+          name: `[${change.wikiId}] ${change.title}`,
           type: TabType.READ,
           data: {
             wikiId: change.wikiId,
@@ -186,7 +190,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
             id: tabId,
             createdAt: now,
             updatedAt: now,
-            name: `[${change.wikiId}] ${shortenPageTitle(change.title)}`,
+            name: `[${change.wikiId}] ${change.title}`,
             type: TabType.MAIN_READ,
             data: {
               wikiId: change.wikiId,
@@ -202,7 +206,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
             id: tabId,
             createdAt: currentMainReadTab.createdAt,
             updatedAt: now,
-            name: `[${change.wikiId}] ${shortenPageTitle(change.title)}`,
+            name: `[${change.wikiId}] ${change.title}`,
             type: TabType.MAIN_READ,
             data: {
               wikiId: change.wikiId,
@@ -218,6 +222,10 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
 
         appState.local.activeTabId.set(tabId);
         scrollToTopTabMainPanel();
+
+        if (!window.matchMedia(`(min-width: ${theme.breakpoints.md})`).matches) {
+          appState.ui.showTabPanelDrawer.set(true);
+        }
       }
     }
   };
@@ -242,7 +250,10 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
 
   return (
     <Flex className={classes.wrapper}>
-      <Box className={classes.bar} />
+      <Box
+        className={classes.bar}
+        bg={isSelected ? 'var(--mantine-color-blue-filled)' : undefined}
+      />
       <UnstyledButton
         className={classes.card}
         data-active={isSelected}

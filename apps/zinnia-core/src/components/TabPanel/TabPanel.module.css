@@ -1,5 +1,4 @@
 .wrapper {
-  margin-top: rem(5px);
   position: sticky;
   top: rem(5px);
   width: 100%;
@@ -8,12 +7,4 @@
   max-height: calc(100vh - 2 * rem(5px));
   display: flex;
   flex-direction: column;
-}
-
-.footer {
-  overflow: initial;
-  background-color: var(--zinnia-mirror-background-color);
-  border-block-end: var(--zinnia-mirror-border);
-  border-inline: var(--zinnia-mirror-border);
-  border-radius: 0 0 var(--mantine-radius-md) var(--mantine-radius-md);
 }

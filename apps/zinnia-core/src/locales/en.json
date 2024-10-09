@@ -107,6 +107,7 @@
   "ui.feedPanel.disconnected": "Disconnected",
   "ui.feedPanel.reload": "Reload",
   "ui.feedPanel.focus": "Focus",
+  "ui.feedPanel.extend": "Extend",
   "ui.welcomeTab.slogan": "Comprehensive anti-vandalism application",
   "ui.welcomeTab.home": "Home",
   "ui.welcomeTab.talk": "Talk",

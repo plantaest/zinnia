@@ -2,7 +2,6 @@
   border: var(--zinnia-mirror-border);
   border-radius: 0;
   height: 100%;
-  min-height: rem(350px);
   flex-grow: 1;
   overflow-y: auto;
   overscroll-behavior: contain;

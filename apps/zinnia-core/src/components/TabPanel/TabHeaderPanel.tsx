@@ -2,6 +2,7 @@ import {
   IconAlignJustified,
   IconArrowLeft,
   IconArrowRight,
+  IconArrowsMinimize,
   IconChevronDown,
   IconHistory,
   IconHourglassLow,
@@ -11,17 +12,13 @@ import {
   IconRefresh,
   IconSeeding,
   IconUserSearch,
-  IconX,
 } from '@tabler/icons-react';
-import { ActionIcon, Card, Flex, Group, Indicator, rem, Tabs, useDirection } from '@mantine/core';
-import { useElementSize } from '@mantine/hooks';
-import React, { useEffect, useRef, useState } from 'react';
+import { ActionIcon, Card, Flex, Group, Indicator, Text, useDirection } from '@mantine/core';
 import { useSelector } from '@legendapp/state/react';
-import { TabType } from '@/types/persistence/Tab';
+import { Tab, TabType } from '@/types/persistence/Tab';
 import { TablerIcon } from '@/types/lib/TablerIcon';
 import classes from './TabHeaderPanel.module.css';
 import { appState } from '@/states/appState';
-import { scrollToTopTabMainPanel } from '@/utils/scrollToTopTabMainPanel';
 
 const tabIcons: Record<TabType, TablerIcon> = {
   [TabType.WELCOME]: IconSeeding,
@@ -37,152 +34,85 @@ const tabIcons: Record<TabType, TablerIcon> = {
 
 export function TabHeaderPanel() {
   const { dir } = useDirection();
-  const tabs = useSelector(appState.local.activeTabs);
-  const activeTabId = useSelector(appState.local.activeTabId);
+  const activeTab = useSelector(appState.local.activeTab);
 
-  const handleClickTab = (tabId: string | null) => {
-    appState.local.activeTabId.set(tabId);
-    scrollToTopTabMainPanel();
-  };
-
-  const handleClickDeleteTabButton = (event: React.MouseEvent<HTMLDivElement>, tabId: string) => {
-    event.preventDefault();
-    event.stopPropagation();
-    if (tabId === activeTabId) {
-      appState.local.activeTabId.set(null);
-    }
-    appState.local.activeTabs.set((activeTabs) => activeTabs.filter((tab) => tab.id !== tabId));
-  };
-
-  const tabFragments = tabs.map((tab) => {
+  const activeTagFragment = (tab: Tab) => {
     const TabIcon = tabIcons[tab.type];
-
     const isMainTab = [TabType.MAIN_DIFF, TabType.MAIN_READ, TabType.MAIN_FILE].includes(tab.type);
 
     return (
-      <Tabs.Tab
-        key={tab.id}
-        value={tab.id}
-        leftSection={
-          <Indicator
-            color="green"
-            size={5}
-            disabled={!isMainTab}
-            display="flex"
-            position={dir === 'rtl' ? 'top-start' : 'top-end'}
-          >
-            <TabIcon size="1rem" />
-          </Indicator>
-        }
-        rightSection={
-          <ActionIcon
-            component="div"
-            size={16}
-            color="red.5"
-            variant="subtle"
-            onClick={(event) => handleClickDeleteTabButton(event, tab.id)}
-          >
-            <IconX />
-          </ActionIcon>
-        }
+      <Group
+        gap="xs"
+        wrap="nowrap"
+        style={{
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+        }}
       >
-        {tab.name}
-      </Tabs.Tab>
+        <Indicator
+          color="green"
+          size={5}
+          disabled={!isMainTab}
+          display="flex"
+          position={dir === 'rtl' ? 'top-start' : 'top-end'}
+        >
+          <TabIcon size="1.125rem" />
+        </Indicator>
+        <Text
+          fw={600}
+          style={{
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+          }}
+        >
+          {tab.name}
+        </Text>
+      </Group>
     );
-  });
+  };
 
-  const { ref: innerRef, width: innerWidth } = useElementSize();
-  const tabsListWidth = innerWidth - 90 * 2 - 10;
-  const tabsListRef = useRef<HTMLDivElement>(null);
-  const [headTail, setHeadTail] = useState<'head' | 'tail' | 'center' | 'none'>('none');
-
-  useEffect(() => {
-    const action = (event: Event) => {
-      const target = event.target as HTMLElement;
-      const sign = dir === 'rtl' ? -1 : 1;
-      const isHead = target.scrollLeft * sign <= 0;
-      const isTail = Math.ceil(target.offsetWidth + target.scrollLeft * sign) >= target.scrollWidth;
-      setHeadTail(isHead ? 'head' : isTail ? 'tail' : 'center');
-    };
-
-    tabsListRef.current?.addEventListener('scroll', action);
-
-    return () => tabsListRef.current?.removeEventListener('scroll', action);
-  }, [dir, tabsListRef.current]);
-
-  useEffect(() => {
-    const target = tabsListRef.current;
-    const sign = dir === 'rtl' ? -1 : 1;
-    if (target) {
-      const isHead = target.scrollLeft * sign <= 0;
-      const isTail = Math.ceil(target.offsetWidth + target.scrollLeft * sign) >= target.scrollWidth;
-      if (isHead) {
-        if (target.scrollWidth <= tabsListWidth) {
-          setHeadTail('none');
-        } else {
-          setHeadTail('head');
-        }
-      } else if (isTail) {
-        setHeadTail('tail');
-      } else {
-        setHeadTail('center');
-      }
-    }
-  }, [
-    dir,
-    tabsListRef.current?.scrollWidth,
-    tabsListRef.current?.offsetWidth,
-    tabsListRef.current?.scrollLeft,
-    tabsListWidth,
-    tabs.length,
-  ]);
+  const handleClickHideTabPanelDrawerButton = () => appState.ui.showTabPanelDrawer.set(false);
 
   return (
     <Card px="xs" py="xs" className={classes.wrapper}>
-      <Group gap="xs" justify="space-between" wrap="nowrap" ref={innerRef}>
+      <Group gap="xs" justify="space-between" wrap="nowrap">
         <Group gap="xs" wrap="nowrap">
           <Flex>
-            <ActionIcon variant="subtle" size={30}>
+            <ActionIcon variant="subtle" size={30} visibleFrom="md">
               <IconArrowLeft size="1.125rem" />
             </ActionIcon>
-            <ActionIcon variant="subtle" size={30}>
+            <ActionIcon variant="subtle" size={30} visibleFrom="md">
               <IconArrowRight size="1.125rem" />
             </ActionIcon>
-            <ActionIcon variant="subtle" size={30}>
+            <ActionIcon variant="subtle" size={30} visibleFrom="md">
               <IconHistory size="1.125rem" />
             </ActionIcon>
+            <ActionIcon variant="subtle" size={30} hiddenFrom="md">
+              <IconChevronDown size="1.125rem" />
+            </ActionIcon>
           </Flex>
-
-          <Tabs
-            variant="pills"
-            classNames={{
-              root: classes.tabsRoot,
-              tab: classes.tabsTab,
-              list: classes.tabsList,
-            }}
-            styles={{
-              list: {
-                maxWidth: rem(tabsListWidth),
-              },
-            }}
-            value={activeTabId}
-            onChange={handleClickTab}
-          >
-            <Tabs.List ref={tabsListRef} data-head-tail={headTail}>
-              {tabFragments}
-            </Tabs.List>
-          </Tabs>
         </Group>
 
+        {activeTab && activeTagFragment(activeTab)}
+
         <Flex>
-          <ActionIcon variant="subtle" size={30}>
+          <ActionIcon variant="subtle" size={30} visibleFrom="md">
             <IconPlus size="1.125rem" />
           </ActionIcon>
-          <ActionIcon variant="subtle" size={30}>
+          <ActionIcon variant="subtle" size={30} visibleFrom="md">
             <IconRefresh size="1.125rem" />
           </ActionIcon>
-          <ActionIcon variant="subtle" size={30}>
+          <ActionIcon variant="subtle" size={30} visibleFrom="md">
             <IconChevronDown size="1.125rem" />
+          </ActionIcon>
+          <ActionIcon
+            variant="subtle"
+            color="teal"
+            size={30}
+            hiddenFrom="md"
+            onClick={handleClickHideTabPanelDrawerButton}
+          >
+            <IconArrowsMinimize size="1.125rem" />
           </ActionIcon>
         </Flex>
       </Group>
