@@ -108,6 +108,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
           type: TabType.DIFF,
           data: {
             wikiId: change.wikiId,
+            pageTitle: change.title,
             fromRevisionId: change.oldRevisionId,
             toRevisionId: change.revisionId,
           },
@@ -129,6 +130,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
             type: TabType.MAIN_DIFF,
             data: {
               wikiId: change.wikiId,
+              pageTitle: change.title,
               fromRevisionId: change.oldRevisionId,
               toRevisionId: change.revisionId,
             },
@@ -144,6 +146,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
             type: TabType.MAIN_DIFF,
             data: {
               wikiId: change.wikiId,
+              pageTitle: change.title,
               fromRevisionId: change.oldRevisionId,
               toRevisionId: change.revisionId,
             },
@@ -173,7 +176,6 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
           data: {
             wikiId: change.wikiId,
             pageTitle: change.title,
-            revisionId: change.revisionId,
             redirect: change.redirect,
           },
         };
@@ -195,7 +197,6 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
             data: {
               wikiId: change.wikiId,
               pageTitle: change.title,
-              revisionId: change.revisionId,
               redirect: change.redirect,
             },
           };
@@ -211,7 +212,6 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
             data: {
               wikiId: change.wikiId,
               pageTitle: change.title,
-              revisionId: change.revisionId,
               redirect: change.redirect,
             },
           };

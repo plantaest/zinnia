@@ -22,7 +22,6 @@ export function TabMainPanel() {
         setReadTabData({
           wikiId: activeTab.data.wikiId,
           pageTitle: activeTab.data.pageTitle,
-          revisionId: activeTab.data.revisionId,
           redirect: activeTab.data.redirect,
         });
       }
@@ -30,6 +29,7 @@ export function TabMainPanel() {
       if (activeTab.type === TabType.MAIN_DIFF || activeTab.type === TabType.DIFF) {
         setDiffTabData({
           wikiId: activeTab.data.wikiId,
+          pageTitle: activeTab.data.pageTitle,
           fromRevisionId: activeTab.data.fromRevisionId,
           toRevisionId: activeTab.data.toRevisionId,
         });
@@ -57,7 +57,6 @@ export function TabMainPanel() {
           <ReadTab
             wikiId={readTabData.wikiId}
             pageTitle={readTabData.pageTitle}
-            revisionId={readTabData.revisionId}
             redirect={readTabData.redirect}
           />
         )}
@@ -67,6 +66,7 @@ export function TabMainPanel() {
         {diffTabData && (
           <DiffTab
             wikiId={diffTabData.wikiId}
+            pageTitle={diffTabData.pageTitle}
             fromRevisionId={diffTabData.fromRevisionId}
             toRevisionId={diffTabData.toRevisionId}
           />

@@ -101,6 +101,13 @@ export function ErrorFallback({ error, errorInfo }: ErrorFallbackProps) {
     appState: appStateObject,
   };
 
+  const handleClickClearCacheButton = () => {
+    appState.userConfig.language.delete();
+    appState.userConfig.dir.delete();
+    appState.local.tabs.delete();
+    window.location.reload();
+  };
+
   const handleClickFactoryResetButton = () => {
     saveOptionApi.mutate(
       {
@@ -148,6 +155,9 @@ export function ErrorFallback({ error, errorInfo }: ErrorFallbackProps) {
             target="_blank"
           >
             Email to Plantaest
+          </Button>
+          <Button color="red" onClick={handleClickClearCacheButton}>
+            Clear cache
           </Button>
           <Button
             color="red"

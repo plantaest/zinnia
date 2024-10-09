@@ -46,6 +46,7 @@ export enum TabType {
 
 export interface DiffTabData {
   wikiId: string;
+  pageTitle: string;
   fromRevisionId: number;
   toRevisionId: number;
 }
@@ -53,21 +54,20 @@ export interface DiffTabData {
 export interface ReadTabData {
   wikiId: string;
   pageTitle: string;
-  revisionId: number;
   redirect: boolean;
 }
 
 export interface FileTabData {
   wikiId: string;
-  pageId: number;
+  pageTitle: string;
 }
 
 export interface PageHistoryTabData {
   wikiId: string;
-  pageId: number;
+  pageTitle: string;
 }
 
 export interface UserContributionsTabData {
   wikiId: string;
-  actorId: number;
+  username: number;
 }

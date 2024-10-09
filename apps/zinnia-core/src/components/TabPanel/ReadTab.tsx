@@ -20,7 +20,6 @@ const placeholderPageHtmlResult: PageHtmlResult = {
 interface ReadTabProps {
   wikiId: string;
   pageTitle: string;
-  revisionId: number;
   redirect: boolean;
 }
 

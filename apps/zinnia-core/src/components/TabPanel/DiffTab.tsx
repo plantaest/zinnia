@@ -27,11 +27,12 @@ import { sanitizeHtml } from '@/utils/sanitizeHtml';
 
 interface DiffTabProps {
   wikiId: string;
+  pageTitle: string;
   fromRevisionId: number;
   toRevisionId: number;
 }
 
-export function DiffTab({ wikiId, fromRevisionId, toRevisionId }: DiffTabProps) {
+export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: DiffTabProps) {
   const { dir: globalDir } = useDirection();
 
   const placeholderCompareRevisionsResult: CompareRevisionsResult = {
@@ -196,14 +197,14 @@ export function DiffTab({ wikiId, fromRevisionId, toRevisionId }: DiffTabProps) 
               >
                 <Anchor
                   fw={600}
-                  href={MwHelper.createPageUri(serverName, compareResult.fromTitle)}
+                  href={MwHelper.createPageUri(serverName, pageTitle)}
                   target="_blank"
                   style={{
                     textOverflow: 'ellipsis',
                     overflow: 'hidden',
                   }}
                 >
-                  {compareResult.fromTitle}
+                  {pageTitle}
                 </Anchor>
               </Box>
             </Group>
@@ -215,7 +216,7 @@ export function DiffTab({ wikiId, fromRevisionId, toRevisionId }: DiffTabProps) 
                 component="a"
                 href={MwHelper.createDiffUri(
                   serverName,
-                  compareResult.fromTitle,
+                  pageTitle,
                   compareResult.fromRevisionId,
                   compareResult.toRevisionId
                 )}
@@ -242,11 +243,11 @@ export function DiffTab({ wikiId, fromRevisionId, toRevisionId }: DiffTabProps) 
           <Anchor
             hiddenFrom="md"
             fw={600}
-            href={MwHelper.createPageUri(serverName, compareResult.fromTitle)}
+            href={MwHelper.createPageUri(serverName, pageTitle)}
             target="_blank"
             w="fit-content"
           >
-            {compareResult.fromTitle}
+            {pageTitle}
           </Anchor>
         </Stack>
       </Box>
