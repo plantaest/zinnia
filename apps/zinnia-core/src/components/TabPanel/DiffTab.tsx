@@ -216,7 +216,7 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
                 {wikiId}
               </Badge>
               <Box
-                visibleFrom="md"
+                visibleFrom="sm"
                 style={{
                   display: 'flex',
                   whiteSpace: 'nowrap',
@@ -260,7 +260,7 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
               />
               <Flex justify="center" align="center" h={20} w={20} me={2}>
                 {isLoading ? (
-                  <Loader color="blue" size="1rem" type="bars" />
+                  <Loader color="blue" size="1rem" />
                 ) : isError ? (
                   <IconAlertTriangle size="1.25rem" color="var(--mantine-color-red-5)" />
                 ) : isSuccess ? (
@@ -271,7 +271,7 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
           </Group>
 
           <Anchor
-            hiddenFrom="md"
+            hiddenFrom="sm"
             fw={600}
             href={MwHelper.createPageUri(serverName, pageTitle)}
             target="_blank"
@@ -282,7 +282,7 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
         </Stack>
       </Box>
 
-      <Flex gap={5} dir={contentDir} direction={{ base: 'column', md: 'row' }}>
+      <Flex gap={5} dir={contentDir} direction={{ base: 'column', sm: 'row' }}>
         <Box dir={globalDir} className={classes.box} flex={1} miw={0}>
           <Stack gap={5}>
             <Group justify="space-between" gap={5}>

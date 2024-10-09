@@ -4,11 +4,13 @@ import { FeedPanel } from '@/components/FeedPanel/FeedPanel';
 import { TabPanel } from '@/components/TabPanel/TabPanel';
 import { useShowMainPanel } from '@/hooks/useShowMainPanel';
 import { appState } from '@/states/appState';
+import { useLargerThan } from '@/hooks/useLargerThan';
 
 export function MainPanel() {
   const showMainPanel = useShowMainPanel();
   const showTabPanelDrawer = useSelector(appState.ui.showTabPanelDrawer);
   const computedColorScheme = useComputedColorScheme();
+  const largerThanMd = useLargerThan('md');
 
   const handleClickDrawerCloseButton = () => appState.ui.showTabPanelDrawer.set(false);
 
@@ -18,9 +20,11 @@ export function MainPanel() {
         <Box w="100%" flex={{ base: 1, md: 0 }}>
           <FeedPanel />
         </Box>
-        <Box flex={1} visibleFrom="md" miw={0} mt={{ md: 5 }}>
-          <TabPanel />
-        </Box>
+        {largerThanMd && (
+          <Box flex={1} miw={0} mt={{ md: 5 }} visibleFrom="md">
+            <TabPanel />
+          </Box>
+        )}
         <Drawer
           opened={showTabPanelDrawer}
           onClose={handleClickDrawerCloseButton}

@@ -58,7 +58,7 @@ export function ReadTab({ wikiId, pageTitle, redirect }: ReadTabProps) {
                 {wikiId}
               </Badge>
               <Box
-                visibleFrom="md"
+                visibleFrom="sm"
                 style={{
                   display: 'flex',
                   whiteSpace: 'nowrap',
@@ -89,7 +89,7 @@ export function ReadTab({ wikiId, pageTitle, redirect }: ReadTabProps) {
               <Text className={classes.label}>{pageHtmlResult.pageId}</Text>
               <Flex justify="center" align="center" h={20} w={20} me={2}>
                 {isLoading ? (
-                  <Loader color="blue" size="1rem" type="bars" />
+                  <Loader color="blue" size="1rem" />
                 ) : isError ? (
                   <IconAlertTriangle size="1.25rem" color="var(--mantine-color-red-5)" />
                 ) : isSuccess ? (
@@ -100,7 +100,7 @@ export function ReadTab({ wikiId, pageTitle, redirect }: ReadTabProps) {
           </Group>
 
           <Anchor
-            hiddenFrom="md"
+            hiddenFrom="sm"
             fw={600}
             href={
               redirect

@@ -8,7 +8,6 @@ import {
   Stack,
   Text,
   UnstyledButton,
-  useMantineTheme,
 } from '@mantine/core';
 import {
   IconAlignJustified,
@@ -37,6 +36,7 @@ import { OresScoreBadge } from '@/components/ChangeCard/OresScoreBadge';
 import { Tab, TabType } from '@/types/persistence/Tab';
 import { LengthDeltaBadge } from '@/components/LengthDeltaBadge/LengthDeltaBadge';
 import { scrollToTopTabMainPanel } from '@/utils/scrollToTopTabMainPanel';
+import { useLargerThanFunction } from '@/hooks/useLargerThanFunction';
 
 interface EditChangeCardProps {
   change: Change;
@@ -44,7 +44,7 @@ interface EditChangeCardProps {
 }
 
 export function ChangeCard({ change, index }: EditChangeCardProps) {
-  const theme = useMantineTheme();
+  const largerThanMd = useLargerThanFunction('md');
   const isCodeFile = ['.js', '.css', '.json'].some((fileType) => change.title.endsWith(fileType));
 
   const changeTypeIcons: Record<Change['type'], TablerIcon> = {
@@ -159,7 +159,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
         appState.local.activeTabId.set(tabId);
         scrollToTopTabMainPanel();
 
-        if (!window.matchMedia(`(min-width: ${theme.breakpoints.md})`).matches) {
+        if (!largerThanMd()) {
           appState.ui.showTabPanelDrawer.set(true);
         }
       }
@@ -223,7 +223,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
         appState.local.activeTabId.set(tabId);
         scrollToTopTabMainPanel();
 
-        if (!window.matchMedia(`(min-width: ${theme.breakpoints.md})`).matches) {
+        if (!largerThanMd()) {
           appState.ui.showTabPanelDrawer.set(true);
         }
       }

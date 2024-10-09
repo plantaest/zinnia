@@ -36,7 +36,7 @@ export function TabFooterPanel() {
   return (
     <Card p="xs" className={classes.wrapper}>
       <Stack gap="xs">
-        <Group gap="xs" hiddenFrom="sm" justify="center">
+        <Group gap="xs" hiddenFrom="md" justify="center">
           {tools}
         </Group>
 
@@ -46,11 +46,11 @@ export function TabFooterPanel() {
             <WorkspacePanel />
           </Group>
 
-          <Group gap="xs" visibleFrom="sm" justify="center">
+          <Group gap="xs" visibleFrom="md" justify="center">
             {tools}
           </Group>
 
-          <ActionIcon variant="subtle" size="lg" hiddenFrom="sm">
+          <ActionIcon variant="subtle" size="lg" hiddenFrom="md">
             <IconSquareRounded size="1.5rem" />
           </ActionIcon>
 
