@@ -1,12 +1,14 @@
-import { ActionIcon, Button, Group, Stack, Text } from '@mantine/core';
+import { ActionIcon, Button, CloseButton, Group, Stack, Text } from '@mantine/core';
 import { IconEdit, IconPlus } from '@tabler/icons-react';
 import { useIntl } from 'react-intl';
 import { useSelector } from '@legendapp/state/react';
+import { modals } from '@mantine/modals';
 import { appState } from '@/states/appState';
 import { WorkspaceLayer } from '@/components/WorkspacePanel/WorkspacePanel';
 import { Workspace } from '@/types/persistence/Workspace';
 import { useSelectWorkspace } from '@/queries/useSelectWorkspace';
 import { appConfig } from '@/config/appConfig';
+import { useLargerThan } from '@/hooks/useLargerThan';
 
 interface WorkspaceListProps {
   onChangeLayer: (layer: WorkspaceLayer) => void;
@@ -15,6 +17,7 @@ interface WorkspaceListProps {
 
 export function WorkspaceList({ onChangeLayer, onChangeCurrentWorkspace }: WorkspaceListProps) {
   const { formatMessage } = useIntl();
+  const largerThanMd = useLargerThan('md');
 
   const workspaces = useSelector(() => appState.userConfig.workspaces.get() ?? []);
   const activeWorkspaceId = useSelector(appState.userConfig.activeWorkspaceId);
@@ -39,7 +42,11 @@ export function WorkspaceList({ onChangeLayer, onChangeCurrentWorkspace }: Works
   return (
     <Stack gap="xs">
       <Group gap="xs" justify="space-between">
-        <Text fw={500}>{formatMessage({ id: 'ui.workspacePanel.title' })}</Text>
+        <Group gap="xs">
+          {/* TODO: aria-label */}
+          {!largerThanMd && <CloseButton onClick={modals.closeAll} variant="subtle" />}
+          <Text fw={500}>{formatMessage({ id: 'ui.workspacePanel.title' })}</Text>
+        </Group>
         <ActionIcon
           variant="transparent"
           color="gray"

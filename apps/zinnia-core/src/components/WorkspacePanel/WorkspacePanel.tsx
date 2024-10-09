@@ -2,10 +2,12 @@ import { ActionIcon, Popover, useComputedColorScheme, useDirection } from '@mant
 import { IconBoxMultiple } from '@tabler/icons-react';
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
+import { modals } from '@mantine/modals';
 import { WorkspaceList } from '@/components/WorkspacePanel/WorkspaceList';
 import { WorkspaceCreateForm } from '@/components/WorkspacePanel/WorkspaceCreateForm';
 import { WorkspaceUpdateForm } from '@/components/WorkspacePanel/WorkspaceUpdateForm';
 import { Workspace } from '@/types/persistence/Workspace';
+import { useLargerThan } from '@/hooks/useLargerThan';
 
 export type WorkspaceLayer = 'list' | 'create' | 'update';
 
@@ -26,8 +28,16 @@ export function WorkspacePanel() {
   const { formatMessage } = useIntl();
   const computedColorScheme = useComputedColorScheme();
   const { dir } = useDirection();
+  const largerThanMd = useLargerThan('md');
 
-  return (
+  const handleClickWorkspacesButton = () =>
+    modals.open({
+      padding: 'xs',
+      withCloseButton: false,
+      children: <WorkspacePanelContent />,
+    });
+
+  return largerThanMd ? (
     <Popover
       width={300}
       position="top-start"
@@ -59,5 +69,15 @@ export function WorkspacePanel() {
         <WorkspacePanelContent />
       </Popover.Dropdown>
     </Popover>
+  ) : (
+    <ActionIcon
+      variant="subtle"
+      size="lg"
+      title={formatMessage({ id: 'ui.workspacePanel.title' })}
+      aria-label={formatMessage({ id: 'ui.workspacePanel.title' })}
+      onClick={handleClickWorkspacesButton}
+    >
+      <IconBoxMultiple size="1.5rem" />
+    </ActionIcon>
   );
 }

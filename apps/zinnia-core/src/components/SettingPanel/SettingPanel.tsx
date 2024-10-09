@@ -2,6 +2,8 @@ import { useIntl } from 'react-intl';
 import {
   ActionIcon,
   Button,
+  CloseButton,
+  Flex,
   Group,
   Popover,
   Select,
@@ -17,11 +19,13 @@ import { useForm } from '@mantine/form';
 import { useSelector } from '@legendapp/state/react';
 import * as v from 'valibot';
 import { valibotResolver } from 'mantine-form-valibot-resolver';
+import { modals } from '@mantine/modals';
 import { appState } from '@/states/appState';
 import { useSaveOption } from '@/queries/useSaveOption';
 import { appConfig } from '@/config/appConfig';
 import { Notify } from '@/utils/Notify';
 import { i18n } from '@/i18n';
+import { useLargerThan } from '@/hooks/useLargerThan';
 
 const formSchema = v.object({
   theme: v.picklist(['auto', 'light', 'dark']),
@@ -57,6 +61,7 @@ function SettingPanelContent() {
   const { formatMessage } = useIntl();
   const { setDirection } = useDirection();
   const userConfig = useSelector(appState.userConfig);
+  const largerThanMd = useLargerThan('md');
 
   const initialFormValues: FormValues = {
     theme: userConfig.colorScheme,
@@ -105,10 +110,14 @@ function SettingPanelContent() {
   return (
     <form onSubmit={handleFormSubmit}>
       <Stack gap="xs">
-        <Text fw={500}>{formatMessage({ id: 'ui.settingPanel.title' })}</Text>
+        <Group gap="xs">
+          {/* TODO: aria-label */}
+          {!largerThanMd && <CloseButton onClick={modals.closeAll} variant="subtle" />}
+          <Text fw={500}>{formatMessage({ id: 'ui.settingPanel.title' })}</Text>
+        </Group>
 
         <Stack
-          gap={8}
+          gap="xs"
           px="sm"
           py="xs"
           style={{
@@ -119,7 +128,12 @@ function SettingPanelContent() {
                 : 'var(--mantine-color-gray-1)',
           }}
         >
-          <Group gap="xs" justify="space-between" wrap="nowrap">
+          <Flex
+            gap={5}
+            justify="space-between"
+            align={{ xs: 'center' }}
+            direction={{ base: 'column', xs: 'row' }}
+          >
             <Text size="sm" fw={500}>
               {formatMessage({ id: 'ui.settingPanel.theme.label' })}
             </Text>
@@ -133,9 +147,14 @@ function SettingPanelContent() {
               }))}
               {...form.getInputProps('theme')}
             />
-          </Group>
+          </Flex>
 
-          <Group gap="xs" justify="space-between" wrap="nowrap">
+          <Flex
+            gap={5}
+            justify="space-between"
+            align={{ xs: 'center' }}
+            direction={{ base: 'column', xs: 'row' }}
+          >
             <Text size="sm" fw={500}>
               {formatMessage({ id: 'ui.settingPanel.language.label' })}
             </Text>
@@ -146,9 +165,14 @@ function SettingPanelContent() {
               data={languageSelects}
               {...form.getInputProps('language')}
             />
-          </Group>
+          </Flex>
 
-          <Group gap="xs" justify="space-between" wrap="nowrap">
+          <Flex
+            gap={5}
+            justify="space-between"
+            align={{ xs: 'center' }}
+            direction={{ base: 'column', xs: 'row' }}
+          >
             <Text size="sm" fw={500}>
               {formatMessage({ id: 'ui.settingPanel.locale.label' })}
             </Text>
@@ -159,7 +183,7 @@ function SettingPanelContent() {
               data={localeSelects}
               {...form.getInputProps('locale')}
             />
-          </Group>
+          </Flex>
 
           <Group gap="xs" justify="space-between" wrap="nowrap">
             <Text size="sm" fw={500} flex={1}>
@@ -192,8 +216,16 @@ export function SettingPanel() {
   const { formatMessage } = useIntl();
   const computedColorScheme = useComputedColorScheme();
   const { dir } = useDirection();
+  const largerThanMd = useLargerThan('md');
 
-  return (
+  const handleClickSettingsButton = () =>
+    modals.open({
+      padding: 'xs',
+      withCloseButton: false,
+      children: <SettingPanelContent />,
+    });
+
+  return largerThanMd ? (
     <Popover
       width={350}
       position="top-end"
@@ -225,5 +257,15 @@ export function SettingPanel() {
         <SettingPanelContent />
       </Popover.Dropdown>
     </Popover>
+  ) : (
+    <ActionIcon
+      variant="subtle"
+      size="lg"
+      title={formatMessage({ id: 'ui.settingPanel.title' })}
+      aria-label={formatMessage({ id: 'ui.settingPanel.title' })}
+      onClick={handleClickSettingsButton}
+    >
+      <IconSettings size="1.5rem" />
+    </ActionIcon>
   );
 }

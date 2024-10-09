@@ -50,7 +50,7 @@ export function TabFooterPanel() {
             {tools}
           </Group>
 
-          <ActionIcon variant="subtle" size="lg" hiddenFrom="md">
+          <ActionIcon variant="subtle" size="lg" hiddenFrom="md" color="teal">
             <IconSquareRounded size="1.5rem" />
           </ActionIcon>
 

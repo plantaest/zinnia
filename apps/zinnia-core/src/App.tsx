@@ -88,21 +88,21 @@ export default function App({ shadowRoot }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <DirectionProvider>
-        <MantineProvider
-          theme={theme}
-          defaultColorScheme="auto"
-          cssVariablesSelector=".zinnia-root"
-          getRootElement={() => zinniaRoot}
-        >
-          <Notifications />
-          <ModalsProvider>
-            <RawIntlProvider value={i18n.intl}>
+        <RawIntlProvider value={i18n.intl}>
+          <MantineProvider
+            theme={theme}
+            defaultColorScheme="auto"
+            cssVariablesSelector=".zinnia-root"
+            getRootElement={() => zinniaRoot}
+          >
+            <Notifications />
+            <ModalsProvider>
               <ErrorBoundary>
                 <HomePage />
               </ErrorBoundary>
-            </RawIntlProvider>
-          </ModalsProvider>
-        </MantineProvider>
+            </ModalsProvider>
+          </MantineProvider>
+        </RawIntlProvider>
       </DirectionProvider>
       <ReactQueryDevtools
         initialIsOpen={false}
