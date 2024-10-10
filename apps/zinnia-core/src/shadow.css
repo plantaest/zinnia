@@ -27,3 +27,8 @@
     -webkit-text-size-adjust: 100%
   }
 }
+
+/* Fix error on Vector 2022 */
+.mantine-Modal-inner {
+  left: 0;
+}
