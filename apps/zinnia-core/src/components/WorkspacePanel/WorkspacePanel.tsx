@@ -33,7 +33,9 @@ export function WorkspacePanel() {
   const handleClickWorkspacesButton = () =>
     modals.open({
       padding: 'xs',
+      fullScreen: true,
       withCloseButton: false,
+      withOverlay: false,
       children: <WorkspacePanelContent />,
     });
 

@@ -5,6 +5,7 @@ import {
   Card,
   Checkbox,
   Divider,
+  Flex,
   Grid,
   Group,
   NumberInput,
@@ -26,6 +27,7 @@ import { createFormActions, useForm } from '@mantine/form';
 import { useSelector } from '@legendapp/state/react';
 import * as v from 'valibot';
 import { valibotResolver } from 'mantine-form-valibot-resolver';
+import { modals } from '@mantine/modals';
 import { FilterLayer } from '@/components/FilterPanel/FilterLayer';
 import { FilterList } from '@/components/FilterPanel/FilterList';
 import { FilterCreateForm } from '@/components/FilterPanel/FilterCreateForm';
@@ -41,6 +43,7 @@ import { FilterNamespaceSelect } from '@/components/FilterPanel/FilterNamespaceS
 import { FilterTagSelect } from '@/components/FilterPanel/FilterTagSelect';
 import { useGetRightsOnWikis } from '@/queries/useGetRightsOnWikis';
 import { MwHelper } from '@/utils/MwHelper';
+import { useLargerThan } from '@/hooks/useLargerThan';
 
 const formSchema = (formatMessage: IntlShape['formatMessage']) =>
   v.object({
@@ -251,6 +254,7 @@ function FilterPanelContent() {
   const { formatMessage } = useIntl();
   const computedColorScheme = useComputedColorScheme();
   const activeFilter = useSelector(appState.ui.activeFilter);
+  const largerThanMd = useLargerThan('md');
 
   const [layer, setLayer] = useState<FilterLayer>('list');
   const [currentFilter, setCurrentFilter] = useState(activeFilter);
@@ -391,60 +395,64 @@ function FilterPanelContent() {
   const isDisabledPatrolRelatedCheckboxes =
     currentWikiId !== 'global' && !MwHelper.hasPatrolRight(rightsOnWikis[currentWikiId] ?? []);
 
+  const isHiddenOnMobile = !largerThanMd && layer === 'create';
+
   return (
     <Stack gap="xs">
       <Grid gutter="sm">
-        <Grid.Col span={3}>
-          <Stack justify="space-between" h="100%">
+        <Grid.Col span={{ base: 12, md: 3 }}>
+          <Stack justify="space-between" h="100%" gap="xs">
             {layers[layer]}
-            <Stack gap="xs">
-              <Group gap="xs">
-                <Button
-                  variant="light"
-                  disabled={!currentFilter || currentFilter?.id === activeFilter?.id}
-                  onClick={handleClickSelectButton}
-                  loading={selectFilterApi.isPending}
-                  flex={1}
-                >
-                  {formatMessage({ id: 'common.select' })}
-                </Button>
-                <Button
-                  variant="light"
-                  type="submit"
-                  form={formName}
-                  disabled={!currentFilter || isDisabledSubmitButton}
-                  loading={updateFilterApi.isPending}
-                  flex={1}
-                >
-                  {formatMessage({ id: 'common.save' })}
-                </Button>
-              </Group>
-              <Group gap="xs">
-                <Button
-                  color="red"
-                  variant="light"
-                  disabled={!currentFilter}
-                  onClick={handleClickDeleteButton}
-                  loading={deleteFilterApi.isPending}
-                  flex={1}
-                >
-                  {formatMessage({ id: 'common.delete' })}
-                </Button>
-                <Button
-                  variant="light"
-                  disabled={
-                    !currentFilter || (Object.keys(form.errors).length === 0 && !form.isDirty())
-                  }
-                  onClick={form.reset}
-                  flex={1}
-                >
-                  {formatMessage({ id: 'common.reset' })}
-                </Button>
-              </Group>
-            </Stack>
+            {!isHiddenOnMobile && (
+              <Stack gap="xs">
+                <Group gap="xs">
+                  <Button
+                    variant="light"
+                    disabled={!currentFilter || currentFilter?.id === activeFilter?.id}
+                    onClick={handleClickSelectButton}
+                    loading={selectFilterApi.isPending}
+                    flex={1}
+                  >
+                    {formatMessage({ id: 'common.select' })}
+                  </Button>
+                  <Button
+                    variant="light"
+                    type="submit"
+                    form={formName}
+                    disabled={!currentFilter || isDisabledSubmitButton}
+                    loading={updateFilterApi.isPending}
+                    flex={1}
+                  >
+                    {formatMessage({ id: 'common.save' })}
+                  </Button>
+                </Group>
+                <Group gap="xs">
+                  <Button
+                    color="red"
+                    variant="light"
+                    disabled={!currentFilter}
+                    onClick={handleClickDeleteButton}
+                    loading={deleteFilterApi.isPending}
+                    flex={1}
+                  >
+                    {formatMessage({ id: 'common.delete' })}
+                  </Button>
+                  <Button
+                    variant="light"
+                    disabled={
+                      !currentFilter || (Object.keys(form.errors).length === 0 && !form.isDirty())
+                    }
+                    onClick={form.reset}
+                    flex={1}
+                  >
+                    {formatMessage({ id: 'common.reset' })}
+                  </Button>
+                </Group>
+              </Stack>
+            )}
           </Stack>
         </Grid.Col>
-        <Grid.Col span={9}>
+        <Grid.Col hidden={isHiddenOnMobile} span={{ base: 12, md: 9 }}>
           <form id={formName} onSubmit={handleFormSubmit}>
             <Stack gap="xs">
               <Card
@@ -459,7 +467,7 @@ function FilterPanelContent() {
               >
                 <Stack gap="xs">
                   <Grid gutter="xs">
-                    <Grid.Col span={6}>
+                    <Grid.Col span={{ base: 12, md: 6 }}>
                       <Stack gap="xs">
                         <Divider
                           label={formatMessage({ id: 'ui.filterPanel.filterName' })}
@@ -543,7 +551,7 @@ function FilterPanelContent() {
                         </SimpleGrid>
                       </Stack>
                     </Grid.Col>
-                    <Grid.Col span={6}>
+                    <Grid.Col span={{ base: 12, md: 6 }}>
                       <Stack gap="xs">
                         <Divider
                           label={formatMessage({ id: 'ui.filterPanel.timeframe' })}
@@ -575,7 +583,7 @@ function FilterPanelContent() {
                                 popoverProps={{
                                   withinPortal: false,
                                 }}
-                                flex={1.5}
+                                flex={1.25}
                                 minDate={dayjs().subtract(30, 'd').toDate()}
                                 maxDate={dayjs().toDate()}
                                 disabled={
@@ -604,7 +612,7 @@ function FilterPanelContent() {
                                 size="xs"
                                 data={appConfig.TIMEFRAME_END_PERIODS}
                                 comboboxProps={{ withinPortal: false }}
-                                flex={1.5}
+                                flex={1.25}
                                 maxDropdownHeight={240}
                                 disabled={
                                   !currentFilter || form.values.feed.timeframe.end === 'timestamp'
@@ -627,7 +635,7 @@ function FilterPanelContent() {
                                 popoverProps={{
                                   withinPortal: false,
                                 }}
-                                flex={1.5}
+                                flex={1.25}
                                 minDate={dayjs().subtract(30, 'd').toDate()}
                                 maxDate={dayjs().toDate()}
                                 disabled={
@@ -641,52 +649,54 @@ function FilterPanelContent() {
                       </Stack>
                     </Grid.Col>
                   </Grid>
-                  <Group gap="xs">
+                  <Flex gap="xs" direction={{ base: 'column', md: 'row' }} align={{ md: 'center' }}>
                     <Divider
                       label={formatMessage({ id: 'common.wiki' })}
                       labelPosition="left"
                       flex={1}
                     />
-                    {form.values.wikis[selectedWikiIndex].wikiId !== 'global' && (
+                    <Group gap="xs" wrap="nowrap">
                       <Checkbox
                         size="xs"
                         label={formatMessage({ id: 'ui.filterPanel.inherited' })}
+                        disabled={form.values.wikis[selectedWikiIndex].wikiId === 'global'}
+                        style={{ whiteSpace: 'nowrap' }}
                         {...form.getInputProps(`wikis.${selectedWikiIndex}.inherited`, {
                           type: 'checkbox',
                         })}
                       />
-                    )}
-                    <Select
-                      size="xs"
-                      allowDeselect={false}
-                      data={form.values.wikis.map((w, i) => ({
-                        value: String(i),
-                        label: w.wikiId,
-                      }))}
-                      value={String(selectedWikiIndex)}
-                      onChange={(value) => setSelectedWikiIndex(Number(value ?? 0))}
-                      comboboxProps={{ withinPortal: false }}
-                      disabled={!currentFilter}
-                    />
-                    <FilterAddWikiForm
-                      currentFilter={currentFilter}
-                      formWikisLength={form.values.wikis.length}
-                    />
-                    <ActionIcon
-                      size="sm"
-                      variant="transparent"
-                      color="red.5"
-                      disabled={
-                        !currentFilter || form.values.wikis[selectedWikiIndex].wikiId === 'global'
-                      }
-                      onClick={handleClickDeleteWikiButton}
-                      title={formatMessage({ id: 'ui.filterPanel.deleteWiki' })}
-                      aria-label={formatMessage({ id: 'ui.filterPanel.deleteWiki' })}
-                    >
-                      <IconTrash size="1rem" />
-                    </ActionIcon>
-                  </Group>
-                  <SimpleGrid cols={2} spacing="xs" verticalSpacing={5}>
+                      <Select
+                        size="xs"
+                        allowDeselect={false}
+                        data={form.values.wikis.map((w, i) => ({
+                          value: String(i),
+                          label: w.wikiId,
+                        }))}
+                        value={String(selectedWikiIndex)}
+                        onChange={(value) => setSelectedWikiIndex(Number(value ?? 0))}
+                        comboboxProps={{ withinPortal: false }}
+                        disabled={!currentFilter}
+                      />
+                      <FilterAddWikiForm
+                        currentFilter={currentFilter}
+                        formWikisLength={form.values.wikis.length}
+                      />
+                      <ActionIcon
+                        size="sm"
+                        variant="transparent"
+                        color="red.5"
+                        disabled={
+                          !currentFilter || form.values.wikis[selectedWikiIndex].wikiId === 'global'
+                        }
+                        onClick={handleClickDeleteWikiButton}
+                        title={formatMessage({ id: 'ui.filterPanel.deleteWiki' })}
+                        aria-label={formatMessage({ id: 'ui.filterPanel.deleteWiki' })}
+                      >
+                        <IconTrash size="1rem" />
+                      </ActionIcon>
+                    </Group>
+                  </Flex>
+                  <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xs" verticalSpacing={5}>
                     <FilterNamespaceSelect
                       currentFilter={currentFilter}
                       selectedWikiIndex={selectedWikiIndex}
@@ -710,7 +720,7 @@ function FilterPanelContent() {
                       {...form.getInputProps(`wikis.${selectedWikiIndex}.config.username`)}
                     />
                   </SimpleGrid>
-                  <SimpleGrid cols={3} spacing="xs" verticalSpacing="xs">
+                  <SimpleGrid cols={{ base: 2, md: 3 }} spacing="xs" verticalSpacing="xs">
                     <Checkbox
                       size="xs"
                       label={formatMessage({ id: 'ui.filterPanel.unregistered' })}
@@ -874,10 +884,21 @@ export function FilterPanel() {
   const { formatMessage } = useIntl();
   const computedColorScheme = useComputedColorScheme();
   const { dir } = useDirection();
+  const largerThanMd = useLargerThan('md');
+  const largerThanLg = useLargerThan('lg');
 
-  return (
+  const handleClickFiltersButton = () =>
+    modals.open({
+      padding: 'xs',
+      fullScreen: true,
+      withCloseButton: false,
+      withOverlay: false,
+      children: <FilterPanelContent />,
+    });
+
+  return largerThanMd ? (
     <Popover
-      width={1000}
+      width={largerThanLg ? 1000 : 925}
       position="top-start"
       shadow="lg"
       radius="md"
@@ -907,5 +928,15 @@ export function FilterPanel() {
         <FilterPanelContent />
       </Popover.Dropdown>
     </Popover>
+  ) : (
+    <ActionIcon
+      variant="subtle"
+      size="lg"
+      title={formatMessage({ id: 'ui.filterPanel.title' })}
+      aria-label={formatMessage({ id: 'ui.filterPanel.title' })}
+      onClick={handleClickFiltersButton}
+    >
+      <IconFilter size="1.5rem" />
+    </ActionIcon>
   );
 }

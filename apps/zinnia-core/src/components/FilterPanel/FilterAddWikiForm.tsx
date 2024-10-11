@@ -1,5 +1,5 @@
-import { ActionIcon, Anchor, Button, Group, Popover, Stack, Text, TextInput } from '@mantine/core';
-import { IconPlus } from '@tabler/icons-react';
+import { ActionIcon, Anchor, Button, Group, Popover, Stack, TextInput } from '@mantine/core';
+import { IconBrandWikipedia, IconPlus } from '@tabler/icons-react';
 import { IntlShape, useIntl } from 'react-intl';
 import { useForm } from '@mantine/form';
 import React from 'react';
@@ -11,6 +11,7 @@ import { wikis } from '@/utils/wikis';
 import { filterPanelFormAction, FilterPanelFormValues } from '@/components/FilterPanel/FilterPanel';
 import { Notify } from '@/utils/Notify';
 import { appConfig } from '@/config/appConfig';
+import { useLargerThan } from '@/hooks/useLargerThan';
 
 const formSchema = (formatMessage: IntlShape['formatMessage']) =>
   v.pipe(
@@ -120,16 +121,14 @@ function FilterAddWikiFormContent() {
         onKeyDown={handleKeyDown}
         {...form.getInputProps('wikiId')}
       />
-      <Group gap={3.5}>
-        <Text size="xs" c="dimmed">
-          {formatMessage({ id: 'ui.filterPanel.filterAddWikiForm.eg' })}
-        </Text>
+      <Group gap={5}>
+        <IconBrandWikipedia size="1rem" />
         <Anchor
           size="xs"
           href="https://en.wikipedia.org/wiki/User:Plantaest/Zinnia/Supported_wikis"
           target="_blank"
         >
-          {formatMessage({ id: 'ui.filterPanel.filterAddWikiForm.fullList' })}
+          {formatMessage({ id: 'ui.filterPanel.filterAddWikiForm.supportedWikiList' })}
         </Anchor>
       </Group>
       <Button size="xs" onClick={() => handleFormSubmit()}>
@@ -146,9 +145,16 @@ interface FilterAddWikiFormProps {
 
 export function FilterAddWikiForm({ currentFilter, formWikisLength }: FilterAddWikiFormProps) {
   const { formatMessage } = useIntl();
+  const largerThanMd = useLargerThan('md');
 
   return (
-    <Popover width={250} position="bottom-end" shadow="md" withinPortal={false} trapFocus>
+    <Popover
+      width={250}
+      position={largerThanMd ? 'bottom-end' : 'bottom'}
+      shadow="md"
+      withinPortal={false}
+      trapFocus
+    >
       <Popover.Target>
         <ActionIcon
           size="sm"

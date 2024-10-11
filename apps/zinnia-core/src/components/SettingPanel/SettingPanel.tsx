@@ -221,7 +221,9 @@ export function SettingPanel() {
   const handleClickSettingsButton = () =>
     modals.open({
       padding: 'xs',
+      fullScreen: true,
       withCloseButton: false,
+      withOverlay: false,
       children: <SettingPanelContent />,
     });
 
