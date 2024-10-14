@@ -111,8 +111,13 @@ function SettingPanelContent() {
     <form onSubmit={handleFormSubmit}>
       <Stack gap="xs">
         <Group gap="xs">
-          {/* TODO: aria-label */}
-          {!largerThanMd && <CloseButton onClick={modals.closeAll} variant="subtle" />}
+          {!largerThanMd && (
+            <CloseButton
+              onClick={modals.closeAll}
+              variant="subtle"
+              aria-label={formatMessage({ id: 'common.close' })}
+            />
+          )}
           <Text fw={500}>{formatMessage({ id: 'ui.settingPanel.title' })}</Text>
         </Group>
 

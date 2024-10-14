@@ -39,8 +39,13 @@ export function FilterList({
     <Stack gap="xs">
       <Group gap="xs" justify="space-between">
         <Group gap="xs">
-          {/* TODO: aria-label */}
-          {!largerThanMd && <CloseButton onClick={modals.closeAll} variant="subtle" />}
+          {!largerThanMd && (
+            <CloseButton
+              onClick={modals.closeAll}
+              variant="subtle"
+              aria-label={formatMessage({ id: 'common.close' })}
+            />
+          )}
           <Text fw={500}>{formatMessage({ id: 'ui.filterPanel.title' })}</Text>
         </Group>
         <ActionIcon
