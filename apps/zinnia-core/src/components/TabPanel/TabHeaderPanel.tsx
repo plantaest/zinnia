@@ -4,14 +4,13 @@ import {
   IconArrowRight,
   IconArrowsMinimize,
   IconChevronDown,
+  IconFile,
   IconHistory,
-  IconHourglassLow,
   IconLayoutColumns,
   IconPhoto,
-  IconPlus,
   IconRefresh,
   IconSeeding,
-  IconUserSearch,
+  IconUser,
 } from '@tabler/icons-react';
 import { ActionIcon, Card, Flex, Group, Indicator, Text, useDirection } from '@mantine/core';
 import { useSelector } from '@legendapp/state/react';
@@ -19,6 +18,7 @@ import { Tab, TabType } from '@/types/persistence/Tab';
 import { TablerIcon } from '@/types/lib/TablerIcon';
 import classes from './TabHeaderPanel.module.css';
 import { appState } from '@/states/appState';
+import { NewTabPanel } from '@/components/NewTabPanel/NewTabPanel';
 
 const tabIcons: Record<TabType, TablerIcon> = {
   [TabType.WELCOME]: IconSeeding,
@@ -28,8 +28,8 @@ const tabIcons: Record<TabType, TablerIcon> = {
   [TabType.MAIN_READ]: IconAlignJustified,
   [TabType.FILE]: IconPhoto,
   [TabType.MAIN_FILE]: IconPhoto,
-  [TabType.PAGE_HISTORY]: IconHourglassLow,
-  [TabType.USER_CONTRIBUTIONS]: IconUserSearch,
+  [TabType.PAGE]: IconFile,
+  [TabType.USER]: IconUser,
 };
 
 export function TabHeaderPanel() {
@@ -96,9 +96,7 @@ export function TabHeaderPanel() {
         {activeTab && activeTagFragment(activeTab)}
 
         <Flex>
-          <ActionIcon variant="subtle" size={30} visibleFrom="md">
-            <IconPlus size="1.125rem" />
-          </ActionIcon>
+          <NewTabPanel />
           <ActionIcon variant="subtle" size={30} visibleFrom="md">
             <IconRefresh size="1.125rem" />
           </ActionIcon>

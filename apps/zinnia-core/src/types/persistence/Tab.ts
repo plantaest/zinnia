@@ -23,12 +23,12 @@ export type Tab = {
       data: FileTabData;
     }
   | {
-      type: TabType.PAGE_HISTORY;
-      data: PageHistoryTabData;
+      type: TabType.PAGE;
+      data: PageTabData;
     }
   | {
-      type: TabType.USER_CONTRIBUTIONS;
-      data: UserContributionsTabData;
+      type: TabType.USER;
+      data: UserTabData;
     }
 );
 
@@ -40,8 +40,8 @@ export enum TabType {
   MAIN_READ = 'MAIN_READ',
   FILE = 'FILE',
   MAIN_FILE = 'MAIN_FILE',
-  PAGE_HISTORY = 'PAGE_HISTORY',
-  USER_CONTRIBUTIONS = 'USER_CONTRIBUTIONS',
+  PAGE = 'PAGE',
+  USER = 'USER',
 }
 
 export interface DiffTabData {
@@ -62,12 +62,12 @@ export interface FileTabData {
   pageTitle: string;
 }
 
-export interface PageHistoryTabData {
+export interface PageTabData {
   wikiId: string;
   pageTitle: string;
 }
 
-export interface UserContributionsTabData {
+export interface UserTabData {
   wikiId: string;
   username: number;
 }
