@@ -5,3 +5,29 @@
   border-inline: var(--zinnia-mirror-border);
   border-radius: 0 0 var(--mantine-radius-md) var(--mantine-radius-md);
 }
+
+.carouselViewport {
+  padding: rem(4px);
+  max-width: rem(218px); /* 5x34 + 4x10 + 4x2 */
+
+  @media (min-width: 64em) {
+    /* md */
+    max-width: rem(438px); /* 10x34 + 9x10 + 4x2 */
+  }
+
+  @media (min-width: 90em) {
+    /* xl */
+    max-width: rem(658px); /* 15x34 + 14x10 + 4x2 */
+  }
+}
+
+.carouselControls {
+  inset-inline: rem(-18px);
+}
+
+.carouselControl {
+  background-color: transparent;
+  color: inherit;
+  border: none;
+  box-shadow: none;
+}

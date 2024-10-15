@@ -5,9 +5,9 @@ import {
   IconPhoto,
   IconSeeding,
   IconUser,
+  TablerIcon,
 } from '@tabler/icons-react';
 import { TabType } from '@/types/persistence/Tab';
-import { TablerIcon } from '@/types/lib/TablerIcon';
 
 export const tabIcons: Record<TabType, TablerIcon> = {
   [TabType.WELCOME]: IconSeeding,

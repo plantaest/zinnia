@@ -21,6 +21,7 @@ import {
   IconRobotFace,
   IconSpy,
   IconUser,
+  TablerIcon,
 } from '@tabler/icons-react';
 import { Change } from '@plantaest/aster';
 import dayjs from 'dayjs';
@@ -30,7 +31,6 @@ import { v4 as uuidv4 } from 'uuid';
 import classes from './ChangeCard.module.css';
 import { MwHelper } from '@/utils/MwHelper';
 import { wikis } from '@/utils/wikis';
-import { TablerIcon } from '@/types/lib/TablerIcon';
 import { appState } from '@/states/appState';
 import { OresScoreBadge } from '@/components/ChangeCard/OresScoreBadge';
 import { Tab, TabType } from '@/types/persistence/Tab';

@@ -42,7 +42,7 @@ export function ReadTab({ wikiId, pageTitle, redirect }: ReadTabProps) {
   const isSuccess = isSuccessGetPageHtml || isSuccessGetWikiStyleSheet;
 
   return (
-    <Stack p={5} gap={5} flex={1}>
+    <Stack p={5} gap={5} flex={1} w="100%">
       <Box className={classes.box}>
         <Stack gap="xs">
           <Group gap="xs" justify="space-between" wrap="nowrap">
@@ -109,6 +109,7 @@ export function ReadTab({ wikiId, pageTitle, redirect }: ReadTabProps) {
             }
             target="_blank"
             w="fit-content"
+            style={{ wordBreak: 'break-word' }}
           >
             {pageTitle}
           </Anchor>

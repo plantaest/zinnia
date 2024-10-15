@@ -276,6 +276,7 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
             href={MwHelper.createPageUri(serverName, pageTitle)}
             target="_blank"
             w="fit-content"
+            style={{ wordBreak: 'break-word' }}
           >
             {pageTitle}
           </Anchor>
