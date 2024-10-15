@@ -9,4 +9,5 @@ export const appConfig = Object.freeze({
   FEED_LIMITS: ['10', '25', '50', '75', '100', '250', '500'],
   TIMEFRAME_END_PERIODS: ['PT1H', 'PT2H', 'PT6H', 'PT12H', 'P1D', 'P3D', 'P7D', 'P14D', 'P30D'],
   MAX_FILTER_WIKIS: 5,
+  TABS_OPTION_KEY: 'userjs-zinnia-tabs',
 });

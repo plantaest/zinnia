@@ -3,7 +3,6 @@ import {
   IconArrowRight,
   IconArrowsMinimize,
   IconHistory,
-  IconRefresh,
 } from '@tabler/icons-react';
 import { ActionIcon, Card, Flex, Group, Indicator, Text, useDirection } from '@mantine/core';
 import { useSelector } from '@legendapp/state/react';
@@ -13,6 +12,7 @@ import { appState } from '@/states/appState';
 import { NewTabPanel } from '@/components/NewTabPanel/NewTabPanel';
 import { TabListPanel } from '@/components/TabListPanel/TabListPanel';
 import { tabIcons } from '@/utils/tabIcons';
+import { SyncTabsPanel } from '@/components/SyncTabsPanel/SyncTabsPanel';
 
 export function TabHeaderPanel() {
   const { dir } = useDirection();
@@ -79,9 +79,7 @@ export function TabHeaderPanel() {
 
         <Flex>
           <NewTabPanel />
-          <ActionIcon variant="subtle" size={30} visibleFrom="md">
-            <IconRefresh size="1.125rem" />
-          </ActionIcon>
+          <SyncTabsPanel />
           <Flex visibleFrom="md">
             <TabListPanel />
           </Flex>

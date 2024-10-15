@@ -4,7 +4,7 @@ import { metaWiki } from '@/utils/wikis';
 
 export function useGetOption(name: string) {
   return useQuery<unknown, AsterError>({
-    queryKey: ['metawiki', 'userInfo', 'getOption'],
+    queryKey: ['metawiki', 'userInfo', 'getOption', name],
     queryFn: () => metaWiki.userInfo().getOption(name),
   });
 }
