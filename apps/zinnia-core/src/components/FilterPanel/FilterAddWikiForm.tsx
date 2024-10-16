@@ -129,6 +129,7 @@ function FilterAddWikiFormContent() {
         </Anchor>
       </Group>
       <TextInput
+        data-autofocus
         placeholder="Wiki ID"
         size="xs"
         onKeyDown={handleKeyDown}
