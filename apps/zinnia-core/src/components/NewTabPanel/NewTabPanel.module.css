@@ -3,11 +3,16 @@
   background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
   border-radius: var(--mantine-radius-md);
 
-  &:hover {
+  &:not([data-disabled="true"]):hover {
     background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
   }
 
-  &:active {
+  &:not([data-disabled="true"]):active {
     transform: translateY(rem(1px));
+  }
+
+  &[data-disabled="true"] {
+    color: light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-3));
+    cursor: not-allowed;
   }
 }

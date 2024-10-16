@@ -34,7 +34,7 @@ function NavigationPanelContent({ onOpened }: NavigationPanelContentProps) {
     <Stack gap="xs">
       <Stack className={classes.feed} ref={feedRef}>
         {recentChanges.map((change, index) => (
-          <ChangeCard change={change} index={index} />
+          <ChangeCard key={index} change={change} index={index} />
         ))}
       </Stack>
       <Group gap="xs" justify="center" pl="xs">
