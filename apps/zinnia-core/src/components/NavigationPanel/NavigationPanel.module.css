@@ -1,0 +1,21 @@
+.wrapper {
+  border: var(--zinnia-mirror-border);
+  background-color: light-dark(alpha(#c8e3f9, 0.75), alpha(#061e35, 0.75));
+  padding: var(--mantine-spacing-xs);
+  padding-left: 0;
+  backdrop-filter: blur(10px);
+}
+
+.feed {
+  overflow-y: scroll;
+  scrollbar-width: none;
+  gap: rem(5px);
+  height: 60vh;
+  mask-image: linear-gradient(
+      0deg,
+      transparent,
+      #000 10%,
+      #000 90%,
+      transparent 100%
+  );
+}

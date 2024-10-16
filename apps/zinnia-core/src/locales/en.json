@@ -133,6 +133,7 @@
   "ui.syncTabsPanel.title": "Sync tabs",
   "ui.syncTabsPanel.push": "Push",
   "ui.syncTabsPanel.pull": "Pull",
+  "ui.navigationPanel.title": "Navigate",
   "hook.useSaveOption.error.default": "Unable to create/save configurations",
   "hook.useSaveOption.success.updateAppVersion": "Successfully updated to the latest version {newVersion} from version {oldVersion}",
   "hook.useSaveOption.success.updateSettings": "Successfully updated settings",

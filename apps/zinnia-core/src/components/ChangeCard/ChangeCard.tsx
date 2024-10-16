@@ -37,6 +37,7 @@ import { Tab, TabType } from '@/types/persistence/Tab';
 import { LengthDeltaBadge } from '@/components/LengthDeltaBadge/LengthDeltaBadge';
 import { scrollToTopTabMainPanel } from '@/utils/scrollToTopTabMainPanel';
 import { useLargerThanFunction } from '@/hooks/useLargerThanFunction';
+import { selectedChangeRef } from '@/refs/selectedChangeRef';
 
 interface EditChangeCardProps {
   change: Change;
@@ -249,7 +250,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
   };
 
   return (
-    <Flex className={classes.wrapper}>
+    <Flex className={classes.wrapper} ref={isSelected ? selectedChangeRef : undefined}>
       <Box
         className={classes.bar}
         bg={isSelected ? 'var(--mantine-color-blue-filled)' : undefined}

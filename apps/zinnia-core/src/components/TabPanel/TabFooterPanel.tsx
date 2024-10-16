@@ -5,7 +5,6 @@ import {
   IconCheck,
   IconGridDots,
   IconRestore,
-  IconSquareRounded,
   TablerIcon,
 } from '@tabler/icons-react';
 import { Carousel } from '@mantine/carousel';
@@ -13,6 +12,7 @@ import classes from '@/components/TabPanel/TabFooterPanel.module.css';
 import { FilterPanel } from '@/components/FilterPanel/FilterPanel';
 import { WorkspacePanel } from '@/components/WorkspacePanel/WorkspacePanel';
 import { SettingPanel } from '@/components/SettingPanel/SettingPanel';
+import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 
 interface NativeToolButton {
   color: MantineColor;
@@ -84,9 +84,9 @@ export function TabFooterPanel() {
 
           <Box visibleFrom="md">{toolButtonsCarouselFragment}</Box>
 
-          <ActionIcon variant="subtle" size="lg" hiddenFrom="md" color="teal">
-            <IconSquareRounded size="1.5rem" />
-          </ActionIcon>
+          <Flex hiddenFrom="md">
+            <NavigationPanel />
+          </Flex>
 
           <Group gap="xs" wrap="nowrap">
             <ActionIcon variant="subtle" size="lg">

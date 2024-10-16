@@ -70,7 +70,7 @@ export function TabHeaderPanel() {
               <IconHistory size="1.125rem" />
             </ActionIcon>
             <Flex hiddenFrom="md">
-              <TabListPanel />
+              <SyncTabsPanel />
             </Flex>
           </Flex>
         </Group>
@@ -79,7 +79,9 @@ export function TabHeaderPanel() {
 
         <Flex>
           <NewTabPanel />
-          <SyncTabsPanel />
+          <Flex visibleFrom="md">
+            <SyncTabsPanel />
+          </Flex>
           <Flex visibleFrom="md">
             <TabListPanel />
           </Flex>
