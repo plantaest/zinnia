@@ -1,7 +1,8 @@
 import { ActionIcon, Flex, Group, Popover, Stack } from '@mantine/core';
 import { IconArrowLeft, IconArrowRight, IconHistory, IconSquareRounded } from '@tabler/icons-react';
 import { useIntl } from 'react-intl';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import scrollIntoView from 'scroll-into-view-if-needed';
 import { useGetRecentChanges } from '@/queries/useGetRecentChanges';
 import { ChangeCard } from '@/components/ChangeCard/ChangeCard';
 import classes from './NavigationPanel.module.css';
@@ -14,9 +15,15 @@ interface NavigationPanelContentProps {
 
 function NavigationPanelContent({ onOpened }: NavigationPanelContentProps) {
   const { data: recentChanges = [] } = useGetRecentChanges();
+  const feedRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    selectedChangeRef.current?.scrollIntoView({ behavior: 'instant', block: 'center' });
+    if (selectedChangeRef.current) {
+      scrollIntoView(selectedChangeRef.current, {
+        behavior: 'instant',
+        boundary: feedRef.current,
+      });
+    }
   }, []);
 
   const handleClickClosePopoverButton = () => {
@@ -25,7 +32,7 @@ function NavigationPanelContent({ onOpened }: NavigationPanelContentProps) {
 
   return (
     <Stack gap="xs">
-      <Stack className={classes.feed}>
+      <Stack className={classes.feed} ref={feedRef}>
         {recentChanges.map((change, index) => (
           <ChangeCard change={change} index={index} />
         ))}
