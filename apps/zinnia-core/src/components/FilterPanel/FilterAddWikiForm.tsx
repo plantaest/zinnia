@@ -1,4 +1,4 @@
-import { ActionIcon, Anchor, Button, Group, Popover, Stack, TextInput } from '@mantine/core';
+import { ActionIcon, Anchor, Button, Group, Popover, Stack, Text, TextInput } from '@mantine/core';
 import { IconBrandWikipedia, IconPlus } from '@tabler/icons-react';
 import { IntlShape, useIntl } from 'react-intl';
 import { useForm } from '@mantine/form';
@@ -115,12 +115,9 @@ function FilterAddWikiFormContent() {
 
   return (
     <Stack gap="xs">
-      <TextInput
-        placeholder="Wiki ID"
-        size="xs"
-        onKeyDown={handleKeyDown}
-        {...form.getInputProps('wikiId')}
-      />
+      <Text size="sm" fw={500}>
+        {formatMessage({ id: 'ui.filterPanel.filterAddWikiForm.addWiki' })}
+      </Text>
       <Group gap={5}>
         <IconBrandWikipedia size="1rem" />
         <Anchor
@@ -131,6 +128,12 @@ function FilterAddWikiFormContent() {
           {formatMessage({ id: 'ui.filterPanel.filterAddWikiForm.supportedWikiList' })}
         </Anchor>
       </Group>
+      <TextInput
+        placeholder="Wiki ID"
+        size="xs"
+        onKeyDown={handleKeyDown}
+        {...form.getInputProps('wikiId')}
+      />
       <Button size="xs" onClick={() => handleFormSubmit()}>
         {formatMessage({ id: 'common.add' })}
       </Button>

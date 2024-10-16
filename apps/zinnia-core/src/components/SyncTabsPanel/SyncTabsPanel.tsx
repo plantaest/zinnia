@@ -45,7 +45,7 @@ function SyncTabsPanelContent() {
 
       <Group gap="xs">
         <Button
-          variant="default"
+          variant="light"
           flex={1}
           leftSection={<IconCloudUpload size="1rem" />}
           onClick={handleClickPushButton}
@@ -54,7 +54,7 @@ function SyncTabsPanelContent() {
           {formatMessage({ id: 'ui.syncTabsPanel.push' })}
         </Button>
         <Button
-          variant="default"
+          variant="light"
           flex={1}
           leftSection={<IconCloudDownload size="1rem" />}
           onClick={handleClickPullButton}

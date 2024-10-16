@@ -27,7 +27,7 @@
 
 .carouselControl {
   background-color: transparent;
-  color: inherit;
+  color: var(--mantine-color-blue-light-color);
   border: none;
   box-shadow: none;
 }

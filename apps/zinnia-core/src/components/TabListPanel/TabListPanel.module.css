@@ -21,9 +21,5 @@
   &[data-active="true"] {
     background-color: var(--mantine-color-blue-filled);
     color: var(--mantine-color-white);
-
-    &:hover {
-      background-color: var(--mantine-color-blue-filled-hover);
-    }
   }
 }
