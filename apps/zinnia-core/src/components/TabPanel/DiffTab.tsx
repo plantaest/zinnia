@@ -76,7 +76,7 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
   const diffTableRef = useRef<HTMLTableElement | null>(null);
 
   useEffect(() => {
-    type TempRef = null | {
+    type TempRefs = null | {
       diffTable: Element;
       deletedCells: NodeListOf<Element>;
       addedCells: NodeListOf<Element>;
@@ -87,7 +87,7 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
       scrollToCorrespondingCell: (event: Event) => void;
     };
 
-    let tempRefs: TempRef = null;
+    let tempRefs: TempRefs = null;
 
     if (diffTableRef.current) {
       // Select only one column at once

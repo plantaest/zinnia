@@ -3,5 +3,5 @@ import { useMediaQuery } from '@mantine/hooks';
 
 export function useLargerThan(breakpoint: MantineSize) {
   const theme = useMantineTheme();
-  return useMediaQuery(`(min-width: ${theme.breakpoints[breakpoint]})`);
+  return useMediaQuery(`(min-width: ${theme.breakpoints[breakpoint]})`, false);
 }

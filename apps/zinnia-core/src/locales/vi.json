@@ -121,6 +121,7 @@
   "ui.settingPanel.language.label": "Ngôn ngữ",
   "ui.settingPanel.locale.label": "Vùng",
   "ui.settingPanel.rtl.label": "Phải-sang-trái",
+  "ui.settingPanel.advancedMode.label": "Chế độ nâng cao",
   "ui.noneTab.message": "Không có tab nào được chọn",
   "ui.newTabPanel.title": "Tab mới",
   "ui.newTabPanel.welcome": "Chào mừng",

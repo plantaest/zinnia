@@ -32,6 +32,7 @@ const formSchema = v.object({
   language: v.string(),
   locale: v.string(),
   rtl: v.boolean(),
+  advancedMode: v.boolean(),
 });
 
 type FormValues = v.InferInput<typeof formSchema>;
@@ -68,6 +69,7 @@ function SettingPanelContent() {
     language: userConfig.language,
     locale: userConfig.locale,
     rtl: userConfig.dir === 'rtl',
+    advancedMode: userConfig.advancedMode,
   };
 
   const form = useForm({
@@ -86,6 +88,7 @@ function SettingPanelContent() {
     clonedUserConfig.language = formValues.language;
     clonedUserConfig.locale = formValues.locale;
     clonedUserConfig.dir = formValues.rtl ? 'rtl' : 'ltr';
+    clonedUserConfig.advancedMode = formValues.advancedMode;
 
     saveOptionApi.mutate(
       {
@@ -195,6 +198,13 @@ function SettingPanelContent() {
               {formatMessage({ id: 'ui.settingPanel.rtl.label' })}
             </Text>
             <Switch {...form.getInputProps('rtl', { type: 'checkbox' })} />
+          </Group>
+
+          <Group gap="xs" justify="space-between" wrap="nowrap">
+            <Text size="sm" fw={500} flex={1}>
+              {formatMessage({ id: 'ui.settingPanel.advancedMode.label' })}
+            </Text>
+            <Switch {...form.getInputProps('advancedMode', { type: 'checkbox' })} />
           </Group>
         </Stack>
 

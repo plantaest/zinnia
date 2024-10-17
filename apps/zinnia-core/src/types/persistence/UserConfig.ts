@@ -13,4 +13,5 @@ export interface UserConfig {
   dir: 'ltr' | 'rtl';
   workspaces: Workspace[];
   activeWorkspaceId: string | null;
+  advancedMode: boolean;
 }

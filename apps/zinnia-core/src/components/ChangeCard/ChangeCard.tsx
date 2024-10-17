@@ -4,6 +4,7 @@ import {
   Box,
   Flex,
   Group,
+  HoverCard,
   MantineColor,
   Stack,
   Text,
@@ -36,8 +37,9 @@ import { OresScoreBadge } from '@/components/ChangeCard/OresScoreBadge';
 import { Tab, TabType } from '@/types/persistence/Tab';
 import { LengthDeltaBadge } from '@/components/LengthDeltaBadge/LengthDeltaBadge';
 import { scrollToTopTabMainPanel } from '@/utils/scrollToTopTabMainPanel';
-import { useLargerThanFunction } from '@/hooks/useLargerThanFunction';
 import { selectedChangeRef } from '@/refs/selectedChangeRef';
+import { DiffPreview } from '@/components/DiffPreview/DiffPreview';
+import { useLargerThan } from '@/hooks/useLargerThan';
 
 interface EditChangeCardProps {
   change: Change;
@@ -45,8 +47,9 @@ interface EditChangeCardProps {
 }
 
 export function ChangeCard({ change, index }: EditChangeCardProps) {
-  const largerThanMd = useLargerThanFunction('md');
+  const largerThanMd = useLargerThan('md');
   const isCodeFile = ['.js', '.css', '.json'].some((fileType) => change.title.endsWith(fileType));
+  const advancedMode = useSelector(appState.userConfig.advancedMode);
 
   const changeTypeIcons: Record<Change['type'], TablerIcon> = {
     edit: change.redirect ? IconArrowLoopRight : isCodeFile ? IconCode : IconAlignJustified,
@@ -160,7 +163,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
         appState.local.activeTabId.set(tabId);
         scrollToTopTabMainPanel();
 
-        if (!largerThanMd()) {
+        if (!largerThanMd) {
           appState.ui.showTabPanelDrawer.set(true);
         }
       }
@@ -224,7 +227,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
         appState.local.activeTabId.set(tabId);
         scrollToTopTabMainPanel();
 
-        if (!largerThanMd()) {
+        if (!largerThanMd) {
           appState.ui.showTabPanelDrawer.set(true);
         }
       }
@@ -255,71 +258,99 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
         className={classes.bar}
         bg={isSelected ? 'var(--mantine-color-blue-filled)' : undefined}
       />
-      <UnstyledButton
-        className={classes.card}
-        data-active={isSelected}
-        onClick={handleClickChangeButton}
+      <HoverCard
+        width={640}
+        shadow="lg"
+        radius="md"
+        position="right"
+        offset={25}
+        disabled={!advancedMode || !largerThanMd || change.type !== 'edit'}
       >
-        <Stack gap={4}>
-          <Group justify="space-between" gap={5}>
-            {/* TODO: LOCALIZE (date/time) */}
-            <Group gap={5}>
-              <Text className={classes.indexAndWikiId}>{index + 1}</Text>
-              <Text className={classes.timestamp} data-patrolled={change.patrolled}>
-                {dayjs(change.timestamp).format('HH:mm:ss')}
-              </Text>
-              {change.minor && (
-                <IconLeaf size="1rem" stroke={1.5} color="var(--mantine-color-gray-light-color)" />
-              )}
-            </Group>
-            <Text className={classes.indexAndWikiId}>{change.wikiId}</Text>
-          </Group>
+        <HoverCard.Target>
+          <UnstyledButton
+            className={classes.card}
+            data-active={isSelected}
+            onClick={handleClickChangeButton}
+          >
+            <Stack gap={4}>
+              <Group justify="space-between" gap={5}>
+                {/* TODO: LOCALIZE (date/time) */}
+                <Group gap={5}>
+                  <Text className={classes.indexAndWikiId}>{index + 1}</Text>
+                  <Text className={classes.timestamp} data-patrolled={change.patrolled}>
+                    {dayjs(change.timestamp).format('HH:mm:ss')}
+                  </Text>
+                  {change.minor && (
+                    <IconLeaf
+                      size="1rem"
+                      stroke={1.5}
+                      color="var(--mantine-color-gray-light-color)"
+                    />
+                  )}
+                </Group>
+                <Text className={classes.indexAndWikiId}>{change.wikiId}</Text>
+              </Group>
 
-          <Group justify="space-between" gap={8} wrap="nowrap">
-            <Group className={classes.pageTitle}>
-              <Avatar size="sm" radius="sm" color={changeTypeColors[change.type]} variant="filled">
-                <ChangeIcon size="1rem" />
-              </Avatar>
+              <Group justify="space-between" gap={8} wrap="nowrap">
+                <Group className={classes.pageTitle}>
+                  <Avatar
+                    size="sm"
+                    radius="sm"
+                    color={changeTypeColors[change.type]}
+                    variant="filled"
+                  >
+                    <ChangeIcon size="1rem" />
+                  </Avatar>
 
-              <Anchor
-                size="sm"
-                href={pageTitleLink}
-                target="_blank"
-                fw={500}
-                onClick={handleClickPageTitleLink}
-                onDoubleClick={handleDoubleClickPageTitleLink}
-              >
-                {change.title}
-              </Anchor>
-            </Group>
+                  <Anchor
+                    size="sm"
+                    href={pageTitleLink}
+                    target="_blank"
+                    fw={500}
+                    onClick={handleClickPageTitleLink}
+                    onDoubleClick={handleDoubleClickPageTitleLink}
+                  >
+                    {change.title}
+                  </Anchor>
+                </Group>
 
-            {['edit', 'new'].includes(change.type) && (
-              <LengthDeltaBadge newLength={change.newLength} oldLength={change.oldLength} />
-            )}
-          </Group>
+                {['edit', 'new'].includes(change.type) && (
+                  <LengthDeltaBadge newLength={change.newLength} oldLength={change.oldLength} />
+                )}
+              </Group>
 
-          <Group justify="space-between" gap={8}>
-            <Group className={classes.username}>
-              <Avatar size="sm" radius="sm" color="blue" variant="filled">
-                <UserIcon size="1rem" />
-              </Avatar>
+              <Group justify="space-between" gap={8}>
+                <Group className={classes.username}>
+                  <Avatar size="sm" radius="sm" color="blue" variant="filled">
+                    <UserIcon size="1rem" />
+                  </Avatar>
 
-              <Anchor
-                size="sm"
-                href={usernameLink}
-                target="_blank"
-                fw={500}
-                onClick={handleClickUsernameLink}
-                onDoubleClick={handleDoubleClickUsernameLink}
-              >
-                {change.user}
-              </Anchor>
-            </Group>
+                  <Anchor
+                    size="sm"
+                    href={usernameLink}
+                    target="_blank"
+                    fw={500}
+                    onClick={handleClickUsernameLink}
+                    onDoubleClick={handleDoubleClickUsernameLink}
+                  >
+                    {change.user}
+                  </Anchor>
+                </Group>
 
-            <OresScoreBadge change={change} />
-          </Group>
-        </Stack>
-      </UnstyledButton>
+                <OresScoreBadge change={change} />
+              </Group>
+            </Stack>
+          </UnstyledButton>
+        </HoverCard.Target>
+
+        <HoverCard.Dropdown p={0} style={{ overflow: 'hidden' }}>
+          <DiffPreview
+            wikiId={change.wikiId}
+            fromRevisionId={change.oldRevisionId}
+            toRevisionId={change.revisionId}
+          />
+        </HoverCard.Dropdown>
+      </HoverCard>
     </Flex>
   );
 }

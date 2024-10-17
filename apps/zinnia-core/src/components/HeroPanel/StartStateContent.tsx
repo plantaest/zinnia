@@ -72,6 +72,7 @@ export function StartStateContent() {
         },
       ],
       activeWorkspaceId: workspaceId,
+      advancedMode: false,
     };
 
     saveOptionApi.mutate(
