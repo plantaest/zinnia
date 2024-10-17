@@ -2,7 +2,7 @@
   border: var(--zinnia-mirror-border);
   background-color: light-dark(alpha(#c8e3f9, 0.75), alpha(#061e35, 0.75));
   padding: var(--mantine-spacing-xs);
-  padding-left: 0;
+  padding-inline-start: 0;
   backdrop-filter: blur(10px);
 }
 

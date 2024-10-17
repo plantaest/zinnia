@@ -1,5 +1,5 @@
 import { ActionIcon, Box, Flex, Group, Text } from '@mantine/core';
-import { IconFocus, IconMaximize, IconReload } from '@tabler/icons-react';
+import { IconArrowsMaximize, IconFocus, IconReload } from '@tabler/icons-react';
 import { useIntl } from 'react-intl';
 import { memo, useEffect, useState } from 'react';
 import { useNetwork } from '@mantine/hooks';
@@ -98,7 +98,7 @@ function _FeedControlPanel() {
           aria-label={formatMessage({ id: 'ui.feedPanel.extend' })}
           hiddenFrom="md"
         >
-          <IconMaximize size="1.125rem" />
+          <IconArrowsMaximize size="1.125rem" />
         </ActionIcon>
       </Flex>
     </Group>

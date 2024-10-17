@@ -1,4 +1,13 @@
-import { ActionIcon, Box, Card, Flex, Group, MantineColor, Stack } from '@mantine/core';
+import {
+  ActionIcon,
+  Box,
+  Card,
+  Flex,
+  Group,
+  MantineColor,
+  Stack,
+  useDirection,
+} from '@mantine/core';
 import {
   IconArrowBackUp,
   IconArrowBackUpDouble,
@@ -42,8 +51,8 @@ const toolButtons: NativeToolButton[] = [
   },
 ];
 
-export function TabFooterPanel() {
-  const toolButtonsCarouselFragment = (
+function ToolButtonsCarousel() {
+  return (
     <Carousel
       align="start"
       height={42}
@@ -68,12 +77,23 @@ export function TabFooterPanel() {
       ))}
     </Carousel>
   );
+}
+
+export function TabFooterPanel() {
+  const { dir } = useDirection();
+
+  const carousel = (
+    <>
+      {dir === 'ltr' && <ToolButtonsCarousel />}
+      {dir === 'rtl' && <ToolButtonsCarousel />}
+    </>
+  );
 
   return (
     <Card p="xs" className={classes.wrapper}>
       <Stack gap="xs">
         <Flex justify="center" hiddenFrom="md">
-          {toolButtonsCarouselFragment}
+          {carousel}
         </Flex>
 
         <Group gap="xs" justify="space-between" wrap="nowrap" align="start">
@@ -82,7 +102,7 @@ export function TabFooterPanel() {
             <WorkspacePanel />
           </Group>
 
-          <Box visibleFrom="md">{toolButtonsCarouselFragment}</Box>
+          <Box visibleFrom="md">{carousel}</Box>
 
           <Flex hiddenFrom="md">
             <NavigationPanel />

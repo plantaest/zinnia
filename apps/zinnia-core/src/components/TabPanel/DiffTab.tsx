@@ -16,6 +16,7 @@ import { CompareRevisionsResult } from '@plantaest/aster';
 import dayjs from 'dayjs';
 import { IconAlertTriangle, IconCheck, IconLink, IconQuote, IconUser } from '@tabler/icons-react';
 import { useEffect, useRef } from 'react';
+import scrollIntoView from 'scroll-into-view-if-needed';
 import { useCompareRevisions } from '@/queries/useCompareRevisions';
 import { MwHelper } from '@/utils/MwHelper';
 import { wikis } from '@/utils/wikis';
@@ -139,10 +140,9 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
 
         if (correspondingCell && correspondingCellAnchor) {
           // Ref: https://stackoverflow.com/a/52835382
-          correspondingCell.scrollIntoView({
+          scrollIntoView(correspondingCell, {
             behavior: 'instant',
-            block: 'nearest',
-            inline: 'start',
+            boundary: diffTable,
           });
           (correspondingCellAnchor as HTMLElement).focus();
         }

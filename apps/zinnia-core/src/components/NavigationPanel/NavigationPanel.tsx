@@ -37,7 +37,7 @@ function NavigationPanelContent({ onOpened }: NavigationPanelContentProps) {
           <ChangeCard key={index} change={change} index={index} />
         ))}
       </Stack>
-      <Group gap="xs" justify="center" pl="xs">
+      <Group gap="xs" justify="center" ps="xs">
         <Flex onClick={handleClickClosePopoverButton}>
           <TabListPanel />
         </Flex>

@@ -12,11 +12,11 @@ import {
 import {
   IconAlignJustified,
   IconArrowLoopRight,
-  IconCategory,
   IconCode,
-  IconExternalLink,
-  IconEye,
   IconLeaf,
+  IconLetterC,
+  IconLetterD,
+  IconLetterL,
   IconPlus,
   IconRobotFace,
   IconSpy,
@@ -51,9 +51,9 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
   const changeTypeIcons: Record<Change['type'], TablerIcon> = {
     edit: change.redirect ? IconArrowLoopRight : isCodeFile ? IconCode : IconAlignJustified,
     new: change.redirect ? IconArrowLoopRight : isCodeFile ? IconCode : IconPlus,
-    categorize: IconCategory,
-    log: IconEye,
-    external: IconExternalLink,
+    categorize: IconLetterC,
+    log: IconLetterL,
+    external: IconLetterD,
   };
 
   const changeTypeColors: Record<Change['type'], MantineColor> = {
