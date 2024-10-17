@@ -23,7 +23,13 @@ export function DiffPreview({ wikiId, fromRevisionId, toRevisionId }: DiffPrevie
   const processedDiffTableHtml = compareResult.body.replaceAll(/colspan="\d"/g, '');
 
   return (
-    <Flex align="start" p={5} h="50vh" style={{ overflowY: 'auto', overscrollBehavior: 'contain' }}>
+    <Flex
+      align="start"
+      p={5}
+      h="50vh"
+      mah={500}
+      style={{ overflowY: 'auto', overscrollBehavior: 'contain' }}
+    >
       {isFetching ? (
         <Flex justify="center" align="center" flex={1} h="100%">
           <Loader color="blue" size="md" />

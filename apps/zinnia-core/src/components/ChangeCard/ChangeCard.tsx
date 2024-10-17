@@ -259,11 +259,11 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
         bg={isSelected ? 'var(--mantine-color-blue-filled)' : undefined}
       />
       <HoverCard
-        width={640}
+        width={675}
         shadow="lg"
         radius="md"
         position="right"
-        offset={25}
+        offset={30}
         disabled={!advancedMode || !largerThanMd || change.type !== 'edit'}
       >
         <HoverCard.Target>

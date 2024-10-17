@@ -54,6 +54,19 @@ body:not(.mediawiki) .mw-body {
   }
 }
 
+.skin-vector-2022 .vector-column-start {
+  display: none;
+}
+
+@media screen and (min-width: 1120px) {
+  .skin-vector-2022 .mw-page-container-inner {
+    grid-template-areas:
+        'siteNotice siteNotice'
+        'pageContent pageContent'
+        'footer footer';
+  }
+}
+
 html[data-mantine-color-scheme="dark"] .skin-vector-2022 :is(.mw-header, .mw-page-container) {
   background-color: inherit;
 }
