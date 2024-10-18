@@ -10,3 +10,14 @@
   font-weight: 600;
   color: var(--mantine-color-gray-light-color);
 }
+
+.right {
+  width: 30%;
+  max-width: rem(250px);
+  height: calc(100vh - rem(118px)); /* 5 + 1 + 50 + 1 + 1 + 54 + 1 + 5 */
+  padding-top: rem(5px);
+  padding-inline-end: rem(5px);
+  padding-bottom: rem(5px);
+  position: sticky;
+  top: 0;
+}

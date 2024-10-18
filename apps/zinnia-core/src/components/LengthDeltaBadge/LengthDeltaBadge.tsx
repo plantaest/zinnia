@@ -1,6 +1,5 @@
 import { Badge } from '@mantine/core';
-import { useSelector } from '@legendapp/state/react';
-import { appState } from '@/states/appState';
+import { useLengthDelta } from '@/hooks/useLengthDelta';
 
 interface LengthDeltaBadgeProps {
   newLength: number;
@@ -8,15 +7,11 @@ interface LengthDeltaBadgeProps {
 }
 
 export function LengthDeltaBadge({ newLength, oldLength }: LengthDeltaBadgeProps) {
-  const numberFormat = useSelector(appState.instance.numberFormat);
-
-  const lengthDelta = newLength - oldLength;
-  const lengthMark = lengthDelta > 0 ? '+' : lengthDelta < 0 ? '-' : '';
-  const lengthColor = lengthDelta > 0 ? 'green' : lengthDelta < 0 ? 'red' : 'blue';
+  const { lengthColor, lengthMark, lengthDelta } = useLengthDelta(newLength, oldLength);
 
   return (
     <Badge ff="var(--zinnia-font-monospace)" h="1.625rem" radius="sm" color={lengthColor}>
-      {lengthMark + numberFormat.format(Math.abs(lengthDelta))}
+      {lengthMark + lengthDelta}
     </Badge>
   );
 }

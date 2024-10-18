@@ -3,10 +3,13 @@ import { InternalWiki } from './Wiki';
 import { AsterError } from './AsterError';
 import { RestGetPageWithHtmlResponse } from './type/rest/RestGetPageWithHtmlResponse';
 import { RestErrorResponse } from './type/rest/RestErrorResponse';
+import { Revision } from './type/Revision';
+import { MwApiWrapper } from './MwApiWrapper';
 
 export interface Page {
   title: () => string;
   html: () => Promise<PageHtmlResult>;
+  revisions: (limit: number) => Promise<Revision[]>;
 }
 
 export class InternalPage implements Page {
@@ -41,5 +44,48 @@ export class InternalPage implements Page {
       revisionId: result.latest.id,
       html: result.html,
     };
+  }
+
+  public async revisions(limit: number): Promise<Revision[]> {
+    const params = {
+      formatversion: 2,
+      action: 'query',
+      prop: 'revisions',
+      titles: this._title,
+      rvprop: 'ids|flags|timestamp|user|size|parsedcomment',
+      rvlimit: limit + 1,
+    };
+
+    const response = await MwApiWrapper.of(this.wiki.mwApi().get(params)).then();
+    const pages = response.query.pages;
+
+    if (pages.length === 1) {
+      const revisions: Revision[] = response.query.pages[0].revisions.map((r: any) => ({
+        revisionId: r.revid,
+        parentId: r.parentid,
+        userHidden: r.userhidden ?? false,
+        user: r.user,
+        anon: r.anon ?? false,
+        minor: r.minor,
+        size: r.size,
+        parentSize: -1,
+        timestamp: r.timestamp,
+        commentHidden: r.commenthidden ?? false,
+        parsedComment: r.parsedcomment,
+      }));
+
+      // Ref: https://en.wikipedia.org/wiki/User:Ingenuity/AntiVandal.js#L-1501
+      for (let i = 0; i < Math.min(limit, revisions.length); i++) {
+        if (i + 1 < revisions.length) {
+          revisions[i].parentSize = revisions[i + 1].size;
+        } else {
+          revisions[i].parentSize = revisions[i].size;
+        }
+      }
+
+      return revisions.slice(0, limit);
+    }
+
+    return [];
   }
 }

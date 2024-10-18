@@ -49,6 +49,10 @@ persistObservable(appState.userConfig.dir, {
   local: 'zinnia.appState.userConfig.dir',
 });
 
+persistObservable(appState.ui.preview, {
+  local: 'zinnia.appState.ui.preview',
+});
+
 // Query Client
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -1,5 +1,5 @@
 import { ActionIcon, Box, Flex, Group, Text } from '@mantine/core';
-import { IconArrowsMaximize, IconFocus, IconReload } from '@tabler/icons-react';
+import { IconArrowsMaximize, IconFocus, IconReload, IconUmbrella } from '@tabler/icons-react';
 import { useIntl } from 'react-intl';
 import { memo, useEffect, useState } from 'react';
 import { useNetwork } from '@mantine/hooks';
@@ -13,6 +13,7 @@ function _FeedControlPanel() {
   const { online } = useNetwork();
   const { data: recentChanges = [], refetch, isRefetching, isError } = useGetRecentChanges();
   const focus = useSelector(appState.ui.focus);
+  const preview = useSelector(appState.ui.preview);
   const feed = useSelector(appState.ui.activeFilter.feed);
 
   // Live updates
@@ -51,6 +52,8 @@ function _FeedControlPanel() {
 
   const handleClickReloadButton = () => refetch();
 
+  const handleClickPreviewButton = () => appState.ui.preview.set((prev) => !prev);
+
   const handleClickFocusButton = () => appState.ui.focus.set((prev) => !prev);
 
   const handleClickShowTabPanelDrawerButton = () => appState.ui.showTabPanelDrawer.set(true);
@@ -78,6 +81,17 @@ function _FeedControlPanel() {
           aria-label={formatMessage({ id: 'ui.feedPanel.reload' })}
         >
           <IconReload size="1.125rem" />
+        </ActionIcon>
+        <ActionIcon
+          variant="subtle"
+          size={30}
+          color={preview ? 'teal' : 'blue'}
+          onClick={handleClickPreviewButton}
+          title={formatMessage({ id: 'ui.feedPanel.preview' })}
+          aria-label={formatMessage({ id: 'ui.feedPanel.preview' })}
+          visibleFrom="md"
+        >
+          <IconUmbrella size="1.125rem" />
         </ActionIcon>
         <ActionIcon
           variant="subtle"

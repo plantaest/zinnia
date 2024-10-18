@@ -17,6 +17,7 @@ import dayjs from 'dayjs';
 import { IconAlertTriangle, IconCheck, IconLink, IconQuote, IconUser } from '@tabler/icons-react';
 import { useEffect, useRef } from 'react';
 import scrollIntoView from 'scroll-into-view-if-needed';
+import { useSelector } from '@legendapp/state/react';
 import { useCompareRevisions } from '@/queries/useCompareRevisions';
 import { MwHelper } from '@/utils/MwHelper';
 import { wikis } from '@/utils/wikis';
@@ -24,6 +25,8 @@ import classes from './DiffTab.module.css';
 import { LengthDeltaBadge } from '@/components/LengthDeltaBadge/LengthDeltaBadge';
 import { isRtlLang } from '@/utils/isRtlLang';
 import { sanitizeHtml } from '@/utils/sanitizeHtml';
+import { PagePanel } from '@/components/PagePanel/PagePanel';
+import { appState } from '@/states/appState';
 
 interface DiffTabProps {
   wikiId: string;
@@ -74,6 +77,8 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
   const contentDir = isRtlLang(contentLanguage) ? 'rtl' : 'ltr';
 
   const diffTableRef = useRef<HTMLTableElement | null>(null);
+
+  const advancedMode = useSelector(appState.userConfig.advancedMode);
 
   useEffect(() => {
     type TempRefs = null | {
@@ -200,246 +205,259 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
   const processedDiffTableHtml = compareResult.body.replaceAll(/colspan="\d"/g, '');
 
   return (
-    <Stack p={5} gap={5} flex={1} w="100%">
-      <Box className={classes.box}>
-        <Stack gap="xs">
-          <Group gap="xs" justify="space-between" wrap="nowrap">
-            <Group
-              gap="xs"
-              wrap="nowrap"
-              style={{
-                overflow: 'hidden',
-                flex: 1,
-              }}
+    <Flex wrap="nowrap" w="100%">
+      <Stack p={5} gap={5} flex={1} w="100%" miw={0}>
+        <Box className={classes.box}>
+          <Stack gap="xs">
+            <Group gap="xs" justify="space-between" wrap="nowrap">
+              <Group
+                gap="xs"
+                wrap="nowrap"
+                style={{
+                  overflow: 'hidden',
+                  flex: 1,
+                }}
+              >
+                <Badge ff="var(--zinnia-font-monospace)" h="1.625rem" radius="sm" tt="lowercase">
+                  {wikiId}
+                </Badge>
+                <Box
+                  visibleFrom="sm"
+                  style={{
+                    display: 'flex',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    flex: 1,
+                    color: 'var(--mantine-color-anchor)',
+                  }}
+                >
+                  <Anchor
+                    fw={600}
+                    href={MwHelper.createPageUri(serverName, pageTitle)}
+                    target="_blank"
+                    style={{
+                      textOverflow: 'ellipsis',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    {pageTitle}
+                  </Anchor>
+                </Box>
+              </Group>
+
+              <Group gap="xs">
+                <ActionIcon
+                  size={26}
+                  variant="filled"
+                  component="a"
+                  href={MwHelper.createDiffUri(
+                    serverName,
+                    pageTitle,
+                    compareResult.fromRevisionId,
+                    compareResult.toRevisionId
+                  )}
+                  target="_blank"
+                >
+                  <IconLink size="1rem" />
+                </ActionIcon>
+                <LengthDeltaBadge
+                  newLength={compareResult.toSize}
+                  oldLength={compareResult.fromSize}
+                />
+                <Flex justify="center" align="center" h={20} w={20} me={2}>
+                  {isLoading ? (
+                    <Loader color="blue" size="1rem" />
+                  ) : isError ? (
+                    <IconAlertTriangle size="1.25rem" color="var(--mantine-color-red-5)" />
+                  ) : isSuccess ? (
+                    <IconCheck size="1.25rem" color="var(--mantine-color-green-5)" />
+                  ) : null}
+                </Flex>
+              </Group>
+            </Group>
+
+            <Anchor
+              hiddenFrom="sm"
+              fw={600}
+              href={MwHelper.createPageUri(serverName, pageTitle)}
+              target="_blank"
+              w="fit-content"
+              style={{ wordBreak: 'break-word' }}
             >
-              <Badge ff="var(--zinnia-font-monospace)" h="1.625rem" radius="sm" tt="lowercase">
-                {wikiId}
-              </Badge>
-              <Box
-                visibleFrom="sm"
-                style={{
-                  display: 'flex',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  flex: 1,
-                  color: 'var(--mantine-color-anchor)',
-                }}
-              >
-                <Anchor
-                  fw={600}
-                  href={MwHelper.createPageUri(serverName, pageTitle)}
-                  target="_blank"
+              {pageTitle}
+            </Anchor>
+          </Stack>
+        </Box>
+
+        <Flex gap={5} dir={contentDir} direction={{ base: 'column', sm: 'row' }}>
+          <Box dir={globalDir} className={classes.box} flex={1} miw={0}>
+            <Stack gap={5}>
+              <Group justify="space-between" gap={5}>
+                <Group gap={5}>
+                  <Text className={classes.label} c="blue">
+                    {dayjs(compareResult.fromTimestamp).format('HH:mm:ss')}
+                  </Text>
+                  <Text className={classes.label}>
+                    {dayjs(compareResult.fromTimestamp).format('YYYY-MM-DD')}
+                  </Text>
+                </Group>
+
+                <Text className={classes.label} c="orange">
+                  {compareResult.fromRevisionId}
+                </Text>
+              </Group>
+
+              <Group gap={8} wrap="nowrap">
+                <IconUser size="1rem" />
+                <Box
                   style={{
-                    textOverflow: 'ellipsis',
+                    display: 'flex',
+                    flex: 1,
                     overflow: 'hidden',
                   }}
                 >
-                  {pageTitle}
-                </Anchor>
-              </Box>
-            </Group>
+                  <Anchor
+                    size="sm"
+                    fw={500}
+                    style={{
+                      whiteSpace: 'nowrap',
+                      textOverflow: 'ellipsis',
+                      overflow: 'hidden',
+                    }}
+                    href={MwHelper.createUserContribUri(serverName, compareResult.fromUser)}
+                    target="_blank"
+                  >
+                    {compareResult.fromUser}
+                  </Anchor>
+                </Box>
+              </Group>
 
-            <Group gap="xs">
-              <ActionIcon
-                size={26}
-                variant="filled"
-                component="a"
-                href={MwHelper.createDiffUri(
-                  serverName,
-                  pageTitle,
-                  compareResult.fromRevisionId,
-                  compareResult.toRevisionId
+              <Group gap={8} wrap="nowrap">
+                <IconQuote size="1rem" />
+                {compareResult.fromParsedComment ? (
+                  <TypographyStylesProvider flex={1} miw={0}>
+                    <Text
+                      size="xs"
+                      style={{
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                        overflow: 'hidden',
+                      }}
+                      title={sanitizeHtml(compareResult.fromParsedComment)}
+                      dangerouslySetInnerHTML={{
+                        __html: MwHelper.correctParsedComment(
+                          serverName,
+                          compareResult.fromParsedComment
+                        ),
+                      }}
+                    />
+                  </TypographyStylesProvider>
+                ) : (
+                  <Text size="xs" c="dimmed" fs="italic">
+                    N/A
+                  </Text>
                 )}
-                target="_blank"
-              >
-                <IconLink size="1rem" />
-              </ActionIcon>
-              <LengthDeltaBadge
-                newLength={compareResult.toSize}
-                oldLength={compareResult.fromSize}
-              />
-              <Flex justify="center" align="center" h={20} w={20} me={2}>
-                {isLoading ? (
-                  <Loader color="blue" size="1rem" />
-                ) : isError ? (
-                  <IconAlertTriangle size="1.25rem" color="var(--mantine-color-red-5)" />
-                ) : isSuccess ? (
-                  <IconCheck size="1.25rem" color="var(--mantine-color-green-5)" />
-                ) : null}
-              </Flex>
-            </Group>
-          </Group>
+              </Group>
+            </Stack>
+          </Box>
 
-          <Anchor
-            hiddenFrom="sm"
-            fw={600}
-            href={MwHelper.createPageUri(serverName, pageTitle)}
-            target="_blank"
-            w="fit-content"
-            style={{ wordBreak: 'break-word' }}
-          >
-            {pageTitle}
-          </Anchor>
-        </Stack>
-      </Box>
+          <Box dir={globalDir} className={classes.box} flex={1} miw={0}>
+            <Stack gap={5}>
+              <Group justify="space-between" gap={5}>
+                <Group gap={5}>
+                  <Text className={classes.label} c="blue">
+                    {dayjs(compareResult.toTimestamp).format('HH:mm:ss')}
+                  </Text>
+                  <Text className={classes.label}>
+                    {dayjs(compareResult.toTimestamp).format('YYYY-MM-DD')}
+                  </Text>
+                </Group>
 
-      <Flex gap={5} dir={contentDir} direction={{ base: 'column', sm: 'row' }}>
-        <Box dir={globalDir} className={classes.box} flex={1} miw={0}>
-          <Stack gap={5}>
-            <Group justify="space-between" gap={5}>
-              <Group gap={5}>
-                <Text className={classes.label} c="blue">
-                  {dayjs(compareResult.fromTimestamp).format('HH:mm:ss')}
-                </Text>
-                <Text className={classes.label}>
-                  {dayjs(compareResult.fromTimestamp).format('YYYY-MM-DD')}
+                <Text className={classes.label} c="cyan">
+                  {compareResult.toRevisionId}
                 </Text>
               </Group>
 
-              <Text className={classes.label} c="orange">
-                {compareResult.fromRevisionId}
-              </Text>
-            </Group>
-
-            <Group gap={8} wrap="nowrap">
-              <IconUser size="1rem" />
-              <Box
-                style={{
-                  display: 'flex',
-                  flex: 1,
-                  overflow: 'hidden',
-                }}
-              >
-                <Anchor
-                  size="sm"
-                  fw={500}
+              <Group gap={8} wrap="nowrap">
+                <IconUser size="1rem" />
+                <Box
                   style={{
-                    whiteSpace: 'nowrap',
-                    textOverflow: 'ellipsis',
+                    display: 'flex',
+                    flex: 1,
                     overflow: 'hidden',
                   }}
-                  href={MwHelper.createUserContribUri(serverName, compareResult.fromUser)}
-                  target="_blank"
                 >
-                  {compareResult.fromUser}
-                </Anchor>
-              </Box>
-            </Group>
-
-            <Group gap={8} wrap="nowrap">
-              <IconQuote size="1rem" />
-              {compareResult.fromParsedComment ? (
-                <TypographyStylesProvider flex={1} miw={0}>
-                  <Text
-                    size="xs"
+                  <Anchor
+                    size="sm"
+                    fw={500}
                     style={{
                       whiteSpace: 'nowrap',
                       textOverflow: 'ellipsis',
                       overflow: 'hidden',
                     }}
-                    title={sanitizeHtml(compareResult.fromParsedComment)}
-                    dangerouslySetInnerHTML={{
-                      __html: MwHelper.correctParsedComment(
-                        serverName,
-                        compareResult.fromParsedComment
-                      ),
-                    }}
-                  />
-                </TypographyStylesProvider>
-              ) : (
-                <Text size="xs" c="dimmed" fs="italic">
-                  N/A
-                </Text>
-              )}
-            </Group>
-          </Stack>
-        </Box>
-
-        <Box dir={globalDir} className={classes.box} flex={1} miw={0}>
-          <Stack gap={5}>
-            <Group justify="space-between" gap={5}>
-              <Group gap={5}>
-                <Text className={classes.label} c="blue">
-                  {dayjs(compareResult.toTimestamp).format('HH:mm:ss')}
-                </Text>
-                <Text className={classes.label}>
-                  {dayjs(compareResult.toTimestamp).format('YYYY-MM-DD')}
-                </Text>
+                    href={MwHelper.createUserContribUri(serverName, compareResult.toUser)}
+                    target="_blank"
+                  >
+                    {compareResult.toUser}
+                  </Anchor>
+                </Box>
               </Group>
 
-              <Text className={classes.label} c="cyan">
-                {compareResult.toRevisionId}
-              </Text>
-            </Group>
+              <Group gap={8}>
+                <IconQuote size="1rem" />
+                {compareResult.toParsedComment ? (
+                  <TypographyStylesProvider flex={1} miw={0}>
+                    <Text
+                      size="xs"
+                      style={{
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                        overflow: 'hidden',
+                      }}
+                      title={sanitizeHtml(compareResult.toParsedComment)}
+                      dangerouslySetInnerHTML={{
+                        __html: MwHelper.correctParsedComment(
+                          serverName,
+                          compareResult.toParsedComment
+                        ),
+                      }}
+                    />
+                  </TypographyStylesProvider>
+                ) : (
+                  <Text size="xs" c="dimmed" fs="italic">
+                    N/A
+                  </Text>
+                )}
+              </Group>
+            </Stack>
+          </Box>
+        </Flex>
 
-            <Group gap={8} wrap="nowrap">
-              <IconUser size="1rem" />
-              <Box
-                style={{
-                  display: 'flex',
-                  flex: 1,
-                  overflow: 'hidden',
-                }}
-              >
-                <Anchor
-                  size="sm"
-                  fw={500}
-                  style={{
-                    whiteSpace: 'nowrap',
-                    textOverflow: 'ellipsis',
-                    overflow: 'hidden',
-                  }}
-                  href={MwHelper.createUserContribUri(serverName, compareResult.toUser)}
-                  target="_blank"
-                >
-                  {compareResult.toUser}
-                </Anchor>
-              </Box>
-            </Group>
-
-            <Group gap={8}>
-              <IconQuote size="1rem" />
-              {compareResult.toParsedComment ? (
-                <TypographyStylesProvider flex={1} miw={0}>
-                  <Text
-                    size="xs"
-                    style={{
-                      whiteSpace: 'nowrap',
-                      textOverflow: 'ellipsis',
-                      overflow: 'hidden',
-                    }}
-                    title={sanitizeHtml(compareResult.toParsedComment)}
-                    dangerouslySetInnerHTML={{
-                      __html: MwHelper.correctParsedComment(
-                        serverName,
-                        compareResult.toParsedComment
-                      ),
-                    }}
-                  />
-                </TypographyStylesProvider>
-              ) : (
-                <Text size="xs" c="dimmed" fs="italic">
-                  N/A
-                </Text>
-              )}
-            </Group>
-          </Stack>
+        <Box>
+          <table className="diff" dir={contentDir} ref={diffTableRef}>
+            <colgroup>
+              <col className="diff-content" />
+              <col className="diff-content" />
+            </colgroup>
+            <tbody
+              dangerouslySetInnerHTML={{
+                __html: processedDiffTableHtml,
+              }}
+            />
+          </table>
         </Box>
-      </Flex>
+      </Stack>
 
-      <Box>
-        <table className="diff" dir={contentDir} ref={diffTableRef}>
-          <colgroup>
-            <col className="diff-content" />
-            <col className="diff-content" />
-          </colgroup>
-          <tbody
-            dangerouslySetInnerHTML={{
-              __html: processedDiffTableHtml,
-            }}
+      {advancedMode && (
+        <Stack gap={5} visibleFrom="lg" className={classes.right}>
+          <PagePanel
+            wikiId={wikiId}
+            pageTitle={pageTitle}
+            fromRevisionId={fromRevisionId}
+            toRevisionId={toRevisionId}
           />
-        </table>
-      </Box>
-    </Stack>
+        </Stack>
+      )}
+    </Flex>
   );
 }

@@ -10,3 +10,4 @@ export * from './type/Change';
 export * from './type/DiffType';
 export * from './type/CompareRevisionsResult';
 export * from './type/PageHtmlResult';
+export * from './type/Revision';

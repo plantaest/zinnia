@@ -27,6 +27,7 @@ interface AppState {
     activeTab: ObservableComputed<Tab | null>;
     selectedChange: Change | null;
     showTabPanelDrawer: boolean;
+    preview: boolean;
   };
   instance: {
     numberFormat: ObservableComputed<Intl.NumberFormat>;
@@ -38,7 +39,7 @@ interface AppState {
     tabs: Record<string, { tabs: Tab[]; activeTabId: string | null }>; // Key is workspace ID
     activeTabs: ObservableComputedTwoWay<Tab[]>;
     activeTabId: ObservableComputedTwoWay<string | null>;
-    activeTab: ObservableComputed<Tab | null>;
+    activeTab: ObservableComputedTwoWay<Tab | null>;
   };
 }
 
@@ -74,6 +75,7 @@ export const appState: ObservableObject<AppState> = observable<AppState>({
     ),
     selectedChange: null,
     showTabPanelDrawer: false,
+    preview: false,
   },
   instance: {
     numberFormat: computed(() => new Intl.NumberFormat(appState.userConfig.locale.get())),
@@ -123,7 +125,14 @@ export const appState: ObservableObject<AppState> = observable<AppState>({
       () =>
         (appState.local.activeTabs.get() ?? []).find(
           (t) => t.id === appState.local.activeTabId.get()
-        ) ?? null
+        ) ?? null,
+      (tab: Tab) => {
+        appState.local.activeTabs.set(
+          (appState.local.activeTabs.get() ?? []).map((t) =>
+            t.id === appState.local.activeTabId.get() ? tab : t
+          )
+        );
+      }
     ),
   },
 });

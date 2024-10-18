@@ -49,7 +49,7 @@ interface EditChangeCardProps {
 export function ChangeCard({ change, index }: EditChangeCardProps) {
   const largerThanMd = useLargerThan('md');
   const isCodeFile = ['.js', '.css', '.json'].some((fileType) => change.title.endsWith(fileType));
-  const advancedMode = useSelector(appState.userConfig.advancedMode);
+  const preview = useSelector(appState.ui.preview);
 
   const changeTypeIcons: Record<Change['type'], TablerIcon> = {
     edit: change.redirect ? IconArrowLoopRight : isCodeFile ? IconCode : IconAlignJustified,
@@ -264,7 +264,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
         radius="md"
         position="right"
         offset={30}
-        disabled={!advancedMode || !largerThanMd || change.type !== 'edit'}
+        disabled={!preview || !largerThanMd || change.type !== 'edit'}
       >
         <HoverCard.Target>
           <UnstyledButton
