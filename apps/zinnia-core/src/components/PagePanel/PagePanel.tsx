@@ -1,5 +1,14 @@
-import { Anchor, Box, Group, HoverCard, Stack, Text, UnstyledButton } from '@mantine/core';
-import { IconLeaf } from '@tabler/icons-react';
+import {
+  ActionIcon,
+  Anchor,
+  Box,
+  Group,
+  HoverCard,
+  Stack,
+  Text,
+  UnstyledButton,
+} from '@mantine/core';
+import { IconArrowsMaximize, IconFile, IconLeaf } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import React, { Fragment } from 'react';
 import { useSelector } from '@legendapp/state/react';
@@ -13,7 +22,7 @@ import { Tab, TabType } from '@/types/persistence/Tab';
 import { appState } from '@/states/appState';
 import { scrollToTopTabMainPanel } from '@/utils/scrollToTopTabMainPanel';
 import { useLargerThan } from '@/hooks/useLargerThan';
-import { DiffPreview } from '@/components/DiffPreview/DiffPreview';
+import { DiffPreviewPanel } from '@/components/DiffPreviewPanel/DiffPreviewPanel';
 
 interface PagePanelProps {
   wikiId: string;
@@ -26,7 +35,6 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
   const { formatMessage } = useIntl();
   const { data: revisions = [] } = useGetRevisions(wikiId, pageTitle, 30);
   const serverName = wikis.getWiki(wikiId).getConfig().serverName;
-  const activeTab = useSelector(appState.local.activeTab);
   const dates = new Set<string>();
   let timeoutId: NodeJS.Timeout;
   const preview = useSelector(appState.ui.preview);
@@ -37,6 +45,8 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
     parentRevisionId: number,
     revisionId: number
   ) => {
+    const activeTab = appState.local.activeTab.peek();
+
     if (activeTab) {
       let mainDiffTab: Tab;
       const now = dayjs().toISOString();
@@ -77,6 +87,8 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
   };
 
   const handleTouchStartRevisionButton = (revisionId: number) => {
+    const activeTab = appState.local.activeTab.peek();
+
     if (activeTab) {
       timeoutId = setTimeout(() => {
         const now = dayjs().toISOString();
@@ -111,14 +123,34 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
   return (
     <Box className={classes.wrapper}>
       <Stack gap="xs">
-        <Text size="sm" fw={500}>
-          {formatMessage({ id: 'ui.pagePanel.title' })}
-        </Text>
+        <Group gap="xs" justify="space-between">
+          <Group gap={6}>
+            <IconFile size="1rem" stroke={1.5} />
+            <Text size="sm" fw={500}>
+              {formatMessage({ id: 'ui.pagePanel.title' })}
+            </Text>
+          </Group>
+
+          <ActionIcon
+            variant="transparent"
+            size="sm"
+            title={formatMessage({ id: 'common.extend' })}
+            aria-label={formatMessage({ id: 'common.extend' })}
+          >
+            <IconArrowsMaximize size="1rem" />
+          </ActionIcon>
+        </Group>
 
         <Stack gap={4}>
           {revisions.map((revision, index) => {
             const isFromRevision = revision.revisionId === fromRevisionId;
             const isToRevision = revision.revisionId === toRevisionId;
+            const isIntermediateRevision =
+              revision.revisionId > fromRevisionId && revision.revisionId < toRevisionId
+                ? 'new-old'
+                : revision.revisionId < fromRevisionId && revision.revisionId > toRevisionId
+                  ? 'old-new'
+                  : 'none';
             const date = dayjs(revision.timestamp).format('YYYY-MM-DD');
             let showDate;
 
@@ -137,7 +169,7 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
                   shadow="lg"
                   radius="md"
                   position="left"
-                  offset={30}
+                  offset={25}
                   disabled={!preview || !largerThanMd || revision.parentId === 0}
                 >
                   <HoverCard.Target>
@@ -145,6 +177,7 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
                       className={classes.revision}
                       data-from={isFromRevision}
                       data-to={isToRevision}
+                      data-intermediate={isIntermediateRevision}
                       onClick={(event) =>
                         handleClickRevisionButton(event, revision.parentId, revision.revisionId)
                       }
@@ -152,12 +185,13 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
                       onTouchEnd={() => clearTimeout(timeoutId)}
                       onTouchMove={() => clearTimeout(timeoutId)}
                     >
-                      <Group gap={5} justify="space-between" w="100%">
+                      <Group gap={2} justify="space-between" w="100%">
                         <Group gap={5} wrap="nowrap">
                           <Text className={classes.index}>{index + 1}</Text>
                           <Text className={classes.timestamp}>
                             {dayjs(revision.timestamp).format('HH:mm:ss')}
                           </Text>
+                          <Text className={classes.revisionId}>{revision.revisionId}</Text>
                           {revision.minor && (
                             <IconLeaf
                               size="0.85rem"
@@ -189,7 +223,7 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
                   </HoverCard.Target>
 
                   <HoverCard.Dropdown p={0} style={{ overflow: 'hidden' }}>
-                    <DiffPreview
+                    <DiffPreviewPanel
                       wikiId={wikiId}
                       fromRevisionId={revision.parentId}
                       toRevisionId={revision.revisionId}

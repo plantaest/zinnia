@@ -101,6 +101,11 @@ function SettingPanelContent() {
           appState.userConfig.set(clonedUserConfig);
           setColorScheme(clonedUserConfig.colorScheme);
           setDirection(clonedUserConfig.dir);
+
+          if (!clonedUserConfig.advancedMode) {
+            appState.ui.preview.set(false);
+          }
+
           await i18n.changeLanguage(clonedUserConfig.language);
           Notify.success(
             i18n.intl.formatMessage({ id: 'hook.useSaveOption.success.updateSettings' })

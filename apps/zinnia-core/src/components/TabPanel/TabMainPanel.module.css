@@ -3,7 +3,7 @@
   border-radius: 0;
   height: 100%;
   flex-grow: 1;
-  overflow-y: auto;
+  overflow-y: scroll;
   overscroll-behavior: contain;
   padding: 0;
   box-shadow: var(--mantine-shadow-sm);

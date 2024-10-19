@@ -14,11 +14,14 @@
   @mixin light-root {
     --zinnia-mirror-background-color: alpha(var(--mantine-color-white), 0.5);
     --zinnia-mirror-border: rem(1px) solid alpha(var(--mantine-color-white), 0.75);
+    /* Ref: https://developer.chrome.com/docs/css-ui/scrollbar-styling */
+    scrollbar-color: var(--mantine-color-gray-3) var(--mantine-color-gray-0);
   }
 
   @mixin dark-root {
     --zinnia-mirror-background-color: alpha(var(--mantine-color-dark-9), 0.5);
     --zinnia-mirror-border: rem(1px) solid alpha(var(--mantine-color-dark-3), 0.5);
+    scrollbar-color: var(--mantine-color-dark-3) var(--mantine-color-dark-5);
   }
 }
 

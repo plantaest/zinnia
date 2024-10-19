@@ -102,9 +102,10 @@ export function ErrorFallback({ error, errorInfo }: ErrorFallbackProps) {
   };
 
   const handleClickClearCacheButton = () => {
+    appState.local.tabs.delete();
     appState.userConfig.language.delete();
     appState.userConfig.dir.delete();
-    appState.local.tabs.delete();
+    appState.ui.preview.delete();
     window.location.reload();
   };
 
@@ -116,10 +117,7 @@ export function ErrorFallback({ error, errorInfo }: ErrorFallbackProps) {
       },
       {
         onSuccess: () => {
-          appState.userConfig.language.delete();
-          appState.userConfig.dir.delete();
-          appState.local.tabs.delete();
-          window.location.reload();
+          handleClickClearCacheButton();
         },
       }
     );

@@ -61,6 +61,7 @@ function TabListPanelContent() {
           {activeTabs.map((tab) => {
             const TabIcon = tabIcons[tab.type];
             const isMainTab = tab.type.startsWith('MAIN');
+
             return (
               <Group key={tab.id} gap="xs" wrap="nowrap">
                 <UnstyledButton

@@ -1,5 +1,4 @@
 import { Card, Flex } from '@mantine/core';
-import { useEffect, useState } from 'react';
 import { useSelector } from '@legendapp/state/react';
 import classes from './TabMainPanel.module.css';
 import { DiffTabData, ReadTabData, TabType } from '@/types/persistence/Tab';
@@ -10,32 +9,30 @@ import { tabMainPanelRef } from '@/refs/tabMainPanelRef';
 import { ReadTab } from '@/components/TabPanel/ReadTab';
 import { NoneTab } from '@/components/TabPanel/NoneTab';
 
+let diffTabData: DiffTabData;
+let readTabData: ReadTabData;
+
 export function TabMainPanel() {
   const activeTab = useSelector(appState.local.activeTab);
 
-  const [diffTabData, setDiffTabData] = useState<DiffTabData | null>(null);
-  const [readTabData, setReadTabData] = useState<ReadTabData | null>(null);
-
-  useEffect(() => {
-    if (activeTab) {
-      if (activeTab.type === TabType.MAIN_READ || activeTab.type === TabType.READ) {
-        setReadTabData({
-          wikiId: activeTab.data.wikiId,
-          pageTitle: activeTab.data.pageTitle,
-          redirect: activeTab.data.redirect,
-        });
-      }
-
-      if (activeTab.type === TabType.MAIN_DIFF || activeTab.type === TabType.DIFF) {
-        setDiffTabData({
-          wikiId: activeTab.data.wikiId,
-          pageTitle: activeTab.data.pageTitle,
-          fromRevisionId: activeTab.data.fromRevisionId,
-          toRevisionId: activeTab.data.toRevisionId,
-        });
-      }
+  if (activeTab) {
+    if (activeTab.type === TabType.MAIN_READ || activeTab.type === TabType.READ) {
+      readTabData = {
+        wikiId: activeTab.data.wikiId,
+        pageTitle: activeTab.data.pageTitle,
+        redirect: activeTab.data.redirect,
+      };
     }
-  }, [activeTab]);
+
+    if (activeTab.type === TabType.MAIN_DIFF || activeTab.type === TabType.DIFF) {
+      diffTabData = {
+        wikiId: activeTab.data.wikiId,
+        pageTitle: activeTab.data.pageTitle,
+        fromRevisionId: activeTab.data.fromRevisionId,
+        toRevisionId: activeTab.data.toRevisionId,
+      };
+    }
+  }
 
   const otherTab = activeTab ? (
     activeTab.type === TabType.WELCOME ? (

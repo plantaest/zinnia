@@ -14,8 +14,6 @@
   padding-block: rem(5px);
   padding-inline: rem(10px);
   border-radius: var(--mantine-radius-md);
-  flex: 1;
-  min-width: 0;
   background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
   border: 1px solid transparent;
 
@@ -32,20 +30,38 @@
     background-color: light-dark(var(--mantine-color-cyan-0), alpha(var(--mantine-color-cyan-8), 0.15));
     border: 1px solid light-dark(var(--mantine-color-cyan-2), alpha(var(--mantine-color-cyan-8), 0.5));
   }
+
+  &[data-intermediate="new-old"] {
+    background-color: light-dark(var(--mantine-color-cyan-0), alpha(var(--mantine-color-cyan-8), 0.15));
+    border: 1px dashed light-dark(var(--mantine-color-cyan-2), alpha(var(--mantine-color-cyan-8), 0.5));
+  }
+
+  &[data-intermediate="old-new"] {
+    background-color: light-dark(var(--mantine-color-orange-0), alpha(var(--mantine-color-orange-8), 0.15));
+    border: 1px dashed light-dark(var(--mantine-color-orange-2), alpha(var(--mantine-color-orange-8), 0.5));
+  }
 }
 
-.index, .timestamp, .delta {
+.index, .timestamp, .revisionId, .delta {
   font-family: var(--zinnia-font-monospace), monospace;
   font-size: rem(10px);
   font-weight: 600;
 }
 
-.index {
+.index, .revisionId {
   color: var(--mantine-color-gray-light-color);
 }
 
 .timestamp {
   color: var(--mantine-color-blue-light-color);
+}
+
+.revision[data-from="true"] .revisionId {
+  color: var(--mantine-color-orange-text);
+}
+
+.revision[data-to="true"] .revisionId {
+  color: var(--mantine-color-cyan-text);
 }
 
 .user {

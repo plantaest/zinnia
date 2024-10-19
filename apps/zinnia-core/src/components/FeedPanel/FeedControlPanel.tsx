@@ -15,6 +15,7 @@ function _FeedControlPanel() {
   const focus = useSelector(appState.ui.focus);
   const preview = useSelector(appState.ui.preview);
   const feed = useSelector(appState.ui.activeFilter.feed);
+  const advancedMode = useSelector(appState.userConfig.advancedMode);
 
   // Live updates
   const isLiveUpdates = feed?.liveUpdates ?? false;
@@ -82,17 +83,19 @@ function _FeedControlPanel() {
         >
           <IconReload size="1.125rem" />
         </ActionIcon>
-        <ActionIcon
-          variant="subtle"
-          size={30}
-          color={preview ? 'teal' : 'blue'}
-          onClick={handleClickPreviewButton}
-          title={formatMessage({ id: 'ui.feedPanel.preview' })}
-          aria-label={formatMessage({ id: 'ui.feedPanel.preview' })}
-          visibleFrom="md"
-        >
-          <IconUmbrella size="1.125rem" />
-        </ActionIcon>
+        {advancedMode && (
+          <ActionIcon
+            variant="subtle"
+            size={30}
+            color={preview ? 'teal' : 'blue'}
+            onClick={handleClickPreviewButton}
+            title={formatMessage({ id: 'ui.feedPanel.preview' })}
+            aria-label={formatMessage({ id: 'ui.feedPanel.preview' })}
+            visibleFrom="md"
+          >
+            <IconUmbrella size="1.125rem" />
+          </ActionIcon>
+        )}
         <ActionIcon
           variant="subtle"
           size={30}
@@ -108,8 +111,8 @@ function _FeedControlPanel() {
           variant="subtle"
           size={30}
           onClick={handleClickShowTabPanelDrawerButton}
-          title={formatMessage({ id: 'ui.feedPanel.extend' })}
-          aria-label={formatMessage({ id: 'ui.feedPanel.extend' })}
+          title={formatMessage({ id: 'common.extend' })}
+          aria-label={formatMessage({ id: 'common.extend' })}
           hiddenFrom="md"
         >
           <IconArrowsMaximize size="1.125rem" />

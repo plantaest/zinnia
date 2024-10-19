@@ -15,7 +15,7 @@ import {
 import { CompareRevisionsResult } from '@plantaest/aster';
 import dayjs from 'dayjs';
 import { IconAlertTriangle, IconCheck, IconLink, IconQuote, IconUser } from '@tabler/icons-react';
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import scrollIntoView from 'scroll-into-view-if-needed';
 import { useSelector } from '@legendapp/state/react';
 import { useCompareRevisions } from '@/queries/useCompareRevisions';
@@ -35,7 +35,7 @@ interface DiffTabProps {
   toRevisionId: number;
 }
 
-export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: DiffTabProps) {
+function _DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: DiffTabProps) {
   const { dir: globalDir } = useDirection();
 
   const placeholderCompareRevisionsResult: CompareRevisionsResult = {
@@ -461,3 +461,5 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
     </Flex>
   );
 }
+
+export const DiffTab = memo(_DiffTab);

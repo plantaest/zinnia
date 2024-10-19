@@ -6,7 +6,7 @@ import {
 } from '@tabler/icons-react';
 import { ActionIcon, Card, Flex, Group, Indicator, Text, useDirection } from '@mantine/core';
 import { useSelector } from '@legendapp/state/react';
-import { Tab } from '@/types/persistence/Tab';
+import { TabType } from '@/types/persistence/Tab';
 import classes from './TabHeaderPanel.module.css';
 import { appState } from '@/states/appState';
 import { NewTabPanel } from '@/components/NewTabPanel/NewTabPanel';
@@ -16,11 +16,12 @@ import { SyncTabsPanel } from '@/components/SyncTabsPanel/SyncTabsPanel';
 
 export function TabHeaderPanel() {
   const { dir } = useDirection();
-  const activeTab = useSelector(appState.local.activeTab);
+  const activeTabType = useSelector(appState.local.activeTab.type);
+  const activeTabName = useSelector(appState.local.activeTab.name);
 
-  const activeTagFragment = (tab: Tab) => {
-    const TabIcon = tabIcons[tab.type];
-    const isMainTab = tab.type.startsWith('MAIN');
+  const activeTagFragment = (tabType: TabType, tabName: string) => {
+    const TabIcon = tabIcons[tabType];
+    const isMainTab = tabType.startsWith('MAIN');
 
     return (
       <Group
@@ -47,7 +48,7 @@ export function TabHeaderPanel() {
             overflow: 'hidden',
           }}
         >
-          {tab.name}
+          {tabName}
         </Text>
       </Group>
     );
@@ -75,7 +76,7 @@ export function TabHeaderPanel() {
           </Flex>
         </Group>
 
-        {activeTab && activeTagFragment(activeTab)}
+        {activeTabType && activeTabName && activeTagFragment(activeTabType, activeTabName)}
 
         <Flex>
           <NewTabPanel />

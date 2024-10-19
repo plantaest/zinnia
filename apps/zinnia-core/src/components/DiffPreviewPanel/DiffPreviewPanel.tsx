@@ -1,16 +1,18 @@
-import { Flex, Loader } from '@mantine/core';
-import { IconAlertTriangle } from '@tabler/icons-react';
+import { Flex, Loader, Text } from '@mantine/core';
+import { IconAlertTriangle, IconEqual } from '@tabler/icons-react';
+import { useIntl } from 'react-intl';
 import { useCompareRevisions } from '@/queries/useCompareRevisions';
 import { wikis } from '@/utils/wikis';
 import { isRtlLang } from '@/utils/isRtlLang';
 
-interface DiffPreviewProps {
+interface DiffPreviewPanelProps {
   wikiId: string;
   fromRevisionId: number;
   toRevisionId: number;
 }
 
-export function DiffPreview({ wikiId, fromRevisionId, toRevisionId }: DiffPreviewProps) {
+export function DiffPreviewPanel({ wikiId, fromRevisionId, toRevisionId }: DiffPreviewPanelProps) {
+  const { formatMessage } = useIntl();
   const contentLanguage = wikis.getWiki(wikiId).getConfig().language;
   const contentDir = isRtlLang(contentLanguage) ? 'rtl' : 'ltr';
 
@@ -37,6 +39,11 @@ export function DiffPreview({ wikiId, fromRevisionId, toRevisionId }: DiffPrevie
       ) : isError ? (
         <Flex justify="center" align="center" flex={1} h="100%">
           <IconAlertTriangle size="2.75rem" strokeWidth={1.5} color="var(--mantine-color-red-5)" />
+        </Flex>
+      ) : processedDiffTableHtml.trim().length === 0 ? (
+        <Flex justify="center" align="center" flex={1} h="100%" gap="sm" direction="column">
+          <IconEqual size="2.75rem" strokeWidth={1.5} />
+          <Text>{formatMessage({ id: 'ui.diffPreviewPanel.noDifference' })}</Text>
         </Flex>
       ) : (
         <table className="diff" dir={contentDir}>

@@ -38,7 +38,7 @@ import { Tab, TabType } from '@/types/persistence/Tab';
 import { LengthDeltaBadge } from '@/components/LengthDeltaBadge/LengthDeltaBadge';
 import { scrollToTopTabMainPanel } from '@/utils/scrollToTopTabMainPanel';
 import { selectedChangeRef } from '@/refs/selectedChangeRef';
-import { DiffPreview } from '@/components/DiffPreview/DiffPreview';
+import { DiffPreviewPanel } from '@/components/DiffPreviewPanel/DiffPreviewPanel';
 import { useLargerThan } from '@/hooks/useLargerThan';
 
 interface EditChangeCardProps {
@@ -263,7 +263,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
         shadow="lg"
         radius="md"
         position="right"
-        offset={30}
+        offset={25}
         disabled={!preview || !largerThanMd || change.type !== 'edit'}
       >
         <HoverCard.Target>
@@ -344,7 +344,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
         </HoverCard.Target>
 
         <HoverCard.Dropdown p={0} style={{ overflow: 'hidden' }}>
-          <DiffPreview
+          <DiffPreviewPanel
             wikiId={change.wikiId}
             fromRevisionId={change.oldRevisionId}
             toRevisionId={change.revisionId}
