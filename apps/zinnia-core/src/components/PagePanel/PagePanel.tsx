@@ -47,17 +47,17 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
   ) => {
     const activeTab = appState.local.activeTab.peek();
 
-    if (activeTab) {
-      let mainDiffTab: Tab;
+    if (activeTab && (activeTab.type === TabType.DIFF || activeTab.type === TabType.MAIN_DIFF)) {
+      let diffTab: Tab;
       const now = dayjs().toISOString();
 
       if (event.ctrlKey || event.metaKey) {
-        mainDiffTab = {
+        diffTab = {
           id: activeTab.id,
           createdAt: activeTab.createdAt,
           updatedAt: now,
           name: `[${wikiId}] ${pageTitle} [${revisionId}-${toRevisionId}]`,
-          type: TabType.MAIN_DIFF,
+          type: activeTab.type,
           data: {
             wikiId: wikiId,
             pageTitle: pageTitle,
@@ -66,12 +66,12 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
           },
         };
       } else {
-        mainDiffTab = {
+        diffTab = {
           id: activeTab.id,
           createdAt: activeTab.createdAt,
           updatedAt: now,
           name: `[${wikiId}] ${pageTitle} [${parentRevisionId}-${revisionId}]`,
-          type: TabType.MAIN_DIFF,
+          type: activeTab.type,
           data: {
             wikiId: wikiId,
             pageTitle: pageTitle,
@@ -81,7 +81,7 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
         };
       }
 
-      appState.local.activeTab.set(mainDiffTab);
+      appState.local.activeTab.set(diffTab);
       scrollToTopTabMainPanel();
     }
   };
@@ -89,15 +89,15 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
   const handleTouchStartRevisionButton = (revisionId: number) => {
     const activeTab = appState.local.activeTab.peek();
 
-    if (activeTab) {
+    if (activeTab && (activeTab.type === TabType.DIFF || activeTab.type === TabType.MAIN_DIFF)) {
       timeoutId = setTimeout(() => {
         const now = dayjs().toISOString();
-        const mainDiffTab: Tab = {
+        const diffTab: Tab = {
           id: activeTab.id,
           createdAt: activeTab.createdAt,
           updatedAt: now,
           name: `[${wikiId}] ${pageTitle} [${revisionId}-${toRevisionId}]`,
-          type: TabType.MAIN_DIFF,
+          type: activeTab.type,
           data: {
             wikiId: wikiId,
             pageTitle: pageTitle,
@@ -105,7 +105,7 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
             toRevisionId: toRevisionId,
           },
         };
-        appState.local.activeTab.set(mainDiffTab);
+        appState.local.activeTab.set(diffTab);
         scrollToTopTabMainPanel();
       }, 1500);
     }
@@ -191,7 +191,9 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
                           <Text className={classes.timestamp}>
                             {dayjs(revision.timestamp).format('HH:mm:ss')}
                           </Text>
-                          <Text className={classes.revisionId}>{revision.revisionId}</Text>
+                          <Text className={classes.revisionId} data-hidden={revision.sha1Hidden}>
+                            {revision.revisionId}
+                          </Text>
                           {revision.minor && (
                             <IconLeaf
                               size="0.85rem"
@@ -216,6 +218,7 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
                         fw={500}
                         onClick={handleClickUsernameLink}
                         onDoubleClick={handleDoubleClickUsernameLink}
+                        data-hidden={revision.userHidden}
                       >
                         {revision.user}
                       </Anchor>

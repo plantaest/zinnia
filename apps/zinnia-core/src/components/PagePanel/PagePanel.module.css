@@ -48,12 +48,21 @@
   font-weight: 600;
 }
 
-.index, .revisionId {
+.index {
   color: var(--mantine-color-gray-light-color);
 }
 
 .timestamp {
   color: var(--mantine-color-blue-light-color);
+}
+
+.revisionId {
+  color: var(--mantine-color-gray-light-color);
+
+  &[data-hidden="true"] {
+    text-decoration: line-through;
+    font-style: italic;
+  }
 }
 
 .revision[data-from="true"] .revisionId {
@@ -69,4 +78,9 @@
   text-overflow: ellipsis;
   overflow: hidden;
   max-width: 100%;
+
+  &[data-hidden="true"] {
+    text-decoration: line-through;
+    font-style: italic;
+  }
 }

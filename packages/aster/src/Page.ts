@@ -52,7 +52,7 @@ export class InternalPage implements Page {
       action: 'query',
       prop: 'revisions',
       titles: this._title,
-      rvprop: 'ids|flags|timestamp|user|size|parsedcomment',
+      rvprop: 'ids|flags|timestamp|user|size|parsedcomment|sha1',
       rvlimit: limit + 1,
     };
 
@@ -70,6 +70,8 @@ export class InternalPage implements Page {
         size: r.size,
         parentSize: -1,
         timestamp: r.timestamp,
+        sha1Hidden: r.sha1hidden ?? false,
+        sha1: r.sha1,
         commentHidden: r.commenthidden ?? false,
         parsedComment: r.parsedcomment,
       }));
