@@ -10,6 +10,7 @@ import { CompareRevisionsResult } from './type/CompareRevisionsResult';
 import { DiffType } from './type/DiffType';
 import { InternalPage, Page } from './Page';
 import { ApiChangeResponse } from './type/action/ApiChangeResponse';
+import { InternalUser, User } from './User';
 
 export abstract class Wiki {
   protected readonly config: WikiConfig;
@@ -46,6 +47,8 @@ export abstract class Wiki {
   ): Promise<CompareRevisionsResult>;
 
   public abstract page(title: string): Page;
+
+  public abstract user(username: string): User;
 }
 
 export class InternalWiki extends Wiki {
@@ -215,5 +218,9 @@ export class InternalWiki extends Wiki {
 
   public override page(title: string): Page {
     return new InternalPage(this, title);
+  }
+
+  public override user(username: string): User {
+    return new InternalUser(this, username);
   }
 }

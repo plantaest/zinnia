@@ -20,7 +20,7 @@ function _FeedPanel() {
   const times = new Set<string>();
 
   const feedItemFragments = recentChanges.map((change, index) => {
-    const date = dayjs(change.timestamp).format('YYYY-MM-DD');
+    const date = dayjs(change.timestamp).format('DD-MM-YYYY');
     const time = dayjs(change.timestamp).format('YYYY-MM-DDTHH:00');
     let showDate;
     let showTime;

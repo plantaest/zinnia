@@ -4,9 +4,11 @@ import {
   Anchor,
   Badge,
   Box,
+  CloseButton,
   Flex,
   Group,
   Loader,
+  Modal,
   Stack,
   Text,
   TypographyStylesProvider,
@@ -14,10 +16,19 @@ import {
 } from '@mantine/core';
 import { CompareRevisionsResult } from '@plantaest/aster';
 import dayjs from 'dayjs';
-import { IconAlertTriangle, IconCheck, IconLink, IconQuote, IconUser } from '@tabler/icons-react';
-import { memo, useEffect, useRef } from 'react';
+import {
+  IconAlertTriangle,
+  IconCircleCheck,
+  IconExternalLink,
+  IconFile,
+  IconQuote,
+  IconUser,
+} from '@tabler/icons-react';
+import { useEffect, useRef } from 'react';
 import scrollIntoView from 'scroll-into-view-if-needed';
 import { useSelector } from '@legendapp/state/react';
+import { useIntl } from 'react-intl';
+import { useDisclosure } from '@mantine/hooks';
 import { useCompareRevisions } from '@/queries/useCompareRevisions';
 import { MwHelper } from '@/utils/MwHelper';
 import { wikis } from '@/utils/wikis';
@@ -27,6 +38,7 @@ import { isRtlLang } from '@/utils/isRtlLang';
 import { sanitizeHtml } from '@/utils/sanitizeHtml';
 import { PagePanel } from '@/components/PagePanel/PagePanel';
 import { appState } from '@/states/appState';
+import { UserPanel } from '@/components/UserPanel/UserPanel';
 
 interface DiffTabProps {
   wikiId: string;
@@ -35,8 +47,9 @@ interface DiffTabProps {
   toRevisionId: number;
 }
 
-function _DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: DiffTabProps) {
+export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: DiffTabProps) {
   const { dir: globalDir } = useDirection();
+  const { formatMessage } = useIntl();
 
   const placeholderCompareRevisionsResult: CompareRevisionsResult = {
     fromId: 0,
@@ -204,6 +217,12 @@ function _DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: DiffTabPr
   // Example: https://w.wiki/A5qr
   const processedDiffTableHtml = compareResult.body.replaceAll(/colspan="\d"/g, '');
 
+  // PagePanel & UserPanel modals
+  const [openedPagePanelModal, { open: openPagePanelModal, close: closePagePanelModal }] =
+    useDisclosure(false);
+  const [openedUserPanelModal, { open: openUserPanelModal, close: closeUserPanelModal }] =
+    useDisclosure(false);
+
   return (
     <Flex wrap="nowrap" w="100%">
       <Stack p={5} gap={5} flex={1} w="100%" miw={0}>
@@ -246,6 +265,28 @@ function _DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: DiffTabPr
               </Group>
 
               <Group gap="xs">
+                {advancedMode && (
+                  <ActionIcon.Group>
+                    <ActionIcon
+                      size={26}
+                      variant="outline"
+                      hiddenFrom="lg"
+                      onClick={openPagePanelModal}
+                      aria-label={formatMessage({ id: 'ui.pagePanel.title' })}
+                    >
+                      <IconFile size="1rem" />
+                    </ActionIcon>
+                    <ActionIcon
+                      size={26}
+                      variant="outline"
+                      hiddenFrom="lg"
+                      onClick={openUserPanelModal}
+                      aria-label={formatMessage({ id: 'ui.userPanel.title' })}
+                    >
+                      <IconUser size="1rem" />
+                    </ActionIcon>
+                  </ActionIcon.Group>
+                )}
                 <ActionIcon
                   size={26}
                   variant="filled"
@@ -258,7 +299,7 @@ function _DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: DiffTabPr
                   )}
                   target="_blank"
                 >
-                  <IconLink size="1rem" />
+                  <IconExternalLink size="1rem" />
                 </ActionIcon>
                 <LengthDeltaBadge
                   newLength={compareResult.toSize}
@@ -270,7 +311,7 @@ function _DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: DiffTabPr
                   ) : isError ? (
                     <IconAlertTriangle size="1.25rem" color="var(--mantine-color-red-5)" />
                   ) : isSuccess ? (
-                    <IconCheck size="1.25rem" color="var(--mantine-color-green-5)" />
+                    <IconCircleCheck size="1.25rem" color="var(--mantine-color-green-5)" />
                   ) : null}
                 </Flex>
               </Group>
@@ -298,7 +339,7 @@ function _DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: DiffTabPr
                     {dayjs(compareResult.fromTimestamp).format('HH:mm:ss')}
                   </Text>
                   <Text className={classes.label}>
-                    {dayjs(compareResult.fromTimestamp).format('YYYY-MM-DD')}
+                    {dayjs(compareResult.fromTimestamp).format('DD-MM-YYYY')}
                   </Text>
                 </Group>
 
@@ -369,7 +410,7 @@ function _DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: DiffTabPr
                     {dayjs(compareResult.toTimestamp).format('HH:mm:ss')}
                   </Text>
                   <Text className={classes.label}>
-                    {dayjs(compareResult.toTimestamp).format('YYYY-MM-DD')}
+                    {dayjs(compareResult.toTimestamp).format('DD-MM-YYYY')}
                   </Text>
                 </Group>
 
@@ -449,17 +490,77 @@ function _DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: DiffTabPr
       </Stack>
 
       {advancedMode && (
-        <Stack gap={5} visibleFrom="lg" className={classes.right}>
-          <PagePanel
-            wikiId={wikiId}
-            pageTitle={pageTitle}
-            fromRevisionId={fromRevisionId}
-            toRevisionId={toRevisionId}
-          />
-        </Stack>
+        <>
+          <Stack gap={5} visibleFrom="lg" className={classes.right}>
+            <PagePanel
+              wikiId={wikiId}
+              pageTitle={pageTitle}
+              fromRevisionId={fromRevisionId}
+              toRevisionId={toRevisionId}
+            />
+            <UserPanel
+              wikiId={wikiId}
+              fromUsername={compareResult.fromUser}
+              toUsername={compareResult.toUser}
+              fromRevisionId={fromRevisionId}
+              toRevisionId={toRevisionId}
+            />
+          </Stack>
+
+          <Modal
+            opened={openedPagePanelModal}
+            onClose={closePagePanelModal}
+            padding="xs"
+            fullScreen
+            withCloseButton={false}
+            withOverlay={false}
+          >
+            <Stack gap="xs">
+              <Group gap="xs">
+                <CloseButton
+                  onClick={closePagePanelModal}
+                  variant="subtle"
+                  aria-label={formatMessage({ id: 'common.close' })}
+                />
+                <Text fw={500}>{formatMessage({ id: 'common.close' })}</Text>
+              </Group>
+              <PagePanel
+                wikiId={wikiId}
+                pageTitle={pageTitle}
+                fromRevisionId={fromRevisionId}
+                toRevisionId={toRevisionId}
+              />
+            </Stack>
+          </Modal>
+
+          <Modal
+            opened={openedUserPanelModal}
+            onClose={closeUserPanelModal}
+            padding="xs"
+            fullScreen
+            withCloseButton={false}
+            withOverlay={false}
+          >
+            <Stack gap="xs">
+              <Group gap="xs">
+                <CloseButton
+                  onClick={closeUserPanelModal}
+                  variant="subtle"
+                  aria-label={formatMessage({ id: 'common.close' })}
+                />
+                <Text fw={500}>{formatMessage({ id: 'common.close' })}</Text>
+              </Group>
+              <UserPanel
+                wikiId={wikiId}
+                fromUsername={compareResult.fromUser}
+                toUsername={compareResult.toUser}
+                fromRevisionId={fromRevisionId}
+                toRevisionId={toRevisionId}
+              />
+            </Stack>
+          </Modal>
+        </>
       )}
     </Flex>
   );
 }
-
-export const DiffTab = memo(_DiffTab);

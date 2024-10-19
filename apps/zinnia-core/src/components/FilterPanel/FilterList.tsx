@@ -7,7 +7,6 @@ import { FilterLayer } from '@/components/FilterPanel/FilterLayer';
 import { appState } from '@/states/appState';
 import { appConfig } from '@/config/appConfig';
 import { Filter } from '@/types/persistence/Filter';
-import { useLargerThan } from '@/hooks/useLargerThan';
 
 interface FilterListProps {
   onChangeLayer: (layer: FilterLayer) => void;
@@ -21,7 +20,6 @@ export function FilterList({
   onChangeCurrentFilter,
 }: FilterListProps) {
   const { formatMessage } = useIntl();
-  const largerThanMd = useLargerThan('md');
 
   const activeWorkspaceId = useSelector(appState.userConfig.activeWorkspaceId);
   const filters = useSelector(() => appState.ui.activeWorkspace.filters.get() ?? []);
@@ -39,13 +37,12 @@ export function FilterList({
     <Stack gap="xs">
       <Group gap="xs" justify="space-between">
         <Group gap="xs">
-          {!largerThanMd && (
-            <CloseButton
-              onClick={modals.closeAll}
-              variant="subtle"
-              aria-label={formatMessage({ id: 'common.close' })}
-            />
-          )}
+          <CloseButton
+            onClick={modals.closeAll}
+            variant="subtle"
+            aria-label={formatMessage({ id: 'common.close' })}
+            hiddenFrom="md"
+          />
           <Text fw={500}>{formatMessage({ id: 'ui.filterPanel.title' })}</Text>
         </Group>
         <ActionIcon

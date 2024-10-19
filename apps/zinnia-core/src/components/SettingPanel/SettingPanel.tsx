@@ -62,7 +62,6 @@ function SettingPanelContent() {
   const { formatMessage } = useIntl();
   const { setDirection } = useDirection();
   const userConfig = useSelector(appState.userConfig);
-  const largerThanMd = useLargerThan('md');
 
   const initialFormValues: FormValues = {
     theme: userConfig.colorScheme,
@@ -119,13 +118,12 @@ function SettingPanelContent() {
     <form onSubmit={handleFormSubmit}>
       <Stack gap="xs">
         <Group gap="xs">
-          {!largerThanMd && (
-            <CloseButton
-              onClick={modals.closeAll}
-              variant="subtle"
-              aria-label={formatMessage({ id: 'common.close' })}
-            />
-          )}
+          <CloseButton
+            onClick={modals.closeAll}
+            variant="subtle"
+            aria-label={formatMessage({ id: 'common.close' })}
+            hiddenFrom="md"
+          />
           <Text fw={500}>{formatMessage({ id: 'ui.settingPanel.title' })}</Text>
         </Group>
 

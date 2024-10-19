@@ -52,7 +52,7 @@ export class InternalPage implements Page {
       action: 'query',
       prop: 'revisions',
       titles: this._title,
-      rvprop: 'ids|flags|timestamp|user|size|parsedcomment|sha1',
+      rvprop: 'ids|flags|timestamp|user|size|sha1|comment|parsedcomment|tags',
       rvlimit: limit + 1,
     };
 
@@ -60,28 +60,34 @@ export class InternalPage implements Page {
     const pages = response.query.pages;
 
     if (pages.length === 1) {
-      const revisions: Revision[] = response.query.pages[0].revisions.map((r: any) => ({
-        revisionId: r.revid,
-        parentId: r.parentid,
-        userHidden: r.userhidden ?? false,
-        user: r.user,
-        anon: r.anon ?? false,
-        minor: r.minor,
-        size: r.size,
-        parentSize: -1,
-        timestamp: r.timestamp,
-        sha1Hidden: r.sha1hidden ?? false,
-        sha1: r.sha1,
-        commentHidden: r.commenthidden ?? false,
-        parsedComment: r.parsedcomment,
-      }));
+      const revisions: Revision[] = response.query.pages[0].revisions.map(
+        (r: any) =>
+          ({
+            revisionId: r.revid,
+            parentId: r.parentid,
+            minor: r.minor,
+            userHidden: r.userhidden ?? false,
+            user: r.user,
+            anon: r.anon ?? false,
+            timestamp: r.timestamp,
+            size: r.size,
+            parentSize: -1,
+            sha1Hidden: r.sha1hidden ?? false,
+            sha1: r.sha1,
+            commentHidden: r.commenthidden ?? false,
+            comment: r.comment,
+            parsedComment: r.parsedcomment,
+            tags: r.tags,
+          }) as Revision
+      );
 
       // Ref: https://en.wikipedia.org/wiki/User:Ingenuity/AntiVandal.js#L-1501
       for (let i = 0; i < Math.min(limit, revisions.length); i++) {
         if (i + 1 < revisions.length) {
           revisions[i].parentSize = revisions[i + 1].size;
         } else {
-          revisions[i].parentSize = revisions[i].size;
+          // New page
+          revisions[i].parentSize = 0;
         }
       }
 

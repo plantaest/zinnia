@@ -21,7 +21,6 @@ import { useLargerThan } from '@/hooks/useLargerThan';
 
 function SyncTabsPanelContent() {
   const { formatMessage } = useIntl();
-  const largerThanMd = useLargerThan('md');
   const [showLoading, setShowLoading] = useState(false);
 
   const saveOptionApi = useSaveOption();
@@ -47,13 +46,12 @@ function SyncTabsPanelContent() {
   return (
     <Stack gap="xs">
       <Group gap="xs">
-        {!largerThanMd && (
-          <CloseButton
-            onClick={modals.closeAll}
-            variant="subtle"
-            aria-label={formatMessage({ id: 'common.close' })}
-          />
-        )}
+        <CloseButton
+          onClick={modals.closeAll}
+          variant="subtle"
+          aria-label={formatMessage({ id: 'common.close' })}
+          hiddenFrom="md"
+        />
         <Text fw={500}>{formatMessage({ id: 'ui.syncTabsPanel.title' })}</Text>
       </Group>
 

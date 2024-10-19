@@ -63,7 +63,10 @@ const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error, query) => {
       if (query.meta?.showErrorNotification !== false) {
-        Notify.error((query.meta?.errorMessage as string) || 'Unable to call the API');
+        Notify.error(
+          (query.meta?.errorMessage as string) ||
+            i18n.intl.formatMessage({ id: 'query.defaultErrorMessage' })
+        );
       }
 
       if (appConfig.DEBUG) {

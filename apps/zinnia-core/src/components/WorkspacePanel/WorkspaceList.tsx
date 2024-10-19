@@ -8,7 +8,6 @@ import { WorkspaceLayer } from '@/components/WorkspacePanel/WorkspacePanel';
 import { Workspace } from '@/types/persistence/Workspace';
 import { useSelectWorkspace } from '@/queries/useSelectWorkspace';
 import { appConfig } from '@/config/appConfig';
-import { useLargerThan } from '@/hooks/useLargerThan';
 
 interface WorkspaceListProps {
   onChangeLayer: (layer: WorkspaceLayer) => void;
@@ -17,7 +16,6 @@ interface WorkspaceListProps {
 
 export function WorkspaceList({ onChangeLayer, onChangeCurrentWorkspace }: WorkspaceListProps) {
   const { formatMessage } = useIntl();
-  const largerThanMd = useLargerThan('md');
 
   const workspaces = useSelector(() => appState.userConfig.workspaces.get() ?? []);
   const activeWorkspaceId = useSelector(appState.userConfig.activeWorkspaceId);
@@ -43,13 +41,12 @@ export function WorkspaceList({ onChangeLayer, onChangeCurrentWorkspace }: Works
     <Stack gap="xs">
       <Group gap="xs" justify="space-between">
         <Group gap="xs">
-          {!largerThanMd && (
-            <CloseButton
-              onClick={modals.closeAll}
-              variant="subtle"
-              aria-label={formatMessage({ id: 'common.close' })}
-            />
-          )}
+          <CloseButton
+            onClick={modals.closeAll}
+            variant="subtle"
+            aria-label={formatMessage({ id: 'common.close' })}
+            hiddenFrom="md"
+          />
           <Text fw={500}>{formatMessage({ id: 'ui.workspacePanel.title' })}</Text>
         </Group>
         <ActionIcon

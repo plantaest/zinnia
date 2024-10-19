@@ -6,9 +6,10 @@ import {
   HoverCard,
   Stack,
   Text,
+  ThemeIcon,
   UnstyledButton,
 } from '@mantine/core';
-import { IconArrowsMaximize, IconFile, IconLeaf } from '@tabler/icons-react';
+import { IconArrowsMaximize, IconFile, IconLeaf, IconPlus } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import React, { Fragment } from 'react';
 import { useSelector } from '@legendapp/state/react';
@@ -38,9 +39,9 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
   const dates = new Set<string>();
   let timeoutId: NodeJS.Timeout;
   const preview = useSelector(appState.ui.preview);
-  const largerThanMd = useLargerThan('md');
+  const largerThanLg = useLargerThan('lg');
 
-  const handleClickRevisionButton = (
+  const selectRevision = (
     event: React.MouseEvent<HTMLButtonElement>,
     parentRevisionId: number,
     revisionId: number
@@ -86,28 +87,60 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
     }
   };
 
-  const handleTouchStartRevisionButton = (revisionId: number) => {
-    const activeTab = appState.local.activeTab.peek();
+  const handleClickRevisionButton = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    parentRevisionId: number,
+    revisionId: number
+  ) => {
+    if (!largerThanLg) {
+      event.preventDefault();
+    } else {
+      selectRevision(event, parentRevisionId, revisionId);
+    }
+  };
 
-    if (activeTab && (activeTab.type === TabType.DIFF || activeTab.type === TabType.MAIN_DIFF)) {
-      timeoutId = setTimeout(() => {
-        const now = dayjs().toISOString();
-        const diffTab: Tab = {
-          id: activeTab.id,
-          createdAt: activeTab.createdAt,
-          updatedAt: now,
-          name: `[${wikiId}] ${pageTitle} [${revisionId}-${toRevisionId}]`,
-          type: activeTab.type,
-          data: {
-            wikiId: wikiId,
-            pageTitle: pageTitle,
-            fromRevisionId: revisionId,
-            toRevisionId: toRevisionId,
-          },
-        };
-        appState.local.activeTab.set(diffTab);
-        scrollToTopTabMainPanel();
-      }, 1500);
+  const handleDoubleClickRevisionButton = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    parentRevisionId: number,
+    revisionId: number
+  ) => {
+    if (largerThanLg) {
+      event.preventDefault();
+    } else {
+      selectRevision(event, parentRevisionId, revisionId);
+    }
+  };
+
+  const handleMouseDownRevisionButton = (revisionId: number) => {
+    if (!largerThanLg) {
+      const activeTab = appState.local.activeTab.peek();
+
+      if (activeTab && (activeTab.type === TabType.DIFF || activeTab.type === TabType.MAIN_DIFF)) {
+        timeoutId = setTimeout(() => {
+          const now = dayjs().toISOString();
+          const diffTab: Tab = {
+            id: activeTab.id,
+            createdAt: activeTab.createdAt,
+            updatedAt: now,
+            name: `[${wikiId}] ${pageTitle} [${revisionId}-${toRevisionId}]`,
+            type: activeTab.type,
+            data: {
+              wikiId: wikiId,
+              pageTitle: pageTitle,
+              fromRevisionId: revisionId,
+              toRevisionId: toRevisionId,
+            },
+          };
+          appState.local.activeTab.set(diffTab);
+          scrollToTopTabMainPanel();
+        }, 500);
+      }
+    }
+  };
+
+  const handleMouseUpRevisionButton = () => {
+    if (!largerThanLg) {
+      clearTimeout(timeoutId);
     }
   };
 
@@ -151,7 +184,7 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
                 : revision.revisionId < fromRevisionId && revision.revisionId > toRevisionId
                   ? 'old-new'
                   : 'none';
-            const date = dayjs(revision.timestamp).format('YYYY-MM-DD');
+            const date = dayjs(revision.timestamp).format('DD-MM-YYYY');
             let showDate;
 
             if (dates.has(date)) {
@@ -170,7 +203,7 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
                   radius="md"
                   position="left"
                   offset={25}
-                  disabled={!preview || !largerThanMd || revision.parentId === 0}
+                  disabled={!preview || !largerThanLg || revision.parentId === 0}
                 >
                   <HoverCard.Target>
                     <UnstyledButton
@@ -181,9 +214,19 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
                       onClick={(event) =>
                         handleClickRevisionButton(event, revision.parentId, revision.revisionId)
                       }
-                      onTouchStart={() => handleTouchStartRevisionButton(revision.revisionId)}
-                      onTouchEnd={() => clearTimeout(timeoutId)}
-                      onTouchMove={() => clearTimeout(timeoutId)}
+                      onDoubleClick={(event) =>
+                        handleDoubleClickRevisionButton(
+                          event,
+                          revision.parentId,
+                          revision.revisionId
+                        )
+                      }
+                      onMouseDown={() => handleMouseDownRevisionButton(revision.revisionId)}
+                      onMouseUp={handleMouseUpRevisionButton}
+                      onMouseMove={handleMouseUpRevisionButton}
+                      onTouchStart={() => handleMouseDownRevisionButton(revision.revisionId)}
+                      onTouchEnd={handleMouseUpRevisionButton}
+                      onTouchMove={handleMouseUpRevisionButton}
                     >
                       <Group gap={2} justify="space-between" w="100%">
                         <Group gap={5} wrap="nowrap">
@@ -210,18 +253,25 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
                         />
                       </Group>
 
-                      <Anchor
-                        className={classes.user}
-                        size="xs"
-                        href={MwHelper.createUserContribUri(serverName, revision.user)}
-                        target="_blank"
-                        fw={500}
-                        onClick={handleClickUsernameLink}
-                        onDoubleClick={handleDoubleClickUsernameLink}
-                        data-hidden={revision.userHidden}
-                      >
-                        {revision.user}
-                      </Anchor>
+                      <Group gap={5} wrap="nowrap" maw="100%">
+                        {revision.parentId === 0 && (
+                          <ThemeIcon size={14} color="green">
+                            <IconPlus size="0.85rem" stroke={1.5} />
+                          </ThemeIcon>
+                        )}
+                        <Anchor
+                          className={classes.user}
+                          size="xs"
+                          href={MwHelper.createUserContribUri(serverName, revision.user)}
+                          target="_blank"
+                          fw={500}
+                          onClick={handleClickUsernameLink}
+                          onDoubleClick={handleDoubleClickUsernameLink}
+                          data-hidden={revision.userHidden}
+                        >
+                          {revision.user}
+                        </Anchor>
+                      </Group>
                     </UnstyledButton>
                   </HoverCard.Target>
 

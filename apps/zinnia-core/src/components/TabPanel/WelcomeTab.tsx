@@ -1,4 +1,4 @@
-import { ActionIcon, Anchor, Group, Stack, Text } from '@mantine/core';
+import { ActionIcon, Anchor, SimpleGrid, Stack, Text } from '@mantine/core';
 import { IconCode, IconHeart, IconHome, IconMessages } from '@tabler/icons-react';
 import { useIntl } from 'react-intl';
 import dayjs from 'dayjs';
@@ -31,15 +31,12 @@ export function WelcomeTab() {
 
   return (
     <Stack p="xs" gap="xs" flex={1} justify="space-between">
-      <Stack gap="xs" align="center" mb="2rem" style={{ zIndex: 1 }}>
+      <Stack gap="xl" align="center" mb="2.5rem" style={{ zIndex: 1 }}>
         <Text mt="1.25rem" c="blue.5" fw={600} fz="3rem" ta="center" ff="var(--zinnia-font-family)">
           Zinnia
         </Text>
-        <Text mb="2rem" fw={600} fz="1.25rem" ta="center" ff="var(--zinnia-font-family)">
-          {formatMessage({ id: 'ui.welcomeTab.slogan' })}
-        </Text>
 
-        <Group gap="2.5rem">
+        <SimpleGrid cols={{ base: 2, xs: 4 }} spacing="2.5rem" verticalSpacing="2.5rem">
           {links.map((link) => (
             <Stack key={link.name} align="center" gap="xs">
               <ActionIcon
@@ -58,7 +55,7 @@ export function WelcomeTab() {
               </Text>
             </Stack>
           ))}
-        </Group>
+        </SimpleGrid>
       </Stack>
 
       <Text mb="1.5rem" ta="center" c="dimmed" style={{ zIndex: 1 }}>

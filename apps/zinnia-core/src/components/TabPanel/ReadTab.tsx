@@ -1,7 +1,7 @@
 import { PageHtmlResult } from '@plantaest/aster';
 import { Anchor, Badge, Box, Flex, Group, Loader, Stack, Text } from '@mantine/core';
 import ReactShadowRoot from 'react-shadow-root';
-import { IconAlertTriangle, IconCheck } from '@tabler/icons-react';
+import { IconAlertTriangle, IconCircleCheck } from '@tabler/icons-react';
 import { useGetPageHtml } from '@/queries/useGetPageHtml';
 import classes from './ReadTab.module.css';
 import { MwHelper } from '@/utils/MwHelper';
@@ -93,7 +93,7 @@ export function ReadTab({ wikiId, pageTitle, redirect }: ReadTabProps) {
                 ) : isError ? (
                   <IconAlertTriangle size="1.25rem" color="var(--mantine-color-red-5)" />
                 ) : isSuccess ? (
-                  <IconCheck size="1.25rem" color="var(--mantine-color-green-5)" />
+                  <IconCircleCheck size="1.25rem" color="var(--mantine-color-green-5)" />
                 ) : null}
               </Flex>
             </Group>

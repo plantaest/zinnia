@@ -24,7 +24,6 @@ import { useLargerThan } from '@/hooks/useLargerThan';
 function TabListPanelContent() {
   const { formatMessage } = useIntl();
   const { dir } = useDirection();
-  const largerThanMd = useLargerThan('md');
   const activeTabs = useSelector(appState.local.activeTabs);
   const activeTabId = useSelector(appState.local.activeTabId);
 
@@ -44,13 +43,12 @@ function TabListPanelContent() {
   return (
     <Stack gap="xs">
       <Group gap="xs">
-        {!largerThanMd && (
-          <CloseButton
-            onClick={modals.closeAll}
-            variant="subtle"
-            aria-label={formatMessage({ id: 'common.close' })}
-          />
-        )}
+        <CloseButton
+          onClick={modals.closeAll}
+          variant="subtle"
+          aria-label={formatMessage({ id: 'common.close' })}
+          hiddenFrom="md"
+        />
         <Text fw={500}>
           {formatMessage({ id: 'ui.tabListPanel.title' })} ({activeTabs.length})
         </Text>
