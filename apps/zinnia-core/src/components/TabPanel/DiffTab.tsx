@@ -39,6 +39,7 @@ import { sanitizeHtml } from '@/utils/sanitizeHtml';
 import { PagePanel } from '@/components/PagePanel/PagePanel';
 import { appState } from '@/states/appState';
 import { UserPanel } from '@/components/UserPanel/UserPanel';
+import { useLargerThan } from '@/hooks/useLargerThan';
 
 interface DiffTabProps {
   wikiId: string;
@@ -50,6 +51,7 @@ interface DiffTabProps {
 export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: DiffTabProps) {
   const { dir: globalDir } = useDirection();
   const { formatMessage } = useIntl();
+  const largerThanLg = useLargerThan('lg');
 
   const placeholderCompareRevisionsResult: CompareRevisionsResult = {
     fromId: 0,
@@ -265,42 +267,44 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
               </Group>
 
               <Group gap="xs">
-                {advancedMode && (
-                  <ActionIcon.Group>
-                    <ActionIcon
-                      size={26}
-                      variant="outline"
-                      hiddenFrom="lg"
-                      onClick={openPagePanelModal}
-                      aria-label={formatMessage({ id: 'ui.pagePanel.title' })}
-                    >
-                      <IconFile size="1rem" />
-                    </ActionIcon>
-                    <ActionIcon
-                      size={26}
-                      variant="outline"
-                      hiddenFrom="lg"
-                      onClick={openUserPanelModal}
-                      aria-label={formatMessage({ id: 'ui.userPanel.title' })}
-                    >
-                      <IconUser size="1rem" />
-                    </ActionIcon>
-                  </ActionIcon.Group>
-                )}
-                <ActionIcon
-                  size={26}
-                  variant="filled"
-                  component="a"
-                  href={MwHelper.createDiffUri(
-                    serverName,
-                    pageTitle,
-                    compareResult.fromRevisionId,
-                    compareResult.toRevisionId
+                <ActionIcon.Group>
+                  {!largerThanLg && advancedMode && (
+                    <>
+                      <ActionIcon
+                        size={26}
+                        variant="light"
+                        onClick={openPagePanelModal}
+                        title={formatMessage({ id: 'ui.pagePanel.title' })}
+                        aria-label={formatMessage({ id: 'ui.pagePanel.title' })}
+                      >
+                        <IconFile size="1rem" />
+                      </ActionIcon>
+                      <ActionIcon
+                        size={26}
+                        variant="light"
+                        onClick={openUserPanelModal}
+                        title={formatMessage({ id: 'ui.userPanel.title' })}
+                        aria-label={formatMessage({ id: 'ui.userPanel.title' })}
+                      >
+                        <IconUser size="1rem" />
+                      </ActionIcon>
+                    </>
                   )}
-                  target="_blank"
-                >
-                  <IconExternalLink size="1rem" />
-                </ActionIcon>
+                  <ActionIcon
+                    size={26}
+                    variant="light"
+                    component="a"
+                    href={MwHelper.createDiffUri(
+                      serverName,
+                      pageTitle,
+                      compareResult.fromRevisionId,
+                      compareResult.toRevisionId
+                    )}
+                    target="_blank"
+                  >
+                    <IconExternalLink size="1rem" />
+                  </ActionIcon>
+                </ActionIcon.Group>
                 <LengthDeltaBadge
                   newLength={compareResult.toSize}
                   oldLength={compareResult.fromSize}
@@ -516,14 +520,11 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
             withOverlay={false}
           >
             <Stack gap="xs">
-              <Group gap="xs">
-                <CloseButton
-                  onClick={closePagePanelModal}
-                  variant="subtle"
-                  aria-label={formatMessage({ id: 'common.close' })}
-                />
-                <Text fw={500}>{formatMessage({ id: 'common.close' })}</Text>
-              </Group>
+              <CloseButton
+                onClick={closePagePanelModal}
+                variant="subtle"
+                aria-label={formatMessage({ id: 'common.close' })}
+              />
               <PagePanel
                 wikiId={wikiId}
                 pageTitle={pageTitle}
@@ -542,14 +543,11 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
             withOverlay={false}
           >
             <Stack gap="xs">
-              <Group gap="xs">
-                <CloseButton
-                  onClick={closeUserPanelModal}
-                  variant="subtle"
-                  aria-label={formatMessage({ id: 'common.close' })}
-                />
-                <Text fw={500}>{formatMessage({ id: 'common.close' })}</Text>
-              </Group>
+              <CloseButton
+                onClick={closeUserPanelModal}
+                variant="subtle"
+                aria-label={formatMessage({ id: 'common.close' })}
+              />
               <UserPanel
                 wikiId={wikiId}
                 fromUsername={compareResult.fromUser}

@@ -78,8 +78,8 @@ function _FeedControlPanel() {
           loading={isRefetching}
           loaderProps={{ size: 14 }}
           onClick={handleClickReloadButton}
-          title={formatMessage({ id: 'ui.feedPanel.reload' })}
-          aria-label={formatMessage({ id: 'ui.feedPanel.reload' })}
+          title={formatMessage({ id: 'common.reload' })}
+          aria-label={formatMessage({ id: 'common.reload' })}
         >
           <IconReload size="1.125rem" />
         </ActionIcon>

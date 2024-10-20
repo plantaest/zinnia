@@ -9,7 +9,7 @@ import {
   ThemeIcon,
   UnstyledButton,
 } from '@mantine/core';
-import { IconArrowsMaximize, IconFile, IconLeaf, IconPlus } from '@tabler/icons-react';
+import { IconArrowsMaximize, IconFile, IconLeaf, IconPlus, IconReload } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import React, { Fragment } from 'react';
 import { useSelector } from '@legendapp/state/react';
@@ -34,12 +34,14 @@ interface PagePanelProps {
 
 export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: PagePanelProps) {
   const { formatMessage } = useIntl();
-  const { data: revisions = [] } = useGetRevisions(wikiId, pageTitle, 30);
+  const { data: revisions = [], refetch, isFetching } = useGetRevisions(wikiId, pageTitle, 30);
   const serverName = wikis.getWiki(wikiId).getConfig().serverName;
   const dates = new Set<string>();
   let timeoutId: NodeJS.Timeout;
   const preview = useSelector(appState.ui.preview);
   const largerThanLg = useLargerThan('lg');
+
+  const handleClickReloadButton = () => refetch();
 
   const selectRevision = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -164,14 +166,26 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
             </Text>
           </Group>
 
-          <ActionIcon
-            variant="transparent"
-            size="sm"
-            title={formatMessage({ id: 'common.extend' })}
-            aria-label={formatMessage({ id: 'common.extend' })}
-          >
-            <IconArrowsMaximize size="1rem" />
-          </ActionIcon>
+          <Group gap={2}>
+            <ActionIcon
+              variant="transparent"
+              size="sm"
+              title={formatMessage({ id: 'common.reload' })}
+              aria-label={formatMessage({ id: 'common.reload' })}
+              onClick={handleClickReloadButton}
+              loading={isFetching}
+            >
+              <IconReload size="1rem" />
+            </ActionIcon>
+            <ActionIcon
+              variant="transparent"
+              size="sm"
+              title={formatMessage({ id: 'common.extend' })}
+              aria-label={formatMessage({ id: 'common.extend' })}
+            >
+              <IconArrowsMaximize size="1rem" />
+            </ActionIcon>
+          </Group>
         </Group>
 
         <Stack gap={4}>

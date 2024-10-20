@@ -17,6 +17,7 @@ import {
   IconFlame,
   IconLeaf,
   IconPlus,
+  IconReload,
   IconUser,
 } from '@tabler/icons-react';
 import { useIntl } from 'react-intl';
@@ -51,8 +52,16 @@ export function UserPanel({
   toRevisionId,
 }: UserPanelProps) {
   const { formatMessage } = useIntl();
-  const { data: fromUserContributions = [] } = useGetUserContribs(wikiId, fromUsername, 30);
-  const { data: toUserContributions = [] } = useGetUserContribs(wikiId, toUsername, 30);
+  const {
+    data: fromUserContributions = [],
+    refetch: refetchFromUserContributions,
+    isFetching: isFetchingFromUserContributions,
+  } = useGetUserContribs(wikiId, fromUsername, 30);
+  const {
+    data: toUserContributions = [],
+    refetch: refetchToUserContributions,
+    isFetching: isFetchingToUserContributions,
+  } = useGetUserContribs(wikiId, toUsername, 30);
   const serverName = wikis.getWiki(wikiId).getConfig().serverName;
   const dates = new Set<string>();
   const preview = useSelector(appState.ui.preview);
@@ -65,6 +74,9 @@ export function UserPanel({
   const handleClickFromButton = () => setSide('from');
 
   const handleClickToButton = () => setSide('to');
+
+  const handleClickReloadButton = () =>
+    side === 'to' ? refetchToUserContributions() : refetchFromUserContributions();
 
   const handleClickContributionButton = (
     pageTitle: string,
@@ -138,6 +150,18 @@ export function UserPanel({
                 </ActionIcon>
               </Tooltip>
             </Group>
+            <ActionIcon
+              variant="transparent"
+              size="sm"
+              title={formatMessage({ id: 'common.reload' })}
+              aria-label={formatMessage({ id: 'common.reload' })}
+              onClick={handleClickReloadButton}
+              loading={
+                side === 'to' ? isFetchingToUserContributions : isFetchingFromUserContributions
+              }
+            >
+              <IconReload size="1rem" />
+            </ActionIcon>
             <ActionIcon
               variant="transparent"
               size="sm"
