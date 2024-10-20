@@ -1,5 +1,10 @@
 import { ActionIcon, Box, Flex, Group, Text } from '@mantine/core';
-import { IconArrowsMaximize, IconFocus, IconReload, IconUmbrella } from '@tabler/icons-react';
+import {
+  IconArrowsMaximize,
+  IconFishChristianity,
+  IconFocus,
+  IconReload,
+} from '@tabler/icons-react';
 import { useIntl } from 'react-intl';
 import { memo, useEffect, useState } from 'react';
 import { useNetwork } from '@mantine/hooks';
@@ -93,7 +98,7 @@ function _FeedControlPanel() {
             aria-label={formatMessage({ id: 'ui.feedPanel.preview' })}
             visibleFrom="md"
           >
-            <IconUmbrella size="1.125rem" />
+            <IconFishChristianity size="1.125rem" />
           </ActionIcon>
         )}
         <ActionIcon
