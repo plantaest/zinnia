@@ -19,6 +19,5 @@ export function useGetNamespaces(wikiId: string) {
 
       return wikis.getWiki(wikiId).siteInfo().getNamespaces();
     },
-    staleTime: Infinity,
   });
 }

@@ -3,9 +3,11 @@ import {
   IconArrowRight,
   IconArrowsMinimize,
   IconHistory,
+  IconX,
 } from '@tabler/icons-react';
 import { ActionIcon, Card, Flex, Group, Indicator, Text, useDirection } from '@mantine/core';
 import { useSelector } from '@legendapp/state/react';
+import dayjs from 'dayjs';
 import { TabType } from '@/types/persistence/Tab';
 import classes from './TabHeaderPanel.module.css';
 import { appState } from '@/states/appState';
@@ -16,8 +18,24 @@ import { SyncTabsPanel } from '@/components/SyncTabsPanel/SyncTabsPanel';
 
 export function TabHeaderPanel() {
   const { dir } = useDirection();
+  const activeTabId = useSelector(appState.local.activeTab.id);
   const activeTabType = useSelector(appState.local.activeTab.type);
   const activeTabName = useSelector(appState.local.activeTab.name);
+
+  const handleClickDeleteTabButton = () => {
+    appState.local.activeTabs.set((tabs) => tabs.filter((tab) => tab.id !== activeTabId));
+
+    const activeTabs = appState.local.activeTabs.peek();
+
+    if (activeTabs.length > 0) {
+      const closestUpdatedAtTab = activeTabs.reduce((prev, current) =>
+        dayjs(current.updatedAt).isAfter(dayjs(prev.updatedAt)) ? current : prev
+      );
+      appState.local.activeTabId.set(closestUpdatedAtTab.id);
+    } else {
+      appState.local.activeTabId.set(null);
+    }
+  };
 
   const activeTagFragment = (tabType: TabType, tabName: string) => {
     const TabIcon = tabIcons[tabType];
@@ -50,6 +68,9 @@ export function TabHeaderPanel() {
         >
           {tabName}
         </Text>
+        <ActionIcon size={16} color="red.5" variant="subtle" onClick={handleClickDeleteTabButton}>
+          <IconX />
+        </ActionIcon>
       </Group>
     );
   };

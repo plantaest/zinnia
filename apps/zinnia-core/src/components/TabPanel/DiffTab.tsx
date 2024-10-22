@@ -24,11 +24,12 @@ import {
   IconQuote,
   IconUser,
 } from '@tabler/icons-react';
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import scrollIntoView from 'scroll-into-view-if-needed';
 import { useSelector } from '@legendapp/state/react';
 import { useIntl } from 'react-intl';
 import { useDisclosure } from '@mantine/hooks';
+import { v4 as uuidv4 } from 'uuid';
 import { useCompareRevisions } from '@/queries/useCompareRevisions';
 import { MwHelper } from '@/utils/MwHelper';
 import { wikis } from '@/utils/wikis';
@@ -40,6 +41,8 @@ import { PagePanel } from '@/components/PagePanel/PagePanel';
 import { appState } from '@/states/appState';
 import { UserPanel } from '@/components/UserPanel/UserPanel';
 import { useLargerThan } from '@/hooks/useLargerThan';
+import { Tab, TabType } from '@/types/persistence/Tab';
+import { scrollToTopTabMainPanel } from '@/utils/scrollToTopTabMainPanel';
 
 interface DiffTabProps {
   wikiId: string;
@@ -225,6 +228,25 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
   const [openedUserPanelModal, { open: openUserPanelModal, close: closeUserPanelModal }] =
     useDisclosure(false);
 
+  const handleClickPageTitleAnchor = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    const now = dayjs().toISOString();
+    const pageTab: Tab = {
+      id: uuidv4(),
+      createdAt: now,
+      updatedAt: now,
+      name: `[${wikiId}] ${pageTitle}`,
+      type: TabType.PAGE,
+      data: {
+        wikiId: wikiId,
+        pageTitle: pageTitle,
+      },
+    };
+    appState.local.activeTabs.set((tabs) => [...tabs, pageTab]);
+    appState.local.activeTabId.set(pageTab.id);
+    scrollToTopTabMainPanel();
+  };
+
   return (
     <Flex wrap="nowrap" w="100%">
       <Stack p={5} gap={5} flex={1} w="100%" miw={0}>
@@ -260,6 +282,7 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
                       textOverflow: 'ellipsis',
                       overflow: 'hidden',
                     }}
+                    onClick={handleClickPageTitleAnchor}
                   >
                     {pageTitle}
                   </Anchor>
@@ -315,7 +338,7 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
                   ) : isError ? (
                     <IconAlertTriangle size="1.25rem" color="var(--mantine-color-red-5)" />
                   ) : isSuccess ? (
-                    <IconCircleCheck size="1.25rem" color="var(--mantine-color-green-5)" />
+                    <IconCircleCheck size="1.25rem" color="var(--mantine-color-blue-5)" />
                   ) : null}
                 </Flex>
               </Group>
@@ -328,6 +351,7 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
               target="_blank"
               w="fit-content"
               style={{ wordBreak: 'break-word' }}
+              onClick={handleClickPageTitleAnchor}
             >
               {pageTitle}
             </Anchor>

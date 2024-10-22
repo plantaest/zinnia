@@ -19,6 +19,5 @@ export function useGetTags(wikiId: string) {
 
       return wikis.getWiki(wikiId).getTags();
     },
-    staleTime: Infinity,
   });
 }

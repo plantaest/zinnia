@@ -1,19 +1,22 @@
 import { Card, Flex } from '@mantine/core';
 import { useSelector } from '@legendapp/state/react';
 import classes from './TabMainPanel.module.css';
-import { DiffTabData, ReadTabData, TabType } from '@/types/persistence/Tab';
+import { DiffTabData, PageTabData, ReadTabData, TabType } from '@/types/persistence/Tab';
 import { WelcomeTab } from '@/components/TabPanel/WelcomeTab';
 import { appState } from '@/states/appState';
 import { DiffTab } from '@/components/TabPanel/DiffTab';
 import { tabMainPanelRef } from '@/refs/tabMainPanelRef';
 import { ReadTab } from '@/components/TabPanel/ReadTab';
 import { NoneTab } from '@/components/TabPanel/NoneTab';
+import { PageTab } from '@/components/TabPanel/PageTab';
 
 let diffTabData: DiffTabData;
 let readTabData: ReadTabData;
+let pageTabData: PageTabData;
 
 export function TabMainPanel() {
   const activeTab = useSelector(appState.local.activeTab);
+  let otherTab = <NoneTab />;
 
   if (activeTab) {
     if (activeTab.type === TabType.MAIN_READ || activeTab.type === TabType.READ) {
@@ -32,19 +35,23 @@ export function TabMainPanel() {
         toRevisionId: activeTab.data.toRevisionId,
       };
     }
-  }
 
-  const otherTab = activeTab ? (
-    activeTab.type === TabType.WELCOME ? (
-      <WelcomeTab />
-    ) : null
-  ) : (
-    <NoneTab />
-  );
+    if (activeTab.type === TabType.PAGE) {
+      pageTabData = {
+        wikiId: activeTab.data.wikiId,
+        pageTitle: activeTab.data.pageTitle,
+      };
+    }
+
+    if (activeTab.type === TabType.WELCOME) {
+      otherTab = <WelcomeTab />;
+    }
+  }
 
   const isReadTab = activeTab ? [TabType.MAIN_READ, TabType.READ].includes(activeTab.type) : false;
   const isDiffTab = activeTab ? [TabType.MAIN_DIFF, TabType.DIFF].includes(activeTab.type) : false;
-  const isOtherTab = !isReadTab && !isDiffTab;
+  const isPageTab = activeTab ? activeTab.type === TabType.PAGE : false;
+  const isOtherTab = !isReadTab && !isDiffTab && !isPageTab;
 
   return (
     <Card className={classes.main} ref={tabMainPanelRef}>
@@ -68,6 +75,10 @@ export function TabMainPanel() {
             toRevisionId={diffTabData.toRevisionId}
           />
         )}
+      </Flex>
+      {/* Don't unmount PageTab */}
+      <Flex display={isPageTab ? undefined : 'none'} flex={1}>
+        {pageTabData && <PageTab wikiId={pageTabData.wikiId} pageTitle={pageTabData.pageTitle} />}
       </Flex>
       <Flex display={isOtherTab ? undefined : 'none'} flex={1}>
         {otherTab}

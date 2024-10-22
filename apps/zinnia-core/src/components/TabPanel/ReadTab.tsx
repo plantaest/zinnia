@@ -93,7 +93,7 @@ export function ReadTab({ wikiId, pageTitle, redirect }: ReadTabProps) {
                 ) : isError ? (
                   <IconAlertTriangle size="1.25rem" color="var(--mantine-color-red-5)" />
                 ) : isSuccess ? (
-                  <IconCircleCheck size="1.25rem" color="var(--mantine-color-green-5)" />
+                  <IconCircleCheck size="1.25rem" color="var(--mantine-color-blue-5)" />
                 ) : null}
               </Flex>
             </Group>

@@ -1,19 +1,14 @@
 import { ActionIcon, Box, Flex, Group, Text } from '@mantine/core';
-import {
-  IconArrowsMaximize,
-  IconFishChristianity,
-  IconFocus,
-  IconReload,
-} from '@tabler/icons-react';
+import { IconArrowsMaximize, IconFocus, IconPaperclip, IconReload } from '@tabler/icons-react';
 import { useIntl } from 'react-intl';
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNetwork } from '@mantine/hooks';
 import { useSelector } from '@legendapp/state/react';
 import { appState } from '@/states/appState';
 import { useGetRecentChanges } from '@/queries/useGetRecentChanges';
 import classes from './FeedControlPanel.module.css';
 
-function _FeedControlPanel() {
+export function FeedControlPanel() {
   const { formatMessage } = useIntl();
   const { online } = useNetwork();
   const { data: recentChanges = [], refetch, isRefetching, isError } = useGetRecentChanges();
@@ -98,7 +93,7 @@ function _FeedControlPanel() {
             aria-label={formatMessage({ id: 'ui.feedPanel.preview' })}
             visibleFrom="md"
           >
-            <IconFishChristianity size="1.125rem" />
+            <IconPaperclip size="1.125rem" />
           </ActionIcon>
         )}
         <ActionIcon
@@ -126,5 +121,3 @@ function _FeedControlPanel() {
     </Group>
   );
 }
-
-export const FeedControlPanel = memo(_FeedControlPanel);
