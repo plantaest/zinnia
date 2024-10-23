@@ -263,7 +263,7 @@ interface PageTabProps {
 export function PageTab({ wikiId, pageTitle }: PageTabProps) {
   const { formatMessage } = useIntl();
   const serverName = wikis.getWiki(wikiId).getConfig().serverName;
-  const { data: revisions = [] } = useGetRevisions(wikiId, pageTitle, 30);
+  const { data: revisions = [], isFetching } = useGetRevisions(wikiId, pageTitle, 30);
   const dates = new Set<string>();
   const preview = useSelector(appState.ui.preview);
   const largerThanMd = useLargerThan('md');
@@ -550,6 +550,7 @@ export function PageTab({ wikiId, pageTitle }: PageTabProps) {
                 size="sm"
                 title={formatMessage({ id: 'common.reload' })}
                 aria-label={formatMessage({ id: 'common.reload' })}
+                loading={isFetching}
               >
                 <IconReload size="1rem" />
               </ActionIcon>
@@ -577,126 +578,128 @@ export function PageTab({ wikiId, pageTitle }: PageTabProps) {
             </Group>
           </Flex>
 
-          <Stack gap={5}>
-            {revisions.map((revision, index) => {
-              const date = dayjs(revision.timestamp).format('DD-MM-YYYY');
-              let showDate;
+          {revisions.length > 0 && (
+            <Stack gap={5}>
+              {revisions.map((revision, index) => {
+                const date = dayjs(revision.timestamp).format('DD-MM-YYYY');
+                let showDate;
 
-              if (dates.has(date)) {
-                showDate = false;
-              } else {
-                showDate = true;
-                dates.add(date);
-              }
+                if (dates.has(date)) {
+                  showDate = false;
+                } else {
+                  showDate = true;
+                  dates.add(date);
+                }
 
-              return (
-                <Fragment key={revision.revisionId}>
-                  {showDate && <Text className={classes.index}>{date}</Text>}
+                return (
+                  <Fragment key={revision.revisionId}>
+                    {showDate && <Text className={classes.index}>{date}</Text>}
 
-                  <Group gap={5} wrap="nowrap" align="stretch">
-                    <Box className={classes.revision}>
-                      <Group gap={2} justify="space-between" w="100%">
-                        <Group gap={5} wrap="nowrap">
-                          <Text className={classes.index}>{index + 1}</Text>
-                          <Text className={classes.timestamp}>
-                            {dayjs(revision.timestamp).format('HH:mm:ss')}
-                          </Text>
-                          <Text className={classes.revisionId} data-hidden={revision.sha1Hidden}>
-                            {revision.revisionId}
-                          </Text>
-                          {revision.minor && (
-                            <IconLeaf
-                              size="0.85rem"
+                    <Group gap={5} wrap="nowrap" align="stretch">
+                      <Box className={classes.revision}>
+                        <Group gap={2} justify="space-between" w="100%">
+                          <Group gap={5} wrap="nowrap">
+                            <Text className={classes.index}>{index + 1}</Text>
+                            <Text className={classes.timestamp}>
+                              {dayjs(revision.timestamp).format('HH:mm:ss')}
+                            </Text>
+                            <Text className={classes.revisionId} data-hidden={revision.sha1Hidden}>
+                              {revision.revisionId}
+                            </Text>
+                            {revision.minor && (
+                              <IconLeaf
+                                size="0.85rem"
+                                stroke={1.5}
+                                color="var(--mantine-color-gray-light-color)"
+                              />
+                            )}
+                          </Group>
+
+                          <LengthDeltaText
+                            className={classes.delta}
+                            newLength={revision.size}
+                            oldLength={revision.parentSize}
+                          />
+                        </Group>
+
+                        <Group gap={5} wrap="nowrap" maw="100%">
+                          {revision.parentId === 0 && (
+                            <ThemeIcon size={14} color="green">
+                              <IconPlus size="0.85rem" stroke={1.5} />
+                            </ThemeIcon>
+                          )}
+                          <Anchor
+                            className={classes.user}
+                            size="xs"
+                            href={MwHelper.createUserContribUri(serverName, revision.user)}
+                            target="_blank"
+                            fw={500}
+                            data-hidden={revision.userHidden}
+                          >
+                            {revision.user}
+                          </Anchor>
+                        </Group>
+
+                        <Group gap={5} wrap="nowrap" maw="100%">
+                          <IconQuote size="0.85rem" color="var(--mantine-color-gray-light-color)" />
+                          {revision.parsedComment.length > 0 ? (
+                            <TypographyStylesProvider flex={1} miw={0}>
+                              <Text
+                                size="xs"
+                                style={{
+                                  whiteSpace: 'nowrap',
+                                  textOverflow: 'ellipsis',
+                                  overflow: 'hidden',
+                                }}
+                                title={sanitizeHtml(revision.parsedComment)}
+                                dangerouslySetInnerHTML={{
+                                  __html: MwHelper.correctParsedComment(
+                                    serverName,
+                                    revision.parsedComment
+                                  ),
+                                }}
+                              />
+                            </TypographyStylesProvider>
+                          ) : (
+                            <Text size="xs" c="dimmed" fs="italic">
+                              N/A
+                            </Text>
+                          )}
+                        </Group>
+                      </Box>
+
+                      <HoverCard
+                        width={675}
+                        shadow="lg"
+                        radius="md"
+                        position="left"
+                        offset={25}
+                        disabled={!preview || !largerThanMd || revision.parentId === 0}
+                      >
+                        <HoverCard.Target>
+                          <UnstyledButton className={classes.diffButton} w={{ base: 40, xs: 60 }}>
+                            <IconChevronRight
+                              size="1.25rem"
                               stroke={1.5}
                               color="var(--mantine-color-gray-light-color)"
                             />
-                          )}
-                        </Group>
+                          </UnstyledButton>
+                        </HoverCard.Target>
 
-                        <LengthDeltaText
-                          className={classes.delta}
-                          newLength={revision.size}
-                          oldLength={revision.parentSize}
-                        />
-                      </Group>
-
-                      <Group gap={5} wrap="nowrap" maw="100%">
-                        {revision.parentId === 0 && (
-                          <ThemeIcon size={14} color="green">
-                            <IconPlus size="0.85rem" stroke={1.5} />
-                          </ThemeIcon>
-                        )}
-                        <Anchor
-                          className={classes.user}
-                          size="xs"
-                          href={MwHelper.createUserContribUri(serverName, revision.user)}
-                          target="_blank"
-                          fw={500}
-                          data-hidden={revision.userHidden}
-                        >
-                          {revision.user}
-                        </Anchor>
-                      </Group>
-
-                      <Group gap={5} wrap="nowrap" maw="100%">
-                        <IconQuote size="0.85rem" color="var(--mantine-color-gray-light-color)" />
-                        {revision.parsedComment.length > 0 ? (
-                          <TypographyStylesProvider flex={1} miw={0}>
-                            <Text
-                              size="xs"
-                              style={{
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
-                                overflow: 'hidden',
-                              }}
-                              title={sanitizeHtml(revision.parsedComment)}
-                              dangerouslySetInnerHTML={{
-                                __html: MwHelper.correctParsedComment(
-                                  serverName,
-                                  revision.parsedComment
-                                ),
-                              }}
-                            />
-                          </TypographyStylesProvider>
-                        ) : (
-                          <Text size="xs" c="dimmed" fs="italic">
-                            N/A
-                          </Text>
-                        )}
-                      </Group>
-                    </Box>
-
-                    <HoverCard
-                      width={675}
-                      shadow="lg"
-                      radius="md"
-                      position="left"
-                      offset={25}
-                      disabled={!preview || !largerThanMd || revision.parentId === 0}
-                    >
-                      <HoverCard.Target>
-                        <UnstyledButton className={classes.diffButton} w={{ base: 40, xs: 60 }}>
-                          <IconChevronRight
-                            size="1.25rem"
-                            stroke={1.5}
-                            color="var(--mantine-color-gray-light-color)"
+                        <HoverCard.Dropdown p={0} style={{ overflow: 'hidden' }}>
+                          <DiffPreviewPanel
+                            wikiId={wikiId}
+                            fromRevisionId={revision.parentId}
+                            toRevisionId={revision.revisionId}
                           />
-                        </UnstyledButton>
-                      </HoverCard.Target>
-
-                      <HoverCard.Dropdown p={0} style={{ overflow: 'hidden' }}>
-                        <DiffPreviewPanel
-                          wikiId={wikiId}
-                          fromRevisionId={revision.parentId}
-                          toRevisionId={revision.revisionId}
-                        />
-                      </HoverCard.Dropdown>
-                    </HoverCard>
-                  </Group>
-                </Fragment>
-              );
-            })}
-          </Stack>
+                        </HoverCard.Dropdown>
+                      </HoverCard>
+                    </Group>
+                  </Fragment>
+                );
+              })}
+            </Stack>
+          )}
         </Stack>
       </Box>
     </Stack>
