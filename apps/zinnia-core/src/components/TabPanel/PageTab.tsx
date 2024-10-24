@@ -402,11 +402,6 @@ export function PageTab({ wikiId, pageTitle }: PageTabProps) {
 
                 <Menu.Divider />
 
-                <Menu.Item
-                  leftSection={<IconBrandWikipedia style={{ width: rem(14), height: rem(14) }} />}
-                >
-                  Thông tin trang
-                </Menu.Item>
                 <Menu.Item leftSection={<IconSlash style={{ width: rem(14), height: rem(14) }} />}>
                   Trang con
                 </Menu.Item>
@@ -435,14 +430,6 @@ export function PageTab({ wikiId, pageTitle }: PageTabProps) {
                   leftSection={<IconCopyright style={{ width: rem(14), height: rem(14) }} />}
                 >
                   Kiểm tra bản quyền
-                </Menu.Item>
-                <Menu.Item
-                  leftSection={<IconLetterX style={{ width: rem(14), height: rem(14) }} />}
-                >
-                  XTools
-                </Menu.Item>
-                <Menu.Item leftSection={<IconSum style={{ width: rem(14), height: rem(14) }} />}>
-                  Sigma
                 </Menu.Item>
                 <Menu.Item
                   leftSection={<IconPlusMinus style={{ width: rem(14), height: rem(14) }} />}
