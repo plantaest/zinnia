@@ -18,13 +18,13 @@ import { CompareRevisionsResult } from '@plantaest/aster';
 import dayjs from 'dayjs';
 import {
   IconAlertTriangle,
-  IconCircleCheck,
   IconExternalLink,
   IconFile,
+  IconInfoCircle,
   IconQuote,
   IconUser,
 } from '@tabler/icons-react';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import scrollIntoView from 'scroll-into-view-if-needed';
 import { useSelector } from '@legendapp/state/react';
 import { useIntl } from 'react-intl';
@@ -228,8 +228,7 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
   const [openedUserPanelModal, { open: openUserPanelModal, close: closeUserPanelModal }] =
     useDisclosure(false);
 
-  const handleClickPageTitleAnchor = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
+  const handleClickPageInfoButton = () => {
     const now = dayjs().toISOString();
     const pageTab: Tab = {
       id: uuidv4(),
@@ -282,7 +281,6 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
                       textOverflow: 'ellipsis',
                       overflow: 'hidden',
                     }}
-                    onClick={handleClickPageTitleAnchor}
                   >
                     {pageTitle}
                   </Anchor>
@@ -338,7 +336,9 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
                   ) : isError ? (
                     <IconAlertTriangle size="1.25rem" color="var(--mantine-color-red-5)" />
                   ) : isSuccess ? (
-                    <IconCircleCheck size="1.25rem" color="var(--mantine-color-blue-5)" />
+                    <ActionIcon variant="transparent" size={26} onClick={handleClickPageInfoButton}>
+                      <IconInfoCircle size="1.25rem" />
+                    </ActionIcon>
                   ) : null}
                 </Flex>
               </Group>
@@ -351,7 +351,6 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
               target="_blank"
               w="fit-content"
               style={{ wordBreak: 'break-word' }}
-              onClick={handleClickPageTitleAnchor}
             >
               {pageTitle}
             </Anchor>

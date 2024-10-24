@@ -1,7 +1,9 @@
 import { PageHtmlResult } from '@plantaest/aster';
-import { Anchor, Badge, Box, Flex, Group, Loader, Stack, Text } from '@mantine/core';
+import { ActionIcon, Anchor, Badge, Box, Flex, Group, Loader, Stack, Text } from '@mantine/core';
 import ReactShadowRoot from 'react-shadow-root';
-import { IconAlertTriangle, IconCircleCheck } from '@tabler/icons-react';
+import { IconAlertTriangle, IconInfoCircle } from '@tabler/icons-react';
+import dayjs from 'dayjs';
+import { v4 as uuidv4 } from 'uuid';
 import { useGetPageHtml } from '@/queries/useGetPageHtml';
 import classes from './ReadTab.module.css';
 import { MwHelper } from '@/utils/MwHelper';
@@ -9,6 +11,9 @@ import { wikis } from '@/utils/wikis';
 import { ParsoidOutput } from '@/components/ParsoidOutput/ParsoidOutput';
 import { useGetWikiStyleSheet } from '@/queries/useGetWikiStyleSheet';
 import parsedHtmlStyles from './parsed-html-styles.css?inline';
+import { Tab, TabType } from '@/types/persistence/Tab';
+import { appState } from '@/states/appState';
+import { scrollToTopTabMainPanel } from '@/utils/scrollToTopTabMainPanel';
 
 const placeholderPageHtmlResult: PageHtmlResult = {
   title: 'N/A',
@@ -40,6 +45,25 @@ export function ReadTab({ wikiId, pageTitle, redirect }: ReadTabProps) {
 
   const isLoading = isFetchingGetPageHtml || isFetchingGetWikiStyleSheet;
   const isSuccess = isSuccessGetPageHtml || isSuccessGetWikiStyleSheet;
+
+  // TODO: Refactor duplicated functions
+  const handleClickPageInfoButton = () => {
+    const now = dayjs().toISOString();
+    const pageTab: Tab = {
+      id: uuidv4(),
+      createdAt: now,
+      updatedAt: now,
+      name: `[${wikiId}] ${pageTitle}`,
+      type: TabType.PAGE,
+      data: {
+        wikiId: wikiId,
+        pageTitle: pageTitle,
+      },
+    };
+    appState.local.activeTabs.set((tabs) => [...tabs, pageTab]);
+    appState.local.activeTabId.set(pageTab.id);
+    scrollToTopTabMainPanel();
+  };
 
   return (
     <Stack p={5} gap={5} flex={1} w="100%">
@@ -93,7 +117,9 @@ export function ReadTab({ wikiId, pageTitle, redirect }: ReadTabProps) {
                 ) : isError ? (
                   <IconAlertTriangle size="1.25rem" color="var(--mantine-color-red-5)" />
                 ) : isSuccess ? (
-                  <IconCircleCheck size="1.25rem" color="var(--mantine-color-blue-5)" />
+                  <ActionIcon variant="transparent" size={26} onClick={handleClickPageInfoButton}>
+                    <IconInfoCircle size="1.25rem" />
+                  </ActionIcon>
                 ) : null}
               </Flex>
             </Group>
