@@ -2,7 +2,7 @@
   const host = 'https://tools-static.wmflabs.org/zinnia/builds/VERSION/';
   const documentStyles = ['assets/document.css'];
   const shadowStyles = ['assets/index.css'];
-  const preloadModules = ['assets/react.js', 'assets/mantine.js'];
+  const preloadModules = ['assets/react.js', 'assets/mantine.js', 'assets/charts.js'];
   const modules = ['assets/index.js'];
 
   const loadStyleLinkNode = function (name) {

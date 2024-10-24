@@ -25,6 +25,7 @@ export default defineConfig(({ mode }) => ({
         manualChunks: {
           react: ['react', 'react-dom'],
           mantine: ['@mantine/core', '@mantine/hooks'],
+          charts: ['@mantine/charts'],
         },
       },
       plugins: [zinniaSpecificFilesPlugin(mode)],
