@@ -8,7 +8,6 @@
   -moz-osx-font-smoothing: var(--mantine-moz-font-smoothing);
 
   /* Zinnia UI */
-  --zinnia-font-family: 'Montserrat', var(--mantine-font-family);
   --zinnia-font-monospace: 'JetBrains Mono', var(--mantine-font-family-monospace);
 
   @mixin light-root {

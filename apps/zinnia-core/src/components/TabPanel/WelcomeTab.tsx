@@ -1,7 +1,8 @@
-import { ActionIcon, Anchor, SimpleGrid, Stack, Text } from '@mantine/core';
+import { ActionIcon, Anchor, Box, SimpleGrid, Stack, Text } from '@mantine/core';
 import { IconCode, IconHeart, IconHome, IconMessages } from '@tabler/icons-react';
 import { useIntl } from 'react-intl';
 import dayjs from 'dayjs';
+import { ZinniaLogo } from '@/components/TabPanel/ZinniaLogo';
 
 const links = [
   {
@@ -31,10 +32,10 @@ export function WelcomeTab() {
 
   return (
     <Stack p="xs" gap="xs" flex={1} justify="space-between">
-      <Stack gap="xl" align="center" mb="2.5rem" style={{ zIndex: 1 }}>
-        <Text mt="1.25rem" c="blue.5" fw={600} fz="3rem" ta="center" ff="var(--zinnia-font-family)">
-          Zinnia
-        </Text>
+      <Stack gap="xl" align="center" mb="2.5rem">
+        <Box mt="1rem" py="2rem">
+          <ZinniaLogo width={160} />
+        </Box>
 
         <SimpleGrid cols={{ base: 2, xs: 4 }} spacing="2.5rem" verticalSpacing="2.5rem">
           {links.map((link) => (

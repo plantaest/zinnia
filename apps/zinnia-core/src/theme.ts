@@ -24,7 +24,6 @@ export const theme: MantineThemeOverride = createTheme({
     },
   },
   other: {
-    altFontFamily: 'var(--zinnia-font-family)',
     altFontMonospace: 'var(--zinnia-font-monospace)',
   },
 });
