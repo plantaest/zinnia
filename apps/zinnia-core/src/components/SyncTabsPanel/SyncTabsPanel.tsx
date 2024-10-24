@@ -13,11 +13,13 @@ import {
 import { IconCloudDownload, IconCloudUpload, IconRefresh } from '@tabler/icons-react';
 import { modals } from '@mantine/modals';
 import { useState } from 'react';
+import { useSelector } from '@legendapp/state/react';
 import { useSaveOption } from '@/queries/useSaveOption';
 import { appConfig } from '@/config/appConfig';
 import { appState } from '@/states/appState';
 import { useGetOption } from '@/queries/useGetOption';
 import { useLargerThan } from '@/hooks/useLargerThan';
+import classes from './SyncTabsPanel.module.css';
 
 function SyncTabsPanelContent() {
   const { formatMessage } = useIntl();
@@ -85,6 +87,7 @@ export function SyncTabsPanel() {
   const computedColorScheme = useComputedColorScheme();
   const { dir } = useDirection();
   const largerThanMd = useLargerThan('md');
+  const activeWorkspaceId = useSelector(appState.userConfig.activeWorkspaceId);
 
   const handleClickSyncTabsButton = () =>
     modals.open({
@@ -109,6 +112,8 @@ export function SyncTabsPanel() {
           size={30}
           title={formatMessage({ id: 'ui.syncTabsPanel.title' })}
           aria-label={formatMessage({ id: 'ui.syncTabsPanel.title' })}
+          disabled={!activeWorkspaceId}
+          className={classes.button}
         >
           <IconRefresh size="1.125rem" />
         </ActionIcon>
@@ -134,6 +139,8 @@ export function SyncTabsPanel() {
       title={formatMessage({ id: 'ui.syncTabsPanel.title' })}
       aria-label={formatMessage({ id: 'ui.syncTabsPanel.title' })}
       onClick={handleClickSyncTabsButton}
+      disabled={!activeWorkspaceId}
+      className={classes.button}
     >
       <IconRefresh size="1.125rem" />
     </ActionIcon>

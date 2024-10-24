@@ -23,3 +23,9 @@
     color: var(--mantine-color-white);
   }
 }
+
+.button {
+  &[data-disabled="true"] {
+    background-color: transparent;
+  }
+}

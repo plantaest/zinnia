@@ -107,6 +107,7 @@ export function NewTabPanel() {
   const { formatMessage } = useIntl();
   const computedColorScheme = useComputedColorScheme();
   const { dir } = useDirection();
+  const activeWorkspaceId = useSelector(appState.userConfig.activeWorkspaceId);
 
   return (
     <Popover
@@ -123,6 +124,8 @@ export function NewTabPanel() {
           visibleFrom="md"
           title={formatMessage({ id: 'ui.newTabPanel.title' })}
           aria-label={formatMessage({ id: 'ui.newTabPanel.title' })}
+          disabled={!activeWorkspaceId}
+          className={classes.button}
         >
           <IconPlus size="1.125rem" />
         </ActionIcon>

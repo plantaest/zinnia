@@ -100,6 +100,7 @@ export function TabListPanel() {
   const computedColorScheme = useComputedColorScheme();
   const { dir } = useDirection();
   const largerThanMd = useLargerThan('md');
+  const activeWorkspaceId = useSelector(appState.userConfig.activeWorkspaceId);
 
   const handleClickTabListButton = () =>
     modals.open({
@@ -124,6 +125,8 @@ export function TabListPanel() {
           size={30}
           title={formatMessage({ id: 'ui.tabListPanel.title' })}
           aria-label={formatMessage({ id: 'ui.tabListPanel.title' })}
+          disabled={!activeWorkspaceId}
+          className={classes.button}
         >
           <IconChevronDown size="1.125rem" />
         </ActionIcon>
@@ -157,6 +160,8 @@ export function TabListPanel() {
       title={formatMessage({ id: 'ui.tabListPanel.title' })}
       aria-label={formatMessage({ id: 'ui.tabListPanel.title' })}
       onClick={handleClickTabListButton}
+      disabled={!activeWorkspaceId}
+      className={classes.button}
     >
       <IconChevronDown size="1.125rem" />
     </ActionIcon>

@@ -1,0 +1,5 @@
+.button {
+  &[data-disabled="true"] {
+    background-color: transparent;
+  }
+}

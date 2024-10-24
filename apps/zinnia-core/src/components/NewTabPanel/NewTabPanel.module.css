@@ -16,3 +16,9 @@
     cursor: not-allowed;
   }
 }
+
+.button {
+  &[data-disabled="true"] {
+    background-color: transparent;
+  }
+}
