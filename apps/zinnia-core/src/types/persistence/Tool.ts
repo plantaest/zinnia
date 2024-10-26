@@ -31,20 +31,6 @@ export interface UserExtendedTool {
 
 export const defaultUserNativeTools: (now: Instant) => UserNativeTool[] = (now) => [
   {
-    toolId: 'native:restore',
-    createdAt: now,
-    updatedAt: now,
-    settings: {
-      general: {
-        dock: true,
-      },
-      additional: {
-        version: nativeToolsDict['native:restore'].settingsVersion,
-        data: {},
-      },
-    },
-  },
-  {
     toolId: 'native:mark',
     createdAt: now,
     updatedAt: now,
@@ -68,6 +54,20 @@ export const defaultUserNativeTools: (now: Instant) => UserNativeTool[] = (now) 
       },
       additional: {
         version: nativeToolsDict['native:rollback'].settingsVersion,
+        data: {},
+      },
+    },
+  },
+  {
+    toolId: 'native:restore',
+    createdAt: now,
+    updatedAt: now,
+    settings: {
+      general: {
+        dock: true,
+      },
+      additional: {
+        version: nativeToolsDict['native:restore'].settingsVersion,
         data: {},
       },
     },

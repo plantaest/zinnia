@@ -186,9 +186,6 @@ export function ToolboxSettings({ onChangeLayer }: ToolboxSettingsProps) {
         <Text fw={500}>{formatMessage({ id: 'ui.toolboxPanel.settings.title' })}</Text>
 
         <Group gap="xs">
-          <Button size="compact-xs" disabled={isDisabledSaveButton} onClick={form.reset}>
-            {formatMessage({ id: 'common.reset' })}
-          </Button>
           <Button
             size="compact-xs"
             disabled={isDisabledSaveButton}
@@ -290,13 +287,14 @@ export function ToolboxSettings({ onChangeLayer }: ToolboxSettingsProps) {
               </Group>
 
               {selectedTool.type === 'extended' && (
-                <Group gap="xs" justify="space-between">
+                <Group gap="xs" justify="space-between" wrap="nowrap">
                   <Text size="xs">
                     {formatMessage({ id: 'ui.toolboxPanel.settings.iconColor' })}
                   </Text>
                   <Select
+                    variant="filled"
                     size="xs"
-                    w={150}
+                    w={{ base: 125, xs: 150 }}
                     maxDropdownHeight={159.5}
                     allowDeselect={false}
                     data={toolIconColorSelects}

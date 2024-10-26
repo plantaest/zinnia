@@ -9,23 +9,6 @@ import { ZinniaNativeTool } from '@/types/ui/ZinniaTool';
 
 export const nativeTools: ZinniaNativeTool[] = [
   {
-    id: 'native:restore',
-    name: 'tool.restore.name',
-    iconColor: 'violet',
-    iconShape: IconRestore,
-    toolVersion: '1.0.0-beta.1',
-    settingsVersion: 1,
-    actions: [
-      {
-        id: 'restore',
-        name: 'Restore',
-        iconColor: 'violet',
-        iconShape: IconRestore,
-      },
-    ],
-    defaultAction: 'restore',
-  },
-  {
     id: 'native:mark',
     name: 'tool.mark.name',
     iconColor: 'lime',
@@ -70,6 +53,23 @@ export const nativeTools: ZinniaNativeTool[] = [
       },
     ],
     defaultAction: 'normal-rollback',
+  },
+  {
+    id: 'native:restore',
+    name: 'tool.restore.name',
+    iconColor: 'violet',
+    iconShape: IconRestore,
+    toolVersion: '1.0.0-beta.1',
+    settingsVersion: 1,
+    actions: [
+      {
+        id: 'restore',
+        name: 'Restore',
+        iconColor: 'violet',
+        iconShape: IconRestore,
+      },
+    ],
+    defaultAction: 'restore',
   },
   {
     id: 'native:blank',

@@ -66,11 +66,12 @@ body:not(.mediawiki) .mw-body {
   }
 }
 
-html[data-mantine-color-scheme="dark"] .skin-vector-2022 :is(.mw-header, .mw-page-container) {
-  background-color: inherit;
-}
+html[data-mantine-color-scheme="dark"].skin-theme-clientpref-day .skin-vector-2022 {
+  & :is(.mw-header, .mw-page-container) {
+    background-color: inherit;
+  }
 
-html[data-mantine-color-scheme="dark"] .skin-vector-2022 :is(.mw-header,
+  & :is(.mw-header,
   .mw-header .mw-logo-icon,
   .vector-main-menu-container,
   .vector-sitenotice-container,
@@ -78,30 +79,51 @@ html[data-mantine-color-scheme="dark"] .skin-vector-2022 :is(.mw-header,
   .mw-footer-container #footer-icons,
   .mw-echo-ui-overlay,
   .vector-limited-width-toggle) {
-  filter: invert(1) hue-rotate(180deg);
+    filter: invert(1) hue-rotate(180deg);
+  }
+}
+
+@media screen and (prefers-color-scheme: light) {
+  html[data-mantine-color-scheme="dark"].skin-theme-clientpref-os .skin-vector-2022 {
+    & :is(.mw-header, .mw-page-container) {
+      background-color: inherit;
+    }
+
+    & :is(.mw-header,
+    .mw-header .mw-logo-icon,
+    .vector-main-menu-container,
+    .vector-sitenotice-container,
+    .mw-footer-container,
+    .mw-footer-container #footer-icons,
+    .mw-echo-ui-overlay,
+    .vector-limited-width-toggle) {
+      filter: invert(1) hue-rotate(180deg);
+    }
+  }
 }
 
 /* Minerva */
 
-html[data-mantine-color-scheme="dark"] .skin-minerva :is(#mw-mf-page-center,
-  .mw-body,
-  .header-container) {
-  background-color: inherit;
-}
-
 .skin-minerva .header-container {
   box-shadow: none;
-}
-
-html[data-mantine-color-scheme="light"] .skin-minerva .mw-body {
-  background-color: var(--background-color-interactive);
 }
 
 .skin-minerva .mw-footer {
   border-color: transparent;
 }
 
-html[data-mantine-color-scheme="dark"] .skin-minerva :is(#mw-mf-main-menu-button,
+.skin-minerva .mw-body {
+  background-color: var(--background-color-interactive);
+}
+
+html[data-mantine-color-scheme="dark"].skin-theme-clientpref-day .skin-minerva {
+  & :is(#mw-mf-page-center,
+  .mw-body,
+  .header-container) {
+    background-color: inherit;
+  }
+
+  & :is(#mw-mf-main-menu-button,
   #mw-mf-page-left,
   .branding-box,
   .minerva-search-form,
@@ -110,7 +132,30 @@ html[data-mantine-color-scheme="dark"] .skin-minerva :is(#mw-mf-main-menu-button
   #minerva-user-menu-toggle,
   .minerva-user-menu-list,
   .minerva-footer) {
-  filter: invert(1) hue-rotate(180deg);
+    filter: invert(1) hue-rotate(180deg);
+  }
+}
+
+@media screen and (prefers-color-scheme: light) {
+  html[data-mantine-color-scheme="dark"].skin-theme-clientpref-os .skin-minerva {
+    & :is(#mw-mf-page-center,
+    .mw-body,
+    .header-container) {
+      background-color: inherit;
+    }
+
+    & :is(#mw-mf-main-menu-button,
+    #mw-mf-page-left,
+    .branding-box,
+    .minerva-search-form,
+    .minerva-user-notifications,
+    .notifications-overlay,
+    #minerva-user-menu-toggle,
+    .minerva-user-menu-list,
+    .minerva-footer) {
+      filter: invert(1) hue-rotate(180deg);
+    }
+  }
 }
 
 /* Legacy Vector */

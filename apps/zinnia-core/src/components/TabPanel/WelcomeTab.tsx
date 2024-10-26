@@ -32,11 +32,15 @@ export function WelcomeTab() {
   return (
     <Stack p="xs" gap="xs" flex={1} justify="space-between">
       <Stack gap="xl" align="center" mb="2.5rem">
-        <Box mt="1rem" py="2rem">
+        <Box mt="1rem" py={{ base: '0.5rem', xs: '2rem' }}>
           <ZinniaLogo width={160} />
         </Box>
 
-        <SimpleGrid cols={{ base: 2, xs: 4 }} spacing="2.5rem" verticalSpacing="2.5rem">
+        <SimpleGrid
+          cols={{ base: 2, xs: 4 }}
+          spacing="2.5rem"
+          verticalSpacing={{ base: '1.25rem', xs: '2.5rem' }}
+        >
           {links.map((link) => (
             <Stack key={link.name} align="center" gap="xs">
               <ActionIcon

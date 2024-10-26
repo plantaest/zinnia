@@ -21,6 +21,6 @@
 .settings {
   padding: var(--mantine-spacing-xs);
   border-radius: var(--mantine-radius-sm);
-  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
   width: 100%;
 }
