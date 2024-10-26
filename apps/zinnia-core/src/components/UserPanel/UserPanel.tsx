@@ -126,30 +126,36 @@ export function UserPanel({
           </Group>
 
           <Group gap={2}>
-            <Group gap={2} dir={contentDir}>
-              <Tooltip label={fromUsername}>
-                <ActionIcon
-                  variant="transparent"
-                  size="sm"
-                  color="orange.5"
-                  aria-label={fromUsername}
-                  onClick={handleClickFromButton}
-                >
-                  {side === 'from' ? <IconCircleFilled size="1rem" /> : <IconCircle size="1rem" />}
-                </ActionIcon>
-              </Tooltip>
-              <Tooltip label={toUsername}>
-                <ActionIcon
-                  variant="transparent"
-                  size="sm"
-                  color="cyan.5"
-                  aria-label={toUsername}
-                  onClick={handleClickToButton}
-                >
-                  {side === 'to' ? <IconCircleFilled size="1rem" /> : <IconCircle size="1rem" />}
-                </ActionIcon>
-              </Tooltip>
-            </Group>
+            <Tooltip.Group openDelay={200} closeDelay={200}>
+              <Group gap={2} dir={contentDir}>
+                <Tooltip label={fromUsername}>
+                  <ActionIcon
+                    variant="transparent"
+                    size="sm"
+                    color="orange.5"
+                    aria-label={fromUsername}
+                    onClick={handleClickFromButton}
+                  >
+                    {side === 'from' ? (
+                      <IconCircleFilled size="1rem" />
+                    ) : (
+                      <IconCircle size="1rem" />
+                    )}
+                  </ActionIcon>
+                </Tooltip>
+                <Tooltip label={toUsername}>
+                  <ActionIcon
+                    variant="transparent"
+                    size="sm"
+                    color="cyan.5"
+                    aria-label={toUsername}
+                    onClick={handleClickToButton}
+                  >
+                    {side === 'to' ? <IconCircleFilled size="1rem" /> : <IconCircle size="1rem" />}
+                  </ActionIcon>
+                </Tooltip>
+              </Group>
+            </Tooltip.Group>
             <ActionIcon
               variant="transparent"
               size="sm"

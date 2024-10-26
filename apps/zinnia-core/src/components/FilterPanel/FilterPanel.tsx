@@ -44,6 +44,7 @@ import { FilterTagSelect } from '@/components/FilterPanel/FilterTagSelect';
 import { useGetRightsOnWikis } from '@/queries/useGetRightsOnWikis';
 import { MwHelper } from '@/utils/MwHelper';
 import { useLargerThan } from '@/hooks/useLargerThan';
+import { CloseModalButton } from '@/components/CloseModalButton/CloseModalButton';
 
 const formSchema = (formatMessage: IntlShape['formatMessage']) =>
   v.object({
@@ -893,7 +894,12 @@ export function FilterPanel() {
       fullScreen: true,
       withCloseButton: false,
       withOverlay: false,
-      children: <FilterPanelContent />,
+      children: (
+        <Stack gap="xs">
+          <CloseModalButton />
+          <FilterPanelContent />
+        </Stack>
+      ),
     });
 
   return largerThanMd ? (

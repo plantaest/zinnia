@@ -1,7 +1,7 @@
 import { Card, Flex } from '@mantine/core';
 import { useSelector } from '@legendapp/state/react';
 import classes from './TabMainPanel.module.css';
-import { DiffTabData, PageTabData, ReadTabData, TabType } from '@/types/persistence/Tab';
+import { DiffTabData, ReadTabData, TabType } from '@/types/persistence/Tab';
 import { WelcomeTab } from '@/components/TabPanel/WelcomeTab';
 import { appState } from '@/states/appState';
 import { DiffTab } from '@/components/TabPanel/DiffTab';
@@ -12,7 +12,6 @@ import { PageTab } from '@/components/TabPanel/PageTab';
 
 let diffTabData: DiffTabData;
 let readTabData: ReadTabData;
-let pageTabData: PageTabData;
 
 export function TabMainPanel() {
   const activeTab = useSelector(appState.local.activeTab);
@@ -37,10 +36,7 @@ export function TabMainPanel() {
     }
 
     if (activeTab.type === TabType.PAGE) {
-      pageTabData = {
-        wikiId: activeTab.data.wikiId,
-        pageTitle: activeTab.data.pageTitle,
-      };
+      otherTab = <PageTab wikiId={activeTab.data.wikiId} pageTitle={activeTab.data.pageTitle} />;
     }
 
     if (activeTab.type === TabType.WELCOME) {
@@ -50,8 +46,7 @@ export function TabMainPanel() {
 
   const isReadTab = activeTab ? [TabType.MAIN_READ, TabType.READ].includes(activeTab.type) : false;
   const isDiffTab = activeTab ? [TabType.MAIN_DIFF, TabType.DIFF].includes(activeTab.type) : false;
-  const isPageTab = activeTab ? activeTab.type === TabType.PAGE : false;
-  const isOtherTab = !isReadTab && !isDiffTab && !isPageTab;
+  const isOtherTab = !isReadTab && !isDiffTab;
 
   return (
     <Card className={classes.main} ref={tabMainPanelRef}>
@@ -76,13 +71,7 @@ export function TabMainPanel() {
           />
         )}
       </Flex>
-      {/* Don't unmount PageTab */}
-      <Flex display={isPageTab ? undefined : 'none'} flex={1}>
-        {pageTabData && <PageTab wikiId={pageTabData.wikiId} pageTitle={pageTabData.pageTitle} />}
-      </Flex>
-      <Flex display={isOtherTab ? undefined : 'none'} flex={1}>
-        {otherTab}
-      </Flex>
+      {isOtherTab && <Flex flex={1}>{otherTab}</Flex>}
     </Card>
   );
 }

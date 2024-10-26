@@ -1,8 +1,7 @@
-import { ActionIcon, Button, CloseButton, Group, Stack, Text } from '@mantine/core';
+import { ActionIcon, Button, Group, Stack, Text } from '@mantine/core';
 import { IconPinned, IconPlus } from '@tabler/icons-react';
 import { useIntl } from 'react-intl';
 import { useSelector } from '@legendapp/state/react';
-import { modals } from '@mantine/modals';
 import { FilterLayer } from '@/components/FilterPanel/FilterLayer';
 import { appState } from '@/states/appState';
 import { appConfig } from '@/config/appConfig';
@@ -36,15 +35,7 @@ export function FilterList({
   return (
     <Stack gap="xs">
       <Group gap="xs" justify="space-between">
-        <Group gap="xs">
-          <CloseButton
-            onClick={modals.closeAll}
-            variant="subtle"
-            aria-label={formatMessage({ id: 'common.close' })}
-            hiddenFrom="md"
-          />
-          <Text fw={500}>{formatMessage({ id: 'ui.filterPanel.title' })}</Text>
-        </Group>
+        <Text fw={500}>{formatMessage({ id: 'ui.filterPanel.title' })}</Text>
         <ActionIcon
           variant="transparent"
           color="gray"

@@ -1,7 +1,6 @@
 import { ActionIcon, Anchor, Box, SimpleGrid, Stack, Text } from '@mantine/core';
 import { IconCode, IconHeart, IconHome, IconMessages } from '@tabler/icons-react';
 import { useIntl } from 'react-intl';
-import dayjs from 'dayjs';
 import { ZinniaLogo } from '@/components/TabPanel/ZinniaLogo';
 
 const links = [
@@ -59,11 +58,14 @@ export function WelcomeTab() {
         </SimpleGrid>
       </Stack>
 
-      <Text mb="1.5rem" ta="center" c="dimmed" style={{ zIndex: 1 }}>
+      <Text mb="1.5rem" ta="center" c="dimmed" size="xs">
         <Anchor href="https://meta.wikimedia.org/wiki/User:Plantaest" target="_blank">
           Plantaest
         </Anchor>{' '}
-        @ {dayjs().year()}
+        ×{' '}
+        <Anchor href="https://meta.wikimedia.org/wiki/Viettech_Initiative" target="_blank">
+          Viettech Initiative
+        </Anchor>
       </Text>
     </Stack>
   );

@@ -26,7 +26,9 @@ function _HeroPanel() {
         {(initState === 'empty' || (!initStates.has('start') && !showMainPanel)) && (
           <EmptyStateContent />
         )}
-        {initState === 'start' && <StartStateContent />}
+        {(initState === 'start' || (initStates.has('start') && !showMainPanel)) && (
+          <StartStateContent />
+        )}
       </Flex>
     </Box>
   );

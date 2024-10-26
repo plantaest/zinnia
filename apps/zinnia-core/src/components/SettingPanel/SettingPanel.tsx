@@ -2,7 +2,6 @@ import { useIntl } from 'react-intl';
 import {
   ActionIcon,
   Button,
-  CloseButton,
   Flex,
   Group,
   Popover,
@@ -26,6 +25,7 @@ import { appConfig } from '@/config/appConfig';
 import { Notify } from '@/utils/Notify';
 import { i18n } from '@/i18n';
 import { useLargerThan } from '@/hooks/useLargerThan';
+import { CloseModalButton } from '@/components/CloseModalButton/CloseModalButton';
 
 const formSchema = v.object({
   theme: v.picklist(['auto', 'light', 'dark']),
@@ -117,15 +117,7 @@ function SettingPanelContent() {
   return (
     <form onSubmit={handleFormSubmit}>
       <Stack gap="xs">
-        <Group gap="xs">
-          <CloseButton
-            onClick={modals.closeAll}
-            variant="subtle"
-            aria-label={formatMessage({ id: 'common.close' })}
-            hiddenFrom="md"
-          />
-          <Text fw={500}>{formatMessage({ id: 'ui.settingPanel.title' })}</Text>
-        </Group>
+        <Text fw={500}>{formatMessage({ id: 'ui.settingPanel.title' })}</Text>
 
         <Stack
           gap="xs"
@@ -242,7 +234,12 @@ export function SettingPanel() {
       fullScreen: true,
       withCloseButton: false,
       withOverlay: false,
-      children: <SettingPanelContent />,
+      children: (
+        <Stack gap="xs">
+          <CloseModalButton />
+          <SettingPanelContent />
+        </Stack>
+      ),
     });
 
   return largerThanMd ? (

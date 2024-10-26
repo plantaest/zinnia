@@ -516,6 +516,8 @@ export function PageTab({ wikiId, pageTitle }: PageTabProps) {
               ]}
               curveType="monotone"
               gridAxis="none"
+              areaProps={{ isAnimationActive: true }}
+              barProps={{ isAnimationActive: true }}
             />
           </Stack>
         </Box>

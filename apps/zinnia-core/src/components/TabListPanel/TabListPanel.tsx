@@ -2,7 +2,6 @@ import { useIntl } from 'react-intl';
 import {
   ActionIcon,
   Box,
-  CloseButton,
   Group,
   Indicator,
   Popover,
@@ -20,6 +19,7 @@ import classes from './TabListPanel.module.css';
 import { tabIcons } from '@/utils/tabIcons';
 import { scrollToTopTabMainPanel } from '@/utils/scrollToTopTabMainPanel';
 import { useLargerThan } from '@/hooks/useLargerThan';
+import { CloseModalButton } from '@/components/CloseModalButton/CloseModalButton';
 
 function TabListPanelContent() {
   const { formatMessage } = useIntl();
@@ -42,17 +42,9 @@ function TabListPanelContent() {
 
   return (
     <Stack gap="xs">
-      <Group gap="xs">
-        <CloseButton
-          onClick={modals.closeAll}
-          variant="subtle"
-          aria-label={formatMessage({ id: 'common.close' })}
-          hiddenFrom="md"
-        />
-        <Text fw={500}>
-          {formatMessage({ id: 'ui.tabListPanel.title' })} ({activeTabs.length})
-        </Text>
-      </Group>
+      <Text fw={500}>
+        {formatMessage({ id: 'ui.tabListPanel.title' })} ({activeTabs.length})
+      </Text>
 
       {activeTabs.length > 0 && (
         <Stack gap={5}>
@@ -108,7 +100,12 @@ export function TabListPanel() {
       fullScreen: true,
       withCloseButton: false,
       withOverlay: false,
-      children: <TabListPanelContent />,
+      children: (
+        <Stack gap="xs">
+          <CloseModalButton />
+          <TabListPanelContent />
+        </Stack>
+      ),
     });
 
   return largerThanMd ? (

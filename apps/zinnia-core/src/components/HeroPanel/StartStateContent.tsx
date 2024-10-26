@@ -2,6 +2,7 @@ import { Button, Flex, Text, useDirection } from '@mantine/core';
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
+import { useState } from 'react';
 import { UserConfig } from '@/types/persistence/UserConfig';
 import { isMwEnv } from '@/utils/isMwEnv';
 import { Tab, TabType } from '@/types/persistence/Tab';
@@ -10,12 +11,13 @@ import { appState } from '@/states/appState';
 import { appConfig } from '@/config/appConfig';
 import { versionMap } from '@/utils/migration/versionMap';
 import { defaultFilterFeedConfig, defaultFilterGlobalWikiConfig } from '@/types/persistence/Filter';
+import { defaultUserNativeTools } from '@/types/persistence/Tool';
 
 export function StartStateContent() {
   const { formatMessage, locale } = useIntl();
   const { dir } = useDirection();
-
   const saveOptionApi = useSaveOption();
+  const [loading, setLoading] = useState(false);
 
   const handleClickStartButton = () => {
     const userConfigId = uuidv4();
@@ -73,8 +75,13 @@ export function StartStateContent() {
       ],
       activeWorkspaceId: workspaceId,
       advancedMode: false,
+      tools: {
+        native: defaultUserNativeTools(now),
+        extended: [],
+      },
     };
 
+    setLoading(true);
     saveOptionApi.mutate(
       {
         name: appConfig.USER_CONFIG_OPTION_KEY,
@@ -91,6 +98,7 @@ export function StartStateContent() {
             },
           });
         },
+        onError: () => setLoading(false),
       }
     );
   };
@@ -110,7 +118,7 @@ export function StartStateContent() {
       <Text fz={{ base: 18, sm: 22, md: 25 }} ta="center">
         {formatMessage({ id: 'ui.heroPanel.startStateContent.secondLine' })}
       </Text>
-      <Button size="lg" mt="md" loading={saveOptionApi.isPending} onClick={handleClickStartButton}>
+      <Button size="lg" mt="md" loading={loading} onClick={handleClickStartButton}>
         {formatMessage({ id: 'ui.heroPanel.startStateContent.start' })}
       </Button>
     </Flex>

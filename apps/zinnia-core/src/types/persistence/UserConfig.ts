@@ -1,5 +1,6 @@
 import { Workspace } from '@/types/persistence/Workspace';
 import { Instant } from '@/types/lang/Instant';
+import { UserExtendedTool, UserNativeTool } from '@/types/persistence/Tool';
 
 export interface UserConfig {
   id: string;
@@ -14,4 +15,8 @@ export interface UserConfig {
   workspaces: Workspace[];
   activeWorkspaceId: string | null;
   advancedMode: boolean;
+  tools: {
+    native: UserNativeTool[];
+    extended: UserExtendedTool[];
+  };
 }

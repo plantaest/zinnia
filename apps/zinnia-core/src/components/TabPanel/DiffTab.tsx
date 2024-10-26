@@ -4,7 +4,6 @@ import {
   Anchor,
   Badge,
   Box,
-  CloseButton,
   Flex,
   Group,
   Loader,
@@ -43,6 +42,7 @@ import { UserPanel } from '@/components/UserPanel/UserPanel';
 import { useLargerThan } from '@/hooks/useLargerThan';
 import { Tab, TabType } from '@/types/persistence/Tab';
 import { scrollToTopTabMainPanel } from '@/utils/scrollToTopTabMainPanel';
+import { CloseModalButton } from '@/components/CloseModalButton/CloseModalButton';
 
 interface DiffTabProps {
   wikiId: string;
@@ -543,11 +543,7 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
             withOverlay={false}
           >
             <Stack gap="xs">
-              <CloseButton
-                onClick={closePagePanelModal}
-                variant="subtle"
-                aria-label={formatMessage({ id: 'common.close' })}
-              />
+              <CloseModalButton onClick={closePagePanelModal} />
               <PagePanel
                 wikiId={wikiId}
                 pageTitle={pageTitle}
@@ -566,11 +562,7 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
             withOverlay={false}
           >
             <Stack gap="xs">
-              <CloseButton
-                onClick={closeUserPanelModal}
-                variant="subtle"
-                aria-label={formatMessage({ id: 'common.close' })}
-              />
+              <CloseModalButton onClick={closeUserPanelModal} />
               <UserPanel
                 wikiId={wikiId}
                 fromUsername={compareResult.fromUser}

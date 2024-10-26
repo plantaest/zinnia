@@ -2,7 +2,6 @@ import { useIntl } from 'react-intl';
 import {
   ActionIcon,
   Button,
-  CloseButton,
   Group,
   Popover,
   Stack,
@@ -20,6 +19,7 @@ import { appState } from '@/states/appState';
 import { useGetOption } from '@/queries/useGetOption';
 import { useLargerThan } from '@/hooks/useLargerThan';
 import classes from './SyncTabsPanel.module.css';
+import { CloseModalButton } from '@/components/CloseModalButton/CloseModalButton';
 
 function SyncTabsPanelContent() {
   const { formatMessage } = useIntl();
@@ -47,15 +47,7 @@ function SyncTabsPanelContent() {
 
   return (
     <Stack gap="xs">
-      <Group gap="xs">
-        <CloseButton
-          onClick={modals.closeAll}
-          variant="subtle"
-          aria-label={formatMessage({ id: 'common.close' })}
-          hiddenFrom="md"
-        />
-        <Text fw={500}>{formatMessage({ id: 'ui.syncTabsPanel.title' })}</Text>
-      </Group>
+      <Text fw={500}>{formatMessage({ id: 'ui.syncTabsPanel.title' })}</Text>
 
       <Group gap="xs">
         <Button
@@ -95,7 +87,12 @@ export function SyncTabsPanel() {
       fullScreen: true,
       withCloseButton: false,
       withOverlay: false,
-      children: <SyncTabsPanelContent />,
+      children: (
+        <Stack gap="xs">
+          <CloseModalButton />
+          <SyncTabsPanelContent />
+        </Stack>
+      ),
     });
 
   return largerThanMd ? (

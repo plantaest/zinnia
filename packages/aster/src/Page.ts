@@ -59,7 +59,15 @@ export class InternalPage implements Page {
     const response = await MwApiWrapper.of(this.wiki.mwApi().get(params)).then();
     const pages = response.query.pages;
 
-    if (pages.length === 1) {
+    // When the page was deleted:
+    // [
+    //   {
+    //     "ns": 0,
+    //     "title": "S.T Sơn Thạch",
+    //     "missing": true
+    //   }
+    // ]
+    if (pages.length === 1 && 'revisions' in response.query.pages[0]) {
       const revisions: Revision[] = response.query.pages[0].revisions.map(
         (r: any) =>
           ({

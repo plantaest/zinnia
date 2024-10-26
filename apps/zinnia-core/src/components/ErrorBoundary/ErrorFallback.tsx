@@ -105,7 +105,6 @@ export function ErrorFallback({ error, errorInfo }: ErrorFallbackProps) {
     appState.local.tabs.delete();
     appState.userConfig.language.delete();
     appState.userConfig.dir.delete();
-    appState.ui.preview.delete();
     window.location.reload();
   };
 

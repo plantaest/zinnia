@@ -1,8 +1,7 @@
-import { ActionIcon, Button, CloseButton, Group, Stack, Text } from '@mantine/core';
+import { ActionIcon, Button, Group, Stack, Text } from '@mantine/core';
 import { IconEdit, IconPlus } from '@tabler/icons-react';
 import { useIntl } from 'react-intl';
 import { useSelector } from '@legendapp/state/react';
-import { modals } from '@mantine/modals';
 import { appState } from '@/states/appState';
 import { WorkspaceLayer } from '@/components/WorkspacePanel/WorkspacePanel';
 import { Workspace } from '@/types/persistence/Workspace';
@@ -40,15 +39,7 @@ export function WorkspaceList({ onChangeLayer, onChangeCurrentWorkspace }: Works
   return (
     <Stack gap="xs">
       <Group gap="xs" justify="space-between">
-        <Group gap="xs">
-          <CloseButton
-            onClick={modals.closeAll}
-            variant="subtle"
-            aria-label={formatMessage({ id: 'common.close' })}
-            hiddenFrom="md"
-          />
-          <Text fw={500}>{formatMessage({ id: 'ui.workspacePanel.title' })}</Text>
-        </Group>
+        <Text fw={500}>{formatMessage({ id: 'ui.workspacePanel.title' })}</Text>
         <ActionIcon
           variant="transparent"
           color="gray"

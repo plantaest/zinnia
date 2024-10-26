@@ -1,4 +1,4 @@
-import { ActionIcon, Popover, useComputedColorScheme, useDirection } from '@mantine/core';
+import { ActionIcon, Popover, Stack, useComputedColorScheme, useDirection } from '@mantine/core';
 import { IconBoxMultiple } from '@tabler/icons-react';
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
@@ -8,6 +8,7 @@ import { WorkspaceCreateForm } from '@/components/WorkspacePanel/WorkspaceCreate
 import { WorkspaceUpdateForm } from '@/components/WorkspacePanel/WorkspaceUpdateForm';
 import { Workspace } from '@/types/persistence/Workspace';
 import { useLargerThan } from '@/hooks/useLargerThan';
+import { CloseModalButton } from '@/components/CloseModalButton/CloseModalButton';
 
 export type WorkspaceLayer = 'list' | 'create' | 'update';
 
@@ -36,7 +37,12 @@ export function WorkspacePanel() {
       fullScreen: true,
       withCloseButton: false,
       withOverlay: false,
-      children: <WorkspacePanelContent />,
+      children: (
+        <Stack gap="xs">
+          <CloseModalButton />
+          <WorkspacePanelContent />
+        </Stack>
+      ),
     });
 
   return largerThanMd ? (

@@ -1,6 +1,5 @@
-import { MultiSelect } from '@mantine/core';
+import { ComboboxData, MultiSelect } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
-import { ComboboxData } from '@mantine/core/lib/components/Combobox/Combobox.types';
 import { useIntl } from 'react-intl';
 import { Filter } from '@/types/persistence/Filter';
 import { FilterPanelFormValues } from '@/components/FilterPanel/FilterPanel';

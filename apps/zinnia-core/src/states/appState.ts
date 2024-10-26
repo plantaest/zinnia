@@ -19,7 +19,7 @@ import { Tab } from '@/types/persistence/Tab';
 interface AppState {
   userConfig: UserConfig | null;
   ui: {
-    initState: 'empty' | 'start' | 'normal' | 'broken';
+    initState: 'empty' | 'start' | 'normal';
     activeWorkspace: ObservableComputedTwoWay<Workspace | null>;
     activeFilter: ObservableComputed<Filter | null>;
     rcQueryParams: Record<WikiId, ApiQueryRecentChangesParams>;
