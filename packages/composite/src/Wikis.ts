@@ -1,7 +1,7 @@
 import { WikisConfig } from './WikisConfig';
 import { Wiki } from './Wiki';
 import { WikiSites } from './helper/WikiSites';
-import { AsterError } from './AsterError';
+import { CompositeError } from './CompositeError';
 import { WikiConfig } from './WikiConfig';
 
 export class Wikis {
@@ -25,7 +25,7 @@ export class Wikis {
 
   public getWiki(wikiId: string): Wiki {
     if (!this.wikiSites.getWikiIds().includes(wikiId)) {
-      throw new AsterError('not-supported-wiki', `Wiki ${wikiId} is not supported`);
+      throw new CompositeError('not-supported-wiki', `Wiki ${wikiId} is not supported`);
     }
 
     if (this.wikis.has(wikiId)) {

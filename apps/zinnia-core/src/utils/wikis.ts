@@ -1,4 +1,4 @@
-import { Wikis, WikisConfig, WikiSite } from '@plantaest/aster';
+import { Wikis, WikisConfig, WikiSite } from '@plantaest/composite';
 import { appConfig } from '@/config/appConfig';
 
 // Ref: https://wikitech.wikimedia.org/wiki/Machine_Learning/LiftWing#Current_Inference_Services

@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { AsterError } from '@plantaest/aster';
+import { CompositeError } from '@plantaest/composite';
 import { useIntl } from 'react-intl';
 import { useSelector } from '@legendapp/state/react';
 import { UserConfig } from '@/types/persistence/UserConfig';
@@ -15,7 +15,7 @@ export function useUpdateTools() {
 
   return useMutation<
     UserConfig,
-    AsterError,
+    CompositeError,
     { native: UserNativeTool[]; extended: UserExtendedTool[] }
   >({
     mutationKey: ['metawiki', 'userInfo', 'saveOption', 'updateTools'],

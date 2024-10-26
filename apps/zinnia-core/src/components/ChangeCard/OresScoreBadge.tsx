@@ -1,5 +1,5 @@
 import { Badge, Loader } from '@mantine/core';
-import { Change } from '@plantaest/aster';
+import { Change } from '@plantaest/composite';
 import { useInViewport } from '@mantine/hooks';
 import { IconAlertTriangle } from '@tabler/icons-react';
 import { wikis } from '@/utils/wikis';

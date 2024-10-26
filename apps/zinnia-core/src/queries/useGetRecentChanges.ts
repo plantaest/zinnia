@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { AsterError, Change } from '@plantaest/aster';
+import { Change, CompositeError } from '@plantaest/composite';
 import { ApiQueryRecentChangesParams } from 'types-mediawiki/api_params';
 import dayjs from 'dayjs';
 import { useSelector } from '@legendapp/state/react';
@@ -38,7 +38,7 @@ export function useGetRecentChanges() {
 
   const { data: rightsOnWikis } = useGetRightsOnWikis(wikiIds);
 
-  return useQuery<Change[], AsterError>({
+  return useQuery<Change[], CompositeError>({
     queryKey: [wikiIds, 'getRecentChanges', rcQueryParams],
     queryFn: async () => {
       const changes: Change[] = [];

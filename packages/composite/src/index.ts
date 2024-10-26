@@ -1,4 +1,4 @@
-export * from './AsterError';
+export * from './CompositeError';
 export * from './Wiki';
 export * from './WikiConfig';
 export * from './helper/WikiSite';

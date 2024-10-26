@@ -6,7 +6,7 @@ import {
   ObservableObject,
 } from '@legendapp/state';
 import { ApiQueryRecentChangesParams } from 'types-mediawiki/api_params';
-import { Change } from '@plantaest/aster';
+import { Change } from '@plantaest/composite';
 import { UserConfig } from '@/types/persistence/UserConfig';
 import { Workspace } from '@/types/persistence/Workspace';
 import { Filter } from '@/types/persistence/Filter';

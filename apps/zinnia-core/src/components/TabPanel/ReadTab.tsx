@@ -1,4 +1,4 @@
-import { PageHtmlResult } from '@plantaest/aster';
+import { PageHtmlResult } from '@plantaest/composite';
 import { ActionIcon, Anchor, Badge, Box, Flex, Group, Loader, Stack, Text } from '@mantine/core';
 import ReactShadowRoot from 'react-shadow-root';
 import { IconAlertTriangle, IconInfoCircle } from '@tabler/icons-react';

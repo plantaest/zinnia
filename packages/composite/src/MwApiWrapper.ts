@@ -1,4 +1,4 @@
-import { AsterError } from './AsterError';
+import { CompositeError } from './CompositeError';
 
 export class MwApiWrapper<T> implements PromiseLike<T> {
   private readonly jQueryPromise: JQuery.Promise<T>;
@@ -13,27 +13,27 @@ export class MwApiWrapper<T> implements PromiseLike<T> {
 
   public then<TResult1 = T, TResult2 = never>(
     onFulfilled?: (value: T) => PromiseLike<TResult1> | TResult1,
-    onRejected?: (reason: AsterError) => TResult2 | PromiseLike<TResult2>
+    onRejected?: (reason: CompositeError) => TResult2 | PromiseLike<TResult2>
   ): Promise<TResult1 | TResult2> {
     return new Promise<TResult1 | TResult2>((resolve, reject) =>
       this.jQueryPromise.then(
         (response) => {
           if (response && typeof response === 'object' && response.hasOwnProperty('warnings')) {
-            reject(new AsterError('warnings', JSON.stringify(response)));
+            reject(new CompositeError('warnings', JSON.stringify(response)));
           }
 
           if (onFulfilled) {
             try {
               resolve(onFulfilled(response));
             } catch (e) {
-              reject(new AsterError('ambiguous', String(e)));
+              reject(new CompositeError('ambiguous', String(e)));
             }
           } else {
             resolve(response as TResult1 | TResult2);
           }
         },
         (code: string, response: unknown) => {
-          const error = new AsterError(
+          const error = new CompositeError(
             code,
             ['http', 'ok-but-empty'].includes(code) ? null : JSON.stringify(response)
           );

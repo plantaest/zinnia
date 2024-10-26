@@ -13,7 +13,7 @@ import {
   TypographyStylesProvider,
   useDirection,
 } from '@mantine/core';
-import { CompareRevisionsResult } from '@plantaest/aster';
+import { CompareRevisionsResult } from '@plantaest/composite';
 import dayjs from 'dayjs';
 import {
   IconAlertTriangle,

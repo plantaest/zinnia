@@ -1,4 +1,4 @@
-import { AsterError, CompareRevisionsResult, DiffType } from '@plantaest/aster';
+import { CompareRevisionsResult, CompositeError, DiffType } from '@plantaest/composite';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { wikis } from '@/utils/wikis';
 
@@ -8,7 +8,7 @@ export function useCompareRevisions(
   toRevisionId: number,
   diffType: DiffType
 ) {
-  return useQuery<CompareRevisionsResult, AsterError>({
+  return useQuery<CompareRevisionsResult, CompositeError>({
     queryKey: [wikiId, 'compareRevisions', fromRevisionId, toRevisionId, diffType],
     queryFn: () => wikis.getWiki(wikiId).compareRevisions(fromRevisionId, toRevisionId, diffType),
     staleTime: Infinity,

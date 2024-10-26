@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { AsterError, Tag } from '@plantaest/aster';
+import { CompositeError, Tag } from '@plantaest/composite';
 import { useIntl } from 'react-intl';
 import { wikis } from '@/utils/wikis';
 import { defaultTags } from '@/utils/defaultTags';
@@ -7,7 +7,7 @@ import { defaultTags } from '@/utils/defaultTags';
 export function useGetTags(wikiId: string) {
   const { formatMessage } = useIntl();
 
-  return useQuery<Tag[], AsterError>({
+  return useQuery<Tag[], CompositeError>({
     queryKey: [wikiId, 'getTags'],
     queryFn: async () => {
       if (wikiId === 'global') {

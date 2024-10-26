@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { AsterError } from '@plantaest/aster';
+import { CompositeError } from '@plantaest/composite';
 import { useIntl } from 'react-intl';
 import { useSelector } from '@legendapp/state/react';
 import { UserConfig } from '@/types/persistence/UserConfig';
@@ -13,7 +13,7 @@ export function useUpdateNativeTools() {
   const { formatMessage } = useIntl();
   const config = useSelector(appState.userConfig);
 
-  return useMutation<UserConfig, AsterError, UserNativeTool[]>({
+  return useMutation<UserConfig, CompositeError, UserNativeTool[]>({
     mutationKey: ['metawiki', 'userInfo', 'saveOption', 'updateNativeTools'],
     mutationFn: async (nativeTools) => {
       const userConfig = structuredClone(config);

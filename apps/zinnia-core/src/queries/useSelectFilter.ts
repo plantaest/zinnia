@@ -1,6 +1,6 @@
 import { useIntl } from 'react-intl';
 import { useMutation } from '@tanstack/react-query';
-import { AsterError } from '@plantaest/aster';
+import { CompositeError } from '@plantaest/composite';
 import { useSelector } from '@legendapp/state/react';
 import { UserConfig } from '@/types/persistence/UserConfig';
 import { appState } from '@/states/appState';
@@ -12,7 +12,7 @@ export function useSelectFilter() {
   const { formatMessage } = useIntl();
   const config = useSelector(appState.userConfig);
 
-  return useMutation<UserConfig, AsterError, string>({
+  return useMutation<UserConfig, CompositeError, string>({
     mutationKey: ['metawiki', 'userInfo', 'saveOption', 'selectFilter'],
     mutationFn: async (filterId) => {
       const userConfig = structuredClone(config);

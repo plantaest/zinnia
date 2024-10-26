@@ -68,7 +68,7 @@ export namespace FeedHelper {
         };
 
     // The function parseRcQueryParams cannot identify whether the user has patrol right or not.
-    // Therefore, Aster (Wiki.getRecentChanges) will handle this issue.
+    // Therefore, Composite (Wiki.getRecentChanges) will handle this issue.
     const patrolled = wiki.inherited
       ? (globalWikiConfig.unpatrolled &&
           globalWikiConfig.patrolled &&

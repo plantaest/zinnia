@@ -1,4 +1,4 @@
-import { Tag } from '@plantaest/aster';
+import { Tag } from '@plantaest/composite';
 
 export const defaultTags: Tag[] = [
   {

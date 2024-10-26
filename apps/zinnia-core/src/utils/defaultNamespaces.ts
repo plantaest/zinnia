@@ -1,4 +1,4 @@
-import { Namespace } from '@plantaest/aster';
+import { Namespace } from '@plantaest/composite';
 
 export const defaultNamespaces: Namespace[] = [
   {

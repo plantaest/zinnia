@@ -44,5 +44,5 @@ Step 4: Open `Special:BlankPage/Zinnia@dev` on any wiki
 
 License:
 * GNU Affero General Public License version 3 for Zinnia application
-* Apache License version 2 for Aster library
+* Apache License version 2 for Composite library
 ```

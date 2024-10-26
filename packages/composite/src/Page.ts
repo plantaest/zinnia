@@ -1,6 +1,6 @@
 import { PageHtmlResult } from './type/PageHtmlResult';
 import { InternalWiki } from './Wiki';
-import { AsterError } from './AsterError';
+import { CompositeError } from './CompositeError';
 import { RestGetPageWithHtmlResponse } from './type/rest/RestGetPageWithHtmlResponse';
 import { RestErrorResponse } from './type/rest/RestErrorResponse';
 import { Revision } from './type/Revision';
@@ -33,7 +33,7 @@ export class InternalPage implements Page {
 
     if (!response.ok) {
       const error: RestErrorResponse = await response.json();
-      throw new AsterError(error.errorKey ?? error.httpReason, JSON.stringify(error));
+      throw new CompositeError(error.errorKey ?? error.httpReason, JSON.stringify(error));
     }
 
     const result: RestGetPageWithHtmlResponse = await response.json();

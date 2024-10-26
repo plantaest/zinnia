@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { AsterError } from '@plantaest/aster';
+import { CompositeError } from '@plantaest/composite';
 import { useIntl } from 'react-intl';
 import { useSelector } from '@legendapp/state/react';
 import { Workspace } from '@/types/persistence/Workspace';
@@ -13,7 +13,7 @@ export function useUpdateWorkspace() {
   const { formatMessage } = useIntl();
   const config = useSelector(appState.userConfig);
 
-  return useMutation<UserConfig, AsterError, Workspace>({
+  return useMutation<UserConfig, CompositeError, Workspace>({
     mutationKey: ['metawiki', 'userInfo', 'saveOption', 'updateWorkspace'],
     mutationFn: async (workspace) => {
       const userConfig = structuredClone(config);

@@ -55,7 +55,7 @@
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@formatjs/cli": "^6.3.5",
-    "@plantaest/aster": "workspace:*",
+    "@plantaest/composite": "workspace:*",
     "@plantaest/typescript-config": "workspace:*",
     "@storybook/addon-essentials": "^8.3.6",
     "@storybook/addon-interactions": "^8.3.6",

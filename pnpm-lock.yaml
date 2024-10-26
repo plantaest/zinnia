@@ -102,9 +102,9 @@ importers:
       '@formatjs/cli':
         specifier: ^6.3.5
         version: 6.3.5
-      '@plantaest/aster':
+      '@plantaest/composite':
         specifier: workspace:*
-        version: link:../../packages/aster
+        version: link:../../packages/composite
       '@plantaest/typescript-config':
         specifier: workspace:*
         version: link:../../packages/config-typescript
@@ -247,23 +247,23 @@ importers:
         specifier: ^2.1.3
         version: 2.1.3(@types/node@22.8.1)(jsdom@25.0.1)(sugarss@4.0.1(postcss@8.4.47))
 
-  packages/aster:
+  packages/composite:
     devDependencies:
       '@plantaest/typescript-config':
         specifier: workspace:*
         version: link:../config-typescript
       '@types/jquery':
         specifier: ^3.5.31
-        version: 3.5.31
+        version: 3.5.32
       prettier:
         specifier: ^3.3.3
         version: 3.3.3
       types-mediawiki:
         specifier: ^1.8.0
-        version: 1.8.0(typescript@5.6.2)
+        version: 1.8.1(typescript@5.6.3)
       typescript:
         specifier: ^5.6.2
-        version: 5.6.2
+        version: 5.6.3
 
   packages/config-typescript: {}
 
@@ -1382,9 +1382,6 @@ packages:
 
   '@types/http-errors@2.0.4':
     resolution: {integrity: sha512-D0CFMMtydbJAegzOyHjtiKPLlvnm3iTZyZRSZoLq2mRhDdmLfIWOCYPfQJ4cu2erKghU++QvjcUjp/5h7hESpA==}
-
-  '@types/jquery@3.5.31':
-    resolution: {integrity: sha512-rf/iB+cPJ/YZfMwr+FVuQbm7IaWC4y3FVYfVDxRGqmUCFjjPII0HWaP0vTPJGp6m4o13AXySCcMbWfrWtBFAKw==}
 
   '@types/jquery@3.5.32':
     resolution: {integrity: sha512-b9Xbf4CkMqS02YH8zACqN1xzdxc3cO735Qe5AbSUFmyOiaWAbcpqh9Wna+Uk0vgACvoQHpWDg2rGdHkYPLmCiQ==}
@@ -3920,9 +3917,6 @@ packages:
     resolution: {integrity: sha512-/OxDN6OtAk5KBpGb28T+HZc2M+ADtvRxXrKKbUwtsLgdoxgX13hyy7ek6bFRl5+aBs2yZzB0c4CnQfAtVypW/g==}
     engines: {node: '>= 0.4'}
 
-  types-mediawiki@1.8.0:
-    resolution: {integrity: sha512-jmumTDXqrziFVh0k4szGInw7XT8rLHtP5vcjLCflXf0Vf2T9fqZwuewxCCeNVwerM8Nu435/AxrbU2qL3ZV2sA==}
-
   types-mediawiki@1.8.1:
     resolution: {integrity: sha512-ICNVpEOZBrhZaiFK0SsB1kCoENaHxIU8KA+5gYF+E+3kf6z3EKigqNufp4giOMjwFwincv4u71LtzcBH4LAmiw==}
 
@@ -3934,11 +3928,6 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
-
-  typescript@5.6.2:
-    resolution: {integrity: sha512-NW8ByodCSNCwZeghjN3o+JX5OFH0Ojg6sadjEKY4huZ52TqbJTJnDo5+Tw98lSy63NZvi4n+ez5m2u5d4PkZyw==}
-    engines: {node: '>=14.17'}
-    hasBin: true
 
   typescript@5.6.3:
     resolution: {integrity: sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==}
@@ -5335,10 +5324,6 @@ snapshots:
 
   '@types/http-errors@2.0.4': {}
 
-  '@types/jquery@3.5.31':
-    dependencies:
-      '@types/sizzle': 2.3.8
-
   '@types/jquery@3.5.32':
     dependencies:
       '@types/sizzle': 2.3.8
@@ -5701,12 +5686,6 @@ snapshots:
       '@vue/runtime-core': 3.3.9
       '@vue/shared': 3.3.9
       csstype: 3.1.3
-
-  '@vue/server-renderer@3.3.9(vue@3.3.9(typescript@5.6.2))':
-    dependencies:
-      '@vue/compiler-ssr': 3.3.9
-      '@vue/shared': 3.3.9
-      vue: 3.3.9(typescript@5.6.2)
 
   '@vue/server-renderer@3.3.9(vue@3.3.9(typescript@5.6.3))':
     dependencies:
@@ -8315,14 +8294,6 @@ snapshots:
       is-typed-array: 1.1.13
       possible-typed-array-names: 1.0.0
 
-  types-mediawiki@1.8.0(typescript@5.6.2):
-    dependencies:
-      '@types/jquery': 3.5.32
-      '@types/oojs-ui': 0.46.4
-      vue: 3.3.9(typescript@5.6.2)
-    transitivePeerDependencies:
-      - typescript
-
   types-mediawiki@1.8.1(typescript@5.6.3):
     dependencies:
       '@types/jquery': 3.5.32
@@ -8341,8 +8312,6 @@ snapshots:
     transitivePeerDependencies:
       - eslint
       - supports-color
-
-  typescript@5.6.2: {}
 
   typescript@5.6.3: {}
 
@@ -8538,16 +8507,6 @@ snapshots:
       - sugarss
       - supports-color
       - terser
-
-  vue@3.3.9(typescript@5.6.2):
-    dependencies:
-      '@vue/compiler-dom': 3.3.9
-      '@vue/compiler-sfc': 3.3.9
-      '@vue/runtime-dom': 3.3.9
-      '@vue/server-renderer': 3.3.9(vue@3.3.9(typescript@5.6.2))
-      '@vue/shared': 3.3.9
-    optionalDependencies:
-      typescript: 5.6.2
 
   vue@3.3.9(typescript@5.6.3):
     dependencies:

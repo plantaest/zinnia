@@ -1,10 +1,10 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { AsterError } from '@plantaest/aster';
+import { CompositeError } from '@plantaest/composite';
 import { wikis } from '@/utils/wikis';
 import { WikiId } from '@/types/mw/WikiId';
 
 export function useGetRightsOnWikis(wikiIds: string[]) {
-  return useQuery<Record<WikiId, string[]>, AsterError>({
+  return useQuery<Record<WikiId, string[]>, CompositeError>({
     queryKey: [wikiIds, 'userInfo', 'getRights'],
     queryFn: async () => {
       const rightsOnWikis: Record<WikiId, string[]> = {};

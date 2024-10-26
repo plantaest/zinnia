@@ -24,7 +24,7 @@ import {
   IconUser,
   TablerIcon,
 } from '@tabler/icons-react';
-import { Change } from '@plantaest/aster';
+import { Change } from '@plantaest/composite';
 import dayjs from 'dayjs';
 import { useSelector } from '@legendapp/state/react';
 import React from 'react';
