@@ -249,7 +249,8 @@ const getInitialFormValues = (filter: Filter): FilterPanelFormValues => ({
 
 const formName = 'filter-panel-form';
 
-export const filterPanelFormAction = createFormActions<FilterPanelFormValues>(formName);
+export const filterPanelFormAction: ReturnType<typeof createFormActions<FilterPanelFormValues>> =
+  createFormActions<FilterPanelFormValues>(formName);
 
 function FilterPanelContent() {
   const { formatMessage } = useIntl();
