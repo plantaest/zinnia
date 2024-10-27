@@ -1,6 +1,6 @@
 import { Instant } from '@/types/lang/Instant';
-import { ToolIconColor } from '@/types/ui/ZinniaTool';
-import { nativeToolsDict } from '@/utils/tools/nativeTools';
+import { ToolIconColor } from '@/tools/types/ZinniaTool';
+import { nativeToolsDict } from '@/tools/nativeTools';
 
 export interface UserNativeTool {
   toolId: string;

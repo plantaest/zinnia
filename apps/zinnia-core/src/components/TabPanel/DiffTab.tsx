@@ -241,8 +241,8 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
         pageTitle: pageTitle,
       },
     };
-    appState.local.activeTabs.set((tabs) => [...tabs, pageTab]);
-    appState.local.activeTabId.set(pageTab.id);
+    appState.ui.activeTabs.set((tabs) => [...tabs, pageTab]);
+    appState.ui.activeTabId.set(pageTab.id);
     scrollToTopTabMainPanel();
   };
 
@@ -252,39 +252,24 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
         <Box className={classes.box}>
           <Stack gap="xs">
             <Group gap="xs" justify="space-between" wrap="nowrap">
-              <Group
-                gap="xs"
-                wrap="nowrap"
-                style={{
-                  overflow: 'hidden',
-                  flex: 1,
-                }}
-              >
+              <Group gap="xs" wrap="nowrap" flex={1} miw={0}>
                 <Badge ff="var(--zinnia-font-monospace)" h="1.625rem" radius="sm" tt="lowercase">
                   {wikiId}
                 </Badge>
-                <Box
-                  visibleFrom="sm"
-                  style={{
-                    display: 'flex',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    flex: 1,
-                    color: 'var(--mantine-color-anchor)',
-                  }}
-                >
+                <Flex flex={1} miw={0} visibleFrom="sm">
                   <Anchor
                     fw={600}
                     href={MwHelper.createPageUri(serverName, pageTitle)}
                     target="_blank"
                     style={{
+                      whiteSpace: 'nowrap',
                       textOverflow: 'ellipsis',
                       overflow: 'hidden',
                     }}
                   >
                     {pageTitle}
                   </Anchor>
-                </Box>
+                </Flex>
               </Group>
 
               <Group gap="xs">
@@ -377,13 +362,7 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
 
               <Group gap={8} wrap="nowrap">
                 <IconUser size="1rem" />
-                <Box
-                  style={{
-                    display: 'flex',
-                    flex: 1,
-                    overflow: 'hidden',
-                  }}
-                >
+                <Flex flex={1} miw={0}>
                   <Anchor
                     size="sm"
                     fw={500}
@@ -397,7 +376,7 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
                   >
                     {compareResult.fromUser}
                   </Anchor>
-                </Box>
+                </Flex>
               </Group>
 
               <Group gap={8} wrap="nowrap">
@@ -448,13 +427,7 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
 
               <Group gap={8} wrap="nowrap">
                 <IconUser size="1rem" />
-                <Box
-                  style={{
-                    display: 'flex',
-                    flex: 1,
-                    overflow: 'hidden',
-                  }}
-                >
+                <Flex flex={1} miw={0}>
                   <Anchor
                     size="sm"
                     fw={500}
@@ -468,7 +441,7 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
                   >
                     {compareResult.toUser}
                   </Anchor>
-                </Box>
+                </Flex>
               </Group>
 
               <Group gap={8}>

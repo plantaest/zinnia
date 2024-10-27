@@ -22,12 +22,13 @@ import dayjs from 'dayjs';
 import { ToolboxLayer } from '@/components/ToolboxPanel/ToolboxPanel';
 import classes from '@/components/ToolboxPanel/ToolboxSettings.module.css';
 import { appState } from '@/states/appState';
-import { nativeToolsDict } from '@/utils/tools/nativeTools';
-import { extendedToolsDict } from '@/utils/tools/extendedTools';
-import { toolIconColors } from '@/types/ui/ZinniaTool';
+import { nativeToolsDict } from '@/tools/nativeTools';
+import { extendedToolsDict } from '@/tools/extendedTools';
+import { toolIconColors } from '@/tools/types/ZinniaTool';
 import { UserExtendedTool, UserNativeTool } from '@/types/persistence/Tool';
 import { useUpdateTools } from '@/queries/useUpdateTools';
 import { UserConfig } from '@/types/persistence/UserConfig';
+import { DefaultNativeToolAdditionalSettingsFormComponent } from '@/tools/DefaultNativeToolAdditionalSettingsFormComponent';
 
 const formSchema = v.object({
   native: v.array(
@@ -54,7 +55,7 @@ const formSchema = v.object({
   ),
 });
 
-type FormValues = v.InferInput<typeof formSchema>;
+export type ToolboxSettingsFormValues = v.InferInput<typeof formSchema>;
 
 interface ToolboxSettingsProps {
   onChangeLayer: (layer: ToolboxLayer) => void;
@@ -63,10 +64,11 @@ interface ToolboxSettingsProps {
 type SelectedTool = {
   type: 'native' | 'extended';
   index: number;
+  id: string;
   name: string;
 };
 
-const getInitialFormValues = (tools: UserConfig['tools']): FormValues => ({
+const getInitialFormValues = (tools: UserConfig['tools']): ToolboxSettingsFormValues => ({
   native: tools.native.map((nativeTool) => ({
     settings: {
       general: {
@@ -93,6 +95,12 @@ export function ToolboxSettings({ onChangeLayer }: ToolboxSettingsProps) {
   const [selectedTool, setSelectedTool] = useState<SelectedTool>({
     type: tools.native.length > 0 ? 'native' : 'extended',
     index: 0,
+    id:
+      tools.native.length > 0
+        ? tools.native[0].toolId
+        : tools.extended.length > 0
+          ? tools.extended[0].toolId
+          : 'N/A',
     name:
       tools.native.length > 0
         ? formatMessage({ id: nativeToolsDict[tools.native[0].toolId].name })
@@ -112,8 +120,8 @@ export function ToolboxSettings({ onChangeLayer }: ToolboxSettingsProps) {
     onChangeLayer('main');
   };
 
-  const handleClickToolButton = (type: 'native' | 'extended', index: number, name: string) => {
-    setSelectedTool({ type, index, name });
+  const handleClickToolButton = (payload: SelectedTool) => {
+    setSelectedTool(payload);
   };
 
   const handleClickSaveButton = () => {
@@ -179,6 +187,9 @@ export function ToolboxSettings({ onChangeLayer }: ToolboxSettingsProps) {
     value: color,
     label: formatMessage({ id: `color.${color}` }),
   }));
+  const NativeToolAdditionalForm = nativeToolsDict[selectedTool.id]
+    ? nativeToolsDict[selectedTool.id].additionalSettingsForm
+    : DefaultNativeToolAdditionalSettingsFormComponent;
 
   return (
     <Stack gap="xs">
@@ -224,7 +235,12 @@ export function ToolboxSettings({ onChangeLayer }: ToolboxSettingsProps) {
                   className={classes.tool}
                   data-selected={selectedTool.type === 'native' && selectedTool.index === index}
                   onClick={() =>
-                    handleClickToolButton('native', index, formatMessage({ id: nativeTool.name }))
+                    handleClickToolButton({
+                      type: 'native',
+                      index: index,
+                      id: nativeTool.id,
+                      name: formatMessage({ id: nativeTool.name }),
+                    })
                   }
                 >
                   <Group gap={8}>
@@ -246,7 +262,14 @@ export function ToolboxSettings({ onChangeLayer }: ToolboxSettingsProps) {
                   key={extendedTool.id}
                   className={classes.tool}
                   data-selected={selectedTool.type === 'extended' && selectedTool.index === index}
-                  onClick={() => handleClickToolButton('extended', index, extendedTool.name)}
+                  onClick={() =>
+                    handleClickToolButton({
+                      type: 'extended',
+                      index: index,
+                      id: extendedTool.id,
+                      name: extendedTool.name,
+                    })
+                  }
                 >
                   <Group gap={8}>
                     <ThemeIcon color={tool.settings.general.iconColor} size="sm">
@@ -309,10 +332,17 @@ export function ToolboxSettings({ onChangeLayer }: ToolboxSettingsProps) {
             </Stack>
 
             {selectedTool.type === 'native' && (
-              <Divider
-                label={formatMessage({ id: 'ui.toolboxPanel.settings.additional' })}
-                labelPosition="left"
-              />
+              <>
+                <Divider
+                  label={formatMessage({ id: 'ui.toolboxPanel.settings.additional' })}
+                  labelPosition="left"
+                />
+                <NativeToolAdditionalForm
+                  parentForm={form}
+                  toolIndex={selectedTool.index}
+                  data={tools.native[selectedTool.index].settings.additional.data}
+                />
+              </>
             )}
           </Stack>
         </Group>

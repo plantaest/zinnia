@@ -1,6 +1,6 @@
-import { ZinniaExtendedTool } from '@/types/ui/ZinniaTool';
+import { ExtendedTool } from '@/tools/types/ZinniaTool';
 
-export const extendedTools: ZinniaExtendedTool[] = [
+export const extendedTools: ExtendedTool[] = [
   {
     id: 'extended:twinkle:enwiki',
     name: 'Twinkle (en)',

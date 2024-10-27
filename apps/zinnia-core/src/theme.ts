@@ -2,6 +2,7 @@ import { createTheme, MantineThemeOverride } from '@mantine/core';
 import { zinniaRoot } from '@/utils/zinniaRoot';
 
 export const theme: MantineThemeOverride = createTheme({
+  focusRing: 'always',
   colors: {
     dark: [
       '#C1C2C5',

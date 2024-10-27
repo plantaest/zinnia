@@ -18,22 +18,22 @@ import { SyncTabsPanel } from '@/components/SyncTabsPanel/SyncTabsPanel';
 
 export function TabHeaderPanel() {
   const { dir } = useDirection();
-  const activeTabId = useSelector(appState.local.activeTab.id);
-  const activeTabType = useSelector(appState.local.activeTab.type);
-  const activeTabName = useSelector(appState.local.activeTab.name);
+  const activeTabId = useSelector(appState.ui.activeTab.id);
+  const activeTabType = useSelector(appState.ui.activeTab.type);
+  const activeTabName = useSelector(appState.ui.activeTab.name);
 
   const handleClickDeleteTabButton = () => {
-    appState.local.activeTabs.set((tabs) => tabs.filter((tab) => tab.id !== activeTabId));
+    appState.ui.activeTabs.set((tabs) => tabs.filter((tab) => tab.id !== activeTabId));
 
-    const activeTabs = appState.local.activeTabs.peek();
+    const activeTabs = appState.ui.activeTabs.peek();
 
     if (activeTabs.length > 0) {
       const closestUpdatedAtTab = activeTabs.reduce((prev, current) =>
         dayjs(current.updatedAt).isAfter(dayjs(prev.updatedAt)) ? current : prev
       );
-      appState.local.activeTabId.set(closestUpdatedAtTab.id);
+      appState.ui.activeTabId.set(closestUpdatedAtTab.id);
     } else {
-      appState.local.activeTabId.set(null);
+      appState.ui.activeTabId.set(null);
     }
   };
 
@@ -42,14 +42,7 @@ export function TabHeaderPanel() {
     const isMainTab = tabType.startsWith('MAIN');
 
     return (
-      <Group
-        gap="xs"
-        wrap="nowrap"
-        style={{
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-        }}
-      >
+      <Group gap="xs" wrap="nowrap" miw={0}>
         <Indicator
           color="green"
           size={5}
@@ -62,6 +55,7 @@ export function TabHeaderPanel() {
         <Text
           fw={600}
           style={{
+            whiteSpace: 'nowrap',
             textOverflow: 'ellipsis',
             overflow: 'hidden',
           }}

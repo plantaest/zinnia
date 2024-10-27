@@ -48,7 +48,7 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
     parentRevisionId: number,
     revisionId: number
   ) => {
-    const activeTab = appState.local.activeTab.peek();
+    const activeTab = appState.ui.activeTab.peek();
 
     if (activeTab && (activeTab.type === TabType.DIFF || activeTab.type === TabType.MAIN_DIFF)) {
       let diffTab: Tab;
@@ -84,7 +84,7 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
         };
       }
 
-      appState.local.activeTab.set(diffTab);
+      appState.ui.activeTab.set(diffTab);
       scrollToTopTabMainPanel();
     }
   };
@@ -115,7 +115,7 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
 
   const handleMouseDownRevisionButton = (revisionId: number) => {
     if (!largerThanLg) {
-      const activeTab = appState.local.activeTab.peek();
+      const activeTab = appState.ui.activeTab.peek();
 
       if (activeTab && (activeTab.type === TabType.DIFF || activeTab.type === TabType.MAIN_DIFF)) {
         timeoutId = setTimeout(() => {
@@ -133,7 +133,7 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
               toRevisionId: toRevisionId,
             },
           };
-          appState.local.activeTab.set(diffTab);
+          appState.ui.activeTab.set(diffTab);
           scrollToTopTabMainPanel();
         }, 500);
       }

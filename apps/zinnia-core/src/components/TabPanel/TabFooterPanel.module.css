@@ -7,7 +7,7 @@
 }
 
 .carouselViewport {
-  padding: rem(4px);
+  padding: rem(6px) rem(4px);
   max-width: rem(218px); /* 5x34 + 4x10 + 4x2 */
 
   @media (min-width: 64em) {
@@ -30,4 +30,69 @@
   color: var(--mantine-color-blue-light-color);
   border: none;
   box-shadow: none;
+}
+
+.carouselSlide {
+  display: flex;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: var(--mantine-spacing-xs);
+  grid-row-gap: var(--mantine-spacing-xs);
+
+  @media (min-width: 62em) {
+    /* md */
+    grid-template-rows: 1fr;
+  }
+}
+
+.left {
+  grid-area: 2 / 1 / 3 / 2;
+  display: flex;
+  justify-content: start;
+  gap: var(--mantine-spacing-xs);
+  flex-wrap: nowrap;
+
+  @media (min-width: 62em) {
+    /* md */
+    grid-area: 1 / 1 / 2 / 2;
+  }
+}
+
+.tools {
+  grid-area: 1 / 1 / 2 / 4;
+  display: flex;
+  justify-content: center;
+
+  @media (min-width: 62em) {
+    /* md */
+    grid-area: 1 / 2 / 2 / 3;
+  }
+}
+
+.navigation {
+  grid-area: 2 / 2 / 3 / 3;
+  display: flex;
+  justify-content: center;
+
+  @media (min-width: 62em) {
+    /* md */
+    display: none;
+  }
+}
+
+.right {
+  grid-area: 2 / 3 / 3 / 4;
+  display: flex;
+  justify-content: end;
+  gap: var(--mantine-spacing-xs);
+  flex-wrap: nowrap;
+
+  @media (min-width: 62em) {
+    /* md */
+    grid-area: 1 / 3 / 2 / 4;
+  }
 }

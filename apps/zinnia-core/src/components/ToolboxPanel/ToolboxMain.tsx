@@ -14,8 +14,8 @@ import { IconAdjustments, IconWind } from '@tabler/icons-react';
 import { appState } from '@/states/appState';
 import { ToolboxLayer } from '@/components/ToolboxPanel/ToolboxPanel';
 import classes from './ToolboxMain.module.css';
-import { nativeToolsDict } from '@/utils/tools/nativeTools';
-import { extendedToolsDict } from '@/utils/tools/extendedTools';
+import { nativeToolsDict } from '@/tools/nativeTools';
+import { extendedToolsDict } from '@/tools/extendedTools';
 
 interface ToolboxMainProps {
   onChangeLayer: (layer: ToolboxLayer) => void;

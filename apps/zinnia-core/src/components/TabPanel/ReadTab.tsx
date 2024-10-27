@@ -25,10 +25,11 @@ const placeholderPageHtmlResult: PageHtmlResult = {
 interface ReadTabProps {
   wikiId: string;
   pageTitle: string;
+  revisionId: number;
   redirect: boolean;
 }
 
-export function ReadTab({ wikiId, pageTitle, redirect }: ReadTabProps) {
+export function ReadTab({ wikiId, pageTitle, revisionId, redirect }: ReadTabProps) {
   const serverName = wikis.getWiki(wikiId).getConfig().serverName;
 
   const {
@@ -60,8 +61,8 @@ export function ReadTab({ wikiId, pageTitle, redirect }: ReadTabProps) {
         pageTitle: pageTitle,
       },
     };
-    appState.local.activeTabs.set((tabs) => [...tabs, pageTab]);
-    appState.local.activeTabId.set(pageTab.id);
+    appState.ui.activeTabs.set((tabs) => [...tabs, pageTab]);
+    appState.ui.activeTabId.set(pageTab.id);
     scrollToTopTabMainPanel();
   };
 
@@ -70,27 +71,11 @@ export function ReadTab({ wikiId, pageTitle, redirect }: ReadTabProps) {
       <Box className={classes.box}>
         <Stack gap="xs">
           <Group gap="xs" justify="space-between" wrap="nowrap">
-            <Group
-              gap="xs"
-              wrap="nowrap"
-              style={{
-                overflow: 'hidden',
-                flex: 1,
-              }}
-            >
+            <Group gap="xs" wrap="nowrap" flex={1} miw={0}>
               <Badge ff="var(--zinnia-font-monospace)" h="1.625rem" radius="sm" tt="lowercase">
                 {wikiId}
               </Badge>
-              <Box
-                visibleFrom="sm"
-                style={{
-                  display: 'flex',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  flex: 1,
-                  color: 'var(--mantine-color-anchor)',
-                }}
-              >
+              <Flex flex={1} miw={0} visibleFrom="sm">
                 <Anchor
                   fw={600}
                   href={
@@ -100,17 +85,20 @@ export function ReadTab({ wikiId, pageTitle, redirect }: ReadTabProps) {
                   }
                   target="_blank"
                   style={{
+                    whiteSpace: 'nowrap',
                     textOverflow: 'ellipsis',
                     overflow: 'hidden',
                   }}
                 >
                   {pageTitle}
                 </Anchor>
-              </Box>
+              </Flex>
             </Group>
 
             <Group gap="sm">
-              <Text className={classes.label}>{pageHtmlResult.pageId}</Text>
+              <Text className={classes.label} c="cyan">
+                {revisionId}
+              </Text>
               <Flex justify="center" align="center" h={20} w={20} me={2}>
                 {isLoading ? (
                   <Loader color="blue" size="1rem" />

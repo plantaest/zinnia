@@ -99,7 +99,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
   });
 
   const handleClickChangeButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const tabs = appState.local.activeTabs.peek();
+    const tabs = appState.ui.activeTabs.peek();
     const now = dayjs().toISOString();
 
     if (change.type === 'edit') {
@@ -117,7 +117,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
             toRevisionId: change.revisionId,
           },
         };
-        appState.local.activeTabs.set([...tabs, diffTab]);
+        appState.ui.activeTabs.set([...tabs, diffTab]);
       } else {
         appState.ui.selectedChange.set(change);
 
@@ -139,7 +139,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
               toRevisionId: change.revisionId,
             },
           };
-          appState.local.activeTabs.set([...tabs, mainDiffTab]);
+          appState.ui.activeTabs.set([...tabs, mainDiffTab]);
         } else {
           tabId = currentMainDiffTab.id;
           const mainDiffTab: Tab = {
@@ -155,12 +155,12 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
               toRevisionId: change.revisionId,
             },
           };
-          appState.local.activeTabs.set((activeTabs) =>
+          appState.ui.activeTabs.set((activeTabs) =>
             activeTabs.map((tab) => (tab.type === TabType.MAIN_DIFF ? mainDiffTab : tab))
           );
         }
 
-        appState.local.activeTabId.set(tabId);
+        appState.ui.activeTabId.set(tabId);
         scrollToTopTabMainPanel();
 
         if (!largerThanMd) {
@@ -180,10 +180,11 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
           data: {
             wikiId: change.wikiId,
             pageTitle: change.title,
+            revisionId: change.revisionId,
             redirect: change.redirect,
           },
         };
-        appState.local.activeTabs.set([...tabs, readTab]);
+        appState.ui.activeTabs.set([...tabs, readTab]);
       } else {
         appState.ui.selectedChange.set(change);
 
@@ -201,10 +202,11 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
             data: {
               wikiId: change.wikiId,
               pageTitle: change.title,
+              revisionId: change.revisionId,
               redirect: change.redirect,
             },
           };
-          appState.local.activeTabs.set([...tabs, mainReadTab]);
+          appState.ui.activeTabs.set([...tabs, mainReadTab]);
         } else {
           tabId = currentMainReadTab.id;
           const mainReadTab: Tab = {
@@ -216,15 +218,16 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
             data: {
               wikiId: change.wikiId,
               pageTitle: change.title,
+              revisionId: change.revisionId,
               redirect: change.redirect,
             },
           };
-          appState.local.activeTabs.set((activeTabs) =>
+          appState.ui.activeTabs.set((activeTabs) =>
             activeTabs.map((tab) => (tab.type === TabType.MAIN_READ ? mainReadTab : tab))
           );
         }
 
-        appState.local.activeTabId.set(tabId);
+        appState.ui.activeTabId.set(tabId);
         scrollToTopTabMainPanel();
 
         if (!largerThanMd) {
@@ -292,7 +295,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
               </Group>
 
               <Group justify="space-between" gap={8} wrap="nowrap">
-                <Group className={classes.pageTitle}>
+                <Group gap={8} wrap="nowrap" className={classes.anchorBox}>
                   <Avatar
                     size="sm"
                     radius="sm"
@@ -303,10 +306,10 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
                   </Avatar>
 
                   <Anchor
+                    className={classes.anchor}
                     size="sm"
                     href={pageTitleLink}
                     target="_blank"
-                    fw={500}
                     onClick={handleClickPageTitleLink}
                     onDoubleClick={handleDoubleClickPageTitleLink}
                   >
@@ -320,16 +323,16 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
               </Group>
 
               <Group justify="space-between" gap={8}>
-                <Group className={classes.username}>
+                <Group gap={8} wrap="nowrap" className={classes.anchorBox}>
                   <Avatar size="sm" radius="sm" color="blue" variant="filled">
                     <UserIcon size="1rem" />
                   </Avatar>
 
                   <Anchor
+                    className={classes.anchor}
                     size="sm"
                     href={usernameLink}
                     target="_blank"
-                    fw={500}
                     onClick={handleClickUsernameLink}
                     onDoubleClick={handleDoubleClickUsernameLink}
                   >

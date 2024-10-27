@@ -83,7 +83,7 @@ export function UserPanel({
     parentRevisionId: number,
     revisionId: number
   ) => {
-    const activeTab = appState.local.activeTab.peek();
+    const activeTab = appState.ui.activeTab.peek();
 
     if (activeTab && (activeTab.type === TabType.DIFF || activeTab.type === TabType.MAIN_DIFF)) {
       const now = dayjs().toISOString();
@@ -100,7 +100,7 @@ export function UserPanel({
           toRevisionId: revisionId,
         },
       };
-      appState.local.activeTab.set(diffTab);
+      appState.ui.activeTab.set(diffTab);
       scrollToTopTabMainPanel();
     }
   };

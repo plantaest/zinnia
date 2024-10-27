@@ -5,7 +5,7 @@ import { useSelector } from '@legendapp/state/react';
 import { useListState } from '@mantine/hooks';
 import dayjs from 'dayjs';
 import { ToolboxLayer } from '@/components/ToolboxPanel/ToolboxPanel';
-import { nativeTools, nativeToolsDict } from '@/utils/tools/nativeTools';
+import { nativeTools, nativeToolsDict } from '@/tools/nativeTools';
 import classes from './ToolboxNativeToolList.module.css';
 import { appState } from '@/states/appState';
 import { isEqual } from '@/utils/isEqual';

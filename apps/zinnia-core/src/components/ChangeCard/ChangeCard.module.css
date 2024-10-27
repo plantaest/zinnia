@@ -16,6 +16,10 @@
   &:active {
     transform: translateY(calc(0.0625rem * var(--mantine-scale)));
   }
+
+  &:focus {
+    outline-offset: rem(-2px);
+  }
 }
 
 .bar {
@@ -23,6 +27,7 @@
   width: rem(4px);
   height: 90%;
   border-radius: var(--mantine-radius-md);
+  transition: background-color .1s ease;
 }
 
 .wrapper {
@@ -52,15 +57,14 @@
   color: var(--mantine-color-gray-light-color);
 }
 
-.pageTitle, .username {
-  white-space: nowrap;
-  overflow: hidden;
-  mask-image: linear-gradient(to right, rgba(0, 0, 0, 1.0) 90%, transparent 100%);
+.anchorBox {
   flex: 1;
-  flex-wrap: nowrap;
-  gap: rem(8px);
+  min-width: 0;
+}
 
-  @mixin rtl {
-    mask-image: linear-gradient(to left, rgba(0, 0, 0, 1.0) 90%, transparent 100%);
-  }
+.anchor {
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

@@ -2,7 +2,6 @@ import {
   IconAlignJustified,
   IconFile,
   IconLayoutColumns,
-  IconPhoto,
   IconSeeding,
   IconUser,
   TablerIcon,
@@ -15,8 +14,6 @@ export const tabIcons: Record<TabType, TablerIcon> = {
   [TabType.MAIN_DIFF]: IconLayoutColumns,
   [TabType.READ]: IconAlignJustified,
   [TabType.MAIN_READ]: IconAlignJustified,
-  [TabType.FILE]: IconPhoto,
-  [TabType.MAIN_FILE]: IconPhoto,
   [TabType.PAGE]: IconFile,
   [TabType.USER]: IconUser,
 };

@@ -19,10 +19,6 @@ export type Tab = {
       data: ReadTabData;
     }
   | {
-      type: TabType.FILE | TabType.MAIN_FILE;
-      data: FileTabData;
-    }
-  | {
       type: TabType.PAGE;
       data: PageTabData;
     }
@@ -38,11 +34,19 @@ export enum TabType {
   MAIN_DIFF = 'MAIN_DIFF',
   READ = 'READ',
   MAIN_READ = 'MAIN_READ',
-  FILE = 'FILE',
-  MAIN_FILE = 'MAIN_FILE',
   PAGE = 'PAGE',
   USER = 'USER',
 }
+
+export const tabTypeMessages: Record<TabType, string> = {
+  [TabType.WELCOME]: 'tab.welcome',
+  [TabType.DIFF]: 'tab.diff',
+  [TabType.MAIN_DIFF]: 'tab.mainDiff',
+  [TabType.READ]: 'tab.read',
+  [TabType.MAIN_READ]: 'tab.mainRead',
+  [TabType.PAGE]: 'tab.page',
+  [TabType.USER]: 'tab.user',
+};
 
 export interface DiffTabData {
   wikiId: string;
@@ -54,12 +58,8 @@ export interface DiffTabData {
 export interface ReadTabData {
   wikiId: string;
   pageTitle: string;
+  revisionId: number;
   redirect: boolean;
-}
-
-export interface FileTabData {
-  wikiId: string;
-  pageTitle: string;
 }
 
 export interface PageTabData {

@@ -14,7 +14,7 @@ let diffTabData: DiffTabData;
 let readTabData: ReadTabData;
 
 export function TabMainPanel() {
-  const activeTab = useSelector(appState.local.activeTab);
+  const activeTab = useSelector(appState.ui.activeTab);
   let otherTab = <NoneTab />;
 
   if (activeTab) {
@@ -22,6 +22,7 @@ export function TabMainPanel() {
       readTabData = {
         wikiId: activeTab.data.wikiId,
         pageTitle: activeTab.data.pageTitle,
+        revisionId: activeTab.data.revisionId,
         redirect: activeTab.data.redirect,
       };
     }
@@ -56,6 +57,7 @@ export function TabMainPanel() {
           <ReadTab
             wikiId={readTabData.wikiId}
             pageTitle={readTabData.pageTitle}
+            revisionId={readTabData.revisionId}
             redirect={readTabData.redirect}
           />
         )}

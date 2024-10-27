@@ -24,20 +24,20 @@ import { CloseModalButton } from '@/components/CloseModalButton/CloseModalButton
 function TabListPanelContent() {
   const { formatMessage } = useIntl();
   const { dir } = useDirection();
-  const activeTabs = useSelector(appState.local.activeTabs);
-  const activeTabId = useSelector(appState.local.activeTabId);
+  const activeTabs = useSelector(appState.ui.activeTabs);
+  const activeTabId = useSelector(appState.ui.activeTabId);
 
   const handleClickTab = (tabId: string) => {
-    appState.local.activeTabId.set(tabId);
+    appState.ui.activeTabId.set(tabId);
     scrollToTopTabMainPanel();
     modals.closeAll();
   };
 
   const handleClickDeleteTabButton = (tabId: string) => {
     if (tabId === activeTabId) {
-      appState.local.activeTabId.set(null);
+      appState.ui.activeTabId.set(null);
     }
-    appState.local.activeTabs.set((tabs) => tabs.filter((tab) => tab.id !== tabId));
+    appState.ui.activeTabs.set((tabs) => tabs.filter((tab) => tab.id !== tabId));
   };
 
   return (

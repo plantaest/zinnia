@@ -24,22 +24,22 @@ interface AppState {
     activeFilter: ObservableComputed<Filter | null>;
     rcQueryParams: Record<WikiId, ApiQueryRecentChangesParams>;
     focus: boolean;
-    activeTab: ObservableComputed<Tab | null>;
     selectedChange: Change | null;
     showTabPanelDrawer: boolean;
     preview: boolean;
+    activeTabs: ObservableComputedTwoWay<Tab[]>;
+    activeTabId: ObservableComputedTwoWay<string | null>;
+    activeTab: ObservableComputedTwoWay<Tab | null>;
   };
   instance: {
     numberFormat: ObservableComputed<Intl.NumberFormat>;
+    listFormat: ObservableComputed<Intl.ListFormat>;
   };
   window: {
     height: number;
   };
   local: {
     tabs: Record<string, { tabs: Tab[]; activeTabId: string | null }>; // Key is workspace ID
-    activeTabs: ObservableComputedTwoWay<Tab[]>;
-    activeTabId: ObservableComputedTwoWay<string | null>;
-    activeTab: ObservableComputedTwoWay<Tab | null>;
   };
 }
 
@@ -67,24 +67,9 @@ export const appState: ObservableObject<AppState> = observable<AppState>({
     ),
     rcQueryParams: {},
     focus: false,
-    activeTab: computed(
-      () =>
-        (appState.ui.activeWorkspace.tabs.get() ?? []).find(
-          (t) => t.id === appState.ui.activeWorkspace.activeTabId.get()
-        ) ?? null
-    ),
     selectedChange: null,
     showTabPanelDrawer: false,
     preview: false,
-  },
-  instance: {
-    numberFormat: computed(() => new Intl.NumberFormat(appState.userConfig.locale.get())),
-  },
-  window: {
-    height: window.innerHeight,
-  },
-  local: {
-    tabs: {},
     activeTabs: computed(
       () => {
         const activeWorkspace = appState.ui.activeWorkspace.get();
@@ -123,17 +108,26 @@ export const appState: ObservableObject<AppState> = observable<AppState>({
     ),
     activeTab: computed(
       () =>
-        (appState.local.activeTabs.get() ?? []).find(
-          (t) => t.id === appState.local.activeTabId.get()
-        ) ?? null,
+        (appState.ui.activeTabs.get() ?? []).find((t) => t.id === appState.ui.activeTabId.get()) ??
+        null,
       (tab: Tab) => {
-        appState.local.activeTabs.set(
-          (appState.local.activeTabs.get() ?? []).map((t) =>
-            t.id === appState.local.activeTabId.get() ? tab : t
+        appState.ui.activeTabs.set(
+          (appState.ui.activeTabs.get() ?? []).map((t) =>
+            t.id === appState.ui.activeTabId.get() ? tab : t
           )
         );
       }
     ),
+  },
+  instance: {
+    numberFormat: computed(() => new Intl.NumberFormat(appState.userConfig.locale.get())),
+    listFormat: computed(() => new Intl.ListFormat(appState.userConfig.language.get())),
+  },
+  window: {
+    height: window.innerHeight,
+  },
+  local: {
+    tabs: {},
   },
 });
 

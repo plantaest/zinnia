@@ -1,16 +1,7 @@
-import {
-  ActionIcon,
-  Box,
-  Card,
-  Flex,
-  Group,
-  Stack,
-  Text,
-  Tooltip,
-  useDirection,
-} from '@mantine/core';
+import { ActionIcon, Box, Card, Text, Tooltip, useDirection } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import { useSelector } from '@legendapp/state/react';
+import { useIntl } from 'react-intl';
 import classes from '@/components/TabPanel/TabFooterPanel.module.css';
 import { FilterPanel } from '@/components/FilterPanel/FilterPanel';
 import { WorkspacePanel } from '@/components/WorkspacePanel/WorkspacePanel';
@@ -18,10 +9,11 @@ import { SettingPanel } from '@/components/SettingPanel/SettingPanel';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
 import { ToolboxPanel } from '@/components/ToolboxPanel/ToolboxPanel';
 import { appState } from '@/states/appState';
-import { nativeToolsDict } from '@/utils/tools/nativeTools';
-import { extendedToolsDict } from '@/utils/tools/extendedTools';
+import { nativeToolsDict } from '@/tools/nativeTools';
+import { extendedToolsDict } from '@/tools/extendedTools';
 
 function ToolButtonsCarousel() {
+  const { formatMessage, messages } = useIntl();
   const tools = useSelector(appState.userConfig.tools);
   const dockedNativeTools = tools.native.filter((tool) => tool.settings.general.dock);
   const dockedExtendedTools = tools.extended.filter((tool) => tool.settings.general.dock);
@@ -32,8 +24,7 @@ function ToolButtonsCarousel() {
       <Tooltip.Group openDelay={200} closeDelay={200}>
         <Carousel
           align="start"
-          height={42}
-          my={-4}
+          my={-6}
           slideSize={34}
           slideGap="xs"
           slidesToScroll={5}
@@ -43,17 +34,31 @@ function ToolButtonsCarousel() {
             viewport: classes.carouselViewport,
             controls: classes.carouselControls,
             control: classes.carouselControl,
+            slide: classes.carouselSlide,
           }}
         >
           {dockedNativeTools
             .flatMap((tool) => nativeToolsDict[tool.toolId].actions)
             .map((action, index) => (
               <Carousel.Slide key={index}>
-                <Tooltip label={action.name}>
-                  <ActionIcon color={action.iconColor} size="lg" aria-label={action.name}>
-                    <action.iconShape size="1.5rem" />
-                  </ActionIcon>
-                </Tooltip>
+                <action.component>
+                  {({ trigger }) => (
+                    <Tooltip
+                      label={
+                        action.name in messages ? formatMessage({ id: action.name }) : action.name
+                      }
+                    >
+                      <ActionIcon
+                        color={action.iconColor}
+                        size="lg"
+                        aria-label={action.name}
+                        onClick={trigger}
+                      >
+                        <action.iconShape size="1.5rem" />
+                      </ActionIcon>
+                    </Tooltip>
+                  )}
+                </action.component>
               </Carousel.Slide>
             ))}
           {dockedExtendedTools.map((tool) => {
@@ -90,29 +95,23 @@ export function TabFooterPanel() {
 
   return (
     <Card p="xs" className={classes.wrapper}>
-      <Stack gap="xs">
-        <Flex justify="center" hiddenFrom="md">
-          {carousel}
-        </Flex>
+      <Box className={classes.grid}>
+        <Box className={classes.left}>
+          <FilterPanel />
+          <WorkspacePanel />
+        </Box>
 
-        <Group gap="xs" justify="space-between" wrap="nowrap" align="start">
-          <Group gap="xs" wrap="nowrap">
-            <FilterPanel />
-            <WorkspacePanel />
-          </Group>
+        <Box className={classes.tools}>{carousel}</Box>
 
-          <Box visibleFrom="md">{carousel}</Box>
+        <Box className={classes.navigation}>
+          <NavigationPanel />
+        </Box>
 
-          <Flex hiddenFrom="md">
-            <NavigationPanel />
-          </Flex>
-
-          <Group gap="xs" wrap="nowrap">
-            <ToolboxPanel />
-            <SettingPanel />
-          </Group>
-        </Group>
-      </Stack>
+        <Box className={classes.right}>
+          <ToolboxPanel />
+          <SettingPanel />
+        </Box>
+      </Box>
     </Card>
   );
 }

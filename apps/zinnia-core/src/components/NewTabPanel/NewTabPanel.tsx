@@ -12,7 +12,6 @@ import {
   IconAlignJustified,
   IconFile,
   IconLayoutColumns,
-  IconPhoto,
   IconPlus,
   IconSeeding,
   IconUser,
@@ -40,11 +39,11 @@ function NewTabPanelContent() {
       type: TabType.WELCOME,
       data: null,
     };
-    appState.local.activeTabs.set((activeTabs) => [...activeTabs, welcomeTab]);
-    appState.local.activeTabId.set(tabId);
+    appState.ui.activeTabs.set((activeTabs) => [...activeTabs, welcomeTab]);
+    appState.ui.activeTabId.set(tabId);
   };
 
-  const activeTabs = useSelector(appState.local.activeTabs);
+  const activeTabs = useSelector(appState.ui.activeTabs);
   const isDisabled = activeTabs.length >= appConfig.MAX_TAB_LIMIT;
 
   return (
@@ -60,42 +59,35 @@ function NewTabPanelContent() {
         >
           <Stack align="center" gap="xs">
             <IconSeeding size="1.5rem" stroke={1.5} />
-            <Text size="xs">{formatMessage({ id: 'ui.newTabPanel.welcome' })}</Text>
+            <Text size="xs">{formatMessage({ id: 'tab.welcome' })}</Text>
           </Stack>
         </UnstyledButton>
 
         <UnstyledButton className={classes.tab} data-disabled disabled>
           <Stack align="center" gap="xs">
             <IconLayoutColumns size="1.5rem" stroke={1.5} />
-            <Text size="xs">{formatMessage({ id: 'ui.newTabPanel.diff' })}</Text>
+            <Text size="xs">{formatMessage({ id: 'tab.diff' })}</Text>
           </Stack>
         </UnstyledButton>
 
         <UnstyledButton className={classes.tab} data-disabled disabled>
           <Stack align="center" gap="xs">
             <IconAlignJustified size="1.5rem" stroke={1.5} />
-            <Text size="xs">{formatMessage({ id: 'ui.newTabPanel.read' })}</Text>
-          </Stack>
-        </UnstyledButton>
-
-        <UnstyledButton className={classes.tab} data-disabled disabled>
-          <Stack align="center" gap="xs">
-            <IconPhoto size="1.5rem" stroke={1.5} />
-            <Text size="xs">{formatMessage({ id: 'ui.newTabPanel.file' })}</Text>
+            <Text size="xs">{formatMessage({ id: 'tab.read' })}</Text>
           </Stack>
         </UnstyledButton>
 
         <UnstyledButton className={classes.tab} data-disabled disabled>
           <Stack align="center" gap="xs">
             <IconFile size="1.5rem" stroke={1.5} />
-            <Text size="xs">{formatMessage({ id: 'ui.newTabPanel.page' })}</Text>
+            <Text size="xs">{formatMessage({ id: 'tab.page' })}</Text>
           </Stack>
         </UnstyledButton>
 
         <UnstyledButton className={classes.tab} data-disabled disabled>
           <Stack align="center" gap="xs">
             <IconUser size="1.5rem" stroke={1.5} />
-            <Text size="xs">{formatMessage({ id: 'ui.newTabPanel.user' })}</Text>
+            <Text size="xs">{formatMessage({ id: 'tab.user' })}</Text>
           </Stack>
         </UnstyledButton>
       </SimpleGrid>

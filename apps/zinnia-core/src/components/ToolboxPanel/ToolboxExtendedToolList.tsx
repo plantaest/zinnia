@@ -6,7 +6,7 @@ import { useListState } from '@mantine/hooks';
 import dayjs from 'dayjs';
 import { ToolboxLayer } from '@/components/ToolboxPanel/ToolboxPanel';
 import classes from './ToolboxNativeToolList.module.css';
-import { extendedTools } from '@/utils/tools/extendedTools';
+import { extendedTools } from '@/tools/extendedTools';
 import { appState } from '@/states/appState';
 import { useUpdateExtendedTools } from '@/queries/useUpdateExtendedTools';
 import { UserExtendedTool } from '@/types/persistence/Tool';
