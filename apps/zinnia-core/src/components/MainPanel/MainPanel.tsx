@@ -31,11 +31,7 @@ export function MainPanel() {
           size="100%"
           withCloseButton={false}
           withOverlay={false}
-          autoFocus={false}
           styles={{
-            inner: {
-              right: 0,
-            },
             body: {
               padding: 5,
               backgroundColor: computedColorScheme === 'dark' ? '#061e35' : '#c8e3f9',

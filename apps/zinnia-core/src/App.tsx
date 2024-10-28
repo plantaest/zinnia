@@ -19,7 +19,7 @@ import { ObservablePersistLocalStorage } from '@legendapp/state/persist-plugins/
 import { RawIntlProvider } from 'react-intl';
 import { zinniaRoot } from '@/utils/zinniaRoot';
 import { theme } from './theme';
-import { Notify } from '@/utils/Notify';
+import { Notification } from '@/utils/Notification';
 import { appConfig } from '@/config/appConfig';
 import { appState } from '@/states/appState';
 import { HomePage } from '@/pages/HomePage/Home.page';
@@ -60,7 +60,7 @@ const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error, query) => {
       if (query.meta?.showErrorNotification !== false) {
-        Notify.error(
+        Notification.error(
           (query.meta?.errorMessage as string) ||
             i18n.intl.formatMessage({ id: 'query.defaultErrorMessage' })
         );

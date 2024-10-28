@@ -7,7 +7,7 @@ import { Workspace } from '@/types/persistence/Workspace';
 import { appState } from '@/states/appState';
 import { metaWiki } from '@/utils/wikis';
 import { appConfig } from '@/config/appConfig';
-import { Notify } from '@/utils/Notify';
+import { Notification } from '@/utils/Notification';
 
 export function useCreateWorkspace() {
   const { formatMessage } = useIntl();
@@ -26,9 +26,9 @@ export function useCreateWorkspace() {
       return userConfig;
     },
     onSuccess: (userConfig) => {
-      Notify.success(formatMessage({ id: 'hook.useCreateWorkspace.success.default' }));
+      Notification.success(formatMessage({ id: 'hook.useCreateWorkspace.success.default' }));
       appState.userConfig.set(userConfig);
     },
-    onError: () => Notify.error(formatMessage({ id: 'hook.useSaveOption.error.default' })),
+    onError: () => Notification.error(formatMessage({ id: 'hook.useSaveOption.error.default' })),
   });
 }

@@ -180,7 +180,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
           data: {
             wikiId: change.wikiId,
             pageTitle: change.title,
-            revisionId: change.revisionId,
+            revisionId: null,
             redirect: change.redirect,
           },
         };
@@ -202,7 +202,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
             data: {
               wikiId: change.wikiId,
               pageTitle: change.title,
-              revisionId: change.revisionId,
+              revisionId: null,
               redirect: change.redirect,
             },
           };
@@ -218,7 +218,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
             data: {
               wikiId: change.wikiId,
               pageTitle: change.title,
-              revisionId: change.revisionId,
+              revisionId: null,
               redirect: change.redirect,
             },
           };

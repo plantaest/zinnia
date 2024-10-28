@@ -1,8 +1,8 @@
 import { IconCheck } from '@tabler/icons-react';
-import { Button, Group, Popover, Stack, Switch, Text } from '@mantine/core';
+import { Button, Drawer, Group, Popover, Stack, Switch, Text } from '@mantine/core';
 import { useIntl } from 'react-intl';
 import { useSelector } from '@legendapp/state/react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useHotkeys } from '@mantine/hooks';
 import * as v from 'valibot';
 import { useForm } from '@mantine/form';
@@ -15,11 +15,60 @@ import {
 } from '@/tools/types/ZinniaTool';
 import { appState } from '@/states/appState';
 import { TabType } from '@/types/persistence/Tab';
-import { Notify } from '@/utils/Notify';
+import { Notification } from '@/utils/Notification';
 import { useToolUtils } from '@/tools/useToolUtils';
-import { isEqual } from '@/utils/isEqual';
+import { mergeAndRemoveEqualKeys } from '@/utils/mergeAndRemoveEqualKeys';
+import { useLargerThan } from '@/hooks/useLargerThan';
+import { useGetRevisions } from '@/queries/useGetRevisions';
 
 const TOOL_ID = 'native:mark';
+
+// Settings
+
+const settingsSchema = v.object({
+  showConfirmationDialog: v.boolean(),
+});
+
+type SettingsFormValues = v.InferInput<typeof settingsSchema>;
+
+const settingsInitialFormValues: SettingsFormValues = {
+  showConfirmationDialog: true,
+};
+
+function AdditionalSettingsForm({
+  parentForm,
+  toolIndex,
+  data,
+}: NativeToolAdditionalSettingsFormComponentProps) {
+  const { formatMessage } = useIntl();
+
+  const form = useForm({
+    mode: 'uncontrolled',
+    initialValues: { ...settingsInitialFormValues, ...data },
+    validate: valibotResolver(settingsSchema),
+    onValuesChange: (values) => {
+      parentForm.setFieldValue(
+        `native.${toolIndex}.settings.additional.data`,
+        mergeAndRemoveEqualKeys(settingsInitialFormValues, values)
+      );
+    },
+  });
+
+  return (
+    <Stack gap="xs">
+      <Group gap="xs" justify="space-between">
+        <Text size="xs">
+          {formatMessage({ id: 'tool.native.mark.message.showConfirmationDialog' })}
+        </Text>
+        <Switch
+          size="xs"
+          key={form.key('showConfirmationDialog')}
+          {...form.getInputProps('showConfirmationDialog', { type: 'checkbox' })}
+        />
+      </Group>
+    </Stack>
+  );
+}
 
 // Actions
 
@@ -37,20 +86,41 @@ function MarkAsPatrolledAction({ children }: NativeToolActionComponentProps) {
   const { formatMessage } = useIntl();
   const { allowedTabsMessage } = useToolUtils();
   const activeTab = useSelector(appState.ui.activeTab);
-  const revisionId = activeTab
-    ? activeTab.type === TabType.DIFF || activeTab.type === TabType.MAIN_DIFF
-      ? activeTab.data.toRevisionId
-      : activeTab.type === TabType.READ || activeTab.type === TabType.MAIN_READ
-        ? activeTab.data.revisionId
-        : 0
-    : 0;
+  const diffTabData =
+    activeTab && (activeTab.type === TabType.DIFF || activeTab.type === TabType.MAIN_DIFF)
+      ? activeTab.data
+      : null;
+  const readTabData =
+    activeTab && (activeTab.type === TabType.READ || activeTab.type === TabType.MAIN_READ)
+      ? activeTab.data
+      : null;
   const [opened, setOpened] = useState(false);
   const userMarkTool = useSelector(() =>
     appState.userConfig.tools.native.get().find((tool) => tool.toolId === TOOL_ID)
   );
-  const additionalSettings: Partial<FormValues> = userMarkTool
+  const userAdditionalSettings: Partial<SettingsFormValues> = userMarkTool
     ? userMarkTool.settings.additional.data
     : {};
+  const additionalSettings: SettingsFormValues = {
+    ...settingsInitialFormValues,
+    ...userAdditionalSettings,
+  };
+  const targetRef = useRef<HTMLButtonElement>(null);
+  const largerThanXs = useLargerThan('xs');
+  const { data: firstRevisions = [], isLoading: isLoadingFirstRevisions } = useGetRevisions(
+    readTabData && readTabData.revisionId === null ? readTabData.wikiId : 'N/A',
+    readTabData && readTabData.revisionId === null ? readTabData.pageTitle : 'N/A',
+    1,
+    'newer'
+  );
+  const revisionId = diffTabData
+    ? diffTabData.toRevisionId
+    : readTabData && readTabData.revisionId
+      ? readTabData.revisionId
+      : firstRevisions.length > 0
+        ? firstRevisions[0].revisionId
+        : 0;
+  const currentReadTabRevisionId = useSelector(appState.tool.currentReadTabRevisionId);
 
   const run = () => {
     // eslint-disable-next-line no-console
@@ -59,21 +129,61 @@ function MarkAsPatrolledAction({ children }: NativeToolActionComponentProps) {
 
   const trigger = () => {
     if (activeTab && markAsPatrolledAction.allowedTabs.includes(activeTab.type)) {
-      if (additionalSettings.showConfirmDialog === undefined) {
+      if (additionalSettings.showConfirmationDialog) {
         setOpened(!opened);
-      }
-
-      if (additionalSettings.showConfirmDialog === false) {
+      } else {
         run();
       }
     } else {
-      Notify.info(allowedTabsMessage(markAsPatrolledAction.allowedTabs));
+      Notification.info(allowedTabsMessage(markAsPatrolledAction.allowedTabs));
     }
   };
 
-  useHotkeys([[markAsPatrolledAction.hotkey, trigger]]);
+  const triggerByHotkey = () => {
+    if (opened || (!opened && !additionalSettings.showConfirmationDialog)) {
+      targetRef.current?.focus();
+    }
+    trigger();
+  };
 
-  return (
+  useHotkeys([[markAsPatrolledAction.hotkey, triggerByHotkey]]);
+
+  const contentFragment = (
+    <Stack gap="xs">
+      <Stack gap={5}>
+        <Text size="sm" fw={600}>
+          {formatMessage({ id: 'common.confirm' })}
+        </Text>
+        <Text size="sm">
+          {formatMessage(
+            {
+              id:
+                readTabData && readTabData.revisionId === null
+                  ? 'tool.native.mark.message.confirmationTextForFirstRevision'
+                  : 'tool.native.mark.message.confirmationText',
+            },
+            {
+              revisionId: (
+                <Text
+                  component="span"
+                  c={readTabData && revisionId !== currentReadTabRevisionId ? 'orange' : 'cyan'}
+                  fw={600}
+                  ff="var(--zinnia-font-monospace)"
+                >
+                  {revisionId}
+                </Text>
+              ),
+            }
+          )}
+        </Text>
+      </Stack>
+      <Button onClick={run} disabled={isLoadingFirstRevisions}>
+        {formatMessage({ id: 'common.ok' })}
+      </Button>
+    </Stack>
+  );
+
+  return largerThanXs ? (
     <Popover
       width={250}
       position="top"
@@ -83,76 +193,24 @@ function MarkAsPatrolledAction({ children }: NativeToolActionComponentProps) {
       opened={opened}
       onChange={setOpened}
     >
-      <Popover.Target>{children({ trigger })}</Popover.Target>
+      <Popover.Target>{children({ trigger, targetRef })}</Popover.Target>
       <Popover.Dropdown px="sm" py="xs">
-        <Stack gap="xs">
-          <Stack gap={5}>
-            <Text size="sm" fw={600}>
-              {formatMessage({ id: 'common.confirm' })}
-            </Text>
-            <Text size="sm">
-              {formatMessage(
-                { id: 'tool.native.mark.message.confirmationText' },
-                {
-                  revisionId: (
-                    <Text component="span" c="cyan" fw={600} ff="var(--zinnia-font-monospace)">
-                      {revisionId}
-                    </Text>
-                  ),
-                }
-              )}
-            </Text>
-          </Stack>
-          <Button onClick={run}>{formatMessage({ id: 'common.ok' })}</Button>
-        </Stack>
+        {contentFragment}
       </Popover.Dropdown>
     </Popover>
-  );
-}
-
-// Settings
-
-const schema = v.object({
-  showConfirmDialog: v.boolean(),
-});
-
-type FormValues = v.InferInput<typeof schema>;
-
-const initialValues: FormValues = {
-  showConfirmDialog: true,
-};
-
-function AdditionalSettingsForm({
-  parentForm,
-  toolIndex,
-  data,
-}: NativeToolAdditionalSettingsFormComponentProps) {
-  const { formatMessage } = useIntl();
-
-  const form = useForm({
-    mode: 'uncontrolled',
-    initialValues: isEqual(data, {}) ? initialValues : (data as FormValues),
-    validate: valibotResolver(schema),
-    onValuesChange: (values) => {
-      if (!isEqual(initialValues, values)) {
-        parentForm.setFieldValue(`native.${toolIndex}.settings.additional.data`, values);
-      } else {
-        parentForm.setFieldValue(`native.${toolIndex}.settings.additional.data`, {});
-      }
-    },
-  });
-
-  return (
-    <Stack gap="xs">
-      <Group gap="xs" justify="space-between">
-        <Text size="xs">{formatMessage({ id: 'tool.native.mark.message.showConfirmDialog' })}</Text>
-        <Switch
-          size="xs"
-          key={form.key('showConfirmDialog')}
-          {...form.getInputProps('showConfirmDialog', { type: 'checkbox' })}
-        />
-      </Group>
-    </Stack>
+  ) : (
+    <>
+      <Drawer
+        opened={opened}
+        onClose={() => setOpened(false)}
+        position="bottom"
+        withCloseButton={false}
+        styles={{ content: { height: 'auto' } }}
+      >
+        {contentFragment}
+      </Drawer>
+      {children({ trigger, targetRef })}
+    </>
   );
 }
 

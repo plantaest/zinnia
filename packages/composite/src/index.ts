@@ -12,3 +12,4 @@ export * from './type/CompareRevisionsResult';
 export * from './type/PageHtmlResult';
 export * from './type/Revision';
 export * from './type/UserContribution';
+export * from './type/RevisionHtmlResult';

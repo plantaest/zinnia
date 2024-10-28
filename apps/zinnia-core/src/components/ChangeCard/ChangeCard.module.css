@@ -27,7 +27,6 @@
   width: rem(4px);
   height: 90%;
   border-radius: var(--mantine-radius-md);
-  transition: background-color .1s ease;
 }
 
 .wrapper {

@@ -50,6 +50,7 @@ export interface NativeToolActionComponentProps {
 
 export interface NativeToolActionComponentPayload {
   trigger: () => void;
+  targetRef?: React.RefObject<HTMLButtonElement>;
 }
 
 export interface NativeToolAdditionalSettingsFormComponentProps {

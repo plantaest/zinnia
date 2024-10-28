@@ -8,5 +8,9 @@
   font-family: var(--zinnia-font-monospace), monospace;
   font-size: var(--mantine-font-size-xs);
   font-weight: 600;
-  color: var(--mantine-color-gray-light-color);
+  color: var(--mantine-color-cyan-text);
+
+  &[data-latest="true"] {
+    box-shadow: inset 0 rem(-2px) 0 0 currentColor;
+  }
 }

@@ -31,6 +31,6 @@
 }
 
 /* Fix error on Vector 2022 */
-.mantine-Modal-inner {
+.mantine-Modal-inner, .mantine-Drawer-inner {
   left: 0;
 }

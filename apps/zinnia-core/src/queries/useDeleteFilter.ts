@@ -6,7 +6,7 @@ import { UserConfig } from '@/types/persistence/UserConfig';
 import { metaWiki } from '@/utils/wikis';
 import { appState } from '@/states/appState';
 import { appConfig } from '@/config/appConfig';
-import { Notify } from '@/utils/Notify';
+import { Notification } from '@/utils/Notification';
 
 export function useDeleteFilter() {
   const { formatMessage } = useIntl();
@@ -34,9 +34,9 @@ export function useDeleteFilter() {
       return userConfig;
     },
     onSuccess: (userConfig) => {
-      Notify.success(formatMessage({ id: 'hook.useDeleteFilter.success.default' }));
+      Notification.success(formatMessage({ id: 'hook.useDeleteFilter.success.default' }));
       appState.userConfig.set(userConfig);
     },
-    onError: () => Notify.error(formatMessage({ id: 'hook.useSaveOption.error.default' })),
+    onError: () => Notification.error(formatMessage({ id: 'hook.useSaveOption.error.default' })),
   });
 }

@@ -183,7 +183,8 @@
   "tool.native.restore.name": "Phục hồi",
   "tool.native.mark.name": "Đánh dấu",
   "tool.native.mark.message.confirmationText": "Đánh dấu phiên bản {revisionId} là đã tuần tra?",
-  "tool.native.mark.message.showConfirmDialog": "Hiển thị hộp thoại xác nhận",
+  "tool.native.mark.message.confirmationTextForFirstRevision": "Đánh dấu phiên bản đầu tiên {revisionId} là đã tuần tra?",
+  "tool.native.mark.message.showConfirmationDialog": "Hiển thị hộp thoại xác nhận",
   "tool.native.mark.actions.markAsPatrolled.name": "Đánh dấu tuần tra",
   "tool.native.rollback.name": "Lùi sửa",
   "tool.native.blank.name": "Tẩy trống"

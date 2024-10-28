@@ -1,9 +1,10 @@
-import { PageHtmlResult } from '@plantaest/composite';
+import { PageHtmlResult, RevisionHtmlResult } from '@plantaest/composite';
 import { ActionIcon, Anchor, Badge, Box, Flex, Group, Loader, Stack, Text } from '@mantine/core';
 import ReactShadowRoot from 'react-shadow-root';
 import { IconAlertTriangle, IconInfoCircle } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
+import { useEffect } from 'react';
 import { useGetPageHtml } from '@/queries/useGetPageHtml';
 import classes from './ReadTab.module.css';
 import { MwHelper } from '@/utils/MwHelper';
@@ -15,7 +16,7 @@ import { Tab, TabType } from '@/types/persistence/Tab';
 import { appState } from '@/states/appState';
 import { scrollToTopTabMainPanel } from '@/utils/scrollToTopTabMainPanel';
 
-const placeholderPageHtmlResult: PageHtmlResult = {
+const placeholderHtmlResult: PageHtmlResult | RevisionHtmlResult = {
   title: 'N/A',
   pageId: 0,
   revisionId: 0,
@@ -25,7 +26,7 @@ const placeholderPageHtmlResult: PageHtmlResult = {
 interface ReadTabProps {
   wikiId: string;
   pageTitle: string;
-  revisionId: number;
+  revisionId: number | null;
   redirect: boolean;
 }
 
@@ -33,16 +34,16 @@ export function ReadTab({ wikiId, pageTitle, revisionId, redirect }: ReadTabProp
   const serverName = wikis.getWiki(wikiId).getConfig().serverName;
 
   const {
-    data: pageHtmlResult = placeholderPageHtmlResult,
+    data: htmlResult = placeholderHtmlResult,
     isFetching: isFetchingGetPageHtml,
     isError,
     isSuccess: isSuccessGetPageHtml,
-  } = useGetPageHtml(wikiId, pageTitle);
+  } = useGetPageHtml(wikiId, pageTitle, revisionId);
   const {
     data: wikiStyleSheet,
     isFetching: isFetchingGetWikiStyleSheet,
     isSuccess: isSuccessGetWikiStyleSheet,
-  } = useGetWikiStyleSheet(wikiId, serverName, pageHtmlResult.html);
+  } = useGetWikiStyleSheet(wikiId, serverName, htmlResult.html);
 
   const isLoading = isFetchingGetPageHtml || isFetchingGetWikiStyleSheet;
   const isSuccess = isSuccessGetPageHtml || isSuccessGetWikiStyleSheet;
@@ -65,6 +66,10 @@ export function ReadTab({ wikiId, pageTitle, revisionId, redirect }: ReadTabProp
     appState.ui.activeTabId.set(pageTab.id);
     scrollToTopTabMainPanel();
   };
+
+  useEffect(() => {
+    appState.tool.currentReadTabRevisionId.set(htmlResult.revisionId);
+  }, [htmlResult.revisionId]);
 
   return (
     <Stack p={5} gap={5} flex={1} w="100%">
@@ -96,9 +101,11 @@ export function ReadTab({ wikiId, pageTitle, revisionId, redirect }: ReadTabProp
             </Group>
 
             <Group gap="sm">
-              <Text className={classes.label} c="cyan">
-                {revisionId}
-              </Text>
+              <Group gap={4}>
+                <Text className={classes.label} data-latest={revisionId === null}>
+                  {htmlResult.revisionId}
+                </Text>
+              </Group>
               <Flex justify="center" align="center" h={20} w={20} me={2}>
                 {isLoading ? (
                   <Loader color="blue" size="1rem" />
@@ -133,10 +140,10 @@ export function ReadTab({ wikiId, pageTitle, revisionId, redirect }: ReadTabProp
       <Box px={6} pb={6} pos="relative">
         <ReactShadowRoot>
           <style>{parsedHtmlStyles}</style>
-          {Boolean(pageHtmlResult.html) && Boolean(wikiStyleSheet) && (
+          {Boolean(htmlResult.html) && Boolean(wikiStyleSheet) && (
             <>
               <style>{wikiStyleSheet}</style>
-              <ParsoidOutput html={pageHtmlResult.html} options={{ wikiId, serverName }} />
+              <ParsoidOutput html={htmlResult.html} options={{ wikiId, serverName }} />
             </>
           )}
         </ReactShadowRoot>

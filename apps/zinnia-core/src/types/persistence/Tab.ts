@@ -58,7 +58,7 @@ export interface DiffTabData {
 export interface ReadTabData {
   wikiId: string;
   pageTitle: string;
-  revisionId: number;
+  revisionId: number | null;
   redirect: boolean;
 }
 

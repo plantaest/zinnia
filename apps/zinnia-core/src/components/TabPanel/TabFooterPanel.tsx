@@ -42,7 +42,7 @@ function ToolButtonsCarousel() {
             .map((action, index) => (
               <Carousel.Slide key={index}>
                 <action.component>
-                  {({ trigger }) => (
+                  {({ trigger, targetRef }) => (
                     <Tooltip
                       label={
                         action.name in messages ? formatMessage({ id: action.name }) : action.name
@@ -53,6 +53,7 @@ function ToolButtonsCarousel() {
                         size="lg"
                         aria-label={action.name}
                         onClick={trigger}
+                        ref={targetRef}
                       >
                         <action.iconShape size="1.5rem" />
                       </ActionIcon>

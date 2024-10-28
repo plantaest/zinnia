@@ -1,15 +1,18 @@
 import { PageHtmlResult } from './type/PageHtmlResult';
 import { InternalWiki } from './Wiki';
 import { CompositeError } from './CompositeError';
-import { RestGetPageWithHtmlResponse } from './type/rest/RestGetPageWithHtmlResponse';
 import { RestErrorResponse } from './type/rest/RestErrorResponse';
 import { Revision } from './type/Revision';
 import { MwApiWrapper } from './MwApiWrapper';
+import { RestGetPageWithHtmlResponse } from './type/rest/RestGetPageWithHtmlResponse';
+import { RevisionHtmlResult } from './type/RevisionHtmlResult';
+import { RestGetRevisionWithHtmlResponse } from './type/rest/RestGetRevisionWithHtmlResponse';
 
 export interface Page {
   title: () => string;
   html: () => Promise<PageHtmlResult>;
-  revisions: (limit: number) => Promise<Revision[]>;
+  revisionHtml: (revisionId: number) => Promise<RevisionHtmlResult>;
+  revisions: (limit: number, direction: 'newer' | 'older') => Promise<Revision[]>;
 }
 
 export class InternalPage implements Page {
@@ -46,7 +49,32 @@ export class InternalPage implements Page {
     };
   }
 
-  public async revisions(limit: number): Promise<Revision[]> {
+  // Refactor: Page::revisionHtml -> Page.Revision::html
+  public async revisionHtml(revisionId: number): Promise<RevisionHtmlResult> {
+    // Ref: https://www.mediawiki.org/wiki/API:REST_API/Reference#Get_revision_information_with_HTML
+    const url = `//${this.wiki.getConfig().serverName}/w/rest.php/v1/revision/${revisionId}/with_html`;
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      const error: RestErrorResponse = await response.json();
+      throw new CompositeError(error.errorKey ?? error.httpReason, JSON.stringify(error));
+    }
+
+    const result: RestGetRevisionWithHtmlResponse = await response.json();
+
+    return {
+      title: result.page.title,
+      pageId: result.page.id,
+      revisionId: result.id,
+      html: result.html,
+    };
+  }
+
+  public async revisions(
+    limit: number,
+    direction: 'newer' | 'older' = 'older'
+  ): Promise<Revision[]> {
     const params = {
       formatversion: 2,
       action: 'query',
@@ -54,6 +82,7 @@ export class InternalPage implements Page {
       titles: this._title,
       rvprop: 'ids|flags|timestamp|user|size|sha1|comment|parsedcomment|tags',
       rvlimit: limit + 1,
+      rvdir: direction,
     };
 
     const response = await MwApiWrapper.of(this.wiki.mwApi().get(params)).then();

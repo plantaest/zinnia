@@ -22,7 +22,7 @@ import { modals } from '@mantine/modals';
 import { appState } from '@/states/appState';
 import { useSaveOption } from '@/queries/useSaveOption';
 import { appConfig } from '@/config/appConfig';
-import { Notify } from '@/utils/Notify';
+import { Notification } from '@/utils/Notification';
 import { i18n } from '@/i18n';
 import { useLargerThan } from '@/hooks/useLargerThan';
 import { CloseModalButton } from '@/components/CloseModalButton/CloseModalButton';
@@ -106,7 +106,7 @@ function SettingPanelContent() {
           }
 
           await i18n.changeLanguage(clonedUserConfig.language);
-          Notify.success(
+          Notification.success(
             i18n.intl.formatMessage({ id: 'hook.useSaveOption.success.updateSettings' })
           );
         },

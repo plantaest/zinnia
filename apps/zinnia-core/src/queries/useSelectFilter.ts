@@ -6,7 +6,7 @@ import { UserConfig } from '@/types/persistence/UserConfig';
 import { appState } from '@/states/appState';
 import { metaWiki } from '@/utils/wikis';
 import { appConfig } from '@/config/appConfig';
-import { Notify } from '@/utils/Notify';
+import { Notification } from '@/utils/Notification';
 
 export function useSelectFilter() {
   const { formatMessage } = useIntl();
@@ -30,6 +30,6 @@ export function useSelectFilter() {
       return userConfig;
     },
     onSuccess: (userConfig) => appState.userConfig.set(userConfig),
-    onError: () => Notify.error(formatMessage({ id: 'hook.useSaveOption.error.default' })),
+    onError: () => Notification.error(formatMessage({ id: 'hook.useSaveOption.error.default' })),
   });
 }

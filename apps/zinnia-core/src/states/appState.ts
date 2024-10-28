@@ -41,6 +41,10 @@ interface AppState {
   local: {
     tabs: Record<string, { tabs: Tab[]; activeTabId: string | null }>; // Key is workspace ID
   };
+  // Some UI states created to support tool usage
+  tool: {
+    currentReadTabRevisionId: number;
+  };
 }
 
 export const appState: ObservableObject<AppState> = observable<AppState>({
@@ -128,6 +132,9 @@ export const appState: ObservableObject<AppState> = observable<AppState>({
   },
   local: {
     tabs: {},
+  },
+  tool: {
+    currentReadTabRevisionId: 0,
   },
 });
 
