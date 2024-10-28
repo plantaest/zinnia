@@ -884,7 +884,6 @@ function FilterPanelContent() {
 
 export function FilterPanel() {
   const { formatMessage } = useIntl();
-  const computedColorScheme = useComputedColorScheme();
   const { dir } = useDirection();
   const largerThanMd = useLargerThan('md');
   const largerThanLg = useLargerThan('lg');
@@ -922,16 +921,7 @@ export function FilterPanel() {
         </ActionIcon>
       </Popover.Target>
 
-      <Popover.Dropdown
-        py="xs"
-        px="sm"
-        style={{
-          backgroundColor:
-            computedColorScheme === 'dark'
-              ? 'var(--mantine-color-dark-7)'
-              : 'var(--mantine-color-white)',
-        }}
-      >
+      <Popover.Dropdown py="xs" px="sm">
         <FilterPanelContent />
       </Popover.Dropdown>
     </Popover>

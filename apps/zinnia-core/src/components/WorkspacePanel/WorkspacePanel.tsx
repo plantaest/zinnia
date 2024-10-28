@@ -1,4 +1,4 @@
-import { ActionIcon, Popover, Stack, useComputedColorScheme, useDirection } from '@mantine/core';
+import { ActionIcon, Popover, Stack, useDirection } from '@mantine/core';
 import { IconBoxMultiple } from '@tabler/icons-react';
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
@@ -27,7 +27,6 @@ function WorkspacePanelContent() {
 
 export function WorkspacePanel() {
   const { formatMessage } = useIntl();
-  const computedColorScheme = useComputedColorScheme();
   const { dir } = useDirection();
   const largerThanMd = useLargerThan('md');
 
@@ -64,16 +63,7 @@ export function WorkspacePanel() {
         </ActionIcon>
       </Popover.Target>
 
-      <Popover.Dropdown
-        py="xs"
-        px="sm"
-        style={{
-          backgroundColor:
-            computedColorScheme === 'dark'
-              ? 'var(--mantine-color-dark-7)'
-              : 'var(--mantine-color-white)',
-        }}
-      >
+      <Popover.Dropdown py="xs" px="sm">
         <WorkspacePanelContent />
       </Popover.Dropdown>
     </Popover>

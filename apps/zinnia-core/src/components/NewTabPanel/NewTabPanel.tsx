@@ -5,7 +5,6 @@ import {
   Stack,
   Text,
   UnstyledButton,
-  useComputedColorScheme,
   useDirection,
 } from '@mantine/core';
 import {
@@ -97,7 +96,6 @@ function NewTabPanelContent() {
 
 export function NewTabPanel() {
   const { formatMessage } = useIntl();
-  const computedColorScheme = useComputedColorScheme();
   const { dir } = useDirection();
   const activeWorkspaceId = useSelector(appState.userConfig.activeWorkspaceId);
 
@@ -123,16 +121,7 @@ export function NewTabPanel() {
         </ActionIcon>
       </Popover.Target>
 
-      <Popover.Dropdown
-        py="xs"
-        px="sm"
-        style={{
-          backgroundColor:
-            computedColorScheme === 'dark'
-              ? 'var(--mantine-color-dark-7)'
-              : 'var(--mantine-color-white)',
-        }}
-      >
+      <Popover.Dropdown py="xs" px="sm">
         <NewTabPanelContent />
       </Popover.Dropdown>
     </Popover>

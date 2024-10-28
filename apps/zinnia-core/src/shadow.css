@@ -34,3 +34,8 @@
 .mantine-Modal-inner, .mantine-Drawer-inner {
   left: 0;
 }
+
+/* Change default dark background color for popover dropdown */
+:where([data-mantine-color-scheme="dark"]) [role="dialog"].mantine-Popover-dropdown {
+  background-color: var(--mantine-color-dark-7);
+}

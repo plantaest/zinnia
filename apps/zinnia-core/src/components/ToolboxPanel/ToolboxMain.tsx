@@ -69,7 +69,7 @@ export function ToolboxMain({ onChangeLayer }: ToolboxMainProps) {
           </Text>
         </Stack>
       ) : (
-        <SimpleGrid spacing={6} verticalSpacing={6} cols={2}>
+        <SimpleGrid spacing={6} verticalSpacing={6} cols={{ base: 1, xs: 2 }}>
           {tools.native.map((tool) => {
             const nativeTool = nativeToolsDict[tool.toolId];
             return (
@@ -103,7 +103,7 @@ export function ToolboxMain({ onChangeLayer }: ToolboxMainProps) {
           </Text>
         </Stack>
       ) : (
-        <SimpleGrid spacing={6} verticalSpacing={6} cols={2}>
+        <SimpleGrid spacing={6} verticalSpacing={6} cols={{ base: 1, xs: 2 }}>
           {tools.extended.map((tool) => {
             const extendedTool = extendedToolsDict[tool.toolId];
             return (

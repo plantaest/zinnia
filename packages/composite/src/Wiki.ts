@@ -49,6 +49,8 @@ export abstract class Wiki {
   public abstract page(title: string): Page;
 
   public abstract user(username: string): User;
+
+  public abstract patrol(revisionId: number): Promise<void>;
 }
 
 export class InternalWiki extends Wiki {
@@ -222,5 +224,15 @@ export class InternalWiki extends Wiki {
 
   public override user(username: string): User {
     return new InternalUser(this, username);
+  }
+
+  public override async patrol(revisionId: number): Promise<void> {
+    const params = {
+      formatversion: 2,
+      action: 'patrol',
+      revid: revisionId,
+    };
+
+    await MwApiWrapper.of(this.mwApi().postWithToken('patrol', params)).then();
   }
 }

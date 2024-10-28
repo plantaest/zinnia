@@ -224,7 +224,6 @@ function SettingPanelContent() {
 
 export function SettingPanel() {
   const { formatMessage } = useIntl();
-  const computedColorScheme = useComputedColorScheme();
   const { dir } = useDirection();
   const largerThanMd = useLargerThan('md');
 
@@ -261,16 +260,7 @@ export function SettingPanel() {
         </ActionIcon>
       </Popover.Target>
 
-      <Popover.Dropdown
-        py="xs"
-        px="sm"
-        style={{
-          backgroundColor:
-            computedColorScheme === 'dark'
-              ? 'var(--mantine-color-dark-7)'
-              : 'var(--mantine-color-white)',
-        }}
-      >
+      <Popover.Dropdown py="xs" px="sm">
         <SettingPanelContent />
       </Popover.Dropdown>
     </Popover>

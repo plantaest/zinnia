@@ -295,7 +295,7 @@ export function ToolboxSettings({ onChangeLayer }: ToolboxSettingsProps) {
               labelPosition="left"
             />
             <Stack gap="xs">
-              <Group gap="xs" justify="space-between">
+              <Group gap="xs" justify="space-between" wrap="nowrap">
                 <Text size="xs">
                   {formatMessage({ id: 'ui.toolboxPanel.settings.displayOnDock' })}
                 </Text>

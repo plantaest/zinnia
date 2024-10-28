@@ -8,7 +8,6 @@ import {
   Stack,
   Text,
   UnstyledButton,
-  useComputedColorScheme,
   useDirection,
 } from '@mantine/core';
 import { IconChevronDown, IconX } from '@tabler/icons-react';
@@ -89,7 +88,6 @@ function TabListPanelContent() {
 
 export function TabListPanel() {
   const { formatMessage } = useIntl();
-  const computedColorScheme = useComputedColorScheme();
   const { dir } = useDirection();
   const largerThanMd = useLargerThan('md');
   const activeWorkspaceId = useSelector(appState.userConfig.activeWorkspaceId);
@@ -129,17 +127,7 @@ export function TabListPanel() {
         </ActionIcon>
       </Popover.Target>
 
-      <Popover.Dropdown
-        py={0}
-        px={0}
-        style={{
-          backgroundColor:
-            computedColorScheme === 'dark'
-              ? 'var(--mantine-color-dark-7)'
-              : 'var(--mantine-color-white)',
-          overflow: 'hidden',
-        }}
-      >
+      <Popover.Dropdown py={0} px={0} style={{ overflow: 'hidden' }}>
         <Box
           mah="80vh"
           px="sm"

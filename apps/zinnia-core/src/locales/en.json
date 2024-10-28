@@ -184,7 +184,9 @@
   "tool.native.mark.name": "Mark",
   "tool.native.mark.message.confirmationText": "Mark the revision {revisionId} as patrolled?",
   "tool.native.mark.message.confirmationTextForFirstRevision": "Mark the first revision {revisionId} as patrolled?",
+  "tool.native.mark.message.successfulMark": "Successfully marked revision {revisionId} as patrolled",
   "tool.native.mark.message.showConfirmationDialog": "Show confirmation dialog",
+  "tool.native.mark.message.showSuccessNotification": "Show success notification",
   "tool.native.mark.actions.markAsPatrolled.name": "Mark as patrolled",
   "tool.native.rollback.name": "Rollback",
   "tool.native.blank.name": "Blank"

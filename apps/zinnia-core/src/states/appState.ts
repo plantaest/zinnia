@@ -30,6 +30,7 @@ interface AppState {
     activeTabs: ObservableComputedTwoWay<Tab[]>;
     activeTabId: ObservableComputedTwoWay<string | null>;
     activeTab: ObservableComputedTwoWay<Tab | null>;
+    currentReadTabRevisionId: number;
   };
   instance: {
     numberFormat: ObservableComputed<Intl.NumberFormat>;
@@ -40,10 +41,6 @@ interface AppState {
   };
   local: {
     tabs: Record<string, { tabs: Tab[]; activeTabId: string | null }>; // Key is workspace ID
-  };
-  // Some UI states created to support tool usage
-  tool: {
-    currentReadTabRevisionId: number;
   };
 }
 
@@ -122,6 +119,7 @@ export const appState: ObservableObject<AppState> = observable<AppState>({
         );
       }
     ),
+    currentReadTabRevisionId: 0,
   },
   instance: {
     numberFormat: computed(() => new Intl.NumberFormat(appState.userConfig.locale.get())),
@@ -132,9 +130,6 @@ export const appState: ObservableObject<AppState> = observable<AppState>({
   },
   local: {
     tabs: {},
-  },
-  tool: {
-    currentReadTabRevisionId: 0,
   },
 });
 

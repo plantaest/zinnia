@@ -68,7 +68,7 @@ export function ReadTab({ wikiId, pageTitle, revisionId, redirect }: ReadTabProp
   };
 
   useEffect(() => {
-    appState.tool.currentReadTabRevisionId.set(htmlResult.revisionId);
+    appState.ui.currentReadTabRevisionId.set(htmlResult.revisionId);
   }, [htmlResult.revisionId]);
 
   return (

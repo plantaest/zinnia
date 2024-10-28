@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
-import {
-  ActionIcon,
-  Box,
-  Popover,
-  Stack,
-  useComputedColorScheme,
-  useDirection,
-} from '@mantine/core';
+import { ActionIcon, Box, Popover, Stack, useDirection } from '@mantine/core';
 import { IconGridDots } from '@tabler/icons-react';
 import { modals } from '@mantine/modals';
 import { ToolboxMain } from '@/components/ToolboxPanel/ToolboxMain';
@@ -34,7 +27,6 @@ function ToolboxPanelContent() {
 
 export function ToolboxPanel() {
   const { formatMessage } = useIntl();
-  const computedColorScheme = useComputedColorScheme();
   const { dir } = useDirection();
   const largerThanMd = useLargerThan('md');
 
@@ -54,7 +46,7 @@ export function ToolboxPanel() {
 
   return largerThanMd ? (
     <Popover
-      width={525}
+      width={550}
       position="top-end"
       shadow="lg"
       radius="md"
@@ -71,17 +63,7 @@ export function ToolboxPanel() {
         </ActionIcon>
       </Popover.Target>
 
-      <Popover.Dropdown
-        py={0}
-        px={0}
-        style={{
-          backgroundColor:
-            computedColorScheme === 'dark'
-              ? 'var(--mantine-color-dark-7)'
-              : 'var(--mantine-color-white)',
-          overflow: 'hidden',
-        }}
-      >
+      <Popover.Dropdown py={0} px={0} style={{ overflow: 'hidden' }}>
         <Box h={400} px="sm" py="xs" style={{ overflowY: 'auto', overscrollBehavior: 'contain' }}>
           <ToolboxPanelContent />
         </Box>

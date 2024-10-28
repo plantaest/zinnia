@@ -1,14 +1,5 @@
 import { useIntl } from 'react-intl';
-import {
-  ActionIcon,
-  Button,
-  Group,
-  Popover,
-  Stack,
-  Text,
-  useComputedColorScheme,
-  useDirection,
-} from '@mantine/core';
+import { ActionIcon, Button, Group, Popover, Stack, Text, useDirection } from '@mantine/core';
 import { IconCloudDownload, IconCloudUpload, IconRefresh } from '@tabler/icons-react';
 import { modals } from '@mantine/modals';
 import { useState } from 'react';
@@ -76,7 +67,6 @@ function SyncTabsPanelContent() {
 
 export function SyncTabsPanel() {
   const { formatMessage } = useIntl();
-  const computedColorScheme = useComputedColorScheme();
   const { dir } = useDirection();
   const largerThanMd = useLargerThan('md');
   const activeWorkspaceId = useSelector(appState.userConfig.activeWorkspaceId);
@@ -116,16 +106,7 @@ export function SyncTabsPanel() {
         </ActionIcon>
       </Popover.Target>
 
-      <Popover.Dropdown
-        py="xs"
-        px="sm"
-        style={{
-          backgroundColor:
-            computedColorScheme === 'dark'
-              ? 'var(--mantine-color-dark-7)'
-              : 'var(--mantine-color-white)',
-        }}
-      >
+      <Popover.Dropdown py="xs" px="sm">
         <SyncTabsPanelContent />
       </Popover.Dropdown>
     </Popover>

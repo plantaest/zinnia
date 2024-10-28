@@ -1,5 +1,5 @@
-import { IconCheck } from '@tabler/icons-react';
-import { Button, Drawer, Group, Popover, Stack, Switch, Text } from '@mantine/core';
+import { IconCheck, IconReload } from '@tabler/icons-react';
+import { Button, CloseButton, Drawer, Group, Popover, Stack, Switch, Text } from '@mantine/core';
 import { useIntl } from 'react-intl';
 import { useSelector } from '@legendapp/state/react';
 import { useRef, useState } from 'react';
@@ -20,6 +20,7 @@ import { useToolUtils } from '@/tools/useToolUtils';
 import { mergeAndRemoveEqualKeys } from '@/utils/mergeAndRemoveEqualKeys';
 import { useLargerThan } from '@/hooks/useLargerThan';
 import { useGetRevisions } from '@/queries/useGetRevisions';
+import { usePatrol } from '@/queries/usePatrol';
 
 const TOOL_ID = 'native:mark';
 
@@ -27,12 +28,14 @@ const TOOL_ID = 'native:mark';
 
 const settingsSchema = v.object({
   showConfirmationDialog: v.boolean(),
+  showSuccessNotification: v.boolean(),
 });
 
 type SettingsFormValues = v.InferInput<typeof settingsSchema>;
 
 const settingsInitialFormValues: SettingsFormValues = {
   showConfirmationDialog: true,
+  showSuccessNotification: true,
 };
 
 function AdditionalSettingsForm({
@@ -56,7 +59,7 @@ function AdditionalSettingsForm({
 
   return (
     <Stack gap="xs">
-      <Group gap="xs" justify="space-between">
+      <Group gap="xs" justify="space-between" wrap="nowrap">
         <Text size="xs">
           {formatMessage({ id: 'tool.native.mark.message.showConfirmationDialog' })}
         </Text>
@@ -64,6 +67,16 @@ function AdditionalSettingsForm({
           size="xs"
           key={form.key('showConfirmationDialog')}
           {...form.getInputProps('showConfirmationDialog', { type: 'checkbox' })}
+        />
+      </Group>
+      <Group gap="xs" justify="space-between" wrap="nowrap">
+        <Text size="xs">
+          {formatMessage({ id: 'tool.native.mark.message.showSuccessNotification' })}
+        </Text>
+        <Switch
+          size="xs"
+          key={form.key('showSuccessNotification')}
+          {...form.getInputProps('showSuccessNotification', { type: 'checkbox' })}
         />
       </Group>
     </Stack>
@@ -120,11 +133,38 @@ function MarkAsPatrolledAction({ children }: NativeToolActionComponentProps) {
       : firstRevisions.length > 0
         ? firstRevisions[0].revisionId
         : 0;
-  const currentReadTabRevisionId = useSelector(appState.tool.currentReadTabRevisionId);
+  const currentReadTabRevisionId = useSelector(appState.ui.currentReadTabRevisionId);
+  const wikiId = diffTabData ? diffTabData.wikiId : readTabData ? readTabData.wikiId : 'N/A';
+  const patrolApi = usePatrol(wikiId, revisionId);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  const revisionIdFragment = (
+    <Text
+      size="sm"
+      component="span"
+      c={readTabData && revisionId !== currentReadTabRevisionId ? 'orange' : 'cyan'}
+      fw={600}
+      ff="var(--zinnia-font-monospace)"
+    >
+      {revisionId}
+    </Text>
+  );
 
   const run = () => {
-    // eslint-disable-next-line no-console
-    console.log('Patrolled');
+    if (wikiId !== 'N/A' && revisionId !== 0 && !patrolApi.isSuccess) {
+      patrolApi.mutate(undefined, {
+        onSuccess: () => {
+          additionalSettings.showSuccessNotification &&
+            Notification.success(
+              formatMessage(
+                { id: 'tool.native.mark.message.successfulMark' },
+                { revisionId: revisionIdFragment }
+              )
+            );
+        },
+        onSettled: () => closeButtonRef.current?.focus(),
+      });
+    }
   };
 
   const trigger = () => {
@@ -151,9 +191,17 @@ function MarkAsPatrolledAction({ children }: NativeToolActionComponentProps) {
   const contentFragment = (
     <Stack gap="xs">
       <Stack gap={5}>
-        <Text size="sm" fw={600}>
-          {formatMessage({ id: 'common.confirm' })}
-        </Text>
+        <Group gap="xs" justify="space-between">
+          <Text size="sm" fw={600}>
+            {formatMessage({ id: 'common.confirm' })}
+          </Text>
+          <CloseButton
+            size="xs"
+            aria-label={formatMessage({ id: 'common.close' })}
+            onClick={() => setOpened(false)}
+            ref={closeButtonRef}
+          />
+        </Group>
         <Text size="sm">
           {formatMessage(
             {
@@ -162,26 +210,30 @@ function MarkAsPatrolledAction({ children }: NativeToolActionComponentProps) {
                   ? 'tool.native.mark.message.confirmationTextForFirstRevision'
                   : 'tool.native.mark.message.confirmationText',
             },
-            {
-              revisionId: (
-                <Text
-                  component="span"
-                  c={readTabData && revisionId !== currentReadTabRevisionId ? 'orange' : 'cyan'}
-                  fw={600}
-                  ff="var(--zinnia-font-monospace)"
-                >
-                  {revisionId}
-                </Text>
-              ),
-            }
+            { revisionId: revisionIdFragment }
           )}
         </Text>
       </Stack>
-      <Button onClick={run} disabled={isLoadingFirstRevisions}>
-        {formatMessage({ id: 'common.ok' })}
+      <Button
+        data-autofocus
+        disabled={isLoadingFirstRevisions || patrolApi.isSuccess}
+        onClick={run}
+        loading={patrolApi.isPending}
+        color={patrolApi.isError ? 'red' : 'blue'}
+      >
+        {patrolApi.isSuccess ? (
+          <IconCheck size="1.5rem" />
+        ) : patrolApi.isError ? (
+          <IconReload size="1.5rem" />
+        ) : (
+          formatMessage({ id: 'common.ok' })
+        )}
       </Button>
     </Stack>
   );
+
+  const targetLoading = additionalSettings.showConfirmationDialog ? false : patrolApi.isPending;
+  const childrenFragment = children({ trigger, loading: targetLoading, targetRef });
 
   return largerThanXs ? (
     <Popover
@@ -193,7 +245,7 @@ function MarkAsPatrolledAction({ children }: NativeToolActionComponentProps) {
       opened={opened}
       onChange={setOpened}
     >
-      <Popover.Target>{children({ trigger, targetRef })}</Popover.Target>
+      <Popover.Target>{childrenFragment}</Popover.Target>
       <Popover.Dropdown px="sm" py="xs">
         {contentFragment}
       </Popover.Dropdown>
@@ -209,7 +261,7 @@ function MarkAsPatrolledAction({ children }: NativeToolActionComponentProps) {
       >
         {contentFragment}
       </Drawer>
-      {children({ trigger, targetRef })}
+      {childrenFragment}
     </>
   );
 }
