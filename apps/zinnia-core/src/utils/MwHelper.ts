@@ -32,8 +32,9 @@ export namespace MwHelper {
 
   export const correctParsedComment = (serverName: string, parsedComment: string) =>
     parsedComment
-      .replaceAll('href="/wiki/', `target="_blank" href="//${serverName}/wiki/`)
-      .replaceAll('href="/w/index.php', `target="_blank" href="//${serverName}/w/index.php`);
+      .replaceAll('<a', '<a target="_blank" tabindex="-1"')
+      .replaceAll('href="/wiki/', `href="//${serverName}/wiki/`)
+      .replaceAll('href="/w/index.php', `href="//${serverName}/w/index.php`);
 
   export const normalizeUsername = (username: string) => {
     if (username.includes('>')) {
