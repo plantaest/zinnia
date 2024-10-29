@@ -65,6 +65,7 @@ export function NavigationPanel() {
       position="bottom"
       shadow="lg"
       radius="lg"
+      trapFocus
       transitionProps={{ transition: 'pop', duration: 250 }}
       opened={opened}
       onChange={setOpened}

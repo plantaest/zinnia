@@ -306,6 +306,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
                   </Avatar>
 
                   <Anchor
+                    tabIndex={-1}
                     className={classes.anchor}
                     size="sm"
                     href={pageTitleLink}
@@ -329,6 +330,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
                   </Avatar>
 
                   <Anchor
+                    tabIndex={-1}
                     className={classes.anchor}
                     size="sm"
                     href={usernameLink}

@@ -50,6 +50,7 @@ export function WorkspacePanel() {
       position="top-start"
       shadow="lg"
       radius="md"
+      trapFocus
       transitionProps={{ transition: dir === 'rtl' ? 'pop-bottom-right' : 'pop-bottom-left' }}
     >
       <Popover.Target>

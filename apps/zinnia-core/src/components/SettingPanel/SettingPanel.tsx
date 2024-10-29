@@ -247,6 +247,7 @@ export function SettingPanel() {
       position="top-end"
       shadow="lg"
       radius="md"
+      trapFocus
       transitionProps={{ transition: dir === 'rtl' ? 'pop-bottom-left' : 'pop-bottom-right' }}
     >
       <Popover.Target>

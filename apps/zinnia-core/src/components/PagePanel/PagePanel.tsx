@@ -9,7 +9,7 @@ import {
   ThemeIcon,
   UnstyledButton,
 } from '@mantine/core';
-import { IconArrowsMaximize, IconFile, IconLeaf, IconPlus, IconReload } from '@tabler/icons-react';
+import { IconFile, IconLeaf, IconPlus, IconReload } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import React, { Fragment } from 'react';
 import { useSelector } from '@legendapp/state/react';
@@ -177,14 +177,6 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
             >
               <IconReload size="1rem" />
             </ActionIcon>
-            <ActionIcon
-              variant="transparent"
-              size="sm"
-              title={formatMessage({ id: 'common.extend' })}
-              aria-label={formatMessage({ id: 'common.extend' })}
-            >
-              <IconArrowsMaximize size="1rem" />
-            </ActionIcon>
           </Group>
         </Group>
 
@@ -274,6 +266,7 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
                           </ThemeIcon>
                         )}
                         <Anchor
+                          tabIndex={-1}
                           className={classes.user}
                           size="xs"
                           href={MwHelper.createUserContribUri(serverName, revision.user)}

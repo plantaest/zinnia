@@ -91,6 +91,7 @@ export function SyncTabsPanel() {
       position="bottom-end"
       shadow="lg"
       radius="md"
+      trapFocus
       transitionProps={{ transition: dir === 'rtl' ? 'pop-top-left' : 'pop-top-right' }}
     >
       <Popover.Target>
@@ -112,6 +113,7 @@ export function SyncTabsPanel() {
     </Popover>
   ) : (
     <ActionIcon
+      data-autofocus // Focus on TabPanelDrawer
       variant="subtle"
       size={30}
       title={formatMessage({ id: 'ui.syncTabsPanel.title' })}

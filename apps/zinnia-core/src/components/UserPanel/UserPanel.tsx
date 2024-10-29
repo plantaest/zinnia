@@ -11,7 +11,6 @@ import {
   UnstyledButton,
 } from '@mantine/core';
 import {
-  IconArrowsMaximize,
   IconCircle,
   IconCircleFilled,
   IconFlame,
@@ -168,14 +167,6 @@ export function UserPanel({
             >
               <IconReload size="1rem" />
             </ActionIcon>
-            <ActionIcon
-              variant="transparent"
-              size="sm"
-              title={formatMessage({ id: 'common.extend' })}
-              aria-label={formatMessage({ id: 'common.extend' })}
-            >
-              <IconArrowsMaximize size="1rem" />
-            </ActionIcon>
           </Group>
         </Group>
 
@@ -254,6 +245,7 @@ export function UserPanel({
                           </ThemeIcon>
                         )}
                         <Anchor
+                          tabIndex={-1}
                           className={classes.pageTitle}
                           size="xs"
                           href={MwHelper.createPageUri(serverName, contribution.title)}

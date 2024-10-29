@@ -105,6 +105,7 @@ export function NewTabPanel() {
       position="bottom-end"
       shadow="lg"
       radius="md"
+      trapFocus
       transitionProps={{ transition: dir === 'rtl' ? 'pop-top-left' : 'pop-top-right' }}
     >
       <Popover.Target>
