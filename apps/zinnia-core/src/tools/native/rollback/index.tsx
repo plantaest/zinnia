@@ -5,7 +5,7 @@ import { DefaultNativeToolActionComponent } from '@/tools/utils/DefaultNativeToo
 
 // Actions
 
-const friendlyRollbackAction: NativeToolAction = {
+const agfRollbackAction: NativeToolAction = {
   metadata: {
     id: 'agf-rollback',
     name: 'AGF rollback',
@@ -41,7 +41,7 @@ const vandalismRollbackAction: NativeToolAction = {
 // Component
 
 function RollbackTool({ children }: NativeToolComponentProps) {
-  const actions = [friendlyRollbackAction, normalRollbackAction, vandalismRollbackAction];
+  const actions = [agfRollbackAction, normalRollbackAction, vandalismRollbackAction];
 
   return children({ actions });
 }

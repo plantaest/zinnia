@@ -22,8 +22,19 @@ const modifiedMw = {
   ...mw,
   config: cloneMwMap(mw.config),
   Api: cloneFactory(mw.Api),
+  util: { ...mw.util },
 };
 
+// Override `mw.util.addPortletLink`
+// Ref: https://doc.wikimedia.org/mediawiki-core/REL1_29/js/#!/api/mw.util-method-addPortletLink
+const originalAddPortletLink = modifiedMw.util.addPortletLink;
+modifiedMw.util.addPortletLink = (...args) => {
+  const [portletId, ...rest] = args;
+  const newPortletId = `zsb-${portletId}`;
+  return originalAddPortletLink(newPortletId, ...rest);
+};
+
+// Override `mw.Api.postWithToken`
 // Ref: https://doc.wikimedia.org/mediawiki-core/REL1_29/js/#!/api/mw.Api-method-postWithToken
 const originalPostWithToken = modifiedMw.Api.prototype.postWithToken;
 modifiedMw.Api.prototype.postWithToken = function postWithToken(...args) {

@@ -17,7 +17,7 @@ export const extendedTools: ExtendedTool[] = [
       },
       source: {
         server: 'vi.wikipedia.org',
-        page: 'User:Plantaest/LinkReport.js',
+        page: 'User:NgocAnMaster/LinkReport.js',
       },
       sandboxTargetSelector: '#ca-linkreport',
     },
@@ -40,6 +40,26 @@ export const extendedTools: ExtendedTool[] = [
         page: 'User:NhacNy2412/BlankedThePage.js',
       },
       sandboxTargetSelector: '#ca-btp',
+    },
+    component: DefaultExtendedToolComponent,
+  },
+  {
+    metadata: {
+      id: 'extended:todo-list:enwiki:1',
+      name: 'TodoList',
+      iconLabel: 'TL',
+    },
+    config: {
+      restriction: {
+        allowedWikis: [],
+        allowedRights: [],
+        allowedTabs: [],
+      },
+      source: {
+        server: 'en.wikipedia.org',
+        page: 'User:BrandonXLF/TodoList.js',
+      },
+      sandboxTargetSelector: '#userjs-todo > a',
     },
     component: DefaultExtendedToolComponent,
   },

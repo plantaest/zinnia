@@ -17,8 +17,10 @@ export function Sandbox() {
       <div style={{ paddingBlockEnd: '0.5rem', fontWeight: 600 }}>
         Zinnia Sandbox DOM (for development)
       </div>
-      <div style={{ paddingBlockEnd: '0.5rem' }}>#p-cactions</div>
-      <div id="p-cactions" />
+      <div style={{ paddingBlock: '0.5rem' }}>#zsb-p-cactions</div>
+      <div id="zsb-p-cactions" />
+      <div style={{ paddingBlock: '0.5rem' }}>#zsb-p-personal</div>
+      <div id="zsb-p-personal" />
     </div>
   );
 }
