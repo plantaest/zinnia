@@ -60,6 +60,7 @@ export const extendedTools: ExtendedTool[] = [
         page: 'User:BrandonXLF/TodoList.js',
       },
       sandboxTargetSelector: '#userjs-todo > a',
+      styles: '#userjs-todo-popup { top: 0 !important; }',
     },
     component: DefaultExtendedToolComponent,
   },

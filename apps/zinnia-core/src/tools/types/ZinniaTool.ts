@@ -122,6 +122,7 @@ export interface ExtendToolConfig {
     page: string;
   };
   sandboxTargetSelector?: string;
+  styles?: string;
 }
 
 export interface ExtendedToolComponentProps {

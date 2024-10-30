@@ -4,6 +4,8 @@ import { useDownloadUserScript } from '@/tools/utils/useDownloadUserScript';
 import { useToolUtils } from '@/tools/utils/useToolUtils';
 import { appState } from '@/states/appState';
 import { Notice } from '@/utils/Notice';
+import { zinniaSandboxRoot } from '@/tools/sandbox/zinniaSandboxRoot';
+import { useToolStyles } from '@/tools/utils/useToolStyles';
 
 export function DefaultExtendedToolComponent({
   metadata,
@@ -11,12 +13,13 @@ export function DefaultExtendedToolComponent({
   children,
 }: ExtendedToolComponentProps) {
   useDownloadUserScript(metadata.id, config.source.server, config.source.page);
+  useToolStyles(config.styles);
   const activeTab = useSelector(appState.ui.activeTab);
   const { allowedTabsMessage } = useToolUtils();
 
   const run = () => {
     if (config.sandboxTargetSelector) {
-      const sandboxTargetNode: HTMLElement | null = document.querySelector(
+      const sandboxTargetNode: HTMLElement | null = zinniaSandboxRoot.querySelector(
         config.sandboxTargetSelector
       );
 
