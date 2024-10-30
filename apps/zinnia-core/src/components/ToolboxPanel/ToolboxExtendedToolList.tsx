@@ -98,21 +98,26 @@ export function ToolboxExtendedToolList({ onChangeLayer }: ToolboxExtendedToolLi
 
       <Stack gap={6}>
         {extendedTools.map((extendedTool) => (
-          <Group key={extendedTool.id} gap="xs" justify="space-between" className={classes.tool}>
+          <Group
+            key={extendedTool.metadata.id}
+            gap="xs"
+            justify="space-between"
+            className={classes.tool}
+          >
             <Group gap="xs">
               <ThemeIcon size="md">
                 <Text ff="var(--zinnia-font-monospace)" size="xs">
-                  {extendedTool.iconLabel}
+                  {extendedTool.metadata.iconLabel}
                 </Text>
               </ThemeIcon>
-              <Text size="sm">{extendedTool.name}</Text>
+              <Text size="sm">{extendedTool.metadata.name}</Text>
             </Group>
 
             <Group gap="xs">
               <Switch
-                checked={toolIds.includes(extendedTool.id)}
+                checked={toolIds.includes(extendedTool.metadata.id)}
                 onClick={(event) =>
-                  handleClickSwitchButton(extendedTool.id, event.currentTarget.checked)
+                  handleClickSwitchButton(extendedTool.metadata.id, event.currentTarget.checked)
                 }
               />
               <ActionIcon size={16} variant="transparent" color="gray">

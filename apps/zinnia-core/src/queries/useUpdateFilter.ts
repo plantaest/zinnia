@@ -7,7 +7,7 @@ import { Filter } from '@/types/persistence/Filter';
 import { appState } from '@/states/appState';
 import { metaWiki } from '@/utils/wikis';
 import { appConfig } from '@/config/appConfig';
-import { Notification } from '@/utils/Notification';
+import { Notice } from '@/utils/Notice';
 
 export function useUpdateFilter() {
   const { formatMessage } = useIntl();
@@ -33,9 +33,9 @@ export function useUpdateFilter() {
       return userConfig;
     },
     onSuccess: (userConfig) => {
-      Notification.success(formatMessage({ id: 'hook.useUpdateFilter.success.default' }));
+      Notice.success(formatMessage({ id: 'hook.useUpdateFilter.success.default' }));
       appState.userConfig.set(userConfig);
     },
-    onError: () => Notification.error(formatMessage({ id: 'hook.useSaveOption.error.default' })),
+    onError: () => Notice.error(formatMessage({ id: 'hook.useSaveOption.error.default' })),
   });
 }

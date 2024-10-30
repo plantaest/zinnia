@@ -30,13 +30,14 @@ export const createIntlInstance = async (language?: string) => {
 };
 
 export const i18n = {
-  intl: await createIntlInstance(),
+  _intl: await createIntlInstance(),
+  getIntl: () => i18n._intl,
   changeLanguage: async (language: string) => {
-    if (i18n.intl.locale !== language) {
+    if (i18n._intl.locale !== language) {
       const intl = await createIntlInstance(language);
-      i18n.intl = intl;
+      i18n._intl = intl;
       return intl;
     }
-    return i18n.intl;
+    return i18n._intl;
   },
 };

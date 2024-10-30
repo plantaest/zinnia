@@ -3,7 +3,7 @@ import { CompositeError } from '@plantaest/composite';
 import { useIntl } from 'react-intl';
 import { useSelector } from '@legendapp/state/react';
 import { metaWiki } from '@/utils/wikis';
-import { Notification } from '@/utils/Notification';
+import { Notice } from '@/utils/Notice';
 import { appConfig } from '@/config/appConfig';
 import { appState } from '@/states/appState';
 import { UserConfig } from '@/types/persistence/UserConfig';
@@ -25,6 +25,6 @@ export function useSelectWorkspace() {
       return userConfig;
     },
     onSuccess: (userConfig) => appState.userConfig.set(userConfig),
-    onError: () => Notification.error(formatMessage({ id: 'hook.useSaveOption.error.default' })),
+    onError: () => Notice.error(formatMessage({ id: 'hook.useSaveOption.error.default' })),
   });
 }

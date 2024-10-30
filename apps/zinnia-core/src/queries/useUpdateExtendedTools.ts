@@ -6,7 +6,7 @@ import { UserConfig } from '@/types/persistence/UserConfig';
 import { appState } from '@/states/appState';
 import { metaWiki } from '@/utils/wikis';
 import { appConfig } from '@/config/appConfig';
-import { Notification } from '@/utils/Notification';
+import { Notice } from '@/utils/Notice';
 import { UserExtendedTool } from '@/types/persistence/Tool';
 
 export function useUpdateExtendedTools() {
@@ -26,6 +26,6 @@ export function useUpdateExtendedTools() {
       return userConfig;
     },
     onSuccess: (userConfig) => appState.userConfig.set(userConfig),
-    onError: () => Notification.error(formatMessage({ id: 'hook.useSaveOption.error.default' })),
+    onError: () => Notice.error(formatMessage({ id: 'hook.useSaveOption.error.default' })),
   });
 }

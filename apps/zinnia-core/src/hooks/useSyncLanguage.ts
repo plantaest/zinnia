@@ -9,7 +9,7 @@ export function useSyncLanguage() {
   const forceUpdate = useForceUpdate();
 
   useEffect(() => {
-    if (i18n.intl.locale !== language) {
+    if (i18n.getIntl().locale !== language) {
       i18n.changeLanguage(language).then(forceUpdate);
     }
   }, [language]);

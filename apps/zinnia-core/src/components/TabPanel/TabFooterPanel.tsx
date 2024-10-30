@@ -37,46 +37,103 @@ function ToolButtonsCarousel() {
             slide: classes.carouselSlide,
           }}
         >
-          {dockedNativeTools
-            .flatMap((tool) => nativeToolsDict[tool.toolId].actions)
-            .map((action, index) => (
-              <Carousel.Slide key={index}>
-                <action.component>
-                  {({ trigger, loading, targetRef }) => (
-                    <Tooltip
-                      label={
-                        action.name in messages ? formatMessage({ id: action.name }) : action.name
-                      }
-                    >
+          {dockedNativeTools.map((tool) => {
+            const nativeTool = nativeToolsDict[tool.toolId];
+            return (
+              <nativeTool.component
+                key={nativeTool.metadata.id}
+                metadata={nativeTool.metadata}
+                config={nativeTool.config}
+              >
+                {({ trigger, loading, targetRef, actions = [] }) =>
+                  actions.length > 0 ? (
+                    actions.map((action) => (
+                      <action.component
+                        key={action.metadata.id}
+                        metadata={action.metadata}
+                        config={action.config}
+                      >
+                        {({
+                          trigger: actionTrigger,
+                          loading: actionLoading,
+                          targetRef: actionTargetRef,
+                        }) => (
+                          <Carousel.Slide>
+                            <Tooltip
+                              label={
+                                action.metadata.name in messages
+                                  ? formatMessage({ id: action.metadata.name })
+                                  : action.metadata.name
+                              }
+                            >
+                              <ActionIcon
+                                color={action.metadata.iconColor}
+                                size="lg"
+                                aria-label={action.metadata.name}
+                                onClick={actionTrigger}
+                                loading={actionLoading}
+                                ref={actionTargetRef}
+                              >
+                                <action.metadata.iconShape size="1.5rem" />
+                              </ActionIcon>
+                            </Tooltip>
+                          </Carousel.Slide>
+                        )}
+                      </action.component>
+                    ))
+                  ) : (
+                    <Carousel.Slide>
+                      <Tooltip
+                        label={
+                          nativeTool.metadata.name in messages
+                            ? formatMessage({ id: nativeTool.metadata.name })
+                            : nativeTool.metadata.name
+                        }
+                      >
+                        <ActionIcon
+                          color={nativeTool.metadata.iconColor}
+                          size="lg"
+                          aria-label={nativeTool.metadata.name}
+                          onClick={trigger}
+                          loading={loading}
+                          ref={targetRef}
+                        >
+                          <nativeTool.metadata.iconShape size="1.5rem" />
+                        </ActionIcon>
+                      </Tooltip>
+                    </Carousel.Slide>
+                  )
+                }
+              </nativeTool.component>
+            );
+          })}
+          {dockedExtendedTools.map((tool) => {
+            const extendedTool = extendedToolsDict[tool.toolId];
+            return (
+              <extendedTool.component
+                key={extendedTool.metadata.id}
+                metadata={extendedTool.metadata}
+                config={extendedTool.config}
+              >
+                {({ trigger, loading, targetRef }) => (
+                  <Carousel.Slide>
+                    <Tooltip label={extendedTool.metadata.name}>
                       <ActionIcon
-                        color={action.iconColor}
+                        color={tool.settings.general.iconColor}
                         size="lg"
-                        aria-label={action.name}
+                        aria-label={extendedTool.metadata.name}
                         onClick={trigger}
                         loading={loading}
                         ref={targetRef}
                       >
-                        <action.iconShape size="1.5rem" />
+                        <Text ff="var(--zinnia-font-monospace)">
+                          {extendedTool.metadata.iconLabel}
+                        </Text>
                       </ActionIcon>
                     </Tooltip>
-                  )}
-                </action.component>
-              </Carousel.Slide>
-            ))}
-          {dockedExtendedTools.map((tool) => {
-            const extendedTool = extendedToolsDict[tool.toolId];
-            return (
-              <Carousel.Slide key={extendedTool.id}>
-                <Tooltip label={extendedTool.name}>
-                  <ActionIcon
-                    color={tool.settings.general.iconColor}
-                    size="lg"
-                    aria-label={extendedTool.name}
-                  >
-                    <Text ff="var(--zinnia-font-monospace)">{extendedTool.iconLabel}</Text>
-                  </ActionIcon>
-                </Tooltip>
-              </Carousel.Slide>
+                  </Carousel.Slide>
+                )}
+              </extendedTool.component>
             );
           })}
         </Carousel>
@@ -94,7 +151,6 @@ export function TabFooterPanel() {
       {dir === 'rtl' && <ToolButtonsCarousel />}
     </>
   );
-
   return (
     <Card p="xs" className={classes.wrapper}>
       <Box className={classes.grid}>

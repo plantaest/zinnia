@@ -14,7 +14,9 @@ import { FeedHelper } from '@/utils/FeedHelper';
 import { WikiId } from '@/types/mw/WikiId';
 import { startRef } from '@/refs/startRef';
 import { isEqual } from '@/utils/isEqual';
-import { Tab } from '@/types/persistence/Tab';
+import { Tab, TabType } from '@/types/persistence/Tab';
+import { underscoreTitle } from '@/utils/underscoreTitle';
+import { zinniaSandbox } from '@/tools/sandbox/zinniaSandbox';
 
 interface AppState {
   userConfig: UserConfig | null;
@@ -31,6 +33,7 @@ interface AppState {
     activeTabId: ObservableComputedTwoWay<string | null>;
     activeTab: ObservableComputedTwoWay<Tab | null>;
     currentReadTabRevisionId: number;
+    downloadedUserScripts: Map<string, string>;
   };
   instance: {
     numberFormat: ObservableComputed<Intl.NumberFormat>;
@@ -120,6 +123,7 @@ export const appState: ObservableObject<AppState> = observable<AppState>({
       }
     ),
     currentReadTabRevisionId: 0,
+    downloadedUserScripts: new Map(),
   },
   instance: {
     numberFormat: computed(() => new Intl.NumberFormat(appState.userConfig.locale.get())),
@@ -173,5 +177,21 @@ appState.ui.activeFilter.onChange((change) => {
         : {};
 
     appState.ui.rcQueryParams.set(rcQueryParams);
+  }
+});
+
+// Track activeTab changes
+appState.ui.activeTab.onChange((change) => {
+  const tab = change.value;
+  if (
+    tab &&
+    (tab.type === TabType.DIFF ||
+      tab.type === TabType.MAIN_DIFF ||
+      tab.type === TabType.READ ||
+      tab.type === TabType.MAIN_READ)
+  ) {
+    zinniaSandbox.mw.config.set('wgPageName', underscoreTitle(tab.data.pageTitle));
+  } else {
+    zinniaSandbox.mw.config.set('wgPageName', mw.config.get('wgPageName'));
   }
 });

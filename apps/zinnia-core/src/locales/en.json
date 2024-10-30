@@ -180,14 +180,14 @@
   "color.orange": "Orange",
   "tool.message.allowedTabs": "This action of the {toolName} tool only works on the following tabs:",
   "tool.message.noAdditionalSettings": "This tool has no additional settings",
-  "tool.native.restore.name": "Restore",
+  "tool.message.reloadDisabled": "The page reload behavior of this tool has been disabled",
   "tool.native.mark.name": "Mark",
   "tool.native.mark.message.confirmationText": "Mark the revision {revisionId} as patrolled?",
   "tool.native.mark.message.confirmationTextForFirstRevision": "Mark the first revision {revisionId} as patrolled?",
   "tool.native.mark.message.successfulMark": "Successfully marked revision {revisionId} as patrolled",
   "tool.native.mark.message.showConfirmationDialog": "Show confirmation dialog",
   "tool.native.mark.message.showSuccessNotification": "Show success notification",
-  "tool.native.mark.actions.markAsPatrolled.name": "Mark as patrolled",
   "tool.native.rollback.name": "Rollback",
+  "tool.native.restore.name": "Restore",
   "tool.native.blank.name": "Blank"
 }

@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { CompositeError } from '@plantaest/composite';
 import { WikiId } from '@/types/mw/WikiId';
 import { wikis } from '@/utils/wikis';
-import { Notification } from '@/utils/Notification';
+import { Notice } from '@/utils/Notice';
 
 export function usePatrol(wikiId: WikiId, revisionId: number) {
   const { formatMessage } = useIntl();
@@ -11,6 +11,6 @@ export function usePatrol(wikiId: WikiId, revisionId: number) {
   return useMutation<void, CompositeError>({
     mutationKey: [wikiId, 'patrol', revisionId],
     mutationFn: () => wikis.getWiki(wikiId).patrol(revisionId),
-    onError: () => Notification.error(formatMessage({ id: 'query.defaultErrorMessage' })),
+    onError: () => Notice.error(formatMessage({ id: 'query.defaultErrorMessage' })),
   });
 }

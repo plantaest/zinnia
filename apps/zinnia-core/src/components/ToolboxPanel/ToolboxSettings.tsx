@@ -28,7 +28,7 @@ import { toolIconColors } from '@/tools/types/ZinniaTool';
 import { UserExtendedTool, UserNativeTool } from '@/types/persistence/Tool';
 import { useUpdateTools } from '@/queries/useUpdateTools';
 import { UserConfig } from '@/types/persistence/UserConfig';
-import { DefaultNativeToolAdditionalSettingsFormComponent } from '@/tools/DefaultNativeToolAdditionalSettingsFormComponent';
+import { DefaultNativeToolAdditionalSettingsForm } from '@/tools/utils/DefaultNativeToolAdditionalSettingsForm';
 
 const formSchema = v.object({
   native: v.array(
@@ -103,9 +103,9 @@ export function ToolboxSettings({ onChangeLayer }: ToolboxSettingsProps) {
           : 'N/A',
     name:
       tools.native.length > 0
-        ? formatMessage({ id: nativeToolsDict[tools.native[0].toolId].name })
+        ? formatMessage({ id: nativeToolsDict[tools.native[0].toolId].metadata.name })
         : tools.extended.length > 0
-          ? extendedToolsDict[tools.extended[0].toolId].name
+          ? extendedToolsDict[tools.extended[0].toolId].metadata.name
           : 'N/A',
   });
   const updateToolsApi = useUpdateTools();
@@ -189,7 +189,7 @@ export function ToolboxSettings({ onChangeLayer }: ToolboxSettingsProps) {
   }));
   const NativeToolAdditionalForm = nativeToolsDict[selectedTool.id]
     ? nativeToolsDict[selectedTool.id].additionalSettingsForm
-    : DefaultNativeToolAdditionalSettingsFormComponent;
+    : DefaultNativeToolAdditionalSettingsForm;
 
   return (
     <Stack gap="xs">
@@ -231,24 +231,24 @@ export function ToolboxSettings({ onChangeLayer }: ToolboxSettingsProps) {
               const nativeTool = nativeToolsDict[tool.toolId];
               return (
                 <UnstyledButton
-                  key={nativeTool.id}
+                  key={nativeTool.metadata.id}
                   className={classes.tool}
                   data-selected={selectedTool.type === 'native' && selectedTool.index === index}
                   onClick={() =>
                     handleClickToolButton({
                       type: 'native',
                       index: index,
-                      id: nativeTool.id,
-                      name: formatMessage({ id: nativeTool.name }),
+                      id: nativeTool.metadata.id,
+                      name: formatMessage({ id: nativeTool.metadata.name }),
                     })
                   }
                 >
                   <Group gap={8}>
-                    <ThemeIcon color={nativeTool.iconColor} size="sm">
-                      <nativeTool.iconShape size="1rem" />
+                    <ThemeIcon color={nativeTool.metadata.iconColor} size="sm">
+                      <nativeTool.metadata.iconShape size="1rem" />
                     </ThemeIcon>
                     <Text size="xs" visibleFrom="xs">
-                      {formatMessage({ id: nativeTool.name })}
+                      {formatMessage({ id: nativeTool.metadata.name })}
                     </Text>
                   </Group>
                 </UnstyledButton>
@@ -259,26 +259,26 @@ export function ToolboxSettings({ onChangeLayer }: ToolboxSettingsProps) {
               const extendedTool = extendedToolsDict[tool.toolId];
               return (
                 <UnstyledButton
-                  key={extendedTool.id}
+                  key={extendedTool.metadata.id}
                   className={classes.tool}
                   data-selected={selectedTool.type === 'extended' && selectedTool.index === index}
                   onClick={() =>
                     handleClickToolButton({
                       type: 'extended',
                       index: index,
-                      id: extendedTool.id,
-                      name: extendedTool.name,
+                      id: extendedTool.metadata.id,
+                      name: extendedTool.metadata.name,
                     })
                   }
                 >
                   <Group gap={8}>
                     <ThemeIcon color={tool.settings.general.iconColor} size="sm">
                       <Text ff="var(--zinnia-font-monospace)" fz={10}>
-                        {extendedTool.iconLabel}
+                        {extendedTool.metadata.iconLabel}
                       </Text>
                     </ThemeIcon>
                     <Text size="xs" visibleFrom="xs">
-                      {extendedTool.name}
+                      {extendedTool.metadata.name}
                     </Text>
                   </Group>
                 </UnstyledButton>

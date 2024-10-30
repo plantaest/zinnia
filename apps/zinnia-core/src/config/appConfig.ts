@@ -12,4 +12,5 @@ export const appConfig = Object.freeze({
   MAX_FILTER_WIKIS: 10,
   TABS_OPTION_KEY: 'userjs-zinnia-tabs',
   MAX_TOOL_LIMIT: 50,
+  SUMMARY_MARK: '#[[:meta:Zinnia|Zinnia]]',
 });

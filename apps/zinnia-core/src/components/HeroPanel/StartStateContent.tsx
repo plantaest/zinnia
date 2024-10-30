@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
 import { useState } from 'react';
 import { UserConfig } from '@/types/persistence/UserConfig';
-import { isMwEnv } from '@/utils/isMwEnv';
+import { onMediaWiki } from '@/utils/onMediaWiki';
 import { Tab, TabType } from '@/types/persistence/Tab';
 import { useSaveOption } from '@/queries/useSaveOption';
 import { appState } from '@/states/appState';
@@ -61,7 +61,7 @@ export function StartStateContent() {
               wikis: [
                 defaultFilterGlobalWikiConfig,
                 {
-                  wikiId: isMwEnv() ? mw.config.get('wgWikiID') : 'metawiki',
+                  wikiId: onMediaWiki() ? mw.config.get('wgWikiID') : 'metawiki',
                   inherited: true,
                   config: null,
                 },

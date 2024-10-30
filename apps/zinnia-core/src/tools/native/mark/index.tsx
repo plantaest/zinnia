@@ -9,20 +9,17 @@ import { useForm } from '@mantine/form';
 import { valibotResolver } from 'mantine-form-valibot-resolver';
 import {
   NativeTool,
-  NativeToolAction,
-  NativeToolActionComponentProps,
-  NativeToolAdditionalSettingsFormComponentProps,
+  NativeToolAdditionalSettingsFormProps,
+  NativeToolComponentProps,
 } from '@/tools/types/ZinniaTool';
 import { appState } from '@/states/appState';
 import { TabType } from '@/types/persistence/Tab';
-import { Notification } from '@/utils/Notification';
-import { useToolUtils } from '@/tools/useToolUtils';
+import { Notice } from '@/utils/Notice';
+import { useToolUtils } from '@/tools/utils/useToolUtils';
 import { mergeAndRemoveEqualKeys } from '@/utils/mergeAndRemoveEqualKeys';
 import { useLargerThan } from '@/hooks/useLargerThan';
 import { useGetRevisions } from '@/queries/useGetRevisions';
 import { usePatrol } from '@/queries/usePatrol';
-
-const TOOL_ID = 'native:mark';
 
 // Settings
 
@@ -42,7 +39,7 @@ function AdditionalSettingsForm({
   parentForm,
   toolIndex,
   data,
-}: NativeToolAdditionalSettingsFormComponentProps) {
+}: NativeToolAdditionalSettingsFormProps) {
   const { formatMessage } = useIntl();
 
   const form = useForm({
@@ -83,19 +80,9 @@ function AdditionalSettingsForm({
   );
 }
 
-// Actions
+// Component
 
-const markAsPatrolledAction: NativeToolAction = {
-  id: 'mark-as-patrolled',
-  name: 'tool.native.mark.actions.markAsPatrolled.name',
-  iconColor: 'lime',
-  iconShape: IconCheck,
-  component: MarkAsPatrolledAction,
-  allowedTabs: [TabType.DIFF, TabType.MAIN_DIFF, TabType.READ, TabType.MAIN_READ],
-  hotkey: 'ctrl+M',
-};
-
-function MarkAsPatrolledAction({ children }: NativeToolActionComponentProps) {
+function MarkTool({ metadata, config, children }: NativeToolComponentProps) {
   const { formatMessage } = useIntl();
   const { allowedTabsMessage } = useToolUtils();
   const activeTab = useSelector(appState.ui.activeTab);
@@ -109,7 +96,7 @@ function MarkAsPatrolledAction({ children }: NativeToolActionComponentProps) {
       : null;
   const [opened, setOpened] = useState(false);
   const userMarkTool = useSelector(() =>
-    appState.userConfig.tools.native.get().find((tool) => tool.toolId === TOOL_ID)
+    appState.userConfig.tools.native.get().find((tool) => tool.toolId === metadata.id)
   );
   const userAdditionalSettings: Partial<SettingsFormValues> = userMarkTool
     ? userMarkTool.settings.additional.data
@@ -155,7 +142,7 @@ function MarkAsPatrolledAction({ children }: NativeToolActionComponentProps) {
       patrolApi.mutate(undefined, {
         onSuccess: () => {
           additionalSettings.showSuccessNotification &&
-            Notification.success(
+            Notice.success(
               formatMessage(
                 { id: 'tool.native.mark.message.successfulMark' },
                 { revisionId: revisionIdFragment }
@@ -168,14 +155,14 @@ function MarkAsPatrolledAction({ children }: NativeToolActionComponentProps) {
   };
 
   const trigger = () => {
-    if (activeTab && markAsPatrolledAction.allowedTabs.includes(activeTab.type)) {
+    if (activeTab && config.restriction.allowedTabs.includes(activeTab.type)) {
       if (additionalSettings.showConfirmationDialog) {
         setOpened(!opened);
       } else {
         run();
       }
     } else {
-      Notification.info(allowedTabsMessage(markAsPatrolledAction.allowedTabs));
+      Notice.info(allowedTabsMessage(config.restriction.allowedTabs));
     }
   };
 
@@ -186,7 +173,7 @@ function MarkAsPatrolledAction({ children }: NativeToolActionComponentProps) {
     trigger();
   };
 
-  useHotkeys([[markAsPatrolledAction.hotkey, triggerByHotkey]]);
+  useHotkeys(config.hotkey ? [[config.hotkey, triggerByHotkey]] : []);
 
   const contentFragment = (
     <Stack gap="xs">
@@ -266,16 +253,25 @@ function MarkAsPatrolledAction({ children }: NativeToolActionComponentProps) {
   );
 }
 
-// Metadata
+// Specification
 
-export const MarkTool: NativeTool = {
-  id: TOOL_ID,
-  name: 'tool.native.mark.name',
-  iconColor: 'lime',
-  iconShape: IconCheck,
-  toolVersion: '1.0.0-beta.1',
-  settingsVersion: 1,
-  defaultAction: 'mark-as-patrolled',
-  actions: [markAsPatrolledAction],
+export const markTool: NativeTool = {
+  metadata: {
+    id: 'native:mark',
+    name: 'tool.native.mark.name',
+    iconColor: 'lime',
+    iconShape: IconCheck,
+    toolVersion: '1.0.0-beta.1',
+    settingsVersion: 1,
+  },
+  config: {
+    restriction: {
+      allowedWikis: [],
+      allowedRights: [],
+      allowedTabs: [TabType.DIFF, TabType.MAIN_DIFF, TabType.READ, TabType.MAIN_READ],
+    },
+    hotkey: 'ctrl+M',
+  },
+  component: MarkTool,
   additionalSettingsForm: AdditionalSettingsForm,
 };

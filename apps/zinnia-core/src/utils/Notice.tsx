@@ -2,7 +2,7 @@ import { notifications } from '@mantine/notifications';
 import { ReactNode } from 'react';
 import { IconCheck, IconX } from '@tabler/icons-react';
 
-export namespace Notification {
+export namespace Notice {
   export const info = (message: ReactNode) =>
     notifications.show({
       message,

@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { CompositeError } from '@plantaest/composite';
 import { useIntl } from 'react-intl';
 import { metaWiki } from '@/utils/wikis';
-import { Notification } from '@/utils/Notification';
+import { Notice } from '@/utils/Notice';
 
 export function useSaveOption() {
   const { formatMessage } = useIntl();
@@ -10,6 +10,6 @@ export function useSaveOption() {
   return useMutation<void, CompositeError, { name: string; value: string | null }>({
     mutationKey: ['metawiki', 'userInfo', 'saveOption'],
     mutationFn: ({ name, value }) => metaWiki.userInfo().saveOption(name, value),
-    onError: () => Notification.error(formatMessage({ id: 'hook.useSaveOption.error.default' })),
+    onError: () => Notice.error(formatMessage({ id: 'hook.useSaveOption.error.default' })),
   });
 }

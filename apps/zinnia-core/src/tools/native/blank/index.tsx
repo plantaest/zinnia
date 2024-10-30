@@ -1,30 +1,24 @@
 import { IconEraser } from '@tabler/icons-react';
-import { NativeTool, NativeToolActionComponentProps } from '@/tools/types/ZinniaTool';
-import { DefaultNativeToolAdditionalSettingsFormComponent } from '@/tools/DefaultNativeToolAdditionalSettingsFormComponent';
+import { NativeTool } from '@/tools/types/ZinniaTool';
+import { DefaultNativeToolAdditionalSettingsForm } from '@/tools/utils/DefaultNativeToolAdditionalSettingsForm';
+import { DefaultNativeToolComponent } from '@/tools/utils/DefaultNativeToolComponent';
 
-const BlankAction = ({ children }: NativeToolActionComponentProps) =>
-  children({
-    trigger: () => {},
-  });
-
-export const BlankTool: NativeTool = {
-  id: 'native:blank',
-  name: 'tool.native.blank.name',
-  iconColor: 'indigo',
-  iconShape: IconEraser,
-  toolVersion: '1.0.0-beta.1',
-  settingsVersion: 1,
-  defaultAction: 'blank',
-  actions: [
-    {
-      id: 'blank',
-      name: 'Blank',
-      iconColor: 'indigo',
-      iconShape: IconEraser,
-      component: BlankAction,
+export const blankTool: NativeTool = {
+  metadata: {
+    id: 'native:blank',
+    name: 'tool.native.blank.name',
+    iconColor: 'indigo',
+    iconShape: IconEraser,
+    toolVersion: '1.0.0-beta.1',
+    settingsVersion: 1,
+  },
+  config: {
+    restriction: {
+      allowedWikis: [],
+      allowedRights: [],
       allowedTabs: [],
-      hotkey: '',
     },
-  ],
-  additionalSettingsForm: DefaultNativeToolAdditionalSettingsFormComponent,
+  },
+  component: DefaultNativeToolComponent,
+  additionalSettingsForm: DefaultNativeToolAdditionalSettingsForm,
 };

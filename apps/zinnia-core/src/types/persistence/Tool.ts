@@ -39,7 +39,7 @@ export const defaultUserNativeTools: (now: Instant) => UserNativeTool[] = (now) 
         dock: true,
       },
       additional: {
-        version: nativeToolsDict['native:mark'].settingsVersion,
+        version: nativeToolsDict['native:mark'].metadata.settingsVersion,
         data: {},
       },
     },
@@ -53,7 +53,7 @@ export const defaultUserNativeTools: (now: Instant) => UserNativeTool[] = (now) 
         dock: true,
       },
       additional: {
-        version: nativeToolsDict['native:rollback'].settingsVersion,
+        version: nativeToolsDict['native:rollback'].metadata.settingsVersion,
         data: {},
       },
     },
@@ -67,7 +67,7 @@ export const defaultUserNativeTools: (now: Instant) => UserNativeTool[] = (now) 
         dock: true,
       },
       additional: {
-        version: nativeToolsDict['native:restore'].settingsVersion,
+        version: nativeToolsDict['native:restore'].metadata.settingsVersion,
         data: {},
       },
     },

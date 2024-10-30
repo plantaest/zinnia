@@ -9,7 +9,7 @@ import { Filter } from '@/types/persistence/Filter';
 import { errorMessage } from '@/utils/errorMessage';
 import { wikis } from '@/utils/wikis';
 import { filterPanelFormAction, FilterPanelFormValues } from '@/components/FilterPanel/FilterPanel';
-import { Notification } from '@/utils/Notification';
+import { Notice } from '@/utils/Notice';
 import { appConfig } from '@/config/appConfig';
 import { useLargerThan } from '@/hooks/useLargerThan';
 
@@ -91,7 +91,7 @@ function FilterAddWikiFormContent() {
         return {};
       }
 
-      Notification.success(
+      Notice.success(
         formatMessage(
           { id: 'ui.filterPanel.filterAddWikiForm.notify' },
           {

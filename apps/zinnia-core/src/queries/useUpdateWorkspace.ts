@@ -7,7 +7,7 @@ import { UserConfig } from '@/types/persistence/UserConfig';
 import { appState } from '@/states/appState';
 import { metaWiki } from '@/utils/wikis';
 import { appConfig } from '@/config/appConfig';
-import { Notification } from '@/utils/Notification';
+import { Notice } from '@/utils/Notice';
 
 export function useUpdateWorkspace() {
   const { formatMessage } = useIntl();
@@ -28,9 +28,9 @@ export function useUpdateWorkspace() {
       return userConfig;
     },
     onSuccess: (userConfig) => {
-      Notification.success(formatMessage({ id: 'hook.useUpdateWorkspace.success.default' }));
+      Notice.success(formatMessage({ id: 'hook.useUpdateWorkspace.success.default' }));
       appState.userConfig.set(userConfig);
     },
-    onError: () => Notification.error(formatMessage({ id: 'hook.useSaveOption.error.default' })),
+    onError: () => Notice.error(formatMessage({ id: 'hook.useSaveOption.error.default' })),
   });
 }

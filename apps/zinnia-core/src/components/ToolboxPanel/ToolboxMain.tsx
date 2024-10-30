@@ -73,12 +73,12 @@ export function ToolboxMain({ onChangeLayer }: ToolboxMainProps) {
           {tools.native.map((tool) => {
             const nativeTool = nativeToolsDict[tool.toolId];
             return (
-              <UnstyledButton key={nativeTool.id} className={classes.tool}>
+              <UnstyledButton key={nativeTool.metadata.id} className={classes.tool}>
                 <Group gap="xs">
-                  <ThemeIcon color={nativeTool.iconColor} size="md">
-                    <nativeTool.iconShape size="1.25rem" />
+                  <ThemeIcon color={nativeTool.metadata.iconColor} size="md">
+                    <nativeTool.metadata.iconShape size="1.25rem" />
                   </ThemeIcon>
-                  <Text size="sm">{formatMessage({ id: nativeTool.name })}</Text>
+                  <Text size="sm">{formatMessage({ id: nativeTool.metadata.name })}</Text>
                 </Group>
               </UnstyledButton>
             );
@@ -107,14 +107,14 @@ export function ToolboxMain({ onChangeLayer }: ToolboxMainProps) {
           {tools.extended.map((tool) => {
             const extendedTool = extendedToolsDict[tool.toolId];
             return (
-              <UnstyledButton key={extendedTool.id} className={classes.tool}>
+              <UnstyledButton key={extendedTool.metadata.id} className={classes.tool}>
                 <Group gap="xs">
                   <ThemeIcon color={tool.settings.general.iconColor} size="md">
                     <Text ff="var(--zinnia-font-monospace)" size="xs">
-                      {extendedTool.iconLabel}
+                      {extendedTool.metadata.iconLabel}
                     </Text>
                   </ThemeIcon>
-                  <Text size="sm">{extendedTool.name}</Text>
+                  <Text size="sm">{extendedTool.metadata.name}</Text>
                 </Group>
               </UnstyledButton>
             );

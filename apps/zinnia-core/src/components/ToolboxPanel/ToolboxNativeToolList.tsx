@@ -60,7 +60,7 @@ export function ToolboxNativeToolList({ onChangeLayer }: ToolboxNativeToolListPr
             dock: false,
           },
           additional: {
-            version: nativeToolsDict[toolId].settingsVersion,
+            version: nativeToolsDict[toolId].metadata.settingsVersion,
             data: {},
           },
         },
@@ -101,19 +101,24 @@ export function ToolboxNativeToolList({ onChangeLayer }: ToolboxNativeToolListPr
 
       <Stack gap={6}>
         {nativeTools.map((nativeTool) => (
-          <Group key={nativeTool.id} gap="xs" justify="space-between" className={classes.tool}>
+          <Group
+            key={nativeTool.metadata.id}
+            gap="xs"
+            justify="space-between"
+            className={classes.tool}
+          >
             <Group gap="xs">
-              <ThemeIcon color={nativeTool.iconColor} size="md">
-                <nativeTool.iconShape size="1.25rem" />
+              <ThemeIcon color={nativeTool.metadata.iconColor} size="md">
+                <nativeTool.metadata.iconShape size="1.25rem" />
               </ThemeIcon>
-              <Text size="sm">{formatMessage({ id: nativeTool.name })}</Text>
+              <Text size="sm">{formatMessage({ id: nativeTool.metadata.name })}</Text>
             </Group>
 
             <Group gap="xs">
               <Switch
-                checked={toolIds.includes(nativeTool.id)}
+                checked={toolIds.includes(nativeTool.metadata.id)}
                 onClick={(event) =>
-                  handleClickSwitchButton(nativeTool.id, event.currentTarget.checked)
+                  handleClickSwitchButton(nativeTool.metadata.id, event.currentTarget.checked)
                 }
               />
               <ActionIcon size={16} variant="transparent" color="gray">

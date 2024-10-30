@@ -19,7 +19,7 @@ import { ObservablePersistLocalStorage } from '@legendapp/state/persist-plugins/
 import { RawIntlProvider } from 'react-intl';
 import { zinniaRoot } from '@/utils/zinniaRoot';
 import { theme } from './theme';
-import { Notification } from '@/utils/Notification';
+import { Notice } from '@/utils/Notice';
 import { appConfig } from '@/config/appConfig';
 import { appState } from '@/states/appState';
 import { HomePage } from '@/pages/HomePage/Home.page';
@@ -60,9 +60,9 @@ const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error, query) => {
       if (query.meta?.showErrorNotification !== false) {
-        Notification.error(
+        Notice.error(
           (query.meta?.errorMessage as string) ||
-            i18n.intl.formatMessage({ id: 'query.defaultErrorMessage' })
+            i18n.getIntl().formatMessage({ id: 'query.defaultErrorMessage' })
         );
       }
 
@@ -93,7 +93,7 @@ export default function App({ shadowRoot }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <DirectionProvider>
-        <RawIntlProvider value={i18n.intl}>
+        <RawIntlProvider value={i18n.getIntl()}>
           <MantineProvider
             theme={theme}
             defaultColorScheme="auto"

@@ -29,6 +29,7 @@ export function DiffPreviewPanel({ wikiId, fromRevisionId, toRevisionId }: DiffP
       align="start"
       p={5}
       h="50vh"
+      mih={375}
       mah={500}
       style={{ overflowY: 'auto', overscrollBehavior: 'contain' }}
     >

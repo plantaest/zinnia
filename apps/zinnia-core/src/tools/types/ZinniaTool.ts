@@ -22,47 +22,116 @@ export const toolIconColors = [
 
 export type ToolIconColor = (typeof toolIconColors)[number];
 
+// Native tool
+
 export interface NativeTool {
+  metadata: NativeToolMetadata;
+  config: NativeToolConfig;
+  component: FunctionComponent<NativeToolComponentProps>;
+  additionalSettingsForm: FunctionComponent<NativeToolAdditionalSettingsFormProps>;
+}
+
+export interface NativeToolMetadata {
   id: string;
   name: string;
   iconColor: ToolIconColor;
   iconShape: Icon;
   toolVersion: string;
   settingsVersion: number;
-  defaultAction: string;
-  actions: NativeToolAction[];
-  additionalSettingsForm: FunctionComponent<NativeToolAdditionalSettingsFormComponentProps>;
+}
+
+export interface NativeToolConfig {
+  restriction: {
+    allowedWikis: WikiId[];
+    allowedRights: string[];
+    allowedTabs: TabType[];
+  };
+  hotkey?: string;
+}
+
+export interface NativeToolComponentProps {
+  metadata: NativeToolMetadata;
+  config: NativeToolConfig;
+  children: (payload: NativeToolComponentPayload) => React.ReactNode;
+}
+
+export interface NativeToolComponentPayload {
+  trigger?: () => void;
+  loading?: boolean;
+  targetRef?: React.RefObject<HTMLButtonElement>;
+  actions?: NativeToolAction[];
 }
 
 export interface NativeToolAction {
+  metadata: NativeToolActionMetadata;
+  config: NativeToolActionConfig;
+  component: FunctionComponent<NativeToolActionComponentProps>;
+}
+
+export interface NativeToolActionMetadata {
   id: string;
   name: string;
   iconColor: ToolIconColor;
   iconShape: Icon;
-  component: FunctionComponent<NativeToolActionComponentProps>;
-  allowedTabs: TabType[];
-  hotkey: string;
+}
+
+export interface NativeToolActionConfig {
+  hotkey?: string;
 }
 
 export interface NativeToolActionComponentProps {
+  metadata: NativeToolActionMetadata;
+  config: NativeToolActionConfig;
   children: (payload: NativeToolActionComponentPayload) => React.ReactNode;
 }
 
 export interface NativeToolActionComponentPayload {
-  trigger: () => void;
+  trigger?: () => void;
   loading?: boolean;
   targetRef?: React.RefObject<HTMLButtonElement>;
 }
 
-export interface NativeToolAdditionalSettingsFormComponentProps {
+export interface NativeToolAdditionalSettingsFormProps {
   parentForm: UseFormReturnType<ToolboxSettingsFormValues>;
   toolIndex: number;
   data: Record<string, unknown>;
 }
 
+// Extended tool
+
 export interface ExtendedTool {
+  metadata: ExtendedToolMetadata;
+  config: ExtendToolConfig;
+  component: FunctionComponent<ExtendedToolComponentProps>;
+}
+
+export interface ExtendedToolMetadata {
   id: string;
   name: string;
   iconLabel: string;
-  allowedWikis: WikiId[];
+}
+
+export interface ExtendToolConfig {
+  restriction: {
+    allowedWikis: WikiId[];
+    allowedRights: string[];
+    allowedTabs: TabType[];
+  };
+  source: {
+    server: string;
+    page: string;
+  };
+  sandboxTargetSelector?: string;
+}
+
+export interface ExtendedToolComponentProps {
+  metadata: ExtendedToolMetadata;
+  config: ExtendToolConfig;
+  children: (payload: ExtendedToolComponentPayload) => React.ReactNode;
+}
+
+export interface ExtendedToolComponentPayload {
+  trigger?: () => void;
+  loading?: boolean;
+  targetRef?: React.RefObject<HTMLButtonElement>;
 }

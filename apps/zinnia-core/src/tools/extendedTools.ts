@@ -1,24 +1,49 @@
 import { ExtendedTool } from '@/tools/types/ZinniaTool';
+import { DefaultExtendedToolComponent } from '@/tools/utils/DefaultExtendedToolComponent';
 
 export const extendedTools: ExtendedTool[] = [
   {
-    id: 'extended:twinkle:enwiki',
-    name: 'Twinkle (en)',
-    iconLabel: 'TW',
-    allowedWikis: ['enwiki'],
+    metadata: {
+      id: 'extended:link-report:viwiki:1',
+      name: 'LinkReport',
+      iconLabel: 'LR',
+    },
+    config: {
+      restriction: {
+        allowedWikis: ['viwiki'],
+        allowedRights: [],
+        allowedTabs: [],
+      },
+      source: {
+        server: 'vi.wikipedia.org',
+        page: 'User:Plantaest/LinkReport.js',
+      },
+      sandboxTargetSelector: '#ca-linkreport',
+    },
+    component: DefaultExtendedToolComponent,
   },
   {
-    id: 'extended:twinkle:viwiki',
-    name: 'Twinkle (vi)',
-    iconLabel: 'TW',
-    allowedWikis: ['viwiki'],
-  },
-  {
-    id: 'extended:link-report:viwiki:705327',
-    name: 'LinkReport',
-    iconLabel: 'LR',
-    allowedWikis: ['viwiki'],
+    metadata: {
+      id: 'extended:blanked-the-page:metawiki:1',
+      name: 'BlankedThePage',
+      iconLabel: 'BTP',
+    },
+    config: {
+      restriction: {
+        allowedWikis: ['viwiki'],
+        allowedRights: [],
+        allowedTabs: [],
+      },
+      source: {
+        server: 'meta.wikimedia.org',
+        page: 'User:NhacNy2412/BlankedThePage.js',
+      },
+      sandboxTargetSelector: '#ca-btp',
+    },
+    component: DefaultExtendedToolComponent,
   },
 ];
 
-export const extendedToolsDict = Object.fromEntries(extendedTools.map((tool) => [tool.id, tool]));
+export const extendedToolsDict = Object.fromEntries(
+  extendedTools.map((tool) => [tool.metadata.id, tool])
+);

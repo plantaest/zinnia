@@ -7,7 +7,7 @@ import { appState } from '@/states/appState';
 import { UserConfig } from '@/types/persistence/UserConfig';
 import { appConfig } from '@/config/appConfig';
 import { versionMap } from '@/utils/migration/versionMap';
-import { Notification } from '@/utils/Notification';
+import { Notice } from '@/utils/Notice';
 import { migrateFunctions } from '@/utils/migration/migrateFunctions';
 import { useGetOption } from '@/queries/useGetOption';
 import { useSaveOption } from '@/queries/useSaveOption';
@@ -30,7 +30,7 @@ export function useManageVersion() {
       },
       {
         onSuccess: () =>
-          Notification.success(
+          Notice.success(
             formatMessage(
               { id: 'hook.useSaveOption.success.updateAppVersion' },
               {

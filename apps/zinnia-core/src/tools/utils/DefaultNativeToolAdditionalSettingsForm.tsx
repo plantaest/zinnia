@@ -1,7 +1,7 @@
 import { Text } from '@mantine/core';
 import { useIntl } from 'react-intl';
 
-export function DefaultNativeToolAdditionalSettingsFormComponent() {
+export function DefaultNativeToolAdditionalSettingsForm() {
   const { formatMessage } = useIntl();
 
   return (
