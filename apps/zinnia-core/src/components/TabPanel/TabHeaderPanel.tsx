@@ -13,8 +13,8 @@ import classes from './TabHeaderPanel.module.css';
 import { appState } from '@/states/appState';
 import { NewTabPanel } from '@/components/NewTabPanel/NewTabPanel';
 import { TabListPanel } from '@/components/TabListPanel/TabListPanel';
-import { tabIcons } from '@/utils/tabIcons';
 import { SyncTabsPanel } from '@/components/SyncTabsPanel/SyncTabsPanel';
+import { TabHelper } from '@/utils/TabHelper';
 
 export function TabHeaderPanel() {
   const { dir } = useDirection();
@@ -38,7 +38,7 @@ export function TabHeaderPanel() {
   };
 
   const activeTagFragment = (tabType: TabType, tabName: string) => {
-    const TabIcon = tabIcons[tabType];
+    const TabIcon = TabHelper.icons[tabType];
     const isMainTab = tabType.startsWith('MAIN');
 
     return (

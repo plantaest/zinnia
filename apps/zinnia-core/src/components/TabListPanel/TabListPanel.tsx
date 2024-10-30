@@ -15,10 +15,10 @@ import { useSelector } from '@legendapp/state/react';
 import { modals } from '@mantine/modals';
 import { appState } from '@/states/appState';
 import classes from './TabListPanel.module.css';
-import { tabIcons } from '@/utils/tabIcons';
 import { scrollToTopTabMainPanel } from '@/utils/scrollToTopTabMainPanel';
 import { useLargerThan } from '@/hooks/useLargerThan';
 import { CloseModalButton } from '@/components/CloseModalButton/CloseModalButton';
+import { TabHelper } from '@/utils/TabHelper';
 
 function TabListPanelContent() {
   const { formatMessage } = useIntl();
@@ -48,7 +48,7 @@ function TabListPanelContent() {
       {activeTabs.length > 0 && (
         <Stack gap={5}>
           {activeTabs.map((tab) => {
-            const TabIcon = tabIcons[tab.type];
+            const TabIcon = TabHelper.icons[tab.type];
             const isMainTab = tab.type.startsWith('MAIN');
 
             return (

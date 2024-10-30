@@ -40,6 +40,7 @@ import { scrollToTopTabMainPanel } from '@/utils/scrollToTopTabMainPanel';
 import { selectedChangeRef } from '@/refs/selectedChangeRef';
 import { DiffPreviewPanel } from '@/components/DiffPreviewPanel/DiffPreviewPanel';
 import { useLargerThan } from '@/hooks/useLargerThan';
+import { TabHelper } from '@/utils/TabHelper';
 
 interface EditChangeCardProps {
   change: Change;
@@ -121,7 +122,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
       } else {
         appState.ui.selectedChange.set(change);
 
-        const currentMainDiffTab = tabs.find((tab) => tab.type === TabType.MAIN_DIFF);
+        const currentMainDiffTab = tabs.find(TabHelper.isMainDiff);
         let tabId;
 
         if (!currentMainDiffTab) {
@@ -188,7 +189,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
       } else {
         appState.ui.selectedChange.set(change);
 
-        const currentMainReadTab = tabs.find((tab) => tab.type === TabType.MAIN_READ);
+        const currentMainReadTab = tabs.find(TabHelper.isMainRead);
         let tabId;
 
         if (!currentMainReadTab) {
