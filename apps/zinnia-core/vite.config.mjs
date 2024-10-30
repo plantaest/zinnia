@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
-import zinniaSpecificFilesPlugin from './zinniaSpecificFilesPlugin.js';
+import zinniaSpecificFilesRollupPlugin from './zinnia-specific-files.rollup-plugin.js';
 
-export default defineConfig(({ mode }) => ({
+export default defineConfig((env) => ({
   server: {
     port: 8050,
   },
@@ -28,7 +28,7 @@ export default defineConfig(({ mode }) => ({
           charts: ['@mantine/charts'],
         },
       },
-      plugins: [zinniaSpecificFilesPlugin(mode)],
+      plugins: [zinniaSpecificFilesRollupPlugin(env.mode)],
     },
   },
   esbuild: {
