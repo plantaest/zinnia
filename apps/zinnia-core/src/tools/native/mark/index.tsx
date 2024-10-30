@@ -162,7 +162,12 @@ function MarkTool({ metadata, config, children }: NativeToolComponentProps) {
         run();
       }
     } else {
-      Notice.info(allowedTabsMessage(config.restriction.allowedTabs));
+      Notice.info(
+        allowedTabsMessage(
+          formatMessage({ id: 'tool.native.mark.name' }),
+          config.restriction.allowedTabs
+        )
+      );
     }
   };
 

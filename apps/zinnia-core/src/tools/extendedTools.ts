@@ -1,5 +1,6 @@
 import { ExtendedTool } from '@/tools/types/ZinniaTool';
 import { DefaultExtendedToolComponent } from '@/tools/utils/DefaultExtendedToolComponent';
+import { TabType } from '@/types/persistence/Tab';
 
 export const extendedTools: ExtendedTool[] = [
   {
@@ -32,7 +33,7 @@ export const extendedTools: ExtendedTool[] = [
       restriction: {
         allowedWikis: ['viwiki'],
         allowedRights: [],
-        allowedTabs: [],
+        allowedTabs: [TabType.DIFF, TabType.MAIN_DIFF, TabType.READ, TabType.MAIN_READ],
       },
       source: {
         server: 'meta.wikimedia.org',
