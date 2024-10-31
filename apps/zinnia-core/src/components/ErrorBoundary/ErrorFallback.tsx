@@ -1,5 +1,5 @@
 import { ErrorInfo, useEffect, useState } from 'react';
-import { Alert, Button, Code, CopyButton, Flex, Group, Stack, Text } from '@mantine/core';
+import { Button, Card, Code, CopyButton, Flex, Group, Stack, Text } from '@mantine/core';
 import { IconInfoCircle } from '@tabler/icons-react';
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
@@ -41,7 +41,76 @@ export function ErrorFallback({ error, errorInfo }: ErrorFallbackProps) {
       });
   }, []);
 
+  const logs = {
+    id: uuidv4(),
+    timestamp: dayjs().toISOString(),
+    errorName: error.name,
+    errorMessage: error.message,
+    errorStack: errorStackFrames.join('\n'),
+    errorComponentStack: errorInfoStackFrames.join('\n'),
+    appState: appStateObject,
+  };
+
+  const handleClickClearCacheButton = () => {
+    appState.local.tabs.delete();
+    appState.userConfig.language.delete();
+    appState.userConfig.dir.delete();
+    window.location.reload();
+  };
+
+  const handleClickFactoryResetButton = () => {
+    saveOptionApi.mutate(
+      {
+        name: appConfig.USER_CONFIG_OPTION_KEY,
+        value: null,
+      },
+      {
+        onSuccess: () => {
+          handleClickClearCacheButton();
+        },
+      }
+    );
+  };
+
   const lines = [
+    {
+      title: 'Solutions',
+      value: (
+        <Group gap="sm" mt={6}>
+          <CopyButton value={JSON.stringify(logs)}>
+            {({ copied, copy }) => (
+              <Button color={copied ? 'teal' : 'blue'} onClick={copy}>
+                {copied ? 'Copied logs' : 'Copy logs'}
+              </Button>
+            )}
+          </CopyButton>
+          <Button
+            component="a"
+            href="https://en.wikipedia.org/wiki/User_talk:Plantaest/Zinnia"
+            target="_blank"
+          >
+            Go to Talk
+          </Button>
+          <Button
+            component="a"
+            href="https://meta.wikimedia.org/wiki/Special:EmailUser/Plantaest"
+            target="_blank"
+          >
+            Email to Plantaest
+          </Button>
+          <Button color="red" onClick={handleClickClearCacheButton}>
+            Clear cache
+          </Button>
+          <Button
+            color="red"
+            onClick={handleClickFactoryResetButton}
+            loading={saveOptionApi.isPending}
+          >
+            Factory reset
+          </Button>
+        </Group>
+      ),
+    },
     {
       title: 'Error Name',
       value: <Text size="lg">{error.name}</Text>,
@@ -91,79 +160,16 @@ export function ErrorFallback({ error, errorInfo }: ErrorFallbackProps) {
     },
   ];
 
-  const logs = {
-    id: uuidv4(),
-    timestamp: dayjs().toISOString(),
-    errorName: error.name,
-    errorMessage: error.message,
-    errorStack: errorStackFrames.join('\n'),
-    errorComponentStack: errorInfoStackFrames.join('\n'),
-    appState: appStateObject,
-  };
-
-  const handleClickClearCacheButton = () => {
-    appState.local.tabs.delete();
-    appState.userConfig.language.delete();
-    appState.userConfig.dir.delete();
-    window.location.reload();
-  };
-
-  const handleClickFactoryResetButton = () => {
-    saveOptionApi.mutate(
-      {
-        name: appConfig.USER_CONFIG_OPTION_KEY,
-        value: null,
-      },
-      {
-        onSuccess: () => {
-          handleClickClearCacheButton();
-        },
-      }
-    );
-  };
-
   return (
-    <Alert
-      variant="white"
-      color="pink"
-      title="Error"
-      icon={<IconInfoCircle />}
-      styles={{ body: { minWidth: 0 } }}
-    >
+    <Card radius="md" shadow="sm" withBorder>
       <Stack>
-        <Group gap="sm">
-          <CopyButton value={JSON.stringify(logs)}>
-            {({ copied, copy }) => (
-              <Button color={copied ? 'teal' : 'blue'} onClick={copy}>
-                {copied ? 'Copied logs' : 'Copy logs'}
-              </Button>
-            )}
-          </CopyButton>
-          <Button
-            component="a"
-            href="https://en.wikipedia.org/wiki/User_talk:Plantaest/Zinnia"
-            target="_blank"
-          >
-            Go to Talk
-          </Button>
-          <Button
-            component="a"
-            href="https://meta.wikimedia.org/wiki/Special:EmailUser/Plantaest"
-            target="_blank"
-          >
-            Email to Plantaest
-          </Button>
-          <Button color="red" onClick={handleClickClearCacheButton}>
-            Clear cache
-          </Button>
-          <Button
-            color="red"
-            onClick={handleClickFactoryResetButton}
-            loading={saveOptionApi.isPending}
-          >
-            Factory reset
-          </Button>
+        <Group gap="xs">
+          <IconInfoCircle size="1.5rem" color="var(--mantine-color-pink-5" />
+          <Text c="pink.5" fw={600} ff="var(--zinnia-font-monospace)" size="xl">
+            ERROR
+          </Text>
         </Group>
+
         {lines.map((line) => (
           <Flex key={line.title} direction="column">
             <Text size="xs" c="dimmed">
@@ -173,6 +179,6 @@ export function ErrorFallback({ error, errorInfo }: ErrorFallbackProps) {
           </Flex>
         ))}
       </Stack>
-    </Alert>
+    </Card>
   );
 }

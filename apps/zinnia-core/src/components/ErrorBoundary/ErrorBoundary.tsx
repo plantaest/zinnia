@@ -1,11 +1,11 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
 import { ErrorFallback } from '@/components/ErrorBoundary/ErrorFallback';
 
-interface Props {
+interface ErrorBoundaryProps {
   children: ReactNode;
 }
 
-type State =
+type ErrorBoundaryState =
   | {
       hasError: false;
     }
@@ -15,8 +15,8 @@ type State =
       errorInfo: ErrorInfo;
     };
 
-export class ErrorBoundary extends Component<Props, State> {
-  constructor(props: Props) {
+export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
   }

@@ -12,9 +12,9 @@ export interface UserConfig {
   language: string;
   locale: string;
   dir: 'ltr' | 'rtl';
+  advancedMode: boolean;
   workspaces: Workspace[];
   activeWorkspaceId: string | null;
-  advancedMode: boolean;
   tools: {
     native: UserNativeTool[];
     extended: UserExtendedTool[];
