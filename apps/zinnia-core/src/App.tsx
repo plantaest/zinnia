@@ -8,7 +8,6 @@ import { DirectionProvider, MantineProvider } from '@mantine/core';
 import { enableReactTracking } from '@legendapp/state/config/enableReactTracking';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
-import { useDocumentTitle } from '@mantine/hooks';
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
@@ -22,10 +21,9 @@ import { theme } from './theme';
 import { Notice } from '@/utils/Notice';
 import { appConfig } from '@/config/appConfig';
 import { appState } from '@/states/appState';
-import { HomePage } from '@/pages/HomePage/Home.page';
+import { Core } from '@/modules/Core/Core';
 import { i18n } from '@/i18n';
 import { useSyncLanguage } from '@/hooks/useSyncLanguage';
-import { ErrorBoundary } from '@/components/ErrorBoundary/ErrorBoundary';
 
 // dayjs
 dayjs.extend(duration);
@@ -87,7 +85,6 @@ interface AppProps {
 }
 
 export default function App({ shadowRoot }: AppProps) {
-  useDocumentTitle('Zinnia');
   useSyncLanguage();
 
   return (
@@ -102,9 +99,7 @@ export default function App({ shadowRoot }: AppProps) {
           >
             <Notifications />
             <ModalsProvider>
-              <ErrorBoundary>
-                <HomePage />
-              </ErrorBoundary>
+              <Core />
             </ModalsProvider>
           </MantineProvider>
         </RawIntlProvider>
