@@ -1,7 +1,7 @@
 import { IconArrowBackUp, IconArrowBackUpDouble } from '@tabler/icons-react';
-import { NativeTool, NativeToolAction, NativeToolComponentProps } from '@/tools/types/ZinniaTool';
 import { DefaultNativeToolAdditionalSettingsForm } from '@/tools/utils/DefaultNativeToolAdditionalSettingsForm';
 import { DefaultNativeToolActionComponent } from '@/tools/utils/DefaultNativeToolActionComponent';
+import { NativeTool, NativeToolAction, NativeToolComponentProps } from '@/tools/types/NativeTool';
 
 // Actions
 

@@ -24,11 +24,11 @@ import classes from '@/components/ToolboxPanel/ToolboxSettings.module.css';
 import { appState } from '@/states/appState';
 import { nativeToolsDict } from '@/tools/nativeTools';
 import { extendedToolsDict } from '@/tools/extendedTools';
-import { toolIconColors } from '@/tools/types/ZinniaTool';
 import { UserExtendedTool, UserNativeTool } from '@/types/persistence/Tool';
 import { useUpdateTools } from '@/queries/useUpdateTools';
 import { UserConfig } from '@/types/persistence/UserConfig';
 import { DefaultNativeToolAdditionalSettingsForm } from '@/tools/utils/DefaultNativeToolAdditionalSettingsForm';
+import { toolIconColors } from '@/tools/types/ToolIconColor';
 
 const formSchema = v.object({
   native: v.array(

@@ -1,6 +1,6 @@
-import { ExtendedTool, SYNCED_WIKI_CONTEXT } from '@/tools/types/ZinniaTool';
 import { DefaultExtendedToolComponent } from '@/tools/utils/DefaultExtendedToolComponent';
 import { TabType } from '@/types/persistence/Tab';
+import { ExtendedTool, SYNCED_WIKI_CONTEXT } from '@/tools/types/ExtendedTool';
 
 export const extendedTools: ExtendedTool[] = [
   {

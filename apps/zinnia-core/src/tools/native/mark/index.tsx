@@ -7,11 +7,6 @@ import { useHotkeys } from '@mantine/hooks';
 import * as v from 'valibot';
 import { useForm } from '@mantine/form';
 import { valibotResolver } from 'mantine-form-valibot-resolver';
-import {
-  NativeTool,
-  NativeToolAdditionalSettingsFormProps,
-  NativeToolComponentProps,
-} from '@/tools/types/ZinniaTool';
 import { appState } from '@/states/appState';
 import { TabType } from '@/types/persistence/Tab';
 import { Notice } from '@/utils/Notice';
@@ -20,6 +15,11 @@ import { mergeAndRemoveEqualKeys } from '@/utils/mergeAndRemoveEqualKeys';
 import { useLargerThan } from '@/hooks/useLargerThan';
 import { useGetRevisions } from '@/queries/useGetRevisions';
 import { usePatrol } from '@/queries/usePatrol';
+import {
+  NativeTool,
+  NativeToolAdditionalSettingsFormProps,
+  NativeToolComponentProps,
+} from '@/tools/types/NativeTool';
 
 // Settings
 

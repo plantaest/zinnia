@@ -1,11 +1,11 @@
 import { useSelector } from '@legendapp/state/react';
-import { ExtendedToolComponentProps } from '@/tools/types/ZinniaTool';
 import { useDownloadUserScript } from '@/tools/utils/useDownloadUserScript';
 import { useToolUtils } from '@/tools/utils/useToolUtils';
 import { appState } from '@/states/appState';
 import { Notice } from '@/utils/Notice';
 import { zinniaSandboxRoot } from '@/tools/sandbox/zinniaSandboxRoot';
 import { useToolStyles } from '@/tools/utils/useToolStyles';
+import { ExtendedToolComponentProps } from '@/tools/types/ExtendedTool';
 
 export function DefaultExtendedToolComponent({
   metadata,

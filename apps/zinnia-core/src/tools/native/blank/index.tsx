@@ -1,7 +1,7 @@
 import { IconEraser } from '@tabler/icons-react';
-import { NativeTool } from '@/tools/types/ZinniaTool';
 import { DefaultNativeToolAdditionalSettingsForm } from '@/tools/utils/DefaultNativeToolAdditionalSettingsForm';
 import { DefaultNativeToolComponent } from '@/tools/utils/DefaultNativeToolComponent';
+import { NativeTool } from '@/tools/types/NativeTool';
 
 export const blankTool: NativeTool = {
   metadata: {

@@ -33,7 +33,7 @@ interface AppState {
     activeTabId: ObservableComputedTwoWay<string | null>;
     activeTab: ObservableComputedTwoWay<Tab | null>;
     currentReadTabRevisionId: number;
-    downloadedUserScripts: Map<string, string>;
+    extendedToolExecuteFunctions: Map<string, Function>;
   };
   instance: {
     numberFormat: ObservableComputed<Intl.NumberFormat>;
@@ -123,7 +123,7 @@ export const appState: ObservableObject<AppState> = observable<AppState>({
       }
     ),
     currentReadTabRevisionId: 0,
-    downloadedUserScripts: new Map(),
+    extendedToolExecuteFunctions: new Map(),
   },
   instance: {
     numberFormat: computed(() => new Intl.NumberFormat(appState.userConfig.locale.get())),
