@@ -1,4 +1,4 @@
-import { ExtendedTool } from '@/tools/types/ZinniaTool';
+import { ExtendedTool, SYNCED_WIKI_CONTEXT } from '@/tools/types/ZinniaTool';
 import { DefaultExtendedToolComponent } from '@/tools/utils/DefaultExtendedToolComponent';
 import { TabType } from '@/types/persistence/Tab';
 
@@ -11,7 +11,8 @@ export const extendedTools: ExtendedTool[] = [
     },
     config: {
       restriction: {
-        allowedWikis: ['viwiki'],
+        allowedSites: ['viwiki'],
+        allowedWikis: [],
         allowedRights: [],
         allowedTabs: [],
       },
@@ -31,7 +32,8 @@ export const extendedTools: ExtendedTool[] = [
     },
     config: {
       restriction: {
-        allowedWikis: ['viwiki'],
+        allowedSites: [],
+        allowedWikis: SYNCED_WIKI_CONTEXT,
         allowedRights: [],
         allowedTabs: [TabType.DIFF, TabType.MAIN_DIFF, TabType.READ, TabType.MAIN_READ],
       },
@@ -51,6 +53,7 @@ export const extendedTools: ExtendedTool[] = [
     },
     config: {
       restriction: {
+        allowedSites: [],
         allowedWikis: [],
         allowedRights: [],
         allowedTabs: [],

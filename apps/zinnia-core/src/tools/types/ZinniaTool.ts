@@ -42,7 +42,7 @@ export interface NativeToolMetadata {
 
 export interface NativeToolConfig {
   restriction: {
-    allowedWikis: WikiId[];
+    allowedWikis: WikiId[]; // For l10n
     allowedRights: string[];
     allowedTabs: TabType[];
   };
@@ -113,7 +113,8 @@ export interface ExtendedToolMetadata {
 
 export interface ExtendToolConfig {
   restriction: {
-    allowedWikis: WikiId[];
+    allowedSites: WikiId[];
+    allowedWikis: WikiId[] | typeof SYNCED_WIKI_CONTEXT;
     allowedRights: string[];
     allowedTabs: TabType[];
   };
@@ -136,3 +137,7 @@ export interface ExtendedToolComponentPayload {
   loading?: boolean;
   targetRef?: React.RefObject<HTMLButtonElement>;
 }
+
+// Misc
+
+export const SYNCED_WIKI_CONTEXT: unique symbol = Symbol('SYNCED_WIKI_CONTEXT');
