@@ -23,6 +23,8 @@
   "common.close": "Close",
   "common.extend": "Extend",
   "common.reload": "Reload",
+  "common.pause": "Pause",
+  "common.continue": "Continue",
   "common.ok": "OK",
   "wiki.project.meta": "Meta",
   "wiki.project.wikipedia": "Wikipedia",

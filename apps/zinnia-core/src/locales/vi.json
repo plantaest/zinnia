@@ -23,6 +23,8 @@
   "common.close": "Đóng",
   "common.extend": "Mở rộng",
   "common.reload": "Tải lại",
+  "common.pause": "Tạm dừng",
+  "common.continue": "Tiếp tục",
   "common.ok": "OK",
   "wiki.project.meta": "Meta",
   "wiki.project.wikipedia": "Wikipedia",

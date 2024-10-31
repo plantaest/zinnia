@@ -1,5 +1,12 @@
 import { ActionIcon, Box, Flex, Group, Text } from '@mantine/core';
-import { IconArrowsMaximize, IconFocus, IconPaperclip, IconReload } from '@tabler/icons-react';
+import {
+  IconArrowsMaximize,
+  IconFocus,
+  IconPaperclip,
+  IconPlayerPause,
+  IconPlayerPlay,
+  IconReload,
+} from '@tabler/icons-react';
 import { useIntl } from 'react-intl';
 import { useEffect, useState } from 'react';
 import { useNetwork } from '@mantine/hooks';
@@ -20,44 +27,63 @@ export function FeedControlPanel() {
   // Live updates
   const isLiveUpdates = feed?.liveUpdates ?? false;
   const interval = feed?.interval ?? 0;
+  const [live, setLive] = useState(isLiveUpdates);
+  const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
 
-  const [intervalId, setIntervalId] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (!intervalId && isLiveUpdates) {
+  const createInterval = () => {
+    if (!intervalId) {
       const id = setInterval(() => refetch(), interval * 1000);
-      setIntervalId(id as unknown as number);
+      setIntervalId(id);
     }
+  };
 
-    if (intervalId && !isLiveUpdates) {
+  const destroyInterval = () => {
+    if (intervalId) {
       clearInterval(intervalId);
       setIntervalId(null);
     }
+  };
 
-    return () => {
-      intervalId && clearInterval(intervalId);
-    };
+  useEffect(() => {
+    live ? createInterval() : destroyInterval();
+  }, [live]);
+
+  useEffect(() => {
+    setLive(isLiveUpdates);
   }, [isLiveUpdates]);
 
   useEffect(() => {
     if (intervalId && isLiveUpdates && interval !== 0) {
       clearInterval(intervalId);
       const id = setInterval(() => refetch(), interval * 1000);
-      setIntervalId(id as unknown as number);
+      setIntervalId(id);
     }
-
-    return () => {
-      intervalId && clearInterval(intervalId);
-    };
   }, [interval]);
 
-  const handleClickReloadButton = () => refetch();
+  useEffect(
+    () => () => {
+      intervalId && clearInterval(intervalId);
+    },
+    []
+  );
+
+  const handleClickReloadButton = async () => {
+    if (isLiveUpdates) {
+      setLive(!live);
+    } else {
+      await refetch();
+    }
+  };
 
   const handleClickPreviewButton = () => appState.ui.preview.set((prev) => !prev);
 
   const handleClickFocusButton = () => appState.ui.focus.set((prev) => !prev);
 
   const handleClickShowTabPanelDrawerButton = () => appState.ui.showTabPanelDrawer.set(true);
+
+  const reloadButtonTitle = formatMessage({
+    id: isLiveUpdates ? (live ? 'common.pause' : 'common.continue') : 'common.reload',
+  });
 
   return (
     <Group className={classes.control} data-sticky={recentChanges.length > 0} data-focus={focus}>
@@ -78,10 +104,18 @@ export function FeedControlPanel() {
           loading={isRefetching}
           loaderProps={{ size: 14 }}
           onClick={handleClickReloadButton}
-          title={formatMessage({ id: 'common.reload' })}
-          aria-label={formatMessage({ id: 'common.reload' })}
+          title={reloadButtonTitle}
+          aria-label={reloadButtonTitle}
         >
-          <IconReload size="1.125rem" />
+          {isLiveUpdates ? (
+            live ? (
+              <IconPlayerPause size="1.125rem" />
+            ) : (
+              <IconPlayerPlay size="1.125rem" />
+            )
+          ) : (
+            <IconReload size="1.125rem" />
+          )}
         </ActionIcon>
         {advancedMode && (
           <ActionIcon
