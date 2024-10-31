@@ -225,7 +225,7 @@ export function ToolboxSettings({ onChangeLayer }: ToolboxSettingsProps) {
           </Text>
         </Stack>
       ) : (
-        <Group gap="xs" wrap="nowrap" align="start">
+        <Group gap="xs" wrap="nowrap" align="start" style={{ wordBreak: 'break-word' }}>
           <Stack gap={6} flex={{ xs: 1 }}>
             {tools.native.map((tool, index) => {
               const nativeTool = nativeToolsDict[tool.toolId];
@@ -340,7 +340,7 @@ export function ToolboxSettings({ onChangeLayer }: ToolboxSettingsProps) {
                 <NativeToolAdditionalForm
                   parentForm={form}
                   toolIndex={selectedTool.index}
-                  data={tools.native[selectedTool.index].settings.additional.data}
+                  userAdditionalSettings={tools.native[selectedTool.index].settings.additional.data}
                 />
               </>
             )}

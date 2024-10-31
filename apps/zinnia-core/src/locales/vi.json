@@ -142,7 +142,7 @@
   "ui.toolboxPanel.settings.title": "Thiết đặt các công cụ",
   "ui.toolboxPanel.settings.general": "Chung",
   "ui.toolboxPanel.settings.additional": "Bổ sung",
-  "ui.toolboxPanel.settings.displayOnDock": "Hiển thị trên dock",
+  "ui.toolboxPanel.settings.displayOnDock": "Hiển thị trên Dock",
   "ui.toolboxPanel.settings.iconColor": "Màu biểu tượng",
   "hook.useSaveOption.error.default": "Không thể tạo/lưu được cấu hình",
   "hook.useSaveOption.success.updateAppVersion": "Đã cập nhật thành công lên phiên bản mới nhất {newVersion} từ phiên bản {oldVersion}",

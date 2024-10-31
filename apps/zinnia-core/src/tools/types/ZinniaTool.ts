@@ -94,7 +94,7 @@ export interface NativeToolActionComponentPayload {
 export interface NativeToolAdditionalSettingsFormProps {
   parentForm: UseFormReturnType<ToolboxSettingsFormValues>;
   toolIndex: number;
-  data: Record<string, unknown>;
+  userAdditionalSettings: Record<string, unknown>;
 }
 
 // Extended tool

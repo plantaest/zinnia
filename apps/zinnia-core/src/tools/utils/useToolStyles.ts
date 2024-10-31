@@ -11,7 +11,9 @@ export function useToolStyles(styles?: string) {
     }
 
     return () => {
-      document.head.removeChild(styleNode);
+      if (styleNode) {
+        document.head.removeChild(styleNode);
+      }
     };
   }, []);
 }

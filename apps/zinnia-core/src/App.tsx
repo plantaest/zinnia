@@ -83,7 +83,7 @@ const queryClient = new QueryClient({
 });
 
 interface AppProps {
-  shadowRoot?: ShadowRoot;
+  shadowRoot: ShadowRoot;
 }
 
 export default function App({ shadowRoot }: AppProps) {

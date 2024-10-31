@@ -142,7 +142,7 @@
   "ui.toolboxPanel.settings.title": "Tools settings",
   "ui.toolboxPanel.settings.general": "General",
   "ui.toolboxPanel.settings.additional": "Additional",
-  "ui.toolboxPanel.settings.displayOnDock": "Display on dock",
+  "ui.toolboxPanel.settings.displayOnDock": "Display on Dock",
   "ui.toolboxPanel.settings.iconColor": "Icon color",
   "hook.useSaveOption.error.default": "Unable to create/save configurations",
   "hook.useSaveOption.success.updateAppVersion": "Successfully updated to the latest version {newVersion} from version {oldVersion}",

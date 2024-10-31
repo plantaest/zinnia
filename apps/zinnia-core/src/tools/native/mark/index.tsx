@@ -38,13 +38,20 @@ const settingsInitialFormValues: SettingsFormValues = {
 function AdditionalSettingsForm({
   parentForm,
   toolIndex,
-  data,
+  userAdditionalSettings,
 }: NativeToolAdditionalSettingsFormProps) {
   const { formatMessage } = useIntl();
 
   const form = useForm({
     mode: 'uncontrolled',
-    initialValues: { ...settingsInitialFormValues, ...data },
+    initialValues: {
+      ...settingsInitialFormValues,
+      ...userAdditionalSettings,
+      ...mergeAndRemoveEqualKeys(
+        settingsInitialFormValues,
+        parentForm.getValues().native[toolIndex].settings.additional.data
+      ),
+    },
     validate: valibotResolver(settingsSchema),
     onValuesChange: (values) => {
       parentForm.setFieldValue(
