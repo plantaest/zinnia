@@ -11,8 +11,8 @@ import { NoneTab } from '@/components/TabPanel/NoneTab';
 import { PageTab } from '@/components/TabPanel/PageTab';
 import { TabHelper } from '@/utils/TabHelper';
 
-let readTabData: ReadTabData;
-let diffTabData: DiffTabData;
+let readTab: { id: string; data: ReadTabData };
+let diffTab: { id: string; data: DiffTabData };
 
 export function TabMainPanel() {
   const activeTab = useSelector(appState.ui.activeTab);
@@ -24,15 +24,15 @@ export function TabMainPanel() {
 
   if (activeTab) {
     if (isReadTab) {
-      readTabData = activeTab.data;
+      readTab = { id: activeTab.id, data: activeTab.data };
     }
 
     if (isDiffTab) {
-      diffTabData = activeTab.data;
+      diffTab = { id: activeTab.id, data: activeTab.data };
     }
 
     if (activeTab.type === TabType.PAGE) {
-      otherTab = <PageTab data={activeTab.data} />;
+      otherTab = <PageTab tabData={activeTab.data} />;
     }
 
     if (activeTab.type === TabType.WELCOME) {
@@ -44,11 +44,11 @@ export function TabMainPanel() {
     <Card className={classes.main} ref={tabMainPanelRef}>
       {/* Don't unmount ReadTab */}
       <Flex display={isReadTab ? undefined : 'none'} flex={1}>
-        {readTabData && <ReadTab data={readTabData} />}
+        {readTab && <ReadTab tabId={readTab.id} tabData={readTab.data} />}
       </Flex>
       {/* Don't unmount DiffTab */}
       <Flex display={isDiffTab ? undefined : 'none'} flex={1}>
-        {diffTabData && <DiffTab data={diffTabData} />}
+        {diffTab && <DiffTab tabId={diffTab.id} tabData={diffTab.data} />}
       </Flex>
       {isOtherTab && <Flex flex={1}>{otherTab}</Flex>}
     </Card>

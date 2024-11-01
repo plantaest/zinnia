@@ -257,12 +257,12 @@ const chartData = [
 ];
 
 interface PageTabProps {
-  data: PageTabData;
+  tabData: PageTabData;
 }
 
-export function PageTab({ data }: PageTabProps) {
+export function PageTab({ tabData }: PageTabProps) {
   const { formatMessage } = useIntl();
-  const { wikiId, pageTitle } = data;
+  const { wikiId, pageTitle } = tabData;
   const serverName = wikis.getWiki(wikiId).getConfig().serverName;
   const { data: revisions = [], isFetching } = useGetRevisions(wikiId, pageTitle, 30);
   const dates = new Set<string>();

@@ -45,15 +45,16 @@ import { scrollToTopTabMainPanel } from '@/utils/scrollToTopTabMainPanel';
 import { CloseModalButton } from '@/components/CloseModalButton/CloseModalButton';
 
 interface DiffTabProps {
-  data: DiffTabData;
+  tabId: string;
+  tabData: DiffTabData;
 }
 
-export function DiffTab({ data }: DiffTabProps) {
+export function DiffTab({ tabId, tabData }: DiffTabProps) {
   const { dir: globalDir } = useDirection();
   const { formatMessage } = useIntl();
   const largerThanLg = useLargerThan('lg');
 
-  const { wikiId, pageTitle, fromRevisionId, toRevisionId } = data;
+  const { wikiId, pageTitle, fromRevisionId, toRevisionId } = tabData;
 
   const placeholderCompareRevisionsResult: CompareRevisionsResult = {
     fromId: 0,
@@ -246,18 +247,20 @@ export function DiffTab({ data }: DiffTabProps) {
   };
 
   // PageContext
+  const activeTabId = useSelector(appState.ui.activeTabId);
+
   useEffect(() => {
-    if (isSuccess) {
+    if (tabId === activeTabId && isSuccess) {
       appState.ui.pageContext.set({
         environment: 'zinnia',
         contextType: 'diff',
-        wikiId: data.wikiId,
+        wikiId: tabData.wikiId,
         pageId: compareResult.toId,
-        pageTitle: data.pageTitle,
+        pageTitle: tabData.pageTitle,
         revisionId: compareResult.toRevisionId,
       });
     }
-  }, [data, compareResult, isSuccess]);
+  }, [activeTabId, tabData, compareResult, isSuccess]);
 
   return (
     <Flex wrap="nowrap" w="100%">

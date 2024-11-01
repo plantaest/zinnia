@@ -5,6 +5,7 @@ import { IconAlertTriangle, IconInfoCircle } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { useEffect } from 'react';
+import { useSelector } from '@legendapp/state/react';
 import { useGetPageHtml } from '@/queries/useGetPageHtml';
 import classes from './ReadTab.module.css';
 import { MwHelper } from '@/utils/MwHelper';
@@ -24,11 +25,12 @@ const placeholderHtmlResult: PageHtmlResult | RevisionHtmlResult = {
 };
 
 interface ReadTabProps {
-  data: ReadTabData;
+  tabId: string;
+  tabData: ReadTabData;
 }
 
-export function ReadTab({ data }: ReadTabProps) {
-  const { wikiId, pageTitle, revisionId, redirect } = data;
+export function ReadTab({ tabId, tabData }: ReadTabProps) {
+  const { wikiId, pageTitle, revisionId, redirect } = tabData;
   const serverName = wikis.getWiki(wikiId).getConfig().serverName;
 
   const {
@@ -66,18 +68,20 @@ export function ReadTab({ data }: ReadTabProps) {
   };
 
   // PageContext
+  const activeTabId = useSelector(appState.ui.activeTabId);
+
   useEffect(() => {
-    if (isSuccessGetPageHtml) {
+    if (tabId === activeTabId && isSuccessGetPageHtml) {
       appState.ui.pageContext.set({
         environment: 'zinnia',
         contextType: 'page',
-        wikiId: data.wikiId,
+        wikiId: tabData.wikiId,
         pageId: htmlResult.pageId,
-        pageTitle: data.pageTitle,
+        pageTitle: tabData.pageTitle,
         revisionId: htmlResult.revisionId,
       });
     }
-  }, [data, htmlResult, isSuccessGetPageHtml]);
+  }, [activeTabId, tabData, htmlResult, isSuccessGetPageHtml]);
 
   return (
     <Stack p={5} gap={5} flex={1} w="100%">
