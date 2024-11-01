@@ -42,6 +42,10 @@ export const extendedTools: ExtendedTool[] = [
         page: 'User:NhacNy2412/BlankedThePage.js',
       },
       sandboxTargetSelector: '#ca-btp',
+      cleanupFunction: ({ sandboxRoot }) => {
+        const target = sandboxRoot.querySelector('#ca-btp');
+        target && target.remove();
+      },
     },
     component: DefaultExtendedToolComponent,
   },

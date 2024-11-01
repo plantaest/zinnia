@@ -1,14 +1,5 @@
-import { cloneFactory } from '@/tools/utils/cloneFactory';
-import { cloneMwMap } from '@/tools/utils/cloneMwMap';
-import { Notice } from '@/utils/Notice';
-import { i18n } from '@/i18n';
-import { appConfig } from '@/config/appConfig';
-
-interface ZinniaSandbox {
-  mw: typeof mediaWiki;
-  location: Location;
-  $: typeof jQuery;
-}
+import { createModifiedLocation } from '@/tools/sandbox/createModifiedLocation';
+import { createModifiedMw } from '@/tools/sandbox/createModifiedMw';
 
 declare global {
   interface Window {
@@ -17,47 +8,15 @@ declare global {
   }
 }
 
-// Modify `mw`
-const modifiedMw = {
-  ...mw,
-  config: cloneMwMap(mw.config),
-  Api: cloneFactory(mw.Api),
-  util: { ...mw.util },
-};
-
-// Override `mw.util.addPortletLink`
-// Ref: https://doc.wikimedia.org/mediawiki-core/REL1_29/js/#!/api/mw.util-method-addPortletLink
-const originalAddPortletLink = modifiedMw.util.addPortletLink;
-modifiedMw.util.addPortletLink = (...args) => {
-  const [portletId, ...rest] = args;
-  const newPortletId = `zsb-${portletId}`;
-  return originalAddPortletLink(newPortletId, ...rest);
-};
-
-// Override `mw.Api.postWithToken`
-// Ref: https://doc.wikimedia.org/mediawiki-core/REL1_29/js/#!/api/mw.Api-method-postWithToken
-const originalPostWithToken = modifiedMw.Api.prototype.postWithToken;
-modifiedMw.Api.prototype.postWithToken = function postWithToken(...args) {
-  const [, params] = args;
-
-  if (params.action === 'edit') {
-    params.summary = params.summary
-      ? [params.summary, appConfig.SUMMARY_MARK].join(' ')
-      : appConfig.SUMMARY_MARK;
-  }
-
-  return originalPostWithToken.apply(this, args);
-};
-
-// Modify `location`
-const modifiedLocation = {
-  ...window.location,
-  reload: () => Notice.info(i18n.getIntl().formatMessage({ id: 'tool.message.reloadDisabled' })),
-};
+interface ZinniaSandbox {
+  mw: typeof mediaWiki;
+  location: Location;
+  $: typeof jQuery;
+}
 
 export const zinniaSandbox: ZinniaSandbox = {
-  mw: modifiedMw,
-  location: modifiedLocation,
+  mw: createModifiedMw({ serverName: mw.config.get('wgServerName') }),
+  location: createModifiedLocation(),
   $: jQuery,
 };
 

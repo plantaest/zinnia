@@ -1,6 +1,7 @@
 export * from './CompositeError';
 export * from './Wiki';
 export * from './WikiConfig';
+export * from './helper/WikiHelper';
 export * from './helper/WikiSite';
 export * from './WikisConfig';
 export * from './Wikis';

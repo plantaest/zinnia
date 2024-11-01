@@ -12,10 +12,13 @@ export function DefaultExtendedToolComponent({
   config,
   children,
 }: ExtendedToolComponentProps) {
+  const { allowedTabsMessage } = useToolUtils('extended', metadata);
+
   useDownloadUserScript(metadata.id, config.source.server, config.source.page);
   useToolStyles(config.styles);
+
+  const pageContext = useSelector(appState.ui.pageContext);
   const activeTab = useSelector(appState.ui.activeTab);
-  const { allowedTabsMessage } = useToolUtils('extended', metadata);
 
   const run = () => {
     if (config.sandboxTargetSelector) {
@@ -30,14 +33,16 @@ export function DefaultExtendedToolComponent({
   };
 
   const trigger = () => {
-    if (config.restriction.allowedTabs.length > 0) {
-      if (activeTab && config.restriction.allowedTabs.includes(activeTab.type)) {
-        run();
+    if (pageContext.environment === 'zinnia') {
+      if (config.restriction.allowedTabs.length > 0) {
+        if (activeTab && config.restriction.allowedTabs.includes(activeTab.type)) {
+          run();
+        } else {
+          Notice.info(allowedTabsMessage(config.restriction.allowedTabs));
+        }
       } else {
-        Notice.info(allowedTabsMessage(config.restriction.allowedTabs));
+        run();
       }
-    } else {
-      run();
     }
   };
 

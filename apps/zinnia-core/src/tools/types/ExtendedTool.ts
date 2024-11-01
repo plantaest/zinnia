@@ -32,6 +32,11 @@ export interface ExtendToolConfig {
   };
   sandboxTargetSelector?: string;
   styles?: string;
+  cleanupFunction?: (payload: ExtendedToolCleanupFunctionPayload) => void;
+}
+
+interface ExtendedToolCleanupFunctionPayload {
+  sandboxRoot: HTMLDivElement;
 }
 
 export interface ExtendedToolComponentProps {

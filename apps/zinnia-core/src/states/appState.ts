@@ -6,7 +6,7 @@ import {
   ObservableObject,
 } from '@legendapp/state';
 import { ApiQueryRecentChangesParams } from 'types-mediawiki/api_params';
-import { Change } from '@plantaest/composite';
+import { Change, WikiHelper } from '@plantaest/composite';
 import { UserConfig } from '@/types/persistence/UserConfig';
 import { Workspace } from '@/types/persistence/Workspace';
 import { Filter } from '@/types/persistence/Filter';
@@ -14,10 +14,15 @@ import { FeedHelper } from '@/utils/FeedHelper';
 import { WikiId } from '@/types/mw/WikiId';
 import { startRef } from '@/refs/startRef';
 import { isEqual } from '@/utils/isEqual';
-import { Tab, TabType } from '@/types/persistence/Tab';
+import { Tab } from '@/types/persistence/Tab';
 import { underscoreTitle } from '@/utils/underscoreTitle';
 import { zinniaSandbox } from '@/tools/sandbox/zinniaSandbox';
 import { defaultPageContext, PageContext } from '@/tools/types/PageContext';
+import { createModifiedMw } from '@/tools/sandbox/createModifiedMw';
+import { wikis } from '@/utils/wikis';
+import { extendedToolsDict } from '@/tools/extendedTools';
+import { SYNCED_WIKI_CONTEXT } from '@/tools/types/ExtendedTool';
+import { zinniaSandboxRoot } from '@/tools/sandbox/zinniaSandboxRoot';
 
 interface AppState {
   userConfig: UserConfig | null;
@@ -181,18 +186,27 @@ appState.ui.activeFilter.onChange((change) => {
   }
 });
 
-// Track activeTab changes
-appState.ui.activeTab.onChange((change) => {
-  const tab = change.value;
-  if (
-    tab &&
-    (tab.type === TabType.DIFF ||
-      tab.type === TabType.MAIN_DIFF ||
-      tab.type === TabType.READ ||
-      tab.type === TabType.MAIN_READ)
-  ) {
-    zinniaSandbox.mw.config.set('wgPageName', underscoreTitle(tab.data.pageTitle));
-  } else {
-    zinniaSandbox.mw.config.set('wgPageName', mw.config.get('wgPageName'));
+// Track pageContext changes
+appState.ui.pageContext.onChange((change) => {
+  if (change.getPrevious().wikiId !== change.value.wikiId) {
+    zinniaSandbox.mw = createModifiedMw({
+      serverName: WikiHelper.createActionApiUri(
+        wikis.getWiki(change.value.wikiId).getConfig().serverName
+      ),
+    });
+
+    const executeFunctions = appState.ui.extendedToolExecuteFunctions.peek();
+
+    for (const [toolId, executeFunction] of executeFunctions) {
+      const tool = extendedToolsDict[toolId];
+
+      if (tool.config.restriction.allowedWikis === SYNCED_WIKI_CONTEXT) {
+        tool.config.cleanupFunction &&
+          tool.config.cleanupFunction({ sandboxRoot: zinniaSandboxRoot });
+        executeFunction();
+      }
+    }
   }
+
+  zinniaSandbox.mw.config.set('wgPageName', underscoreTitle(change.value.pageTitle));
 });
