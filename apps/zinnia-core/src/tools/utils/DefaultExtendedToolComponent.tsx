@@ -15,7 +15,7 @@ export function DefaultExtendedToolComponent({
   useDownloadUserScript(metadata.id, config.source.server, config.source.page);
   useToolStyles(config.styles);
   const activeTab = useSelector(appState.ui.activeTab);
-  const { allowedTabsMessage } = useToolUtils();
+  const { allowedTabsMessage } = useToolUtils('extended', metadata);
 
   const run = () => {
     if (config.sandboxTargetSelector) {
@@ -34,7 +34,7 @@ export function DefaultExtendedToolComponent({
       if (activeTab && config.restriction.allowedTabs.includes(activeTab.type)) {
         run();
       } else {
-        Notice.info(allowedTabsMessage(metadata.name, config.restriction.allowedTabs));
+        Notice.info(allowedTabsMessage(config.restriction.allowedTabs));
       }
     } else {
       run();

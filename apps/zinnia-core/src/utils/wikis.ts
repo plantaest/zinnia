@@ -2,7 +2,7 @@ import { Wikis, WikisConfig, WikiSite } from '@plantaest/composite';
 import { appConfig } from '@/config/appConfig';
 
 // Ref: https://wikitech.wikimedia.org/wiki/Machine_Learning/LiftWing#Current_Inference_Services
-const wikiSites: WikiSite[] = [
+export const wikiSites: WikiSite[] = [
   {
     wikiId: 'enwiki',
     serverName: 'en.wikipedia.org',
@@ -16,6 +16,13 @@ const wikiSites: WikiSite[] = [
     language: 'vi',
     oresSupport: 'basic',
     oresAntiVandalModel: 'reverted',
+  },
+  {
+    wikiId: 'viwiktionary',
+    serverName: 'vi.wiktionary.org',
+    language: 'vi',
+    oresSupport: 'none',
+    oresAntiVandalModel: null,
   },
   {
     wikiId: 'frwiki',
@@ -53,6 +60,8 @@ const wikiSites: WikiSite[] = [
     oresAntiVandalModel: null,
   },
 ];
+
+export const wikiSiteIds = wikiSites.map((wikiSite) => wikiSite.wikiId);
 
 const wikisConfig: WikisConfig = {
   apiUserAgent: appConfig.API_USER_AGENT,

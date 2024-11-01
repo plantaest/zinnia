@@ -84,6 +84,7 @@
   "ui.filterPanel.inherited": "Kế thừa",
   "ui.filterPanel.filterAddWikiForm.addWiki": "Thêm một wiki",
   "ui.filterPanel.filterAddWikiForm.supportedWikiList": "Danh sách wiki được hỗ trợ",
+  "ui.filterPanel.filterAddWikiForm.selectWiki": "Chọn một wiki",
   "ui.filterPanel.filterAddWikiForm.notify": "Đã thêm {wikiId} cho bộ lọc. Đừng quên nhấn Lưu.",
   "ui.filterPanel.deleteWiki": "Xóa wiki",
   "ui.filterPanel.namespaces": "Không gian tên",

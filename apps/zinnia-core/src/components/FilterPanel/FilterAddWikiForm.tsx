@@ -1,13 +1,12 @@
-import { ActionIcon, Anchor, Button, Group, Popover, Stack, Text, TextInput } from '@mantine/core';
+import { ActionIcon, Anchor, Button, Group, Popover, Select, Stack, Text } from '@mantine/core';
 import { IconBrandWikipedia, IconPlus } from '@tabler/icons-react';
 import { IntlShape, useIntl } from 'react-intl';
 import { useForm } from '@mantine/form';
-import React from 'react';
 import * as v from 'valibot';
 import { valibotResolver } from 'mantine-form-valibot-resolver';
 import { Filter } from '@/types/persistence/Filter';
 import { errorMessage } from '@/utils/errorMessage';
-import { wikis } from '@/utils/wikis';
+import { wikis, wikiSiteIds } from '@/utils/wikis';
 import { filterPanelFormAction, FilterPanelFormValues } from '@/components/FilterPanel/FilterPanel';
 import { Notice } from '@/utils/Notice';
 import { appConfig } from '@/config/appConfig';
@@ -17,7 +16,7 @@ const formSchema = (formatMessage: IntlShape['formatMessage']) =>
   v.pipe(
     v.object({
       wikiId: v.pipe(
-        v.string(),
+        v.string(formatMessage({ id: errorMessage.notEmpty })),
         v.trim(),
         v.minLength(1, formatMessage({ id: errorMessage.notEmpty }))
       ),
@@ -106,13 +105,6 @@ function FilterAddWikiFormContent() {
     });
   });
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      handleFormSubmit();
-    }
-  };
-
   return (
     <Stack gap="xs">
       <Text size="sm" fw={500}>
@@ -128,11 +120,12 @@ function FilterAddWikiFormContent() {
           {formatMessage({ id: 'ui.filterPanel.filterAddWikiForm.supportedWikiList' })}
         </Anchor>
       </Group>
-      <TextInput
+      <Select
         data-autofocus
-        placeholder="Wiki ID"
+        placeholder={formatMessage({ id: 'ui.filterPanel.filterAddWikiForm.selectWiki' })}
         size="xs"
-        onKeyDown={handleKeyDown}
+        comboboxProps={{ withinPortal: false }}
+        data={wikiSiteIds}
         {...form.getInputProps('wikiId')}
       />
       <Button size="xs" onClick={() => handleFormSubmit()}>

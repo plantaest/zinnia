@@ -84,6 +84,7 @@
   "ui.filterPanel.inherited": "Inherited",
   "ui.filterPanel.filterAddWikiForm.addWiki": "Add a wiki",
   "ui.filterPanel.filterAddWikiForm.supportedWikiList": "Supported wiki list",
+  "ui.filterPanel.filterAddWikiForm.selectWiki": "Select a wiki",
   "ui.filterPanel.filterAddWikiForm.notify": "Added {wikiId} for the filter. Don't forget to press Save.",
   "ui.filterPanel.deleteWiki": "Delete wiki",
   "ui.filterPanel.namespaces": "Namespaces",
