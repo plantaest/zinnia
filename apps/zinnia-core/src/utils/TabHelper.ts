@@ -19,24 +19,34 @@ export namespace TabHelper {
     [TabType.USER]: IconUser,
   };
 
-  export const isWelcome = (tab: Tab): tab is Tab & { type: TabType.WELCOME } =>
-    tab.type === TabType.WELCOME;
+  export const isWelcome = (tab: Tab | null): tab is Tab & { type: TabType.WELCOME } =>
+    !!tab && tab.type === TabType.WELCOME;
 
-  export const isDiff = (tab: Tab): tab is Tab & { type: TabType.DIFF } =>
-    tab.type === TabType.DIFF;
+  export const isDiff = (tab: Tab | null): tab is Tab & { type: TabType.DIFF } =>
+    !!tab && tab.type === TabType.DIFF;
 
-  export const isMainDiff = (tab: Tab): tab is Tab & { type: TabType.MAIN_DIFF } =>
-    tab.type === TabType.MAIN_DIFF;
+  export const isMainDiff = (tab: Tab | null): tab is Tab & { type: TabType.MAIN_DIFF } =>
+    !!tab && tab.type === TabType.MAIN_DIFF;
 
-  export const isRead = (tab: Tab): tab is Tab & { type: TabType.READ } =>
-    tab.type === TabType.READ;
+  export const isDiffs = (
+    tab: Tab | null
+  ): tab is Tab & { type: TabType.DIFF | TabType.MAIN_DIFF } =>
+    !!tab && (tab.type === TabType.DIFF || tab.type === TabType.MAIN_DIFF);
 
-  export const isMainRead = (tab: Tab): tab is Tab & { type: TabType.MAIN_READ } =>
-    tab.type === TabType.MAIN_READ;
+  export const isRead = (tab: Tab | null): tab is Tab & { type: TabType.READ } =>
+    !!tab && tab.type === TabType.READ;
 
-  export const isPage = (tab: Tab): tab is Tab & { type: TabType.PAGE } =>
-    tab.type === TabType.PAGE;
+  export const isMainRead = (tab: Tab | null): tab is Tab & { type: TabType.MAIN_READ } =>
+    !!tab && tab.type === TabType.MAIN_READ;
 
-  export const isUser = (tab: Tab): tab is Tab & { type: TabType.USER } =>
-    tab.type === TabType.USER;
+  export const isReads = (
+    tab: Tab | null
+  ): tab is Tab & { type: TabType.READ | TabType.MAIN_READ } =>
+    !!tab && (tab.type === TabType.READ || tab.type === TabType.MAIN_READ);
+
+  export const isPage = (tab: Tab | null): tab is Tab & { type: TabType.PAGE } =>
+    !!tab && tab.type === TabType.PAGE;
+
+  export const isUser = (tab: Tab | null): tab is Tab & { type: TabType.USER } =>
+    !!tab && tab.type === TabType.USER;
 }

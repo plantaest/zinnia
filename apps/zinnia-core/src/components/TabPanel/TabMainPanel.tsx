@@ -9,35 +9,30 @@ import { tabMainPanelRef } from '@/refs/tabMainPanelRef';
 import { ReadTab } from '@/components/TabPanel/ReadTab';
 import { NoneTab } from '@/components/TabPanel/NoneTab';
 import { PageTab } from '@/components/TabPanel/PageTab';
+import { TabHelper } from '@/utils/TabHelper';
 
-let diffTabData: DiffTabData;
 let readTabData: ReadTabData;
+let diffTabData: DiffTabData;
 
 export function TabMainPanel() {
   const activeTab = useSelector(appState.ui.activeTab);
   let otherTab = <NoneTab />;
 
+  const isReadTab = TabHelper.isReads(activeTab);
+  const isDiffTab = TabHelper.isDiffs(activeTab);
+  const isOtherTab = !isReadTab && !isDiffTab;
+
   if (activeTab) {
-    if (activeTab.type === TabType.MAIN_READ || activeTab.type === TabType.READ) {
-      readTabData = {
-        wikiId: activeTab.data.wikiId,
-        pageTitle: activeTab.data.pageTitle,
-        revisionId: activeTab.data.revisionId,
-        redirect: activeTab.data.redirect,
-      };
+    if (isReadTab) {
+      readTabData = activeTab.data;
     }
 
-    if (activeTab.type === TabType.MAIN_DIFF || activeTab.type === TabType.DIFF) {
-      diffTabData = {
-        wikiId: activeTab.data.wikiId,
-        pageTitle: activeTab.data.pageTitle,
-        fromRevisionId: activeTab.data.fromRevisionId,
-        toRevisionId: activeTab.data.toRevisionId,
-      };
+    if (isDiffTab) {
+      diffTabData = activeTab.data;
     }
 
     if (activeTab.type === TabType.PAGE) {
-      otherTab = <PageTab wikiId={activeTab.data.wikiId} pageTitle={activeTab.data.pageTitle} />;
+      otherTab = <PageTab data={activeTab.data} />;
     }
 
     if (activeTab.type === TabType.WELCOME) {
@@ -45,33 +40,15 @@ export function TabMainPanel() {
     }
   }
 
-  const isReadTab = activeTab ? [TabType.MAIN_READ, TabType.READ].includes(activeTab.type) : false;
-  const isDiffTab = activeTab ? [TabType.MAIN_DIFF, TabType.DIFF].includes(activeTab.type) : false;
-  const isOtherTab = !isReadTab && !isDiffTab;
-
   return (
     <Card className={classes.main} ref={tabMainPanelRef}>
       {/* Don't unmount ReadTab */}
       <Flex display={isReadTab ? undefined : 'none'} flex={1}>
-        {readTabData && (
-          <ReadTab
-            wikiId={readTabData.wikiId}
-            pageTitle={readTabData.pageTitle}
-            revisionId={readTabData.revisionId}
-            redirect={readTabData.redirect}
-          />
-        )}
+        {readTabData && <ReadTab data={readTabData} />}
       </Flex>
       {/* Don't unmount DiffTab */}
       <Flex display={isDiffTab ? undefined : 'none'} flex={1}>
-        {diffTabData && (
-          <DiffTab
-            wikiId={diffTabData.wikiId}
-            pageTitle={diffTabData.pageTitle}
-            fromRevisionId={diffTabData.fromRevisionId}
-            toRevisionId={diffTabData.toRevisionId}
-          />
-        )}
+        {diffTabData && <DiffTab data={diffTabData} />}
       </Flex>
       {isOtherTab && <Flex flex={1}>{otherTab}</Flex>}
     </Card>

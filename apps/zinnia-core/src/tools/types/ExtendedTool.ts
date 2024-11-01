@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { WikiId } from '@/types/mw/WikiId';
 import { TabType } from '@/types/persistence/Tab';
+import { PageContext } from './PageContext';
 
 export interface ExtendedTool {
   metadata: ExtendedToolMetadata;
@@ -21,7 +22,7 @@ export interface ExtendToolConfig {
     allowedRights: string[];
     allowedTabs: TabType[];
     allowedPages?: {
-      test: (pageContext: ExtendedToolPageContext) => boolean;
+      test: (pageContext: PageContext) => boolean;
       reload: boolean;
     };
   };
@@ -31,11 +32,6 @@ export interface ExtendToolConfig {
   };
   sandboxTargetSelector?: string;
   styles?: string;
-}
-
-export interface ExtendedToolPageContext {
-  namespace: number;
-  title: string;
 }
 
 export interface ExtendedToolComponentProps {

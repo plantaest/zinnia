@@ -17,6 +17,7 @@ import { isEqual } from '@/utils/isEqual';
 import { Tab, TabType } from '@/types/persistence/Tab';
 import { underscoreTitle } from '@/utils/underscoreTitle';
 import { zinniaSandbox } from '@/tools/sandbox/zinniaSandbox';
+import { defaultPageContext, PageContext } from '@/tools/types/PageContext';
 
 interface AppState {
   userConfig: UserConfig | null;
@@ -32,8 +33,8 @@ interface AppState {
     activeTabs: ObservableComputedTwoWay<Tab[]>;
     activeTabId: ObservableComputedTwoWay<string | null>;
     activeTab: ObservableComputedTwoWay<Tab | null>;
-    currentReadTabRevisionId: number;
     extendedToolExecuteFunctions: Map<string, Function>;
+    pageContext: PageContext;
   };
   instance: {
     numberFormat: ObservableComputed<Intl.NumberFormat>;
@@ -122,8 +123,8 @@ export const appState: ObservableObject<AppState> = observable<AppState>({
         );
       }
     ),
-    currentReadTabRevisionId: 0,
     extendedToolExecuteFunctions: new Map(),
+    pageContext: defaultPageContext,
   },
   instance: {
     numberFormat: computed(() => new Intl.NumberFormat(appState.userConfig.locale.get())),

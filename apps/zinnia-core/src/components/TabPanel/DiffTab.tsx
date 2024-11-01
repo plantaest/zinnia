@@ -40,21 +40,20 @@ import { PagePanel } from '@/components/PagePanel/PagePanel';
 import { appState } from '@/states/appState';
 import { UserPanel } from '@/components/UserPanel/UserPanel';
 import { useLargerThan } from '@/hooks/useLargerThan';
-import { Tab, TabType } from '@/types/persistence/Tab';
+import { DiffTabData, Tab, TabType } from '@/types/persistence/Tab';
 import { scrollToTopTabMainPanel } from '@/utils/scrollToTopTabMainPanel';
 import { CloseModalButton } from '@/components/CloseModalButton/CloseModalButton';
 
 interface DiffTabProps {
-  wikiId: string;
-  pageTitle: string;
-  fromRevisionId: number;
-  toRevisionId: number;
+  data: DiffTabData;
 }
 
-export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: DiffTabProps) {
+export function DiffTab({ data }: DiffTabProps) {
   const { dir: globalDir } = useDirection();
   const { formatMessage } = useIntl();
   const largerThanLg = useLargerThan('lg');
+
+  const { wikiId, pageTitle, fromRevisionId, toRevisionId } = data;
 
   const placeholderCompareRevisionsResult: CompareRevisionsResult = {
     fromId: 0,
@@ -245,6 +244,20 @@ export function DiffTab({ wikiId, pageTitle, fromRevisionId, toRevisionId }: Dif
     appState.ui.activeTabId.set(pageTab.id);
     scrollToTopTabMainPanel();
   };
+
+  // PageContext
+  useEffect(() => {
+    if (isSuccess) {
+      appState.ui.pageContext.set({
+        environment: 'zinnia',
+        contextType: 'diff',
+        wikiId: data.wikiId,
+        pageId: compareResult.toId,
+        pageTitle: data.pageTitle,
+        revisionId: compareResult.toRevisionId,
+      });
+    }
+  }, [data, compareResult, isSuccess]);
 
   return (
     <Flex wrap="nowrap" w="100%">

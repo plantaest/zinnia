@@ -62,6 +62,7 @@ import { sanitizeHtml } from '@/utils/sanitizeHtml';
 import { DiffPreviewPanel } from '@/components/DiffPreviewPanel/DiffPreviewPanel';
 import { appState } from '@/states/appState';
 import { useLargerThan } from '@/hooks/useLargerThan';
+import { PageTabData } from '@/types/persistence/Tab';
 
 const infoboxes = [
   {
@@ -256,12 +257,12 @@ const chartData = [
 ];
 
 interface PageTabProps {
-  wikiId: string;
-  pageTitle: string;
+  data: PageTabData;
 }
 
-export function PageTab({ wikiId, pageTitle }: PageTabProps) {
+export function PageTab({ data }: PageTabProps) {
   const { formatMessage } = useIntl();
+  const { wikiId, pageTitle } = data;
   const serverName = wikis.getWiki(wikiId).getConfig().serverName;
   const { data: revisions = [], isFetching } = useGetRevisions(wikiId, pageTitle, 30);
   const dates = new Set<string>();

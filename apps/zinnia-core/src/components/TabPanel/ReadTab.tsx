@@ -12,7 +12,7 @@ import { wikis } from '@/utils/wikis';
 import { ParsoidOutput } from '@/components/ParsoidOutput/ParsoidOutput';
 import { useGetWikiStyleSheet } from '@/queries/useGetWikiStyleSheet';
 import parsedHtmlStyles from './parsed-html-styles.css?inline';
-import { Tab, TabType } from '@/types/persistence/Tab';
+import { ReadTabData, Tab, TabType } from '@/types/persistence/Tab';
 import { appState } from '@/states/appState';
 import { scrollToTopTabMainPanel } from '@/utils/scrollToTopTabMainPanel';
 
@@ -24,13 +24,11 @@ const placeholderHtmlResult: PageHtmlResult | RevisionHtmlResult = {
 };
 
 interface ReadTabProps {
-  wikiId: string;
-  pageTitle: string;
-  revisionId: number | null;
-  redirect: boolean;
+  data: ReadTabData;
 }
 
-export function ReadTab({ wikiId, pageTitle, revisionId, redirect }: ReadTabProps) {
+export function ReadTab({ data }: ReadTabProps) {
+  const { wikiId, pageTitle, revisionId, redirect } = data;
   const serverName = wikis.getWiki(wikiId).getConfig().serverName;
 
   const {
@@ -67,9 +65,19 @@ export function ReadTab({ wikiId, pageTitle, revisionId, redirect }: ReadTabProp
     scrollToTopTabMainPanel();
   };
 
+  // PageContext
   useEffect(() => {
-    appState.ui.currentReadTabRevisionId.set(htmlResult.revisionId);
-  }, [htmlResult.revisionId]);
+    if (isSuccessGetPageHtml) {
+      appState.ui.pageContext.set({
+        environment: 'zinnia',
+        contextType: 'page',
+        wikiId: data.wikiId,
+        pageId: htmlResult.pageId,
+        pageTitle: data.pageTitle,
+        revisionId: htmlResult.revisionId,
+      });
+    }
+  }, [data, htmlResult, isSuccessGetPageHtml]);
 
   return (
     <Stack p={5} gap={5} flex={1} w="100%">

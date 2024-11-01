@@ -20,6 +20,7 @@ import {
   NativeToolAdditionalSettingsFormProps,
   NativeToolComponentProps,
 } from '@/tools/types/NativeTool';
+import { defaultPageContext } from '@/tools/types/PageContext';
 
 // Settings
 
@@ -91,52 +92,43 @@ function AdditionalSettingsForm({
 
 function MarkTool({ metadata, config, children }: NativeToolComponentProps) {
   const { formatMessage } = useIntl();
-  const { allowedTabsMessage } = useToolUtils();
+  const { getAdditionalSettings, allowedTabsMessage } = useToolUtils('native', metadata);
+  const additionalSettings = getAdditionalSettings(settingsInitialFormValues);
+
+  const pageContext = useSelector(appState.ui.pageContext);
   const activeTab = useSelector(appState.ui.activeTab);
-  const diffTabData =
-    activeTab && (activeTab.type === TabType.DIFF || activeTab.type === TabType.MAIN_DIFF)
-      ? activeTab.data
-      : null;
-  const readTabData =
-    activeTab && (activeTab.type === TabType.READ || activeTab.type === TabType.MAIN_READ)
-      ? activeTab.data
-      : null;
-  const [opened, setOpened] = useState(false);
-  const userMarkTool = useSelector(() =>
-    appState.userConfig.tools.native.get().find((tool) => tool.toolId === metadata.id)
-  );
-  const userAdditionalSettings: Partial<SettingsFormValues> = userMarkTool
-    ? userMarkTool.settings.additional.data
-    : {};
-  const additionalSettings: SettingsFormValues = {
-    ...settingsInitialFormValues,
-    ...userAdditionalSettings,
-  };
-  const targetRef = useRef<HTMLButtonElement>(null);
-  const largerThanXs = useLargerThan('xs');
+
   const { data: firstRevisions = [], isLoading: isLoadingFirstRevisions } = useGetRevisions(
-    readTabData && readTabData.revisionId === null ? readTabData.wikiId : 'N/A',
-    readTabData && readTabData.revisionId === null ? readTabData.pageTitle : 'N/A',
+    pageContext.wikiId,
+    pageContext.pageTitle,
     1,
-    'newer'
+    'newer',
+    {
+      enabled: () => pageContext !== defaultPageContext && pageContext.contextType === 'page',
+      staleTime: Infinity,
+    }
   );
-  const revisionId = diffTabData
-    ? diffTabData.toRevisionId
-    : readTabData && readTabData.revisionId
-      ? readTabData.revisionId
-      : firstRevisions.length > 0
-        ? firstRevisions[0].revisionId
-        : 0;
-  const currentReadTabRevisionId = useSelector(appState.ui.currentReadTabRevisionId);
-  const wikiId = diffTabData ? diffTabData.wikiId : readTabData ? readTabData.wikiId : 'N/A';
-  const patrolApi = usePatrol(wikiId, revisionId);
+  const firstRevisionId = firstRevisions.length > 0 ? firstRevisions[0].revisionId : null;
+  const revisionId =
+    pageContext.contextType === 'page' && firstRevisionId
+      ? firstRevisionId
+      : pageContext.revisionId;
+  const patrolApi = usePatrol(pageContext.wikiId, revisionId);
+
+  const [openedDialog, setOpenedDialog] = useState(false);
+  const largerThanXs = useLargerThan('xs');
+  const targetRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   const revisionIdFragment = (
     <Text
       size="sm"
       component="span"
-      c={readTabData && revisionId !== currentReadTabRevisionId ? 'orange' : 'cyan'}
+      c={
+        pageContext.contextType === 'page' && pageContext.revisionId !== firstRevisionId
+          ? 'orange'
+          : 'cyan'
+      }
       fw={600}
       ff="var(--zinnia-font-monospace)"
     >
@@ -145,7 +137,7 @@ function MarkTool({ metadata, config, children }: NativeToolComponentProps) {
   );
 
   const run = () => {
-    if (wikiId !== 'N/A' && revisionId !== 0 && !patrolApi.isSuccess) {
+    if (pageContext !== defaultPageContext && !patrolApi.isSuccess) {
       patrolApi.mutate(undefined, {
         onSuccess: () => {
           additionalSettings.showSuccessNotification &&
@@ -162,24 +154,21 @@ function MarkTool({ metadata, config, children }: NativeToolComponentProps) {
   };
 
   const trigger = () => {
-    if (activeTab && config.restriction.allowedTabs.includes(activeTab.type)) {
-      if (additionalSettings.showConfirmationDialog) {
-        setOpened(!opened);
+    if (pageContext.environment === 'zinnia') {
+      if (activeTab && config.restriction.allowedTabs.includes(activeTab.type)) {
+        if (additionalSettings.showConfirmationDialog) {
+          setOpenedDialog(!openedDialog);
+        } else {
+          run();
+        }
       } else {
-        run();
+        Notice.info(allowedTabsMessage(config.restriction.allowedTabs));
       }
-    } else {
-      Notice.info(
-        allowedTabsMessage(
-          formatMessage({ id: 'tool.native.mark.name' }),
-          config.restriction.allowedTabs
-        )
-      );
     }
   };
 
   const triggerByHotkey = () => {
-    if (opened || (!opened && !additionalSettings.showConfirmationDialog)) {
+    if (openedDialog || (!openedDialog && !additionalSettings.showConfirmationDialog)) {
       targetRef.current?.focus();
     }
     trigger();
@@ -197,7 +186,7 @@ function MarkTool({ metadata, config, children }: NativeToolComponentProps) {
           <CloseButton
             size="xs"
             aria-label={formatMessage({ id: 'common.close' })}
-            onClick={() => setOpened(false)}
+            onClick={() => setOpenedDialog(false)}
             ref={closeButtonRef}
           />
         </Group>
@@ -205,7 +194,7 @@ function MarkTool({ metadata, config, children }: NativeToolComponentProps) {
           {formatMessage(
             {
               id:
-                readTabData && readTabData.revisionId === null
+                pageContext.contextType === 'page'
                   ? 'tool.native.mark.message.confirmationTextForFirstRevision'
                   : 'tool.native.mark.message.confirmationText',
             },
@@ -241,8 +230,8 @@ function MarkTool({ metadata, config, children }: NativeToolComponentProps) {
       shadow="lg"
       radius="md"
       trapFocus
-      opened={opened}
-      onChange={setOpened}
+      opened={openedDialog}
+      onChange={setOpenedDialog}
     >
       <Popover.Target>{childrenFragment}</Popover.Target>
       <Popover.Dropdown px="sm" py="xs">
@@ -252,8 +241,8 @@ function MarkTool({ metadata, config, children }: NativeToolComponentProps) {
   ) : (
     <>
       <Drawer
-        opened={opened}
-        onClose={() => setOpened(false)}
+        opened={openedDialog}
+        onClose={() => setOpenedDialog(false)}
         position="bottom"
         withCloseButton={false}
         styles={{ content: { height: 'auto' } }}
