@@ -1,13 +1,6 @@
 import { createModifiedLocation } from '@/tools/sandbox/createModifiedLocation';
 import { createModifiedMw } from '@/tools/sandbox/createModifiedMw';
 
-declare global {
-  interface Window {
-    zinniaSandbox: ZinniaSandbox;
-    zsb: ZinniaSandbox;
-  }
-}
-
 interface ZinniaSandbox {
   mw: typeof mediaWiki;
   location: Location;

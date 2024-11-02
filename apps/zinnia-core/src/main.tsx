@@ -10,12 +10,6 @@ if (process.env.NODE_ENV === 'development') {
   import('./document.css');
 }
 
-declare global {
-  interface Window {
-    zinniaShadowRoot: ShadowRoot;
-  }
-}
-
 if (onMediaWiki()) {
   // Zinnia Core
   const shadowRoot =
