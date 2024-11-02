@@ -1,3 +1,4 @@
+import { WikiHelper } from '@plantaest/composite';
 import { cloneMwMap } from '@/tools/utils/cloneMwMap';
 import { cloneMwApi } from '@/tools/utils/cloneMwApi';
 import { appConfig } from '@/config/appConfig';
@@ -14,7 +15,7 @@ export function createModifiedMw(options: Options): typeof mediaWiki {
   const modifiedMw: typeof mediaWiki = {
     ...mw,
     config: cloneMwMap(mw.config),
-    Api: cloneMwApi(mw.ForeignApi, options.serverName),
+    Api: cloneMwApi(mw.ForeignApi, WikiHelper.createActionApiUri(options.serverName)),
     util: { ...mw.util },
   };
 

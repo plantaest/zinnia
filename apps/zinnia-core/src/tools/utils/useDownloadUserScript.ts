@@ -1,23 +1,45 @@
 import { useEffect } from 'react';
 import { useSelector } from '@legendapp/state/react';
-import { zinniaSandbox } from '@/tools/sandbox/zinniaSandbox';
+import { defaultSandboxGlobals, zinniaSandbox } from '@/tools/sandbox/zinniaSandbox';
 import { appState } from '@/states/appState';
+import { CURRENT_WIKI, ExtendToolConfig } from '@/tools/types/ExtendedTool';
+import { getCachedMwInstance } from '@/tools/utils/getCachedMwInstance';
 
-export function useDownloadUserScript(toolId: string, server: string, page: string) {
+interface Options {
+  toolId: string;
+  server: string;
+  page: string;
+  sandboxInitialServer: ExtendToolConfig['sandbox']['initialServer'];
+}
+
+export function useDownloadUserScript({ toolId, server, page, sandboxInitialServer }: Options) {
   const executeFunctions = useSelector(appState.ui.extendedToolExecuteFunctions);
 
   useEffect(() => {
     if (!executeFunctions.has(toolId)) {
+      // TODO: Refactor to React Query
       fetch(`https://${server}/w/rest.php/v1/page/${encodeURIComponent(page)}`)
         .then((response) => response.json())
         .then((pageInfo) => {
-          const scriptContent = `(({ ${Object.keys(zinniaSandbox).join(
+          // Create script content
+          const scriptContent = `(({ ${Object.keys(defaultSandboxGlobals).join(
             ', '
-          )} }) => {\n\n${pageInfo.source}\n\n})(window.zinniaSandbox)`;
+          )} }) => {\n\n${pageInfo.source}\n\n})(window.zinniaSandbox.globals.get('${toolId}'))`;
 
+          // Create execute function
           // eslint-disable-next-line @typescript-eslint/no-implied-eval
           const executeFunction = new Function(scriptContent);
           executeFunctions.set(toolId, executeFunction);
+
+          // Create sandbox global objects for tool
+          const sandboxGlobals =
+            sandboxInitialServer === CURRENT_WIKI
+              ? { ...defaultSandboxGlobals }
+              : {
+                  ...defaultSandboxGlobals,
+                  mw: getCachedMwInstance(sandboxInitialServer),
+                };
+          zinniaSandbox.globals.set(toolId, sandboxGlobals);
 
           // Execute
           executeFunction();

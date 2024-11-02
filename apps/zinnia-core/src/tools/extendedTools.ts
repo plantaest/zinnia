@@ -1,6 +1,6 @@
 import { DefaultExtendedToolComponent } from '@/tools/utils/DefaultExtendedToolComponent';
 import { TabType } from '@/types/persistence/Tab';
-import { ExtendedTool, SYNCED_WIKI_CONTEXT } from '@/tools/types/ExtendedTool';
+import { CURRENT_WIKI, ExtendedTool } from '@/tools/types/ExtendedTool';
 
 export const extendedTools: ExtendedTool[] = [
   {
@@ -11,7 +11,7 @@ export const extendedTools: ExtendedTool[] = [
     },
     config: {
       restriction: {
-        allowedSites: ['viwiki'],
+        allowedSites: [],
         allowedWikis: [],
         allowedRights: [],
         allowedTabs: [],
@@ -20,7 +20,11 @@ export const extendedTools: ExtendedTool[] = [
         server: 'vi.wikipedia.org',
         page: 'User:NgocAnMaster/LinkReport.js',
       },
-      sandboxTargetSelector: '#ca-linkreport',
+      sandbox: {
+        initialServer: 'vi.wikipedia.org',
+        syncedWikiContext: false,
+        targetSelector: '#ca-linkreport',
+      },
     },
     component: DefaultExtendedToolComponent,
   },
@@ -33,7 +37,7 @@ export const extendedTools: ExtendedTool[] = [
     config: {
       restriction: {
         allowedSites: [],
-        allowedWikis: SYNCED_WIKI_CONTEXT,
+        allowedWikis: [],
         allowedRights: [],
         allowedTabs: [TabType.DIFF, TabType.MAIN_DIFF, TabType.READ, TabType.MAIN_READ],
       },
@@ -41,10 +45,14 @@ export const extendedTools: ExtendedTool[] = [
         server: 'meta.wikimedia.org',
         page: 'User:NhacNy2412/BlankedThePage.js',
       },
-      sandboxTargetSelector: '#ca-btp',
-      cleanupFunction: ({ sandboxRoot }) => {
-        const target = sandboxRoot.querySelector('#ca-btp');
-        target && target.remove();
+      sandbox: {
+        initialServer: CURRENT_WIKI,
+        syncedWikiContext: true,
+        targetSelector: '#ca-btp',
+        cleanupFunction: ({ sandboxRoot }) => {
+          const target = sandboxRoot.querySelector('#ca-btp');
+          target && target.remove();
+        },
       },
     },
     component: DefaultExtendedToolComponent,
@@ -66,8 +74,12 @@ export const extendedTools: ExtendedTool[] = [
         server: 'en.wikipedia.org',
         page: 'User:BrandonXLF/TodoList.js',
       },
-      sandboxTargetSelector: '#userjs-todo > a',
-      styles: '#userjs-todo-popup { top: 0 !important; }',
+      sandbox: {
+        initialServer: CURRENT_WIKI,
+        syncedWikiContext: false,
+        targetSelector: '#userjs-todo > a',
+        styles: '#userjs-todo-popup { top: 0 !important; }',
+      },
     },
     component: DefaultExtendedToolComponent,
   },

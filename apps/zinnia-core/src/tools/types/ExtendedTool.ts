@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { WikiId } from '@/types/mw/WikiId';
 import { TabType } from '@/types/persistence/Tab';
 import { PageContext } from './PageContext';
+import { WikiServerName } from '@/types/mw/WikiServerName';
 
 export interface ExtendedTool {
   metadata: ExtendedToolMetadata;
@@ -18,7 +19,7 @@ export interface ExtendedToolMetadata {
 export interface ExtendToolConfig {
   restriction: {
     allowedSites: WikiId[];
-    allowedWikis: WikiId[] | typeof SYNCED_WIKI_CONTEXT;
+    allowedWikis: WikiId[];
     allowedRights: string[];
     allowedTabs: TabType[];
     allowedPages?: {
@@ -30,10 +31,16 @@ export interface ExtendToolConfig {
     server: string;
     page: string;
   };
-  sandboxTargetSelector?: string;
-  styles?: string;
-  cleanupFunction?: (payload: ExtendedToolCleanupFunctionPayload) => void;
+  sandbox: {
+    initialServer: WikiServerName | typeof CURRENT_WIKI;
+    syncedWikiContext: boolean;
+    targetSelector?: string;
+    styles?: string;
+    cleanupFunction?: (payload: ExtendedToolCleanupFunctionPayload) => void;
+  };
 }
+
+export const CURRENT_WIKI: unique symbol = Symbol('CURRENT_WIKI');
 
 interface ExtendedToolCleanupFunctionPayload {
   sandboxRoot: HTMLDivElement;
@@ -50,5 +57,3 @@ export interface ExtendedToolComponentPayload {
   loading?: boolean;
   targetRef?: React.RefObject<HTMLButtonElement>;
 }
-
-export const SYNCED_WIKI_CONTEXT: unique symbol = Symbol('SYNCED_WIKI_CONTEXT');

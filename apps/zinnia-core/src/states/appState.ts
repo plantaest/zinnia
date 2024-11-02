@@ -6,7 +6,7 @@ import {
   ObservableObject,
 } from '@legendapp/state';
 import { ApiQueryRecentChangesParams } from 'types-mediawiki/api_params';
-import { Change, WikiHelper } from '@plantaest/composite';
+import { Change } from '@plantaest/composite';
 import { UserConfig } from '@/types/persistence/UserConfig';
 import { Workspace } from '@/types/persistence/Workspace';
 import { Filter } from '@/types/persistence/Filter';
@@ -18,11 +18,11 @@ import { Tab } from '@/types/persistence/Tab';
 import { underscoreTitle } from '@/utils/underscoreTitle';
 import { zinniaSandbox } from '@/tools/sandbox/zinniaSandbox';
 import { defaultPageContext, PageContext } from '@/tools/types/PageContext';
-import { createModifiedMw } from '@/tools/sandbox/createModifiedMw';
 import { wikis } from '@/utils/wikis';
 import { extendedToolsDict } from '@/tools/extendedTools';
-import { SYNCED_WIKI_CONTEXT } from '@/tools/types/ExtendedTool';
 import { zinniaSandboxRoot } from '@/tools/sandbox/zinniaSandboxRoot';
+import { ToolId } from '@/tools/types/ToolId';
+import { getCachedMwInstance } from '@/tools/utils/getCachedMwInstance';
 
 interface AppState {
   userConfig: UserConfig | null;
@@ -38,7 +38,7 @@ interface AppState {
     activeTabs: ObservableComputedTwoWay<Tab[]>;
     activeTabId: ObservableComputedTwoWay<string | null>;
     activeTab: ObservableComputedTwoWay<Tab | null>;
-    extendedToolExecuteFunctions: Map<string, Function>;
+    extendedToolExecuteFunctions: Map<ToolId, Function>;
     pageContext: PageContext;
   };
   instance: {
@@ -188,25 +188,31 @@ appState.ui.activeFilter.onChange((change) => {
 
 // Track pageContext changes
 appState.ui.pageContext.onChange((change) => {
+  // Sync wiki context
   if (change.getPrevious().wikiId !== change.value.wikiId) {
-    zinniaSandbox.mw = createModifiedMw({
-      serverName: WikiHelper.createActionApiUri(
-        wikis.getWiki(change.value.wikiId).getConfig().serverName
-      ),
-    });
-
     const executeFunctions = appState.ui.extendedToolExecuteFunctions.peek();
 
     for (const [toolId, executeFunction] of executeFunctions) {
       const tool = extendedToolsDict[toolId];
 
-      if (tool.config.restriction.allowedWikis === SYNCED_WIKI_CONTEXT) {
-        tool.config.cleanupFunction &&
-          tool.config.cleanupFunction({ sandboxRoot: zinniaSandboxRoot });
+      if (tool.config.sandbox.syncedWikiContext) {
+        // Cleanup DOM of tool
+        tool.config.sandbox.cleanupFunction &&
+          tool.config.sandbox.cleanupFunction({ sandboxRoot: zinniaSandboxRoot });
+
+        // Reassign mw instance
+        zinniaSandbox.globals.get(toolId)!.mw = getCachedMwInstance(
+          wikis.getWiki(change.value.wikiId).getConfig().serverName
+        );
+
+        // Re-execute
         executeFunction();
       }
     }
   }
 
-  zinniaSandbox.mw.config.set('wgPageName', underscoreTitle(change.value.pageTitle));
+  // Sync page context
+  for (const mwInstance of window.zinniaSandbox.cachedMwInstances.values()) {
+    mwInstance.config.set('wgPageName', underscoreTitle(change.value.pageTitle));
+  }
 });

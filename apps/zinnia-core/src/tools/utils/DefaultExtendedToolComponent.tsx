@@ -14,16 +14,21 @@ export function DefaultExtendedToolComponent({
 }: ExtendedToolComponentProps) {
   const { allowedTabsMessage } = useToolUtils('extended', metadata);
 
-  useDownloadUserScript(metadata.id, config.source.server, config.source.page);
-  useToolStyles(config.styles);
+  useDownloadUserScript({
+    toolId: metadata.id,
+    server: config.source.server,
+    page: config.source.page,
+    sandboxInitialServer: config.sandbox.initialServer,
+  });
+  useToolStyles(config.sandbox.styles);
 
   const pageContext = useSelector(appState.ui.pageContext);
   const activeTab = useSelector(appState.ui.activeTab);
 
   const run = () => {
-    if (config.sandboxTargetSelector) {
+    if (config.sandbox.targetSelector) {
       const sandboxTargetNode: HTMLElement | null = zinniaSandboxRoot.querySelector(
-        config.sandboxTargetSelector
+        config.sandbox.targetSelector
       );
 
       if (sandboxTargetNode) {
