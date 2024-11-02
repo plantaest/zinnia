@@ -180,120 +180,122 @@ export function PagePanel({ wikiId, pageTitle, fromRevisionId, toRevisionId }: P
           </Group>
         </Group>
 
-        <Stack gap={4}>
-          {revisions.map((revision, index) => {
-            const isFromRevision = revision.revisionId === fromRevisionId;
-            const isToRevision = revision.revisionId === toRevisionId;
-            const isIntermediateRevision =
-              revision.revisionId > fromRevisionId && revision.revisionId < toRevisionId
-                ? 'new-old'
-                : revision.revisionId < fromRevisionId && revision.revisionId > toRevisionId
-                  ? 'old-new'
-                  : 'none';
-            const date = dayjs(revision.timestamp).format('DD-MM-YYYY');
-            let showDate;
+        {revisions.length > 0 && (
+          <Stack gap={4}>
+            {revisions.map((revision, index) => {
+              const isFromRevision = revision.revisionId === fromRevisionId;
+              const isToRevision = revision.revisionId === toRevisionId;
+              const isIntermediateRevision =
+                revision.revisionId > fromRevisionId && revision.revisionId < toRevisionId
+                  ? 'new-old'
+                  : revision.revisionId < fromRevisionId && revision.revisionId > toRevisionId
+                    ? 'old-new'
+                    : 'none';
+              const date = dayjs(revision.timestamp).format('DD-MM-YYYY');
+              let showDate;
 
-            if (dates.has(date)) {
-              showDate = false;
-            } else {
-              showDate = true;
-              dates.add(date);
-            }
+              if (dates.has(date)) {
+                showDate = false;
+              } else {
+                showDate = true;
+                dates.add(date);
+              }
 
-            return (
-              <Fragment key={revision.revisionId}>
-                {showDate && <Text className={classes.index}>{date}</Text>}
-                <HoverCard
-                  width={675}
-                  shadow="lg"
-                  radius="md"
-                  position="left"
-                  offset={25}
-                  disabled={!preview || !largerThanLg || revision.parentId === 0}
-                >
-                  <HoverCard.Target>
-                    <UnstyledButton
-                      className={classes.revision}
-                      data-from={isFromRevision}
-                      data-to={isToRevision}
-                      data-intermediate={isIntermediateRevision}
-                      onClick={(event) =>
-                        handleClickRevisionButton(event, revision.parentId, revision.revisionId)
-                      }
-                      onDoubleClick={(event) =>
-                        handleDoubleClickRevisionButton(
-                          event,
-                          revision.parentId,
-                          revision.revisionId
-                        )
-                      }
-                      onMouseDown={() => handleMouseDownRevisionButton(revision.revisionId)}
-                      onMouseUp={handleMouseUpRevisionButton}
-                      onMouseMove={handleMouseUpRevisionButton}
-                      onTouchStart={() => handleMouseDownRevisionButton(revision.revisionId)}
-                      onTouchEnd={handleMouseUpRevisionButton}
-                      onTouchMove={handleMouseUpRevisionButton}
-                    >
-                      <Group gap={2} justify="space-between" w="100%">
-                        <Group gap={5} wrap="nowrap">
-                          <Text className={classes.index}>{index + 1}</Text>
-                          <Text className={classes.timestamp}>
-                            {dayjs(revision.timestamp).format('HH:mm:ss')}
-                          </Text>
-                          <Text className={classes.revisionId} data-hidden={revision.sha1Hidden}>
-                            {revision.revisionId}
-                          </Text>
-                          {revision.minor && (
-                            <IconLeaf
-                              size="0.85rem"
-                              stroke={1.5}
-                              color="var(--mantine-color-gray-light-color)"
-                            />
-                          )}
+              return (
+                <Fragment key={revision.revisionId}>
+                  {showDate && <Text className={classes.index}>{date}</Text>}
+                  <HoverCard
+                    width={675}
+                    shadow="lg"
+                    radius="md"
+                    position="left"
+                    offset={25}
+                    disabled={!preview || !largerThanLg || revision.parentId === 0}
+                  >
+                    <HoverCard.Target>
+                      <UnstyledButton
+                        className={classes.revision}
+                        data-from={isFromRevision}
+                        data-to={isToRevision}
+                        data-intermediate={isIntermediateRevision}
+                        onClick={(event) =>
+                          handleClickRevisionButton(event, revision.parentId, revision.revisionId)
+                        }
+                        onDoubleClick={(event) =>
+                          handleDoubleClickRevisionButton(
+                            event,
+                            revision.parentId,
+                            revision.revisionId
+                          )
+                        }
+                        onMouseDown={() => handleMouseDownRevisionButton(revision.revisionId)}
+                        onMouseUp={handleMouseUpRevisionButton}
+                        onMouseMove={handleMouseUpRevisionButton}
+                        onTouchStart={() => handleMouseDownRevisionButton(revision.revisionId)}
+                        onTouchEnd={handleMouseUpRevisionButton}
+                        onTouchMove={handleMouseUpRevisionButton}
+                      >
+                        <Group gap={2} justify="space-between" w="100%">
+                          <Group gap={5} wrap="nowrap">
+                            <Text className={classes.index}>{index + 1}</Text>
+                            <Text className={classes.timestamp}>
+                              {dayjs(revision.timestamp).format('HH:mm:ss')}
+                            </Text>
+                            <Text className={classes.revisionId} data-hidden={revision.sha1Hidden}>
+                              {revision.revisionId}
+                            </Text>
+                            {revision.minor && (
+                              <IconLeaf
+                                size="0.85rem"
+                                stroke={1.5}
+                                color="var(--mantine-color-gray-light-color)"
+                              />
+                            )}
+                          </Group>
+
+                          <LengthDeltaText
+                            className={classes.delta}
+                            newLength={revision.size}
+                            oldLength={revision.parentSize}
+                          />
                         </Group>
 
-                        <LengthDeltaText
-                          className={classes.delta}
-                          newLength={revision.size}
-                          oldLength={revision.parentSize}
-                        />
-                      </Group>
+                        <Group gap={5} wrap="nowrap" maw="100%">
+                          {revision.parentId === 0 && (
+                            <ThemeIcon size={14} color="green">
+                              <IconPlus size="0.85rem" stroke={1.5} />
+                            </ThemeIcon>
+                          )}
+                          <Anchor
+                            tabIndex={-1}
+                            className={classes.user}
+                            size="xs"
+                            href={MwHelper.createUserContribUri(serverName, revision.user)}
+                            target="_blank"
+                            fw={500}
+                            onClick={handleClickUsernameLink}
+                            onDoubleClick={handleDoubleClickUsernameLink}
+                            data-hidden={revision.userHidden}
+                          >
+                            {revision.user}
+                          </Anchor>
+                        </Group>
+                      </UnstyledButton>
+                    </HoverCard.Target>
 
-                      <Group gap={5} wrap="nowrap" maw="100%">
-                        {revision.parentId === 0 && (
-                          <ThemeIcon size={14} color="green">
-                            <IconPlus size="0.85rem" stroke={1.5} />
-                          </ThemeIcon>
-                        )}
-                        <Anchor
-                          tabIndex={-1}
-                          className={classes.user}
-                          size="xs"
-                          href={MwHelper.createUserContribUri(serverName, revision.user)}
-                          target="_blank"
-                          fw={500}
-                          onClick={handleClickUsernameLink}
-                          onDoubleClick={handleDoubleClickUsernameLink}
-                          data-hidden={revision.userHidden}
-                        >
-                          {revision.user}
-                        </Anchor>
-                      </Group>
-                    </UnstyledButton>
-                  </HoverCard.Target>
-
-                  <HoverCard.Dropdown p={0} style={{ overflow: 'hidden' }}>
-                    <DiffPreviewPanel
-                      wikiId={wikiId}
-                      fromRevisionId={revision.parentId}
-                      toRevisionId={revision.revisionId}
-                    />
-                  </HoverCard.Dropdown>
-                </HoverCard>
-              </Fragment>
-            );
-          })}
-        </Stack>
+                    <HoverCard.Dropdown p={0} style={{ overflow: 'hidden' }}>
+                      <DiffPreviewPanel
+                        wikiId={wikiId}
+                        fromRevisionId={revision.parentId}
+                        toRevisionId={revision.revisionId}
+                      />
+                    </HoverCard.Dropdown>
+                  </HoverCard>
+                </Fragment>
+              );
+            })}
+          </Stack>
+        )}
       </Stack>
     </Box>
   );

@@ -34,8 +34,8 @@ export class MwApiWrapper<T> implements PromiseLike<T> {
         },
         (code: string, response: unknown) => {
           const error = new CompositeError(
-            code,
-            ['http', 'ok-but-empty'].includes(code) ? null : JSON.stringify(response)
+            code, // 'http', 'ok-but-empty' ?
+            JSON.stringify(response)
           );
 
           if (onRejected) {

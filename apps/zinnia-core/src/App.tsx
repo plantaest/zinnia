@@ -8,7 +8,7 @@ import { DirectionProvider, MantineProvider } from '@mantine/core';
 import { enableReactTracking } from '@legendapp/state/config/enableReactTracking';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
-import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
@@ -18,12 +18,11 @@ import { ObservablePersistLocalStorage } from '@legendapp/state/persist-plugins/
 import { RawIntlProvider } from 'react-intl';
 import { zinniaRoot } from '@/utils/zinniaRoot';
 import { theme } from './theme';
-import { Notice } from '@/utils/Notice';
-import { appConfig } from '@/config/appConfig';
 import { appState } from '@/states/appState';
 import { Core } from '@/modules/Core/Core';
 import { i18n } from '@/i18n';
 import { useSyncLanguage } from '@/hooks/useSyncLanguage';
+import { queryClient } from '@/queryClient';
 
 // dayjs
 dayjs.extend(duration);
@@ -46,38 +45,6 @@ persistObservable(appState.userConfig.language, {
 
 persistObservable(appState.userConfig.dir, {
   local: 'zinnia.appState.userConfig.dir',
-});
-
-// Query Client
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    },
-  },
-  queryCache: new QueryCache({
-    onError: (error, query) => {
-      if (query.meta?.showErrorNotification !== false) {
-        Notice.error(
-          (query.meta?.errorMessage as string) ||
-            i18n.getIntl().formatMessage({ id: 'query.defaultErrorMessage' })
-        );
-      }
-
-      if (appConfig.DEBUG) {
-        // eslint-disable-next-line no-console
-        console.error(error);
-      }
-    },
-  }),
-  mutationCache: new MutationCache({
-    onError: (error) => {
-      if (appConfig.DEBUG) {
-        // eslint-disable-next-line no-console
-        console.error(error);
-      }
-    },
-  }),
 });
 
 interface AppProps {

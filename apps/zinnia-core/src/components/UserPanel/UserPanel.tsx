@@ -170,108 +170,110 @@ export function UserPanel({
           </Group>
         </Group>
 
-        <Stack gap={4}>
-          {contributions.map((contribution, index) => {
-            const isFromRevision = contribution.revisionId === fromRevisionId;
-            const isToRevision = contribution.revisionId === toRevisionId;
-            const date = dayjs(contribution.timestamp).format('DD-MM-YYYY');
-            let showDate;
+        {contributions.length > 0 && (
+          <Stack gap={4}>
+            {contributions.map((contribution, index) => {
+              const isFromRevision = contribution.revisionId === fromRevisionId;
+              const isToRevision = contribution.revisionId === toRevisionId;
+              const date = dayjs(contribution.timestamp).format('DD-MM-YYYY');
+              let showDate;
 
-            if (dates.has(date)) {
-              showDate = false;
-            } else {
-              showDate = true;
-              dates.add(date);
-            }
+              if (dates.has(date)) {
+                showDate = false;
+              } else {
+                showDate = true;
+                dates.add(date);
+              }
 
-            return (
-              <Fragment key={contribution.revisionId}>
-                {showDate && <Text className={classes.index}>{date}</Text>}
-                <HoverCard
-                  width={675}
-                  shadow="lg"
-                  radius="md"
-                  position="left"
-                  offset={25}
-                  disabled={!preview || !largerThanLg || contribution.parentId === 0}
-                >
-                  <HoverCard.Target>
-                    <UnstyledButton
-                      className={classes.contribution}
-                      data-from={isFromRevision}
-                      data-to={isToRevision}
-                      onClick={() =>
-                        handleClickContributionButton(
-                          contribution.title,
-                          contribution.parentId,
-                          contribution.revisionId
-                        )
-                      }
-                    >
-                      <Group gap={2} justify="space-between" w="100%">
-                        <Group gap={5} wrap="nowrap">
-                          <Text className={classes.index}>{index + 1}</Text>
-                          <Text className={classes.timestamp}>
-                            {dayjs(contribution.timestamp).format('HH:mm:ss')}
-                          </Text>
-                          <Text className={classes.revisionId}>{contribution.revisionId}</Text>
-                          {contribution.minor && (
-                            <IconLeaf
-                              size="0.85rem"
-                              stroke={1.5}
-                              color="var(--mantine-color-gray-light-color)"
-                            />
-                          )}
-                          {contribution.top && (
-                            <IconFlame
-                              size="0.85rem"
-                              stroke={1.5}
-                              color="var(--mantine-color-orange-5)"
-                            />
-                          )}
+              return (
+                <Fragment key={contribution.revisionId}>
+                  {showDate && <Text className={classes.index}>{date}</Text>}
+                  <HoverCard
+                    width={675}
+                    shadow="lg"
+                    radius="md"
+                    position="left"
+                    offset={25}
+                    disabled={!preview || !largerThanLg || contribution.parentId === 0}
+                  >
+                    <HoverCard.Target>
+                      <UnstyledButton
+                        className={classes.contribution}
+                        data-from={isFromRevision}
+                        data-to={isToRevision}
+                        onClick={() =>
+                          handleClickContributionButton(
+                            contribution.title,
+                            contribution.parentId,
+                            contribution.revisionId
+                          )
+                        }
+                      >
+                        <Group gap={2} justify="space-between" w="100%">
+                          <Group gap={5} wrap="nowrap">
+                            <Text className={classes.index}>{index + 1}</Text>
+                            <Text className={classes.timestamp}>
+                              {dayjs(contribution.timestamp).format('HH:mm:ss')}
+                            </Text>
+                            <Text className={classes.revisionId}>{contribution.revisionId}</Text>
+                            {contribution.minor && (
+                              <IconLeaf
+                                size="0.85rem"
+                                stroke={1.5}
+                                color="var(--mantine-color-gray-light-color)"
+                              />
+                            )}
+                            {contribution.top && (
+                              <IconFlame
+                                size="0.85rem"
+                                stroke={1.5}
+                                color="var(--mantine-color-orange-5)"
+                              />
+                            )}
+                          </Group>
+
+                          <LengthDeltaText
+                            className={classes.delta}
+                            newLength={contribution.size}
+                            oldLength={contribution.size - contribution.sizeDiff}
+                          />
                         </Group>
 
-                        <LengthDeltaText
-                          className={classes.delta}
-                          newLength={contribution.size}
-                          oldLength={contribution.size - contribution.sizeDiff}
-                        />
-                      </Group>
+                        <Group gap={5} wrap="nowrap" maw="100%">
+                          {contribution.new && (
+                            <ThemeIcon size={14} color="green">
+                              <IconPlus size="0.85rem" stroke={1.5} />
+                            </ThemeIcon>
+                          )}
+                          <Anchor
+                            tabIndex={-1}
+                            className={classes.pageTitle}
+                            size="xs"
+                            href={MwHelper.createPageUri(serverName, contribution.title)}
+                            target="_blank"
+                            fw={500}
+                            onClick={handleClickPageTitleLink}
+                            onDoubleClick={handleDoubleClickPageTitleLink}
+                          >
+                            {contribution.title}
+                          </Anchor>
+                        </Group>
+                      </UnstyledButton>
+                    </HoverCard.Target>
 
-                      <Group gap={5} wrap="nowrap" maw="100%">
-                        {contribution.new && (
-                          <ThemeIcon size={14} color="green">
-                            <IconPlus size="0.85rem" stroke={1.5} />
-                          </ThemeIcon>
-                        )}
-                        <Anchor
-                          tabIndex={-1}
-                          className={classes.pageTitle}
-                          size="xs"
-                          href={MwHelper.createPageUri(serverName, contribution.title)}
-                          target="_blank"
-                          fw={500}
-                          onClick={handleClickPageTitleLink}
-                          onDoubleClick={handleDoubleClickPageTitleLink}
-                        >
-                          {contribution.title}
-                        </Anchor>
-                      </Group>
-                    </UnstyledButton>
-                  </HoverCard.Target>
-
-                  <HoverCard.Dropdown p={0} style={{ overflow: 'hidden' }}>
-                    <DiffPreviewPanel
-                      wikiId={wikiId}
-                      fromRevisionId={contribution.parentId}
-                      toRevisionId={contribution.revisionId}
-                    />
-                  </HoverCard.Dropdown>
-                </HoverCard>
-              </Fragment>
-            );
-          })}
-        </Stack>
+                    <HoverCard.Dropdown p={0} style={{ overflow: 'hidden' }}>
+                      <DiffPreviewPanel
+                        wikiId={wikiId}
+                        fromRevisionId={contribution.parentId}
+                        toRevisionId={contribution.revisionId}
+                      />
+                    </HoverCard.Dropdown>
+                  </HoverCard>
+                </Fragment>
+              );
+            })}
+          </Stack>
+        )}
       </Stack>
     </Box>
   );
