@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
 import { useState } from 'react';
 import { UserConfig } from '@/types/persistence/UserConfig';
-import { onMediaWiki } from '@/utils/onMediaWiki';
 import { Tab, TabType } from '@/types/persistence/Tab';
 import { useSaveOption } from '@/queries/useSaveOption';
 import { appState } from '@/states/appState';
@@ -12,6 +11,7 @@ import { appConfig } from '@/config/appConfig';
 import { versionMap } from '@/utils/migration/versionMap';
 import { defaultFilterFeedConfig, defaultFilterGlobalWikiConfig } from '@/types/persistence/Filter';
 import { defaultUserNativeTools } from '@/types/persistence/Tool';
+import { wikiSiteIds } from '@/utils/wikis';
 
 export function StartStateContent() {
   const { formatMessage, locale } = useIntl();
@@ -34,6 +34,9 @@ export function StartStateContent() {
       type: TabType.WELCOME,
       data: null,
     };
+
+    const currentWikiId = mw.config.get('wgWikiID');
+    const filterWikiId = wikiSiteIds.includes(currentWikiId) ? currentWikiId : 'metawiki';
 
     const defaultUserConfig: UserConfig = {
       id: userConfigId,
@@ -61,7 +64,7 @@ export function StartStateContent() {
               wikis: [
                 defaultFilterGlobalWikiConfig,
                 {
-                  wikiId: onMediaWiki() ? mw.config.get('wgWikiID') : 'metawiki',
+                  wikiId: filterWikiId,
                   inherited: true,
                   config: null,
                 },
