@@ -22,9 +22,13 @@ export function useDownloadUserScript({ toolId, server, page, sandboxInitialServ
         .then((response) => response.json())
         .then((pageInfo) => {
           // Create script content
+          const modifiedSource = (pageInfo.source as string).replaceAll(
+            'window.location.reload',
+            'location.reload'
+          );
           const scriptContent = `(({ ${Object.keys(defaultSandboxGlobals).join(
             ', '
-          )} }) => {\n\n${pageInfo.source}\n\n})(window.zinniaSandbox.globals.get('${toolId}'))`;
+          )} }) => {\n\n${modifiedSource}\n\n})(window.zinniaSandbox.globals.get('${toolId}'))`;
 
           // Create execute function
           // eslint-disable-next-line @typescript-eslint/no-implied-eval
