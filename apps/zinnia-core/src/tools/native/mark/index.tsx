@@ -92,11 +92,10 @@ function AdditionalSettingsForm({
 
 function MarkTool({ metadata, config, children }: NativeToolComponentProps) {
   const { formatMessage } = useIntl();
-  const { getAdditionalSettings, allowedTabsMessage } = useToolUtils('native', metadata);
+  const { getAdditionalSettings, isAllowedTabs } = useToolUtils('native', metadata);
   const additionalSettings = getAdditionalSettings(settingsInitialFormValues);
 
   const pageContext = useSelector(appState.ui.pageContext);
-  const activeTab = useSelector(appState.ui.activeTab);
 
   const { data: firstRevisions = [], isLoading: isLoadingFirstRevisions } = useGetRevisions(
     pageContext.wikiId,
@@ -154,19 +153,12 @@ function MarkTool({ metadata, config, children }: NativeToolComponentProps) {
   };
 
   const trigger = () => {
-    if (
-      pageContext.environment === 'zinnia' &&
-      config.restriction.allowedTabs.length > 0 &&
-      (!activeTab || !config.restriction.allowedTabs.includes(activeTab.type))
-    ) {
-      Notice.info(allowedTabsMessage(config.restriction.allowedTabs));
-      return;
-    }
-
-    if (additionalSettings.showConfirmationDialog) {
-      setOpenedDialog(!openedDialog);
-    } else {
-      run();
+    if (isAllowedTabs(config.restriction.allowedTabs)) {
+      if (additionalSettings.showConfirmationDialog) {
+        setOpenedDialog(!openedDialog);
+      } else {
+        run();
+      }
     }
   };
 
