@@ -7,57 +7,61 @@ export const wikiSites: WikiSite[] = [
     wikiId: 'enwiki',
     serverName: 'en.wikipedia.org',
     language: 'en',
-    oresSupport: 'integrated',
-    oresAntiVandalModel: 'damaging',
+    ores: {
+      support: 'integrated',
+      model: 'damaging',
+    },
   },
   {
     wikiId: 'viwiki',
     serverName: 'vi.wikipedia.org',
     language: 'vi',
-    oresSupport: 'basic',
-    oresAntiVandalModel: 'reverted',
+    ores: {
+      support: 'basic',
+      model: 'reverted',
+    },
   },
   {
     wikiId: 'viwiktionary',
     serverName: 'vi.wiktionary.org',
     language: 'vi',
-    oresSupport: 'none',
-    oresAntiVandalModel: null,
   },
   {
     wikiId: 'frwiki',
     serverName: 'fr.wikipedia.org',
     language: 'fr',
-    oresSupport: 'integrated',
-    oresAntiVandalModel: 'damaging',
+    ores: {
+      support: 'integrated',
+      model: 'damaging',
+    },
   },
   {
     wikiId: 'jawiki',
     serverName: 'ja.wikipedia.org',
     language: 'ja',
-    oresSupport: 'basic',
-    oresAntiVandalModel: 'damaging',
+    ores: {
+      support: 'basic',
+      model: 'damaging',
+    },
   },
   {
     wikiId: 'hewiki',
     serverName: 'he.wikipedia.org',
     language: 'he',
-    oresSupport: 'integrated',
-    oresAntiVandalModel: 'damaging',
+    ores: {
+      support: 'integrated',
+      model: 'damaging',
+    },
   },
   {
     wikiId: 'metawiki',
     serverName: 'meta.wikimedia.org',
     language: 'en',
-    oresSupport: 'none',
-    oresAntiVandalModel: null,
   },
   {
     wikiId: 'commonswiki',
     serverName: 'commons.wikimedia.org',
     language: 'en',
-    oresSupport: 'none',
-    oresAntiVandalModel: null,
   },
 ];
 

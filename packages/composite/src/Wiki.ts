@@ -120,7 +120,7 @@ export class InternalWiki extends Wiki {
       props.push('patrolled');
     }
 
-    if (this.config.oresSupport === 'integrated') {
+    if (this.config.ores && this.config.ores.support === 'integrated') {
       props.push('oresscores');
     }
 

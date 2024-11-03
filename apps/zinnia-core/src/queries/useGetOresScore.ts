@@ -17,30 +17,29 @@ const liftWingApi = (wikiId: string, model: string, revisionId: number) =>
 const oresApi = (wikiId: string, model: string, revisionId: number) =>
   fetch(`https://ores.wikimedia.org/v3/scores/${wikiId}/${revisionId}/${model}`);
 
-export function useGetOresAntiVandalModelScore(
-  wikiId: string,
-  revisionId: number,
-  inViewPort: boolean = true
-) {
-  const wiki = wikis.getWiki(wikiId);
-  const oresAntiVandalModel = wiki.getConfig().oresAntiVandalModel!;
+export function useGetOresScore(wikiId: string, revisionId: number, inViewPort: boolean = true) {
+  const ores = wikis.getWiki(wikiId).getConfig().ores;
 
   return useQuery<number>({
-    queryKey: [wikiId, 'getOresAntiVandalModelScore', revisionId],
+    queryKey: [wikiId, 'getOresScore', revisionId],
     queryFn: async () => {
-      const response = await liftWingApi(wikiId, oresAntiVandalModel, revisionId);
+      if (ores) {
+        const response = await liftWingApi(wikiId, ores.model, revisionId);
 
-      if (!response.ok) {
-        throw new Error(
-          `Unable to get ORES anti-vandal model score of ${wikiId}. Model: ${oresAntiVandalModel}. Revision ID: ${revisionId}. Details: ${JSON.stringify(await response.json())}`
-        );
+        if (!response.ok) {
+          throw new Error(
+            `Unable to get ORES anti-vandal model score of ${wikiId}. Model: ${ores.model}. Revision ID: ${revisionId}. Details: ${JSON.stringify(await response.json())}`
+          );
+        }
+
+        return (await response.json())[wikiId].scores[revisionId][ores.model].score.probability
+          .true;
       }
 
-      return (await response.json())[wikiId].scores[revisionId][oresAntiVandalModel].score
-        .probability.true;
+      throw new Error(`The ${wikiId} does not support ORES`);
     },
     staleTime: Infinity,
-    enabled: wiki.getConfig().oresSupport === 'basic' && inViewPort,
+    enabled: !!ores && ores.support === 'basic' && inViewPort,
     meta: {
       showErrorNotification: false,
     },

@@ -3,7 +3,7 @@ import { Change } from '@plantaest/composite';
 import { useInViewport } from '@mantine/hooks';
 import { IconAlertTriangle } from '@tabler/icons-react';
 import { wikis } from '@/utils/wikis';
-import { useGetOresAntiVandalModelScore } from '@/queries/useGetOresAntiVandalModelScore';
+import { useGetOresScore } from '@/queries/useGetOresScore';
 
 interface OresScoreBadgeProps {
   change: Change;
@@ -11,39 +11,39 @@ interface OresScoreBadgeProps {
 
 export function OresScoreBadge({ change }: OresScoreBadgeProps) {
   const { ref, inViewport } = useInViewport();
-
-  const wiki = wikis.getWiki(change.wikiId);
-  const oresSupport = wiki.getConfig().oresSupport;
-  const oresAntiVandalModel = wiki.getConfig().oresAntiVandalModel;
-
-  const show =
-    ['edit', 'new'].includes(change.type) &&
-    ((oresSupport === 'integrated' &&
-      change.oresScores &&
-      oresAntiVandalModel! in change.oresScores) ||
-      oresSupport === 'basic');
-
-  const integratedScore =
-    oresSupport === 'integrated' && change.oresScores && oresAntiVandalModel! in change.oresScores
-      ? change.oresScores[oresAntiVandalModel!].true // According to API RecentChanges response
-      : 0;
+  const ores = wikis.getWiki(change.wikiId).getConfig().ores;
 
   const {
     data: fetchedScore = 0,
     isLoading,
     isError,
     refetch,
-  } = useGetOresAntiVandalModelScore(change.wikiId, change.revisionId, inViewport);
+  } = useGetOresScore(change.wikiId, change.revisionId, inViewport);
 
-  const score = Math.round(
-    (oresSupport === 'integrated' ? integratedScore : oresSupport === 'basic' ? fetchedScore : 0) *
-      100
-  );
+  const show =
+    ['edit', 'new'].includes(change.type) &&
+    ores &&
+    ((ores.support === 'integrated' && change.oresScores && ores.model in change.oresScores) ||
+      ores.support === 'basic');
+
+  const score = ores
+    ? Math.round(
+        (ores.support === 'integrated' && change.oresScores && ores.model in change.oresScores
+          ? change.oresScores[ores.model].true // According to API RecentChanges response
+          : ores.support === 'basic'
+            ? fetchedScore
+            : 0) * 100
+      )
+    : 0;
 
   // Ref: https://github.com/he7d3r/mw-gadget-ScoredRevisions/blob/master/src/ScoredRevisions.js#L37
   const color = score >= 80 ? 'red' : score >= 58 ? 'orange' : score >= 45 ? 'yellow' : 'blue';
 
-  const loading = oresSupport === 'basic' && isLoading;
+  const loading = ores && ores.support === 'basic' && isLoading;
+
+  const handleMouseEnterBadge = () => {
+    ores && ores.support === 'basic' && isError && refetch();
+  };
 
   return (
     show && (
@@ -54,7 +54,7 @@ export function OresScoreBadge({ change }: OresScoreBadgeProps) {
         radius="sm"
         color={color}
         styles={{ label: { display: 'flex' } }}
-        onMouseEnter={() => oresSupport === 'basic' && isError && refetch()}
+        onMouseEnter={handleMouseEnterBadge}
       >
         {loading ? (
           <Loader color="white" size={12} />

@@ -39,8 +39,7 @@ export class Wikis {
       wikiId: wikiId,
       serverName: wikiSite.serverName,
       language: wikiSite.language,
-      oresSupport: wikiSite.oresSupport,
-      oresAntiVandalModel: wikiSite.oresAntiVandalModel,
+      ores: wikiSite.ores,
     };
 
     // TODO: Expand to ExternalWiki

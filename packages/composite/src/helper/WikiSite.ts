@@ -1,10 +1,8 @@
-import { OresSupport } from '../type/misc/OresSupport';
-import { OresAntiVandalModel } from '../type/misc/OresAntiVandalModel';
+import { OresConfig } from '../type/misc/OresConfig';
 
 export interface WikiSite {
   wikiId: string;
   serverName: string;
   language: string;
-  oresSupport: OresSupport;
-  oresAntiVandalModel: OresAntiVandalModel | null;
+  ores?: OresConfig;
 }
