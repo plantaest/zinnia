@@ -3,9 +3,12 @@ import { cloneMwMap } from '@/tools/utils/cloneMwMap';
 import { cloneMwApi } from '@/tools/utils/cloneMwApi';
 import { appConfig } from '@/config/appConfig';
 import { zmw } from '@/utils/zmw';
+import { WikiId } from '@/types/mw/WikiId';
+import { WikiServerName } from '@/types/mw/WikiServerName';
 
 interface Options {
-  serverName: string;
+  wikiId: WikiId;
+  serverName: WikiServerName;
 }
 
 const addMark = (comment: unknown) =>
@@ -18,6 +21,12 @@ export function createModifiedMw(options: Options): typeof mediaWiki {
     Api: cloneMwApi(zmw.ForeignApi, WikiHelper.createActionApiUri(options.serverName)),
     util: { ...zmw.util },
   };
+
+  // TODO: Refactor: Fetch wiki info on demand
+  // Reset mw.config
+  modifiedMw.config.set('wgWikiID', options.wikiId);
+  modifiedMw.config.set('wgDBname', options.wikiId);
+  modifiedMw.config.set('wgServerName', options.serverName);
 
   // Override `mw.util.addPortletLink`
   // Ref: https://doc.wikimedia.org/mediawiki-core/REL1_29/js/#!/api/mw.util-method-addPortletLink

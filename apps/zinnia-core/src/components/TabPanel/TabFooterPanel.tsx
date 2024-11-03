@@ -115,7 +115,7 @@ function ToolButtonsCarousel() {
                 metadata={extendedTool.metadata}
                 config={extendedTool.config}
               >
-                {({ trigger, loading, targetRef }) => (
+                {({ trigger, loading, targetRef, firstExecuted }) => (
                   <Carousel.Slide>
                     <Tooltip label={extendedTool.metadata.name}>
                       <ActionIcon
@@ -125,6 +125,7 @@ function ToolButtonsCarousel() {
                         onClick={trigger}
                         loading={loading}
                         ref={targetRef}
+                        disabled={firstExecuted === false}
                       >
                         <Text ff="var(--zinnia-font-monospace)">
                           {extendedTool.metadata.iconLabel}

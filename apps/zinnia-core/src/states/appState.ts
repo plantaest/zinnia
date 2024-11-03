@@ -40,6 +40,7 @@ interface AppState {
     activeTab: ObservableComputedTwoWay<Tab | null>;
     extendedToolExecuteFunctions: Map<ToolId, Function>;
     pageContext: PageContext;
+    firstPageContextChange: boolean;
   };
   instance: {
     numberFormat: ObservableComputed<Intl.NumberFormat>;
@@ -130,6 +131,7 @@ export const appState: ObservableObject<AppState> = observable<AppState>({
     ),
     extendedToolExecuteFunctions: new Map(),
     pageContext: defaultPageContext,
+    firstPageContextChange: false,
   },
   instance: {
     numberFormat: computed(() => new Intl.NumberFormat(appState.userConfig.locale.get())),
@@ -188,10 +190,13 @@ appState.ui.activeFilter.onChange((change) => {
 
 // Track pageContext changes
 appState.ui.pageContext.onChange((change) => {
+  // For first change
+  if (change.getPrevious() === defaultPageContext) {
+    appState.ui.firstPageContextChange.set(true);
+  }
+
   // Sync page context for all mw instances
   for (const mwInstance of window.zinniaSandbox.cachedMwInstances.values()) {
-    mwInstance.config.set('wgDBname', change.value.wikiId);
-    mwInstance.config.set('wgServerName', change.value.wikiServerName);
     mwInstance.config.set('wgPageName', underscoreTitle(change.value.pageTitle));
   }
 
@@ -206,15 +211,14 @@ appState.ui.pageContext.onChange((change) => {
 
     if (sandboxGlobals) {
       // Reassign mw instance
-      sandboxGlobals.mw = getCachedMwInstance(change.value.wikiServerName);
-
+      sandboxGlobals.mw = getCachedMwInstance(change.value.wikiId);
       // Re-execute
       executeFunction();
     }
   };
 
   // Sync mw instance by wiki context
-  if (change.getPrevious().wikiServerName !== change.value.wikiServerName) {
+  if (change.getPrevious().wikiId !== change.value.wikiId) {
     for (const [toolId, executeFunction] of executeFunctions) {
       const tool = extendedToolsDict[toolId];
 

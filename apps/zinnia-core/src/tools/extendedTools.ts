@@ -16,7 +16,7 @@ export const extendedTools: ExtendedTool[] = [
         page: 'User:NgocAnMaster/LinkReport.js',
       },
       sandbox: {
-        initialServer: 'vi.wikipedia.org',
+        initialWiki: 'viwiki',
         targetSelector: '#ca-linkreport',
       },
     },
@@ -37,7 +37,7 @@ export const extendedTools: ExtendedTool[] = [
         page: 'User:NhacNy2412/BlankedThePage.js',
       },
       sandbox: {
-        initialServer: CURRENT_WIKI,
+        initialWiki: CURRENT_WIKI,
         targetSelector: '#ca-btp',
         syncedWikiContext: true,
         cleanupFunction: ({ sandboxRoot }) => {
@@ -61,7 +61,7 @@ export const extendedTools: ExtendedTool[] = [
         page: 'User:BrandonXLF/TodoList.js',
       },
       sandbox: {
-        initialServer: CURRENT_WIKI,
+        initialWiki: CURRENT_WIKI,
         targetSelector: '#userjs-todo > a',
         styles: '#userjs-todo-popup { top: 0 !important; }',
       },
@@ -87,7 +87,7 @@ export const extendedTools: ExtendedTool[] = [
         page: 'User:NguoiDungKhongDinhDanh/AfDCloser.js',
       },
       sandbox: {
-        initialServer: 'vi.wikipedia.org',
+        initialWiki: 'viwiki',
         targetSelector: '#ca-afdcloser',
         cleanupFunction: ({ sandboxRoot }) => {
           const target = sandboxRoot.querySelector('#ca-afdcloser');
@@ -110,7 +110,7 @@ export const extendedTools: ExtendedTool[] = [
         page: 'User:Lourdes/PageCuration.js',
       },
       sandbox: {
-        initialServer: CURRENT_WIKI,
+        initialWiki: CURRENT_WIKI,
         targetSelector: '#pt-pagecuration > a',
         openInNewTab: true,
       },
@@ -132,7 +132,7 @@ export const extendedTools: ExtendedTool[] = [
         page: 'User:BrandonXLF/NullEdit.js',
       },
       sandbox: {
-        initialServer: CURRENT_WIKI,
+        initialWiki: CURRENT_WIKI,
         targetSelector: '[id="Null edit"]',
         syncedWikiContext: true,
         cleanupFunction: ({ sandboxRoot }) => {

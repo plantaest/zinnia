@@ -1,12 +1,13 @@
 import { ToolId } from '@/tools/types/ToolId';
 import { createModifiedLocation } from '@/tools/sandbox/createModifiedLocation';
 import { getCachedMwInstance } from '@/tools/utils/getCachedMwInstance';
-import { WikiServerName } from '@/types/mw/WikiServerName';
 import { zmw } from '@/utils/zmw';
+import { WikiId } from '@/types/mw/WikiId';
+import { wikiSiteIds } from '@/utils/wikis';
 
 interface ZinniaSandbox {
   globals: Map<ToolId, SandboxGlobals>;
-  cachedMwInstances: Map<WikiServerName, typeof mediaWiki>;
+  cachedMwInstances: Map<WikiId, typeof mediaWiki>;
 }
 
 interface SandboxGlobals {
@@ -23,8 +24,11 @@ export const zinniaSandbox: ZinniaSandbox = {
 window.zinniaSandbox = zinniaSandbox;
 window.zsb = zinniaSandbox;
 
+const currentWikiId = zmw.config.get('wgWikiID');
+const initialWikiId = wikiSiteIds.includes(currentWikiId) ? currentWikiId : 'metawiki';
+
 export const defaultSandboxGlobals: SandboxGlobals = {
-  mw: getCachedMwInstance(zmw.config.get('wgServerName')),
+  mw: getCachedMwInstance(initialWikiId),
   location: createModifiedLocation(),
   $: jQuery,
 };

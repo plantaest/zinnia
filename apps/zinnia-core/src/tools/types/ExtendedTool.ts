@@ -2,7 +2,6 @@ import React, { FunctionComponent } from 'react';
 import { WikiId } from '@/types/mw/WikiId';
 import { TabType } from '@/types/persistence/Tab';
 import { PageContext } from './PageContext';
-import { WikiServerName } from '@/types/mw/WikiServerName';
 
 export interface ExtendedTool {
   metadata: ExtendedToolMetadata;
@@ -29,7 +28,7 @@ export interface ExtendedToolConfig {
     page: string;
   };
   sandbox: {
-    initialServer: WikiServerName | typeof CURRENT_WIKI;
+    initialWiki: WikiId | typeof CURRENT_WIKI;
     targetSelector?: string;
     syncedWikiContext?: boolean;
     styles?: string;
@@ -54,4 +53,5 @@ export interface ExtendedToolComponentPayload {
   trigger?: () => void;
   loading?: boolean;
   targetRef?: React.RefObject<HTMLButtonElement>;
+  firstExecuted?: boolean;
 }

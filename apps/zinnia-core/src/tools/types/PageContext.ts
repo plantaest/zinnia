@@ -16,7 +16,7 @@ export interface PageContext {
 export const defaultPageContext: PageContext = Object.freeze({
   environment: 'zinnia',
   contextType: 'page',
-  wikiId: zmw.config.get('wgDBname'),
+  wikiId: zmw.config.get('wgWikiID'),
   wikiServerName: zmw.config.get('wgServerName'),
   pageId: 0,
   pageTitle: 'N/A',

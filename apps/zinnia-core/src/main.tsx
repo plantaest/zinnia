@@ -11,6 +11,9 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 if (onMediaWiki()) {
+  // Zinnia Sandbox
+  ReactDOM.createRoot(zinniaSandboxRoot).render(<Sandbox />);
+
   // Zinnia Core
   const shadowRoot =
     process.env.NODE_ENV === 'development'
@@ -18,7 +21,4 @@ if (onMediaWiki()) {
       : window.zinniaShadowRoot;
   shadowRoot.appendChild(zinniaRoot);
   ReactDOM.createRoot(zinniaRoot).render(<App shadowRoot={shadowRoot} />);
-
-  // Zinnia Sandbox
-  ReactDOM.createRoot(zinniaSandboxRoot).render(<Sandbox />);
 }

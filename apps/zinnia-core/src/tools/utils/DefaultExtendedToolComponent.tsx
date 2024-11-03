@@ -13,12 +13,7 @@ export function DefaultExtendedToolComponent({
     'extended',
     metadata
   );
-  useDownloadUserScript({
-    toolId: metadata.id,
-    server: config.source.server,
-    page: config.source.page,
-    sandboxInitialServer: config.sandbox.initialServer,
-  });
+  const { firstExecuted } = useDownloadUserScript({ toolMetadata: metadata, toolConfig: config });
   useToolStyles(config.sandbox.styles);
 
   const run = () => {
@@ -49,5 +44,5 @@ export function DefaultExtendedToolComponent({
     }
   };
 
-  return children({ trigger });
+  return children({ trigger, firstExecuted });
 }
