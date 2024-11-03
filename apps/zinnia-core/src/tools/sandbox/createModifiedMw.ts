@@ -23,9 +23,10 @@ export function createModifiedMw(options: Options): typeof mediaWiki {
   // Ref: https://doc.wikimedia.org/mediawiki-core/REL1_29/js/#!/api/mw.util-method-addPortletLink
   const originalAddPortletLink = modifiedMw.util.addPortletLink;
   modifiedMw.util.addPortletLink = (...args) => {
-    const [portletId, ...rest] = args;
+    const [portletId, href, text, id, ...rest] = args;
     const newPortletId = `zsb-${portletId}`;
-    return originalAddPortletLink(newPortletId, ...rest);
+    const newId = id || text; // Some user-scripts don't have an id !?
+    return originalAddPortletLink(newPortletId, href, text, newId, ...rest);
   };
 
   // Override `mw.Api.postWithToken`

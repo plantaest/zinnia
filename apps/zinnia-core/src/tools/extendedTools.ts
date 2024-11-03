@@ -117,6 +117,32 @@ export const extendedTools: ExtendedTool[] = [
     },
     component: DefaultExtendedToolComponent,
   },
+  {
+    metadata: {
+      id: 'extended:null-edit:enwiki:1',
+      name: 'NullEdit',
+      iconLabel: 'NE',
+    },
+    config: {
+      restriction: {
+        allowedTabs: [TabType.DIFF, TabType.MAIN_DIFF, TabType.READ, TabType.MAIN_READ],
+      },
+      source: {
+        server: 'en.wikipedia.org',
+        page: 'User:BrandonXLF/NullEdit.js',
+      },
+      sandbox: {
+        initialServer: CURRENT_WIKI,
+        targetSelector: '[id="Null edit"]',
+        syncedWikiContext: true,
+        cleanupFunction: ({ sandboxRoot }) => {
+          const target = sandboxRoot.querySelector('[id="Null edit"]');
+          target && target.remove();
+        },
+      },
+    },
+    component: DefaultExtendedToolComponent,
+  },
 ];
 
 export const extendedToolsDict = Object.fromEntries(
