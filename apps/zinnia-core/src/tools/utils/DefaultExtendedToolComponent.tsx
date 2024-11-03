@@ -28,7 +28,12 @@ export function DefaultExtendedToolComponent({
       );
 
       if (sandboxTargetNode) {
-        sandboxTargetNode.click();
+        if (config.sandbox.openInNewTab) {
+          const uri = sandboxTargetNode.getAttribute('href');
+          uri && window.open(uri, '_blank');
+        } else {
+          sandboxTargetNode.click();
+        }
       }
     }
   };

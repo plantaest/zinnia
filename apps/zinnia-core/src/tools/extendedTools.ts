@@ -10,19 +10,13 @@ export const extendedTools: ExtendedTool[] = [
       iconLabel: 'LR',
     },
     config: {
-      restriction: {
-        allowedSites: [],
-        allowedWikis: [],
-        allowedRights: [],
-        allowedTabs: [],
-      },
+      restriction: {},
       source: {
         server: 'vi.wikipedia.org',
         page: 'User:NgocAnMaster/LinkReport.js',
       },
       sandbox: {
         initialServer: 'vi.wikipedia.org',
-        syncedWikiContext: false,
         targetSelector: '#ca-linkreport',
       },
     },
@@ -36,9 +30,6 @@ export const extendedTools: ExtendedTool[] = [
     },
     config: {
       restriction: {
-        allowedSites: [],
-        allowedWikis: [],
-        allowedRights: [],
         allowedTabs: [TabType.DIFF, TabType.MAIN_DIFF, TabType.READ, TabType.MAIN_READ],
       },
       source: {
@@ -47,8 +38,8 @@ export const extendedTools: ExtendedTool[] = [
       },
       sandbox: {
         initialServer: CURRENT_WIKI,
-        syncedWikiContext: true,
         targetSelector: '#ca-btp',
+        syncedWikiContext: true,
         cleanupFunction: ({ sandboxRoot }) => {
           const target = sandboxRoot.querySelector('#ca-btp');
           target && target.remove();
@@ -64,19 +55,13 @@ export const extendedTools: ExtendedTool[] = [
       iconLabel: 'TL',
     },
     config: {
-      restriction: {
-        allowedSites: [],
-        allowedWikis: [],
-        allowedRights: [],
-        allowedTabs: [],
-      },
+      restriction: {},
       source: {
         server: 'en.wikipedia.org',
         page: 'User:BrandonXLF/TodoList.js',
       },
       sandbox: {
         initialServer: CURRENT_WIKI,
-        syncedWikiContext: false,
         targetSelector: '#userjs-todo > a',
         styles: '#userjs-todo-popup { top: 0 !important; }',
       },
@@ -93,7 +78,6 @@ export const extendedTools: ExtendedTool[] = [
       restriction: {
         allowedSites: ['viwiki'], // This script uses wgUserGroups, mw.Title
         allowedWikis: ['viwiki'],
-        allowedRights: [],
         allowedTabs: [TabType.DIFF, TabType.MAIN_DIFF, TabType.READ, TabType.MAIN_READ],
         allowedPages: (pageContext) =>
           pageContext.pageTitle.startsWith('Wikipedia:Biểu quyết xoá bài/'),
@@ -104,12 +88,31 @@ export const extendedTools: ExtendedTool[] = [
       },
       sandbox: {
         initialServer: 'vi.wikipedia.org',
-        syncedWikiContext: false,
         targetSelector: '#ca-afdcloser',
         cleanupFunction: ({ sandboxRoot }) => {
           const target = sandboxRoot.querySelector('#ca-afdcloser');
           target && target.remove();
         },
+      },
+    },
+    component: DefaultExtendedToolComponent,
+  },
+  {
+    metadata: {
+      id: 'extended:page-curation:enwiki:1',
+      name: 'PageCuration',
+      iconLabel: 'PC',
+    },
+    config: {
+      restriction: {},
+      source: {
+        server: 'en.wikipedia.org',
+        page: 'User:Lourdes/PageCuration.js',
+      },
+      sandbox: {
+        initialServer: CURRENT_WIKI,
+        targetSelector: '#pt-pagecuration > a',
+        openInNewTab: true,
       },
     },
     component: DefaultExtendedToolComponent,

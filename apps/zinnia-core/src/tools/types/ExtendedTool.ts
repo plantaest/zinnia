@@ -6,7 +6,7 @@ import { WikiServerName } from '@/types/mw/WikiServerName';
 
 export interface ExtendedTool {
   metadata: ExtendedToolMetadata;
-  config: ExtendToolConfig;
+  config: ExtendedToolConfig;
   component: FunctionComponent<ExtendedToolComponentProps>;
 }
 
@@ -16,12 +16,12 @@ export interface ExtendedToolMetadata {
   iconLabel: string;
 }
 
-export interface ExtendToolConfig {
+export interface ExtendedToolConfig {
   restriction: {
-    allowedSites: WikiId[];
-    allowedWikis: WikiId[];
-    allowedRights: string[];
-    allowedTabs: TabType[];
+    allowedSites?: WikiId[];
+    allowedWikis?: WikiId[];
+    allowedRights?: string[];
+    allowedTabs?: TabType[];
     allowedPages?: (pageContext: PageContext) => boolean;
   };
   source: {
@@ -30,10 +30,11 @@ export interface ExtendToolConfig {
   };
   sandbox: {
     initialServer: WikiServerName | typeof CURRENT_WIKI;
-    syncedWikiContext: boolean;
     targetSelector?: string;
+    syncedWikiContext?: boolean;
     styles?: string;
     cleanupFunction?: (payload: ExtendedToolCleanupFunctionPayload) => void;
+    openInNewTab?: boolean;
   };
 }
 
@@ -45,7 +46,7 @@ interface ExtendedToolCleanupFunctionPayload {
 
 export interface ExtendedToolComponentProps {
   metadata: ExtendedToolMetadata;
-  config: ExtendToolConfig;
+  config: ExtendedToolConfig;
   children: (payload: ExtendedToolComponentPayload) => React.ReactNode;
 }
 

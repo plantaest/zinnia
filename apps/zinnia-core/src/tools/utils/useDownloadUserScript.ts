@@ -2,14 +2,14 @@ import { useEffect } from 'react';
 import { useSelector } from '@legendapp/state/react';
 import { defaultSandboxGlobals, zinniaSandbox } from '@/tools/sandbox/zinniaSandbox';
 import { appState } from '@/states/appState';
-import { CURRENT_WIKI, ExtendToolConfig } from '@/tools/types/ExtendedTool';
+import { CURRENT_WIKI, ExtendedToolConfig } from '@/tools/types/ExtendedTool';
 import { getCachedMwInstance } from '@/tools/utils/getCachedMwInstance';
 
 interface Options {
   toolId: string;
   server: string;
   page: string;
-  sandboxInitialServer: ExtendToolConfig['sandbox']['initialServer'];
+  sandboxInitialServer: ExtendedToolConfig['sandbox']['initialServer'];
 }
 
 export function useDownloadUserScript({ toolId, server, page, sandboxInitialServer }: Options) {

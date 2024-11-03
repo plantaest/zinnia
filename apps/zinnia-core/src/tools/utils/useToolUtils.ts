@@ -47,8 +47,12 @@ export function useToolUtils(
   const notAllowedPagesMessage = () =>
     formatMessage({ id: 'tool.message.notAllowedPages' }, { toolName });
 
-  const isAllowedSites = (allowedSites: WikiId[]) => {
-    if (allowedSites.length > 0 && !allowedSites.includes(defaultPageContext.wikiId)) {
+  const isAllowedSites = (allowedSites?: WikiId[]) => {
+    if (
+      allowedSites &&
+      allowedSites.length > 0 &&
+      !allowedSites.includes(defaultPageContext.wikiId)
+    ) {
       Notice.info(allowedSitesMessage(allowedSites));
       return false;
     }
@@ -56,8 +60,8 @@ export function useToolUtils(
     return true;
   };
 
-  const isAllowedWikis = (allowedWikis: WikiId[]) => {
-    if (allowedWikis.length > 0 && !allowedWikis.includes(pageContext.wikiId)) {
+  const isAllowedWikis = (allowedWikis?: WikiId[]) => {
+    if (allowedWikis && allowedWikis.length > 0 && !allowedWikis.includes(pageContext.wikiId)) {
       Notice.info(allowedWikisMessage(allowedWikis));
       return false;
     }
@@ -65,9 +69,10 @@ export function useToolUtils(
     return true;
   };
 
-  const isAllowedTabs = (allowedTabs: TabType[]) => {
+  const isAllowedTabs = (allowedTabs?: TabType[]) => {
     if (
       pageContext.environment === 'zinnia' &&
+      allowedTabs &&
       allowedTabs.length > 0 &&
       (!activeTab || !allowedTabs.includes(activeTab.type))
     ) {
