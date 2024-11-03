@@ -76,6 +76,7 @@ export function ReadTab({ tabId, tabData }: ReadTabProps) {
         environment: 'zinnia',
         contextType: 'page',
         wikiId: tabData.wikiId,
+        wikiServerName: wikis.getWiki(tabData.wikiId).getConfig().serverName,
         pageId: htmlResult.pageId,
         pageTitle: tabData.pageTitle,
         revisionId: htmlResult.revisionId,

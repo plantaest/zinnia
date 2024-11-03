@@ -22,10 +22,7 @@ export interface ExtendToolConfig {
     allowedWikis: WikiId[];
     allowedRights: string[];
     allowedTabs: TabType[];
-    allowedPages?: {
-      test: (pageContext: PageContext) => boolean;
-      reload: boolean;
-    };
+    allowedPages?: (pageContext: PageContext) => boolean;
   };
   source: {
     server: string;

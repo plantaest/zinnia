@@ -6,13 +6,15 @@ import { Notice } from '@/utils/Notice';
 import { zinniaSandboxRoot } from '@/tools/sandbox/zinniaSandboxRoot';
 import { useToolStyles } from '@/tools/utils/useToolStyles';
 import { ExtendedToolComponentProps } from '@/tools/types/ExtendedTool';
+import { defaultPageContext } from '@/tools/types/PageContext';
 
 export function DefaultExtendedToolComponent({
   metadata,
   config,
   children,
 }: ExtendedToolComponentProps) {
-  const { allowedTabsMessage } = useToolUtils('extended', metadata);
+  const { allowedSitesMessage, allowedWikisMessage, allowedTabsMessage, notAllowedPagesMessage } =
+    useToolUtils('extended', metadata);
 
   useDownloadUserScript({
     toolId: metadata.id,
@@ -38,17 +40,37 @@ export function DefaultExtendedToolComponent({
   };
 
   const trigger = () => {
-    if (pageContext.environment === 'zinnia') {
-      if (config.restriction.allowedTabs.length > 0) {
-        if (activeTab && config.restriction.allowedTabs.includes(activeTab.type)) {
-          run();
-        } else {
-          Notice.info(allowedTabsMessage(config.restriction.allowedTabs));
-        }
-      } else {
-        run();
-      }
+    if (
+      config.restriction.allowedSites.length > 0 &&
+      !config.restriction.allowedSites.includes(defaultPageContext.wikiId)
+    ) {
+      Notice.info(allowedSitesMessage(config.restriction.allowedSites));
+      return;
     }
+
+    if (
+      config.restriction.allowedWikis.length > 0 &&
+      !config.restriction.allowedWikis.includes(pageContext.wikiId)
+    ) {
+      Notice.info(allowedWikisMessage(config.restriction.allowedWikis));
+      return;
+    }
+
+    if (
+      pageContext.environment === 'zinnia' &&
+      config.restriction.allowedTabs.length > 0 &&
+      (!activeTab || !config.restriction.allowedTabs.includes(activeTab.type))
+    ) {
+      Notice.info(allowedTabsMessage(config.restriction.allowedTabs));
+      return;
+    }
+
+    if (config.restriction.allowedPages && !config.restriction.allowedPages(pageContext)) {
+      Notice.info(notAllowedPagesMessage());
+      return;
+    }
+
+    run();
   };
 
   return children({ trigger });

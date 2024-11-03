@@ -154,16 +154,19 @@ function MarkTool({ metadata, config, children }: NativeToolComponentProps) {
   };
 
   const trigger = () => {
-    if (pageContext.environment === 'zinnia') {
-      if (activeTab && config.restriction.allowedTabs.includes(activeTab.type)) {
-        if (additionalSettings.showConfirmationDialog) {
-          setOpenedDialog(!openedDialog);
-        } else {
-          run();
-        }
-      } else {
-        Notice.info(allowedTabsMessage(config.restriction.allowedTabs));
-      }
+    if (
+      pageContext.environment === 'zinnia' &&
+      config.restriction.allowedTabs.length > 0 &&
+      (!activeTab || !config.restriction.allowedTabs.includes(activeTab.type))
+    ) {
+      Notice.info(allowedTabsMessage(config.restriction.allowedTabs));
+      return;
+    }
+
+    if (additionalSettings.showConfirmationDialog) {
+      setOpenedDialog(!openedDialog);
+    } else {
+      run();
     }
   };
 

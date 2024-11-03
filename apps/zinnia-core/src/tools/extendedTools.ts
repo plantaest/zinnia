@@ -83,6 +83,37 @@ export const extendedTools: ExtendedTool[] = [
     },
     component: DefaultExtendedToolComponent,
   },
+  {
+    metadata: {
+      id: 'extended:afd-closer:viwiki:1',
+      name: 'AfDCloser',
+      iconLabel: 'ADC',
+    },
+    config: {
+      restriction: {
+        allowedSites: ['viwiki'], // This script uses wgUserGroups, mw.Title
+        allowedWikis: ['viwiki'],
+        allowedRights: [],
+        allowedTabs: [TabType.DIFF, TabType.MAIN_DIFF, TabType.READ, TabType.MAIN_READ],
+        allowedPages: (pageContext) =>
+          pageContext.pageTitle.startsWith('Wikipedia:Biểu quyết xoá bài/'),
+      },
+      source: {
+        server: 'vi.wikipedia.org',
+        page: 'User:NguoiDungKhongDinhDanh/AfDCloser.js',
+      },
+      sandbox: {
+        initialServer: 'vi.wikipedia.org',
+        syncedWikiContext: false,
+        targetSelector: '#ca-afdcloser',
+        cleanupFunction: ({ sandboxRoot }) => {
+          const target = sandboxRoot.querySelector('#ca-afdcloser');
+          target && target.remove();
+        },
+      },
+    },
+    component: DefaultExtendedToolComponent,
+  },
 ];
 
 export const extendedToolsDict = Object.fromEntries(

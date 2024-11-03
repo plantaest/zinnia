@@ -12,6 +12,7 @@ import { versionMap } from '@/utils/migration/versionMap';
 import { defaultFilterFeedConfig, defaultFilterGlobalWikiConfig } from '@/types/persistence/Filter';
 import { defaultUserNativeTools } from '@/types/persistence/Tool';
 import { wikiSiteIds } from '@/utils/wikis';
+import { zmw } from '@/utils/zmw';
 
 export function StartStateContent() {
   const { formatMessage, locale } = useIntl();
@@ -35,7 +36,7 @@ export function StartStateContent() {
       data: null,
     };
 
-    const currentWikiId = mw.config.get('wgWikiID');
+    const currentWikiId = zmw.config.get('wgWikiID');
     const filterWikiId = wikiSiteIds.includes(currentWikiId) ? currentWikiId : 'metawiki';
 
     const defaultUserConfig: UserConfig = {

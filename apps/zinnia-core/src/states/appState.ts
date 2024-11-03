@@ -18,11 +18,11 @@ import { Tab } from '@/types/persistence/Tab';
 import { underscoreTitle } from '@/utils/underscoreTitle';
 import { zinniaSandbox } from '@/tools/sandbox/zinniaSandbox';
 import { defaultPageContext, PageContext } from '@/tools/types/PageContext';
-import { wikis } from '@/utils/wikis';
 import { extendedToolsDict } from '@/tools/extendedTools';
 import { zinniaSandboxRoot } from '@/tools/sandbox/zinniaSandboxRoot';
 import { ToolId } from '@/tools/types/ToolId';
 import { getCachedMwInstance } from '@/tools/utils/getCachedMwInstance';
+import { ExtendedTool } from '@/tools/types/ExtendedTool';
 
 interface AppState {
   userConfig: UserConfig | null;
@@ -188,31 +188,53 @@ appState.ui.activeFilter.onChange((change) => {
 
 // Track pageContext changes
 appState.ui.pageContext.onChange((change) => {
-  // Sync wiki context
-  if (change.getPrevious().wikiId !== change.value.wikiId) {
-    const executeFunctions = appState.ui.extendedToolExecuteFunctions.peek();
+  // Sync page context for all mw instances
+  for (const mwInstance of window.zinniaSandbox.cachedMwInstances.values()) {
+    mwInstance.config.set('wgDBname', change.value.wikiId);
+    mwInstance.config.set('wgServerName', change.value.wikiServerName);
+    mwInstance.config.set('wgPageName', underscoreTitle(change.value.pageTitle));
+  }
 
+  const executeFunctions = appState.ui.extendedToolExecuteFunctions.peek();
+
+  const reloadExecuteFunction = (tool: ExtendedTool, executeFunction: Function) => {
+    // Cleanup effects of tool
+    tool.config.sandbox.cleanupFunction &&
+      tool.config.sandbox.cleanupFunction({ sandboxRoot: zinniaSandboxRoot });
+
+    const sandboxGlobals = zinniaSandbox.globals.get(tool.metadata.id);
+
+    if (sandboxGlobals) {
+      // Reassign mw instance
+      sandboxGlobals.mw = getCachedMwInstance(change.value.wikiServerName);
+
+      // Re-execute
+      executeFunction();
+    }
+  };
+
+  // Sync mw instance by wiki context
+  if (change.getPrevious().wikiServerName !== change.value.wikiServerName) {
     for (const [toolId, executeFunction] of executeFunctions) {
       const tool = extendedToolsDict[toolId];
 
       if (tool.config.sandbox.syncedWikiContext) {
-        // Cleanup DOM of tool
-        tool.config.sandbox.cleanupFunction &&
-          tool.config.sandbox.cleanupFunction({ sandboxRoot: zinniaSandboxRoot });
-
-        // Reassign mw instance
-        zinniaSandbox.globals.get(toolId)!.mw = getCachedMwInstance(
-          wikis.getWiki(change.value.wikiId).getConfig().serverName
-        );
-
-        // Re-execute
-        executeFunction();
+        reloadExecuteFunction(tool, executeFunction);
       }
     }
   }
 
-  // Sync page context
-  for (const mwInstance of window.zinniaSandbox.cachedMwInstances.values()) {
-    mwInstance.config.set('wgPageName', underscoreTitle(change.value.pageTitle));
+  // Sync mw instance by page title
+  if (change.getPrevious().pageTitle !== change.value.pageTitle) {
+    for (const [toolId, executeFunction] of executeFunctions) {
+      const tool = extendedToolsDict[toolId];
+
+      if (
+        tool.config.restriction.allowedPages &&
+        tool.config.restriction.allowedPages(change.value)
+      ) {
+        reloadExecuteFunction(tool, executeFunction);
+      }
+    }
   }
 });

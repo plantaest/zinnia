@@ -255,6 +255,7 @@ export function DiffTab({ tabId, tabData }: DiffTabProps) {
         environment: 'zinnia',
         contextType: 'diff',
         wikiId: tabData.wikiId,
+        wikiServerName: wikis.getWiki(tabData.wikiId).getConfig().serverName,
         pageId: compareResult.toId,
         pageTitle: tabData.pageTitle,
         revisionId: compareResult.toRevisionId,

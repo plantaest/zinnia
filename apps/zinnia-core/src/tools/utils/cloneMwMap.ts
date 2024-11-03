@@ -1,5 +1,7 @@
+import { zmw } from '@/utils/zmw';
+
 export function cloneMwMap(originalMap: mw.Map) {
-  const newMap = new mw.Map();
+  const newMap = new zmw.Map();
   // @ts-ignore
   const values = originalMap.values;
 

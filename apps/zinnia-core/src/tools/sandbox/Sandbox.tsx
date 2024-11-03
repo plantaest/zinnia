@@ -21,6 +21,8 @@ export function Sandbox() {
       <div id="zsb-p-cactions" />
       <div style={{ paddingBlock: '0.5rem' }}>#zsb-p-personal</div>
       <div id="zsb-p-personal" />
+      <div style={{ paddingBlock: '0.5rem' }}>#zsb-p-tb</div>
+      <div id="zsb-p-tb" />
     </div>
   );
 }
