@@ -143,6 +143,26 @@ export const extendedTools: ExtendedTool[] = [
     },
     component: DefaultExtendedToolComponent,
   },
+  {
+    metadata: {
+      id: 'extended:global-prefs:enwiki:1',
+      name: 'GlobalPrefs',
+      iconLabel: 'GP',
+    },
+    config: {
+      restriction: {},
+      source: {
+        server: 'en.wikipedia.org',
+        page: 'User:BrandonXLF/GlobalPrefs.js',
+      },
+      sandbox: {
+        initialWiki: CURRENT_WIKI,
+        targetSelector: '#globalpreferences > a',
+        openInNewTab: true,
+      },
+    },
+    component: DefaultExtendedToolComponent,
+  },
 ];
 
 export const extendedToolsDict = Object.fromEntries(
