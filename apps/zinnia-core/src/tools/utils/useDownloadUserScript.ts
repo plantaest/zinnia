@@ -4,6 +4,7 @@ import { defaultSandboxGlobals, zinniaSandbox } from '@/tools/sandbox/zinniaSand
 import { appState } from '@/states/appState';
 import { CURRENT_WIKI, ExtendedToolConfig, ExtendedToolMetadata } from '@/tools/types/ExtendedTool';
 import { getCachedMwInstance } from '@/tools/utils/getCachedMwInstance';
+import { useGetUserScriptSource } from '@/tools/utils/useGetUserScriptSource';
 
 interface Options {
   toolMetadata: ExtendedToolMetadata;
@@ -11,49 +12,53 @@ interface Options {
 }
 
 export function useDownloadUserScript({ toolMetadata, toolConfig }: Options) {
-  const executeFunctions = useSelector(appState.ui.extendedToolExecuteFunctions);
   const firstPageContextChange = useSelector(appState.ui.firstPageContextChange);
+  const executeFunctions = useSelector(appState.ui.extendedToolExecuteFunctions);
   const [firstExecuted, setFirstExecuted] = useState(executeFunctions.has(toolMetadata.id));
 
+  const { data: source, isSuccess } = useGetUserScriptSource(
+    toolConfig.source.server,
+    toolConfig.source.page
+  );
+
   useEffect(() => {
-    if (firstPageContextChange && !executeFunctions.has(toolMetadata.id)) {
-      // TODO: Refactor to React Query
-      fetch(
-        `https://${toolConfig.source.server}/w/rest.php/v1/page/${encodeURIComponent(toolConfig.source.page)}`
-      )
-        .then((response) => response.json())
-        .then((pageInfo) => {
-          // Create script content
-          const modifiedSource = (pageInfo.source as string)
-            .replaceAll('document.location.reload', 'location.reload')
-            .replaceAll('window.location.reload', 'location.reload');
-          const scriptContent = `(({ ${Object.keys(defaultSandboxGlobals).join(
-            ', '
-          )} }) => {\n\n${modifiedSource}\n\n})(window.zinniaSandbox.globals.get('${toolMetadata.id}'))`;
+    if (firstPageContextChange && !firstExecuted && isSuccess) {
+      // Create script content
+      const modifiedSource = source
+        .replaceAll('document.location.reload', 'location.reload')
+        .replaceAll('window.location.reload', 'location.reload');
+      const scriptContent = `(({ ${Object.keys(defaultSandboxGlobals).join(', ')} }) => {
 
-          // Create execute function
-          // eslint-disable-next-line @typescript-eslint/no-implied-eval
-          const executeFunction = new Function(scriptContent);
-          executeFunctions.set(toolMetadata.id, executeFunction);
+${modifiedSource}
 
-          // Create sandbox global objects for tool
-          const sandboxGlobals =
-            toolConfig.sandbox.initialWiki === CURRENT_WIKI
-              ? { ...defaultSandboxGlobals }
-              : {
-                  ...defaultSandboxGlobals,
-                  mw: getCachedMwInstance(toolConfig.sandbox.initialWiki),
-                };
-          zinniaSandbox.globals.set(toolMetadata.id, sandboxGlobals);
+})(window.zinniaSandbox.globals.get('${toolMetadata.id}'))`;
 
-          // Execute
-          executeFunction();
+      // Create execute function
+      // eslint-disable-next-line @typescript-eslint/no-implied-eval
+      const executeFunction = new Function(scriptContent);
+      executeFunctions.set(toolMetadata.id, executeFunction);
 
-          // Callback
-          setFirstExecuted(true);
-        });
+      // Create sandbox global objects for tool
+      const sandboxGlobals = toolConfig.sandbox.syncedWikiContext
+        ? {
+            ...defaultSandboxGlobals,
+            mw: getCachedMwInstance(appState.ui.pageContext.peek().wikiId),
+          }
+        : toolConfig.sandbox.initialWiki === CURRENT_WIKI
+          ? { ...defaultSandboxGlobals }
+          : {
+              ...defaultSandboxGlobals,
+              mw: getCachedMwInstance(toolConfig.sandbox.initialWiki),
+            };
+      zinniaSandbox.globals.set(toolMetadata.id, sandboxGlobals);
+
+      // Execute
+      executeFunction();
+
+      // Callback
+      setFirstExecuted(true);
     }
-  }, [firstPageContextChange]);
+  }, [firstPageContextChange, firstExecuted, isSuccess]);
 
   return { firstExecuted };
 }

@@ -190,13 +190,13 @@ appState.ui.activeFilter.onChange((change) => {
 
 // Track pageContext changes
 appState.ui.pageContext.onChange((change) => {
-  // For first change
-  if (change.getPrevious() === defaultPageContext) {
-    appState.ui.firstPageContextChange.set(true);
+  // Create new mw instance when wiki ID is changed
+  if (change.getPrevious().wikiId !== change.value.wikiId) {
+    getCachedMwInstance(change.value.wikiId);
   }
 
   // Sync page context for all mw instances
-  for (const mwInstance of window.zinniaSandbox.cachedMwInstances.values()) {
+  for (const mwInstance of zinniaSandbox.cachedMwInstances.values()) {
     mwInstance.config.set('wgPageName', underscoreTitle(change.value.pageTitle));
   }
 
@@ -212,6 +212,7 @@ appState.ui.pageContext.onChange((change) => {
     if (sandboxGlobals) {
       // Reassign mw instance
       sandboxGlobals.mw = getCachedMwInstance(change.value.wikiId);
+
       // Re-execute
       executeFunction();
     }
@@ -240,5 +241,10 @@ appState.ui.pageContext.onChange((change) => {
         reloadExecuteFunction(tool, executeFunction);
       }
     }
+  }
+
+  // For first change
+  if (change.getPrevious() === defaultPageContext) {
+    appState.ui.firstPageContextChange.set(true);
   }
 });

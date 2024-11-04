@@ -1,9 +1,10 @@
 import { createModifiedMw } from '@/tools/sandbox/createModifiedMw';
 import { WikiId } from '@/types/mw/WikiId';
 import { wikis } from '@/utils/wikis';
+import { zinniaSandbox } from '@/tools/sandbox/zinniaSandbox';
 
 export function getCachedMwInstance(wikiId: WikiId) {
-  const cachedMwInstances = window.zinniaSandbox.cachedMwInstances;
+  const cachedMwInstances = zinniaSandbox.cachedMwInstances;
   // TODO: Refactor
   const serverName = wikis.getWiki(wikiId).getConfig().serverName;
 
