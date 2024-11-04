@@ -585,26 +585,23 @@ export function PageTab({ tabData }: PageTabProps) {
                   <Fragment key={revision.revisionId}>
                     {showDate && <Text className={classes.index}>{date}</Text>}
 
-                    <Group gap={5} wrap="nowrap" align="stretch">
-                      <Box className={classes.revision}>
-                        <Group gap={2} justify="space-between" w="100%">
-                          <Group gap={5} wrap="nowrap">
-                            <Text className={classes.index}>{index + 1}</Text>
-                            <Text className={classes.timestamp}>
-                              {dayjs(revision.timestamp).format('HH:mm:ss')}
-                            </Text>
-                            <Text className={classes.revisionId} data-hidden={revision.sha1Hidden}>
-                              {revision.revisionId}
-                            </Text>
-                            {revision.minor && (
-                              <IconLeaf
-                                size="0.85rem"
-                                stroke={1.5}
-                                color="var(--mantine-color-gray-light-color)"
-                              />
-                            )}
-                          </Group>
-
+                    <Box className={classes.revision}>
+                      <Box className={classes.revisionInfo}>
+                        <Group gap="xs" wrap="nowrap">
+                          <Text className={classes.index}>{index + 1}</Text>
+                          <Text className={classes.timestamp}>
+                            {dayjs(revision.timestamp).format('HH:mm:ss')}
+                          </Text>
+                          <Text className={classes.revisionId} data-hidden={revision.sha1Hidden}>
+                            {revision.revisionId}
+                          </Text>
+                          {revision.minor && (
+                            <IconLeaf
+                              size="0.85rem"
+                              stroke={1.5}
+                              color="var(--mantine-color-gray-light-color)"
+                            />
+                          )}
                           <LengthDeltaText
                             className={classes.delta}
                             newLength={revision.size}
@@ -667,7 +664,7 @@ export function PageTab({ tabData }: PageTabProps) {
                         disabled={!preview || !largerThanMd || revision.parentId === 0}
                       >
                         <HoverCard.Target>
-                          <UnstyledButton className={classes.diffButton} w={{ base: 40, xs: 60 }}>
+                          <UnstyledButton className={classes.diffButton}>
                             <IconChevronRight
                               size="1.25rem"
                               stroke={1.5}
@@ -684,7 +681,7 @@ export function PageTab({ tabData }: PageTabProps) {
                           />
                         </HoverCard.Dropdown>
                       </HoverCard>
-                    </Group>
+                    </Box>
                   </Fragment>
                 );
               })}

@@ -27,10 +27,9 @@
 
 .revision {
   display: flex;
-  flex-direction: column;
-  gap: rem(2px);
-  flex: 1;
-  min-width: 0;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--mantine-spacing-xs);
   padding-block: rem(5px);
   padding-inline: rem(10px);
   border-radius: var(--mantine-radius-md);
@@ -39,6 +38,14 @@
   &:hover {
     background-color: light-dark(var(--mantine-color-gray-3), lighten(var(--mantine-color-dark-4), 0.05));
   }
+}
+
+.revisionInfo {
+  display: flex;
+  flex-direction: column;
+  gap: rem(2px);
+  flex: 1;
+  min-width: 0;
 }
 
 .index, .timestamp, .revisionId, .delta {
@@ -79,11 +86,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: var(--mantine-radius-md);
-  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
+  border-radius: var(--mantine-radius-xl);
+  width: rem(40px);
+  height: rem(40px);
 
   &:hover {
-    background-color: light-dark(var(--mantine-color-gray-3), lighten(var(--mantine-color-dark-4), 0.05));
+    background-color: light-dark(var(--mantine-color-gray-4), lighten(var(--mantine-color-dark-4), 0.15));
   }
 
   &:active {
