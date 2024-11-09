@@ -8,7 +8,6 @@ export type Tab = {
 } & (
   | {
       type: TabType.WELCOME;
-      data: null;
     }
   | {
       type: TabType.DIFF | TabType.MAIN_DIFF;

@@ -33,7 +33,6 @@ export function StartStateContent() {
       updatedAt: now,
       name: formatMessage({ id: 'common.welcome' }),
       type: TabType.WELCOME,
-      data: null,
     };
 
     const currentWikiId = zmw.config.get('wgWikiID');

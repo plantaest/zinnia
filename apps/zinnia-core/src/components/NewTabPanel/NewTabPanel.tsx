@@ -36,7 +36,6 @@ function NewTabPanelContent() {
       updatedAt: now,
       name: formatMessage({ id: 'common.welcome' }),
       type: TabType.WELCOME,
-      data: null,
     };
     appState.ui.activeTabs.set((activeTabs) => [...activeTabs, welcomeTab]);
     appState.ui.activeTabId.set(tabId);
