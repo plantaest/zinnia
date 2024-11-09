@@ -3,10 +3,8 @@ import { Fragment, memo } from 'react';
 import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
 import { IconInboxOff } from '@tabler/icons-react';
-import { useSelector } from '@legendapp/state/react';
 import { ChangeCard } from '@/components/ChangeCard/ChangeCard';
 import { useGetRecentChanges } from '@/queries/useGetRecentChanges';
-import { appState } from '@/states/appState';
 import { FeedDateTimeCard } from '@/components/FeedPanel/FeedDateTimeCard';
 import classes from './FeedPanel.module.css';
 import { FeedControlPanel } from '@/components/FeedPanel/FeedControlPanel';
@@ -14,7 +12,6 @@ import { FeedControlPanel } from '@/components/FeedPanel/FeedControlPanel';
 function _FeedPanel() {
   const { formatMessage } = useIntl();
   const { data: recentChanges = [] } = useGetRecentChanges();
-  const focus = useSelector(appState.ui.focus);
 
   const dates = new Set<string>();
   const times = new Set<string>();
@@ -49,7 +46,7 @@ function _FeedPanel() {
   });
 
   return (
-    <Stack w={{ md: '16rem', lg: '18rem' }} className={classes.wrapper} data-focus={focus}>
+    <Stack w={{ md: '16rem', lg: '18rem' }} className={classes.wrapper}>
       <FeedControlPanel />
 
       {recentChanges.length === 0 && (

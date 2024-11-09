@@ -15,10 +15,10 @@
     top: rem(5px);
     z-index: 1;
   }
+}
 
-  &[data-focus="true"] {
-    top: 0;
-  }
+[data-focus="true"] .control {
+  top: 0;
 }
 
 .pulse {

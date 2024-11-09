@@ -23,6 +23,7 @@ import { zinniaSandboxRoot } from '@/tools/sandbox/zinniaSandboxRoot';
 import { ToolId } from '@/tools/types/ToolId';
 import { getCachedMwInstance } from '@/tools/utils/getCachedMwInstance';
 import { ExtendedTool } from '@/tools/types/ExtendedTool';
+import { zinniaRoot } from '@/utils/zinniaRoot';
 
 interface AppState {
   userConfig: UserConfig | null;
@@ -151,8 +152,10 @@ appState.ui.focus.onChange((change) => {
   if (change.value) {
     startRef.current?.scrollIntoView({ behavior: 'instant' });
     body.style.overflow = 'hidden';
+    zinniaRoot.dataset.focus = 'true';
   } else {
     body.style.overflow = '';
+    zinniaRoot.dataset.focus = '';
   }
 });
 

@@ -14,6 +14,10 @@
   background-color: light-dark(#c8e3f9, #061e35);
 }
 
+[data-focus="true"] :is(.wrapper, .background) {
+  border-radius: unset;
+}
+
 .content {
   z-index: 1;
   position: relative;

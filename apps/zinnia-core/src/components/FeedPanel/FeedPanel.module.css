@@ -3,13 +3,13 @@
   padding-inline-end: var(--mantine-spacing-xs);
   height: 100%;
   gap: rem(5px);
+}
 
-  &[data-focus="true"] {
-    padding-bottom: rem(5px);
-    height: 100vh;
-    overflow-y: scroll;
-    scrollbar-width: none;
-  }
+[data-focus="true"] .wrapper {
+  padding-bottom: rem(5px);
+  height: 100vh;
+  overflow-y: scroll;
+  scrollbar-width: none;
 }
 
 .empty {

@@ -86,7 +86,7 @@ export function FeedControlPanel() {
   });
 
   return (
-    <Group className={classes.control} data-sticky={recentChanges.length > 0} data-focus={focus}>
+    <Group className={classes.control} data-sticky={recentChanges.length > 0}>
       <Group gap="sm">
         <Box className={classes.pulse} data-online={online} />
         <Text size="sm" fw={500}>
