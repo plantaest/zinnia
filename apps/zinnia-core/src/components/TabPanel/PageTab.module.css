@@ -18,11 +18,8 @@
   justify-content: space-evenly;
   padding: rem(6px) var(--mantine-spacing-xs);
   border-radius: var(--mantine-radius-md);
-  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
-
-  &:hover {
-    background-color: light-dark(var(--mantine-color-gray-3), lighten(var(--mantine-color-dark-4), 0.05));
-  }
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-4));
+  border: 1px solid light-dark(var(--mantine-color-gray-3), lighten(var(--mantine-color-dark-4), 0.05));
 }
 
 .revision {
@@ -33,11 +30,8 @@
   padding-block: rem(5px);
   padding-inline: rem(10px);
   border-radius: var(--mantine-radius-md);
-  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
-
-  &:hover {
-    background-color: light-dark(var(--mantine-color-gray-3), lighten(var(--mantine-color-dark-4), 0.05));
-  }
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-4));
+  border: 1px solid light-dark(var(--mantine-color-gray-3), lighten(var(--mantine-color-dark-4), 0.05));
 }
 
 .revisionInfo {
@@ -91,7 +85,7 @@
   height: rem(40px);
 
   &:hover {
-    background-color: light-dark(var(--mantine-color-gray-4), lighten(var(--mantine-color-dark-4), 0.15));
+    background-color: light-dark(var(--mantine-color-gray-2), lighten(var(--mantine-color-dark-4), 0.15));
   }
 
   &:active {
