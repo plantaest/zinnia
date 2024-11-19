@@ -156,7 +156,6 @@ export function FilterAddWikiForm({ currentFilter, formWikisLength }: FilterAddW
         <ActionIcon
           size="sm"
           variant="transparent"
-          color="blue.5"
           disabled={!currentFilter || formWikisLength > appConfig.MAX_FILTER_WIKIS}
           title={formatMessage({ id: 'ui.filterPanel.filterAddWikiForm.addWiki' })}
           aria-label={formatMessage({ id: 'ui.filterPanel.filterAddWikiForm.addWiki' })}

@@ -13,8 +13,8 @@
   }
 
   &[data-selected="true"] {
-    background-color: light-dark(var(--mantine-color-blue-0), alpha(var(--mantine-color-blue-8), 0.15));
-    border: 1px solid light-dark(var(--mantine-color-blue-2), alpha(var(--mantine-color-blue-8), 0.5));
+    background-color: light-dark(var(--mantine-primary-color-0), alpha(var(--mantine-primary-color-8), 0.15));
+    border: 1px solid light-dark(var(--mantine-primary-color-2), alpha(var(--mantine-primary-color-8), 0.5));
   }
 }
 

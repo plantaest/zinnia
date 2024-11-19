@@ -202,7 +202,7 @@ function MarkTool({ metadata, config, children }: NativeToolComponentProps) {
         disabled={isLoadingFirstRevisions || patrolApi.isSuccess}
         onClick={run}
         loading={patrolApi.isPending}
-        color={patrolApi.isError ? 'red' : 'blue'}
+        color={patrolApi.isError ? 'red' : undefined}
       >
         {patrolApi.isSuccess ? (
           <IconCheck size="1.5rem" />

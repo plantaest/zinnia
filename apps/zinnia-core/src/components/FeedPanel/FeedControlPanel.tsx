@@ -100,7 +100,7 @@ export function FeedControlPanel() {
         <ActionIcon
           variant="subtle"
           size={30}
-          color={isError ? 'pink.5' : isLiveUpdates ? 'teal' : 'blue'}
+          color={isError ? 'pink.5' : isLiveUpdates ? 'teal' : undefined}
           loading={isRefetching}
           loaderProps={{ size: 14 }}
           onClick={handleClickReloadButton}
@@ -121,7 +121,7 @@ export function FeedControlPanel() {
           <ActionIcon
             variant="subtle"
             size={30}
-            color={preview ? 'teal' : 'blue'}
+            color={preview ? 'teal' : undefined}
             onClick={handleClickPreviewButton}
             title={formatMessage({ id: 'ui.feedPanel.preview' })}
             aria-label={formatMessage({ id: 'ui.feedPanel.preview' })}
@@ -133,7 +133,7 @@ export function FeedControlPanel() {
         <ActionIcon
           variant="subtle"
           size={30}
-          color={focus ? 'teal' : 'blue'}
+          color={focus ? 'teal' : undefined}
           onClick={handleClickFocusButton}
           title={formatMessage({ id: 'ui.feedPanel.focus' })}
           aria-label={formatMessage({ id: 'ui.feedPanel.focus' })}
