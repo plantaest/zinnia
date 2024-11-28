@@ -14,8 +14,10 @@
   padding-block: rem(5px);
   padding-inline: rem(10px);
   border-radius: var(--mantine-radius-md);
+  border-width: rem(2px);
+  border-style: solid;
+  border-color: transparent;
   background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
-  border: 1px solid transparent;
 
   @media (max-width: 74em) {
     /* lg */
@@ -26,24 +28,32 @@
     background-color: light-dark(var(--mantine-color-gray-3), lighten(var(--mantine-color-dark-4), 0.05));
   }
 
-  &[data-from="true"] {
-    background-color: light-dark(var(--mantine-color-orange-0), alpha(var(--mantine-color-orange-8), 0.15));
-    border: 1px solid light-dark(var(--mantine-color-orange-2), alpha(var(--mantine-color-orange-8), 0.5));
+  &[data-from="true"], &[data-intermediate="old-new"] {
+    @mixin light {
+      background-color: var(--mantine-color-orange-1);
+      border-color: var(--mantine-color-orange-3);
+    }
+
+    @mixin dark {
+      background-color: alpha(var(--mantine-color-orange-8), 0.25);
+      border-color: alpha(var(--mantine-color-orange-8), 0.55);
+    }
   }
 
-  &[data-to="true"] {
-    background-color: light-dark(var(--mantine-color-cyan-0), alpha(var(--mantine-color-cyan-8), 0.15));
-    border: 1px solid light-dark(var(--mantine-color-cyan-2), alpha(var(--mantine-color-cyan-8), 0.5));
+  &[data-to="true"], &[data-intermediate="new-old"] {
+    @mixin light {
+      background-color: var(--mantine-color-cyan-1);
+      border-color: var(--mantine-color-cyan-3);
+    }
+
+    @mixin dark {
+      background-color: alpha(var(--mantine-color-cyan-8), 0.25);
+      border-color: alpha(var(--mantine-color-cyan-8), 0.55);
+    }
   }
 
-  &[data-intermediate="new-old"] {
-    background-color: light-dark(var(--mantine-color-cyan-0), alpha(var(--mantine-color-cyan-8), 0.15));
-    border: 1px dashed light-dark(var(--mantine-color-cyan-2), alpha(var(--mantine-color-cyan-8), 0.5));
-  }
-
-  &[data-intermediate="old-new"] {
-    background-color: light-dark(var(--mantine-color-orange-0), alpha(var(--mantine-color-orange-8), 0.15));
-    border: 1px dashed light-dark(var(--mantine-color-orange-2), alpha(var(--mantine-color-orange-8), 0.5));
+  &[data-intermediate="old-new"], &[data-intermediate="new-old"] {
+    border-style: dashed;
   }
 }
 
@@ -68,14 +78,14 @@
     text-decoration: line-through;
     font-style: italic;
   }
-}
 
-.revision[data-from="true"] .revisionId {
-  color: var(--mantine-color-orange-text);
-}
+  .revision[data-from="true"] & {
+    color: var(--mantine-color-orange-text);
+  }
 
-.revision[data-to="true"] .revisionId {
-  color: var(--mantine-color-cyan-text);
+  .revision[data-to="true"] & {
+    color: var(--mantine-color-cyan-text);
+  }
 }
 
 .user {

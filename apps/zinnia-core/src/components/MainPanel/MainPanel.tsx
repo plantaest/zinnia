@@ -1,4 +1,4 @@
-import { Box, Drawer, Flex, useComputedColorScheme } from '@mantine/core';
+import { Box, Drawer, Flex, rem } from '@mantine/core';
 import { useSelector } from '@legendapp/state/react';
 import { FeedPanel } from '@/components/FeedPanel/FeedPanel';
 import { TabPanel } from '@/components/TabPanel/TabPanel';
@@ -9,7 +9,6 @@ import { useLargerThan } from '@/hooks/useLargerThan';
 export function MainPanel() {
   const showMainPanel = useShowMainPanel();
   const showTabPanelDrawer = useSelector(appState.ui.showTabPanelDrawer);
-  const computedColorScheme = useComputedColorScheme();
   const largerThanMd = useLargerThan('md');
 
   const handleClickDrawerCloseButton = () => appState.ui.showTabPanelDrawer.set(false);
@@ -33,8 +32,8 @@ export function MainPanel() {
           withOverlay={false}
           styles={{
             body: {
-              padding: 5,
-              backgroundColor: computedColorScheme === 'dark' ? '#061e35' : '#c8e3f9',
+              padding: rem(5),
+              backgroundColor: 'var(--zinnia-root-background-color)',
             },
           }}
           transitionProps={{ transition: 'fade-down' }}

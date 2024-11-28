@@ -11,7 +11,7 @@
   width: 100%;
   height: 100%;
   border-radius: calc(0.95 * var(--mantine-radius-lg));
-  background-color: light-dark(#c8e3f9, #061e35);
+  background-color: var(--zinnia-root-background-color);
 }
 
 [data-focus="true"] :is(.wrapper, .background) {

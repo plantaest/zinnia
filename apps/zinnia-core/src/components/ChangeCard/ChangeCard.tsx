@@ -61,7 +61,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
   };
 
   const changeTypeColors: Record<Change['type'], MantineColor> = {
-    edit: 'blue',
+    edit: 'var(--mantine-primary-color-filled)',
     new: 'green',
     categorize: 'orange',
     log: 'violet',
@@ -260,7 +260,7 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
     <Flex className={classes.wrapper} ref={isSelected ? selectedChangeRef : undefined}>
       <Box
         className={classes.bar}
-        bg={isSelected ? 'var(--mantine-color-blue-filled)' : undefined}
+        bg={isSelected ? 'var(--mantine-primary-color-filled)' : undefined}
       />
       <HoverCard
         width={675}
@@ -326,7 +326,12 @@ export function ChangeCard({ change, index }: EditChangeCardProps) {
 
               <Group justify="space-between" gap={8}>
                 <Group gap={8} wrap="nowrap" className={classes.anchorBox}>
-                  <Avatar size="sm" radius="sm" color="blue" variant="filled">
+                  <Avatar
+                    size="sm"
+                    radius="sm"
+                    color="var(--mantine-primary-color-filled)"
+                    variant="filled"
+                  >
                     <UserIcon size="1rem" />
                   </Avatar>
 

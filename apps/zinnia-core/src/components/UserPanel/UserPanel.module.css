@@ -14,21 +14,35 @@
   padding-block: rem(5px);
   padding-inline: rem(10px);
   border-radius: var(--mantine-radius-md);
+  border: rem(2px) solid transparent;
   background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
-  border: 1px solid transparent;
 
   &:hover {
     background-color: light-dark(var(--mantine-color-gray-3), lighten(var(--mantine-color-dark-4), 0.05));
   }
 
   &[data-from="true"] {
-    background-color: light-dark(var(--mantine-color-orange-0), alpha(var(--mantine-color-orange-8), 0.15));
-    border: 1px solid light-dark(var(--mantine-color-orange-2), alpha(var(--mantine-color-orange-8), 0.5));
+    @mixin light {
+      background-color: var(--mantine-color-orange-1);
+      border-color: var(--mantine-color-orange-3);
+    }
+
+    @mixin dark {
+      background-color: alpha(var(--mantine-color-orange-8), 0.25);
+      border-color: alpha(var(--mantine-color-orange-8), 0.55);
+    }
   }
 
   &[data-to="true"] {
-    background-color: light-dark(var(--mantine-color-cyan-0), alpha(var(--mantine-color-cyan-8), 0.15));
-    border: 1px solid light-dark(var(--mantine-color-cyan-2), alpha(var(--mantine-color-cyan-8), 0.5));
+    @mixin light {
+      background-color: var(--mantine-color-cyan-1);
+      border-color: var(--mantine-color-cyan-3);
+    }
+
+    @mixin dark {
+      background-color: alpha(var(--mantine-color-cyan-8), 0.25);
+      border-color: alpha(var(--mantine-color-cyan-8), 0.55);
+    }
   }
 }
 
@@ -48,14 +62,14 @@
 
 .revisionId {
   color: var(--mantine-color-gray-light-color);
-}
 
-.contribution[data-from="true"] .revisionId {
-  color: var(--mantine-color-orange-text);
-}
+  .contribution[data-from="true"] & {
+    color: var(--mantine-color-orange-text);
+  }
 
-.contribution[data-to="true"] .revisionId {
-  color: var(--mantine-color-cyan-text);
+  .contribution[data-to="true"] & {
+    color: var(--mantine-color-cyan-text);
+  }
 }
 
 .pageTitle {

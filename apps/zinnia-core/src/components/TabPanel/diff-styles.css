@@ -41,11 +41,11 @@
 }
 
 [data-mantine-color-scheme='light'] .diff-lineno {
-  background: var(--mantine-color-blue-0);
+  background: var(--mantine-color-blue-1);
 }
 
 [data-mantine-color-scheme='dark'] .diff-lineno {
-  background: alpha(var(--mantine-color-blue-8), 0.2);
+  background: alpha(var(--mantine-color-blue-8), 0.25);
 }
 
 .mw-diff-inline-added ins,
@@ -104,7 +104,7 @@
 }
 
 [data-mantine-color-scheme='light'] .diff-context {
-  background: var(--mantine-color-gray-0);
+  background: var(--mantine-color-gray-1);
 }
 
 [data-mantine-color-scheme='dark'] .diff-context {
@@ -112,19 +112,19 @@
 }
 
 [data-mantine-color-scheme='light'] .diff-addedline {
-  background: var(--mantine-color-cyan-0);
+  background: var(--mantine-color-cyan-1);
 }
 
 [data-mantine-color-scheme='dark'] .diff-addedline {
-  background: alpha(var(--mantine-color-cyan-8), 0.15);
+  background: alpha(var(--mantine-color-cyan-8), 0.25);
 }
 
 [data-mantine-color-scheme='light'] .diff-deletedline {
-  background: var(--mantine-color-orange-0);
+  background: var(--mantine-color-orange-1);
 }
 
 [data-mantine-color-scheme='dark'] .diff-deletedline {
-  background: alpha(var(--mantine-color-orange-8), 0.15);
+  background: alpha(var(--mantine-color-orange-8), 0.25);
 }
 
 .diffchange {
@@ -139,19 +139,19 @@
 }
 
 [data-mantine-color-scheme='light'] .diff-addedline .diffchange {
-  background: var(--mantine-color-cyan-2);
+  background: var(--mantine-color-cyan-3);
 }
 
 [data-mantine-color-scheme='dark'] .diff-addedline .diffchange {
-  background: alpha(var(--mantine-color-cyan-8), 0.5);
+  background: alpha(var(--mantine-color-cyan-8), 0.55);
 }
 
 [data-mantine-color-scheme='light'] .diff-deletedline .diffchange {
-  background: var(--mantine-color-orange-2);
+  background: var(--mantine-color-orange-3);
 }
 
 [data-mantine-color-scheme='dark'] .diff-deletedline .diffchange {
-  background: alpha(var(--mantine-color-orange-8), 0.5);
+  background: alpha(var(--mantine-color-orange-8), 0.55);
 }
 
 .diff-currentversion-title,
