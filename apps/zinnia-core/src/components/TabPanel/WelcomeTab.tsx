@@ -69,10 +69,6 @@ export function WelcomeTab() {
         ×{' '}
         <Anchor href="https://meta.wikimedia.org/wiki/Viettech_Initiative" target="_blank">
           Viettech Initiative
-        </Anchor>{' '}
-        ×{' '}
-        <Anchor href="https://vi.wikipedia.org/wiki/Trang_Chính" target="_blank">
-          VIWP
         </Anchor>
       </Text>
     </Stack>
