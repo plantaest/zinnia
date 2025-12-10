@@ -5,7 +5,7 @@ import { InternalSiteInfo, SiteInfo } from './SiteInfo';
 import { MwApiWrapper } from './MwApiWrapper';
 import { Tag } from './type/Tag';
 import { Change } from './type/Change';
-import { ApiQueryRecentChangesParams } from 'types-mediawiki/api_params';
+import { ApiQueryRecentChangesParams } from 'types-mediawiki-api';
 import { CompareRevisionsResult } from './type/CompareRevisionsResult';
 import { DiffType } from './type/DiffType';
 import { InternalPage, Page } from './Page';

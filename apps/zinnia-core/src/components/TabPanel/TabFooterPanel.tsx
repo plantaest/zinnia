@@ -23,11 +23,10 @@ function ToolButtonsCarousel() {
     !isEmpty && (
       <Tooltip.Group openDelay={200} closeDelay={200}>
         <Carousel
-          align="start"
+          emblaOptions={{ align: 'start', slidesToScroll: 5 }}
           my={-6}
           slideSize={34}
           slideGap="xs"
-          slidesToScroll={5}
           controlsOffset={0}
           controlSize={14}
           classNames={{

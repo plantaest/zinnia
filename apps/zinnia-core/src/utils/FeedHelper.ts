@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { ApiQueryRecentChangesParams } from 'types-mediawiki/api_params';
+import { ApiQueryRecentChangesParams } from 'types-mediawiki-api';
 import { Filter } from '@/types/persistence/Filter';
 import { LangHelper } from '@/utils/LangHelper';
 

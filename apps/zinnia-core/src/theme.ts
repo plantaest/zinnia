@@ -23,6 +23,11 @@ export const theme: MantineThemeOverride = createTheme({
         target: zinniaRoot,
       },
     },
+    Popover: {
+      defaultProps: {
+        hideDetached: false,
+      },
+    },
   },
   other: {
     altFontMonospace: 'var(--zinnia-font-monospace)',

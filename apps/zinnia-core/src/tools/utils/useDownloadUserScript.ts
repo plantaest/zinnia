@@ -34,7 +34,6 @@ ${modifiedSource}
 })(window.zinniaSandbox.globals.get('${toolMetadata.id}'))`;
 
       // Create execute function
-      // eslint-disable-next-line @typescript-eslint/no-implied-eval
       const executeFunction = new Function(scriptContent);
       executeFunctions.set(toolMetadata.id, executeFunction);
 

@@ -6,7 +6,7 @@ export function cloneMwMap(originalMap: mw.Map) {
   const values = originalMap.values;
 
   for (const key in values) {
-    if (Object.prototype.hasOwnProperty.call(values, key)) {
+    if (Object.hasOwn(values, key)) {
       newMap.set(key, values[key]);
     }
   }

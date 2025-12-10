@@ -592,6 +592,12 @@ function FilterPanelContent() {
                                   !currentFilter || form.values.feed.timeframe.start === 'now'
                                 }
                                 {...form.getInputProps('feed.timeframe.startTimestamp')}
+                                onChange={(value) =>
+                                  form.setFieldValue(
+                                    'feed.timeframe.startTimestamp',
+                                    new Date(value)
+                                  )
+                                }
                               />
                             </Group>
                           </Stack>
@@ -644,6 +650,12 @@ function FilterPanelContent() {
                                   !currentFilter || form.values.feed.timeframe.end === 'period'
                                 }
                                 {...form.getInputProps('feed.timeframe.endTimestamp')}
+                                onChange={(value) =>
+                                  form.setFieldValue(
+                                    'feed.timeframe.endTimestamp',
+                                    new Date(value)
+                                  )
+                                }
                               />
                             </Group>
                           </Stack>

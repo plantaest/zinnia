@@ -1,3 +1,6 @@
+> [!NOTE]
+> The React implementation is **deprecated**. All new development is focused on the SolidJS rewrite in the `solid` branch.
+
 # Zinnia
 
 Comprehensive anti-vandalism application for MediaWiki

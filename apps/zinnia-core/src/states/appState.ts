@@ -5,7 +5,7 @@ import {
   ObservableComputedTwoWay,
   ObservableObject,
 } from '@legendapp/state';
-import { ApiQueryRecentChangesParams } from 'types-mediawiki/api_params';
+import { ApiQueryRecentChangesParams } from 'types-mediawiki-api';
 import { Change } from '@plantaest/composite';
 import { UserConfig } from '@/types/persistence/UserConfig';
 import { Workspace } from '@/types/persistence/Workspace';

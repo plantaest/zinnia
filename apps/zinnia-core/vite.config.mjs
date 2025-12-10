@@ -6,6 +6,7 @@ import zinniaSpecificFilesRollupPlugin from './zinnia-specific-files.rollup-plug
 export default defineConfig((env) => ({
   server: {
     port: 8050,
+    cors: true,
   },
   plugins: [react(), tsconfigPaths()],
   test: {

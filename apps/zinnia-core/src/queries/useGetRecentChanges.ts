@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { Change, CompositeError } from '@plantaest/composite';
-import { ApiQueryRecentChangesParams } from 'types-mediawiki/api_params';
+import { ApiQueryRecentChangesParams } from 'types-mediawiki-api';
 import dayjs from 'dayjs';
 import { useSelector } from '@legendapp/state/react';
 import { wikis } from '@/utils/wikis';

@@ -6,9 +6,10 @@
   "exports": "./src/index.ts",
   "devDependencies": {
     "@plantaest/typescript-config": "workspace:*",
-    "prettier": "^3.3.3",
-    "typescript": "^5.6.3",
-    "@types/jquery": "^3.5.32",
-    "types-mediawiki": "^1.8.1"
+    "@types/jquery": "^3.5.33",
+    "prettier": "^3.7.4",
+    "types-mediawiki": "^2.0.0",
+    "types-mediawiki-api": "^2.0.0",
+    "typescript": "^5.9.3"
   }
 }
