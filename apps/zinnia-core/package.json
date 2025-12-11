@@ -1,7 +1,7 @@
 {
   "name": "zinnia-core",
   "private": true,
-  "version": "0.1.0-alpha.8",
+  "version": "0.1.0-alpha.9",
   "license": "GNU Affero General Public License version 3",
   "scripts": {
     "dev": "node compile-locales.js && vite",
