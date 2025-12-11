@@ -595,7 +595,7 @@ function FilterPanelContent() {
                                 onChange={(value) =>
                                   form.setFieldValue(
                                     'feed.timeframe.startTimestamp',
-                                    new Date(value)
+                                    new Date(value as string)
                                   )
                                 }
                               />
@@ -653,7 +653,7 @@ function FilterPanelContent() {
                                 onChange={(value) =>
                                   form.setFieldValue(
                                     'feed.timeframe.endTimestamp',
-                                    new Date(value)
+                                    new Date(value as string)
                                   )
                                 }
                               />

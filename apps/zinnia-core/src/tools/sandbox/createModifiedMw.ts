@@ -17,6 +17,7 @@ const addMark = (comment: unknown) =>
 export function createModifiedMw(options: Options): typeof mediaWiki {
   const modifiedMw: typeof mediaWiki = {
     ...zmw,
+    // @ts-ignore
     config: cloneMwMap(zmw.config),
     Api: cloneMwApi(zmw.ForeignApi, WikiHelper.createActionApiUri(options.serverName)),
     util: { ...zmw.util },
